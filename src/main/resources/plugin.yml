@@ -1,0 +1,5 @@
+name: VoxelVertG
+main: net.grian.vv.VoxelVert
+version: 0.1
+depend: []
+softdepend: []
