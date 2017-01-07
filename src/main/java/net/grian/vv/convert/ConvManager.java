@@ -7,25 +7,9 @@ import java.util.Objects;
 @SuppressWarnings("SpellCheckingInspection")
 public final class ConvManager {
 
-    private final static ConvManager instance = new ConvManager();
-
-    public static ConvManager getInstance() {
-        return instance;
-    }
-
     private final Map<ConvKey<?,?>, Converter<?,?>> converters = new HashMap<>();
 
-    private ConvManager() {
-        add(new ConverterBlocksVoxels());
-        add(new ConverterImageTexture());
-        add(new ConverterTextureArranger());
-        add(new ConverterTextureImage());
-        add(new ConverterTextureStackVoxelizer());
-        add(new ConverterVoxelMerger());
-        add(new ConverterVoxelMeshElements());
-        add(new ConverterVoxelsBlocks());
-        add(new ConverterVoxelsTexture());
-    }
+    public ConvManager() {}
 
     public <A,B> boolean add(Converter<A,B> converter) {
         ConvKey<A,B> key = new ConvKey<>(converter.getFrom(), converter.getTo());

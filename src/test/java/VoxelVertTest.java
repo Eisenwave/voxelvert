@@ -6,7 +6,7 @@ import net.grian.vv.core.VoxelArray.Voxel;
 import net.grian.vv.core.VoxelMesh;
 import net.grian.vv.io.ANSI;
 import net.grian.vv.util.Colors;
-import net.grian.vv.util.Conversions;
+import net.grian.vv.util.ConvUtil;
 import net.grian.vv.util.Resources;
 import org.junit.Test;
 
@@ -55,6 +55,11 @@ public class VoxelVertTest {
         }
         try {
             testColorExtraction();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            testSchematicIO();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -166,7 +171,7 @@ public class VoxelVertTest {
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create file "+out);
 
         BufferedImage image = ImageIO.read(in);
-        Texture texture = Conversions.convert(image, BufferedImage.class, Texture.class);
+        Texture texture = ConvUtil.convert(image, BufferedImage.class, Texture.class);
         VoxelArray array = new ConverterTextureVoxelizer().invoke(texture, Direction.POSITIVE_X);
         new SerializerQEF(LOGGER).serialize(array, out);
     }
@@ -184,8 +189,14 @@ public class VoxelVertTest {
     private static void testColorExtraction() throws IOException {
         title("COLOR EXTRACTION");
 
-        ZipFile zip = Resources.getZipFile(VoxelVertTest.class, "pack.zip");
+        ZipFile zip = Resources.getZipFile(VoxelVertTest.class, "resourcepacks/default.zip");
         new ConverterColorExtractor().invoke(zip);
+    }
+
+    private static void testSchematicIO() throws IOException {
+        title("SCHEMATIC IO");
+
+        new DeserializerSchematic().deserialize(Resources.getStream(VoxelVertTest.class, "bunny.schematic"));
     }
 
     private static void title(String title) {

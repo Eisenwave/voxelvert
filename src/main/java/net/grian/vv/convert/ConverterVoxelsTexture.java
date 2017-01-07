@@ -23,7 +23,7 @@ public class ConverterVoxelsTexture implements Converter<VoxelArray, Texture> {
 
     @Override
     public Texture invoke(@NotNull VoxelArray from, @NotNull Object... args) {
-        Arguments.requireMin(args, 2);
+        Arguments.requireMin(args, 3);
         Arguments.requireType(args[0], Direction.class);
         Arguments.requireType(args[1], Boolean.class);
         Arguments.requireType(args[2], Boolean.class);

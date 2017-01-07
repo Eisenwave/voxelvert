@@ -2,22 +2,26 @@ package net.grian.vv.util;
 
 import java.awt.Color;
 
-/**
- * A class for dealing with java.awt.Color or an ARGB representation of colors.
- * Contains methods for comparing colors, stacking them, initializing them and more.
- * @author Jan "Headaxe" Schultke
- *
- */
+@SuppressWarnings("unused")
 public final class Colors {
 
     public final static int
     INVISIBLE_WHITE = 0x00_FF_FF_FF,
     INVISIBLE_BLACK = 0,
-    SOLID_WHITE = 0xFF_FF_FF_FF,
-    SOLID_BLACK = 0xFF_FF_FF_FF,
-    SOLID_RED = 0xFF_FF_00_00;
+    SOLID_BLACK = 0xFF_00_00_00,
+    SOLID_RED =   0xFF_FF_00_00,
+    SOLID_GREEN = 0xFF_00_FF_00,
+    SOLID_BLUE =  0xFF_00_00_FF,
+    SOLID_YELLOW = SOLID_RED   | SOLID_GREEN,
+    SOLID_CYAN =   SOLID_GREEN | SOLID_BLUE,
+    SOLID_MAGENTA = SOLID_RED  | SOLID_BLUE,
+    SOLID_WHITE = SOLID_RED | SOLID_GREEN | SOLID_BLUE,
+    DEBUG1 = SOLID_MAGENTA,
+    DEFAULT_TINT = 0xFF_8DB360;
 
     private Colors() {}
+
+    //"CONSTRUCTORS"
 
     public static Color asColorRGB(int red, int green, int blue, int alpha) {
         return new Color(red, green, blue, alpha);
@@ -65,97 +69,24 @@ public final class Colors {
         return Color.HSBtoRGB(r, g, b);
     }
 
-    private static Color blendColorsUnchecked(int c1, int c2, float weight1, float weight2) {
-        int[] argb1 = split(c1), argb2 = split(c2);
-        final int[] argb = new int[4];
-
-        for (int i = 0; i < 4; i++) {
-            argb[i] = (int) (argb1[i]*weight1 + argb2[i]*weight2);
-        }
-
-        return new Color(argb[1], argb[2], argb[3], argb[0]);
-    }
-
-    /**
-     * Blends two colors based on their weighting.
-     *
-     * @param c1 the first color
-     * @param c2 the second color
-     * @param weight1 the weight of the first color
-     * @param weight2 the weight of the second color
-     * @return the new blended color
-     * @throws IllegalArgumentException if any weight is smaller than 0, NaN, positive infinity or negative infinity
-     */
-    public static Color blendColors(int c1, int c2, float weight1, float weight2) {
-        if (weight1 < 0 || Float.isInfinite(weight1) || Float.isNaN(weight1))
-            throw new IllegalArgumentException("invalid weight1");
-        if (weight2 < 0 || Float.isInfinite(weight2) || Float.isNaN(weight2))
-            throw new IllegalArgumentException("invalid weight2");
-
-        float
-                weight_n1 = weight1 / (weight1+weight2),
-                weight_n2 = weight2 / (weight1+weight2);
-
-        return blendColorsUnchecked(c1, c2, weight_n1, weight_n2);
-    }
-
-    /**
-     * Blends two colors based on a ratio of importance.
-     *
-     * @param c1 the first color
-     * @param c2 the second color
-     * @param ratio the ratio between the two colors. Must be greater than 0 and smaller than infinity
-     * @return the new blended color
-     * @throws IllegalArgumentException if ratio is 0 or smaller; or NaN, positive infinity or negative infinity
-     */
-    public static Color blendColors(int c1, int c2, float ratio) {
-        if (ratio < 0 || Float.isInfinite(ratio) || Float.isNaN(ratio))
-            throw new IllegalArgumentException("invalid ratio");
-
-        float
-                weight1 = (ratio >= 1) ? ratio : 1,
-                weight2 = (ratio >= 1) ? 1 : 1/ratio,
-                weight_n1 = weight1 / (weight1+weight2),
-                weight_n2 = weight2 / (weight1+weight2);
-
-        return blendColorsUnchecked(c1, c2, weight_n1, weight_n2);
-    }
-
-    public static Color blendColors(int c1, int c2) {
-        return blendColorsUnchecked(c1,c2,0.5f,0.5f);
-    }
-
-    /**
-     * Blends several colors with equal weighting.
-     *
-     * @param colors an array of argb integers.
-     * @return the new blended color
-     */
-    public static Color blendColors(int...colors) {
-        int[] argb = new int[4];
-
-        for (int c : colors) {
-            int[] comp = split(c);
-            for (int i = 0; i < 4; i++) {
-                argb[i] += comp[i];
-            }
-        }
-
-        for (int i = 0; i < 4; i++) {
-            argb[0] /= colors.length;
-        }
-
-        return new Color(argb[1], argb[2], argb[3], argb[0]);
+    public static int fromTintedRGB(int rgb, int tint) {
+        final int luma = luminance2(rgb);
+        return fromRGB(
+                (red(tint) * luma) / 255,
+                (green(tint) * luma) / 255,
+                (blue(tint) * luma) / 255
+        );
     }
 
     /**
      * Returns the total difference between the components of two colors.
+     *
      * @param c1 first color
      * @param c2 second color
      * @param transparency false if transparency is ignored
      * @return difference between colors
      */
-    public static int colorDifference(int c1, int c2, boolean transparency) {
+    public static int componentDifference(int c1, int c2, boolean transparency) {
         int a1= (c1>>24) &255;
         int r1= (c1>>16) &255;
         int g1= (c1>>8)  &255;
@@ -175,34 +106,45 @@ public final class Colors {
     }
 
     /**
-     * Returns the total difference between the components of two colors.
-     * @param c1 first color
-     * @param c2 second color
-     * @param transparency false if transparency is ignored
-     * @return difference between colors
+     * <p>
+     *     Returns the visual difference between two colors.
+     * </p>
+     *
+     * <p>
+     *     This methods is solely to be used for comparison of differences, the returned value itself is mathematically
+     *     useless, its sole purpose is to be compared with other values returned by this method.
+     * </p>
+     *
+     * @return the visual difference between the colors
      */
-    public static int colorDifference(Color c1, Color c2, boolean transparency) {
-        return colorDifference(c1.getRGB(), c2.getRGB(), transparency);
+    public static int visualDifference(int redA, int grnA, int bluA, int redB, int grnB, int bluB) {
+        int redM = (redA + redB) >> 1,
+            red = redA - redB,
+            grn = grnA - grnB,
+            blu = bluA - bluB;
+        red = ((512 + redM) * red * red) >> 8;
+        grn = 4 * grn * grn;
+        blu = ((767 - redM) * blu * blu) >> 8;
+
+        return red + grn + blu;
     }
 
     /**
-     * Adds the A, R, G and B values of an array of colors together.
+     * <p>
+     *     Returns the visual difference between two colors.
+     * </p>
      *
-     * @param colors the array of colors
-     * @return a new color
+     * <p>
+     *     This methods is solely to be used for comparison of differences, the returned value itself is mathematically
+     *     useless, its sole purpose is to be compared with other values returned by this method.
+     * </p>
+     *
+     * @param a the first color
+     * @param b the second color
+     * @return the visual difference between the colors
      */
-    public static Color add(int...colors) {
-        int r=0, g=0, b=0, a=0;
-        for (int color : colors) {
-            int[] array = split(color);
-
-            r += array[1];
-            g += array[2];
-            b += array[3];
-            a += array[0];
-        }
-
-        return new Color(Math.min(255, r), Math.min(255, g), Math.min(255, b), Math.min(255, a));
+    public static int visualDifference(int a, int b) {
+        return visualDifference(red(a), green(a), blue(a), red(b), green(b), blue(b));
     }
 
     public static Color multiply(int rgb, float factor) {
@@ -215,22 +157,6 @@ public final class Colors {
         }
 
         return new Color(argb[1], argb[2], argb[3], argb[0]);
-    }
-
-    /**
-     * Checks whether two colors are equal.
-     *
-     * @param c1 the RGB of the first color
-     * @param c2 the RGB of the second color
-     * @param transparency true if transparency is taken into consideration, else false
-     * @return true if the colors are equal, false if not
-     */
-    public static boolean colorsAreEqual(int c1, int c2, boolean transparency) {
-        if ( ((c1>>24) &0xFF) != (c2>>24) && transparency) return false;
-        if ( ((c1>>16) &0xFF) != ((c2>>16) &0xFF))         return false;
-        if ( ((c1>>8) &0xFF)  != ((c2>>8) &0xFF))          return false;
-        if ( (c1 &0xFF)       != (c2 &0xFF))               return false;
-        return true;
     }
 
     public static int stack(float btmR, float btmG, float btmB, float btmA, float topR, float topG, float topB, float topA) {
@@ -254,6 +180,39 @@ public final class Colors {
         return topAlpha == 0? bottom : stack(
                 red(bottom), green(bottom), blue(bottom), alpha(bottom),
                 red(top),    green(top),    blue(top),    topAlpha);
+    }
+
+    public static int anaglyph(int r, int g, int b, int a) {
+        return fromRGB(
+                (r * 30 + g * 59 + b * 11) / 100,
+                (r * 30 + g * 70) / 100,
+                (r * 30 + b * 70) / 100,
+                a);
+    }
+
+    public static int anaglyph(int rgb) {
+        return anaglyph(red(rgb), green(rgb), blue(rgb), alpha(rgb));
+    }
+
+    public static float luminance(float r, float g, float b) {
+        //min to compensate for result > 1 due to imprecision
+        return Math.min(1, 0.2126F*r + 0.7152F*g + 0.0722F*b);
+    }
+
+    public static float luminance(int r, int g, int b) {
+        return luminance(r/255F, g/255F, b/255F);
+    }
+
+    public static float luminance(int rgb) {
+        return luminance(red(rgb), green(rgb), blue(rgb));
+    }
+
+    public static int luminance2(int r, int b, int g) {
+        return (r+r+r + b + g+g+g+g) >> 3;
+    }
+
+    public static int luminance2(int rgb) {
+        return luminance2(red(rgb), green(rgb), blue(rgb));
     }
 
     public static int alpha(int rgb) {
@@ -304,6 +263,10 @@ public final class Colors {
 
     public static boolean isVisible(int rgb) {
         return (rgb & 0xFF_000000) != 0;
+    }
+
+    public static boolean isInvisible(int rgb) {
+        return (rgb & 0xFF_000000) == 0;
     }
 
 }

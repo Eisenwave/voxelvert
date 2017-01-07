@@ -2,6 +2,7 @@ package net.grian.vv.core;
 
 import org.bukkit.Material;
 
+@SuppressWarnings("deprecation")
 public class BlockKey {
 
     public final static BlockKey
@@ -42,7 +43,7 @@ public class BlockKey {
 
     @Override
     public int hashCode() {
-        return id | data << 24;
+        return id | data << 16;
     }
 
     @Override
@@ -52,7 +53,7 @@ public class BlockKey {
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        return obj instanceof BlockKey && equals((BlockKey) obj);
     }
 
     public boolean equals(BlockKey key) {

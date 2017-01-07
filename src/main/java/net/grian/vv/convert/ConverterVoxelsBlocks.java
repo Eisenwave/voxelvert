@@ -42,12 +42,14 @@ public class ConverterVoxelsBlocks implements Converter<VoxelArray, BlockSelecti
 
         int x = target.getMinX(), y = target.getMinY(), z = target.getMinZ();
 
+        /*
         for (Voxel v : from) {
             Material material = colors.getMaterial(v.getColor());
             if (material == null) continue;
             Block block = world.getBlockAt(v.getX()+x, v.getY()+y, v.getZ()+z);
             block.setType(material);
         }
+        */
 
         return target;
     }

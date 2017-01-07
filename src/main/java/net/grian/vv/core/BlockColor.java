@@ -1,10 +1,13 @@
 package net.grian.vv.core;
 
+import org.bukkit.Material;
+
 import net.grian.vv.util.RGBValue;
 
 public class BlockColor implements RGBValue {
 
     private final int rgb;
+    private final float occRoot;
     private final float occupation;
     private final boolean tint;
 
@@ -13,6 +16,7 @@ public class BlockColor implements RGBValue {
             throw new IllegalArgumentException("occupation must be 0-1 ("+occupation+")");
         this.rgb = rgb;
         this.occupation = occupation;
+        this.occRoot = (float) Math.cbrt(occupation);
         this.tint = tint;
     }
 
@@ -42,10 +46,30 @@ public class BlockColor implements RGBValue {
      *     slab has an occupation of 0.5, air has an occupation of 0.0 for example.
      * </p>
      *
-     * @return the space occupation of the block color
+     * @return the space occupation of the block
      */
     public float getOccupation() {
         return occupation;
+    }
+
+    /**
+     * <p>
+     *     Returns the cube root of the occupation of the block color.
+     * </p>
+     * <p>
+     *     While the occupation describes more accurately how large of a volume fraction a block has, the cube root of
+     *     the occupation describes how much space the block visually occupies.
+     * </p>
+     * <p>
+     *     This value is ideal for multiplication with an alpha channel to make blocks such as {@link Material#CARPET}
+     *     or {@link Material#STEP} less visible.
+     * </p>
+     *
+     * @return the cube root of the occupation of the block
+     * @see #getOccupation()
+     */
+    public double getVisualOccupation() {
+        return occRoot;
     }
 
     /**

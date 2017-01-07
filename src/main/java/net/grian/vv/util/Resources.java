@@ -11,11 +11,11 @@ public final class Resources {
     private Resources() {}
 
     public static InputStream getStream(Class<?> clazz, String path) {
-        return clazz.getResourceAsStream(path);
+        return clazz.getClassLoader().getResourceAsStream(path);
     }
 
     public static File getFile(Class<?> clazz, String path) {
-        return new File(clazz.getResource(path).getFile());
+        return new File(clazz.getClassLoader().getResource(path).getFile());
     }
 
     public static ZipFile getZipFile(Class<?> clazz, String path) throws IOException {
@@ -23,7 +23,7 @@ public final class Resources {
     }
 
     public static URL get(Class<?> clazz, String path) {
-        return clazz.getResource(path);
+        return clazz.getClassLoader().getResource(path);
     }
 
 }
