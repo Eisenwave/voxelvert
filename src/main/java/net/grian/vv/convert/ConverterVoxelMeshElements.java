@@ -42,7 +42,7 @@ public class ConverterVoxelMeshElements implements Converter<VoxelMesh, ElementS
             VoxelMesh.Element element = iter.next();
 
             VoxelArray array = element.getArray();
-            BlockSelection bounds = array.getBoundaries().move(element.getX(), element.getY(), element.getZ());
+            BlockSelection bounds = array.getBoundaries().move(element.getMinX(), element.getMinY(), element.getMinZ());
             BlockyBox transElement = new BlockyBox(bounds, null);
             for (Direction dir : Direction.values());
                 //transElement.setTexture(dir, texturer.invoke(array, dir, false, false));

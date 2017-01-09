@@ -1,4 +1,4 @@
-package net.grian.vv.convert;
+package net.grian.vv.io;
 
 import net.grian.vv.core.VoxelArray;
 import net.grian.vv.io.Deserializer;

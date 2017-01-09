@@ -31,7 +31,7 @@ public class ConverterWorldBlockArray implements Converter<World, BlockArray> {
         final int
                 minX = selection.getMinX(), minY = selection.getMinY(), minZ = selection.getMinZ(),
                 maxX = selection.getMaxX(), maxY = selection.getMaxY(), maxZ = selection.getMaxZ();
-        BlockArray result = new BlockArray(maxX-minX+1, maxY-minY+1, maxZ-minZ+1, true);
+        BlockArray result = new BlockArray(maxX-minX+1, maxY-minY+1, maxZ-minZ+1, BlockArray.FLAG_BIOMES);
 
         for (int x = minX; x<=maxX; x++) for (int y = minY; y<=maxY; y++) for (int z = minZ; z<=maxZ; z++) {
             Block block = world.getBlockAt(x, y, z);

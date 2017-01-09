@@ -9,14 +9,14 @@ import java.io.*;
  */
 public interface Deserializer<T> {
 
-    public T deserialize(InputStream stream) throws ParseException;
+    public T deserialize(InputStream stream) throws IOException;
 
-    public default T deserialize(File file) throws ParseException {
-        try (FileInputStream stream = new FileInputStream(file)) {
-            return deserialize(stream);
-        } catch (IOException ex) {
-            throw new ParseException(ex);
-        }
+    public default T deserialize(File file) throws IOException {
+        FileInputStream stream = new FileInputStream(file);
+        T result = deserialize(stream);
+        stream.close();
+
+        return result;
     }
 
 }

@@ -1,5 +1,6 @@
 package net.grian.vv.core;
 
+import net.grian.spatium.geo.BlockSelection;
 import net.grian.spatium.geo.BlockVector;
 
 import java.io.Serializable;
@@ -19,16 +20,44 @@ public class VoxelMesh implements Serializable, Iterable<VoxelMesh.Element> {
             list.add(e.clone());
     }
 
-    public void add(int x, int y, int z, VoxelArray array) {
-        this.list.add(new Element(x, y, z, array));
-    }
-
     public int size() {
         return list.size();
     }
 
     public VoxelMesh.Element[] getElements() {
         return list.toArray(new Element[list.size()]);
+    }
+
+    public BlockSelection getBoundaries() {
+        if (isEmpty()) throw new IllegalStateException("empty meshes have no boundaries");
+        int
+                xmin = Integer.MAX_VALUE, ymin = Integer.MAX_VALUE, zmin = Integer.MAX_VALUE,
+                xmax = Integer.MIN_VALUE, ymax = Integer.MIN_VALUE, zmax = Integer.MIN_VALUE;
+
+        for (Element element : list) {
+            final int
+                    exmin = element.getMinX(), eymin = element.getMinY(), ezmin = element.getMinZ(),
+                    exmax = element.getMaxX(), eymax = element.getMaxY(), ezmax = element.getMaxZ();
+
+            if (exmin < xmin) xmin = exmin;
+            if (eymin < ymin) ymin = eymin;
+            if (ezmin < zmin) zmin = ezmin;
+            if (exmax > xmax) xmax = exmax;
+            if (eymax > ymax) ymax = eymax;
+            if (ezmax > zmax) zmax = ezmax;
+        }
+
+        return BlockSelection.fromPoints(xmin, ymin, zmin, xmax, ymax, zmax);
+    }
+
+    public void add(int x, int y, int z, VoxelArray array) {
+        this.list.add(new Element(x, y, z, array));
+    }
+
+    // CHECKERS
+
+    public boolean isEmpty() {
+        return list.isEmpty();
     }
 
     @Override
@@ -63,16 +92,28 @@ public class VoxelMesh implements Serializable, Iterable<VoxelMesh.Element> {
             this(copyOf.x, copyOf.y, copyOf.z, copyOf.array);
         }
 
-        public int getX() {
+        public int getMinX() {
             return x;
         }
 
-        public int getY() {
+        public int getMinY() {
             return y;
         }
 
-        public int getZ() {
+        public int getMinZ() {
             return z;
+        }
+
+        public int getMaxX() {
+            return x + array.getSizeX();
+        }
+
+        public int getMaxY() {
+            return y + array.getSizeY();
+        }
+
+        public int getMaxZ() {
+            return z + array.getSizeZ();
         }
 
         public BlockVector getPosition() {

@@ -1,3 +1,5 @@
+package net.grian.vv;
+
 import net.grian.spatium.enums.Direction;
 import net.grian.vv.convert.*;
 import net.grian.vv.core.Texture;
@@ -5,6 +7,9 @@ import net.grian.vv.core.VoxelArray;
 import net.grian.vv.core.VoxelArray.Voxel;
 import net.grian.vv.core.VoxelMesh;
 import net.grian.vv.io.ANSI;
+import net.grian.vv.io.DeserializerQEF;
+import net.grian.vv.io.DeserializerSchematic;
+import net.grian.vv.io.SerializerQEF;
 import net.grian.vv.util.Colors;
 import net.grian.vv.util.ConvUtil;
 import net.grian.vv.util.Resources;
@@ -19,7 +24,7 @@ import java.util.Random;
 import java.util.logging.Logger;
 import java.util.zip.ZipFile;
 
-public class VoxelVertTest {
+public class VoxelVertInformalTests {
 
     private final static File
             DIR_VV = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert"),
@@ -179,7 +184,7 @@ public class VoxelVertTest {
     private static void testVoxelMerging() throws IOException {
         title("VOXEL MERGING");
 
-        InputStream qef = Resources.getStream(VoxelVertTest.class, "/cube32.qef");
+        InputStream qef = Resources.getStream(VoxelVertInformalTests.class, "/cube32.qef");
         VoxelArray array = new DeserializerQEF(LOGGER).deserialize(qef);
         VoxelMesh cluster = new ConverterVoxelMerger().invoke(array);
         System.out.println(array+" -> "+cluster);
@@ -189,14 +194,14 @@ public class VoxelVertTest {
     private static void testColorExtraction() throws IOException {
         title("COLOR EXTRACTION");
 
-        ZipFile zip = Resources.getZipFile(VoxelVertTest.class, "resourcepacks/default.zip");
+        ZipFile zip = Resources.getZipFile(VoxelVertInformalTests.class, "resourcepacks/default.zip");
         new ConverterColorExtractor().invoke(zip);
     }
 
     private static void testSchematicIO() throws IOException {
         title("SCHEMATIC IO");
 
-        new DeserializerSchematic().deserialize(Resources.getStream(VoxelVertTest.class, "bunny.schematic"));
+        new DeserializerSchematic().deserialize(Resources.getStream(VoxelVertInformalTests.class, "bunny.schematic"));
     }
 
     private static void title(String title) {

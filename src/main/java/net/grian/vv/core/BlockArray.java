@@ -8,25 +8,37 @@ import java.io.Serializable;
 
 public class BlockArray implements Serializable, Cloneable {
 
+    /** store block biomes */
+    public final static int
+    FLAG_BIOMES = 1,
+    /** store block light */
+    FLAG_LIGHT = 1 << 1;
+
     private final static Biome[] valuesBiome = Biome.values();
 
     private final short[][][] arrayId;
     private final byte[][][] arrayData;
-    private final byte[][][] arrayBiome;
-    private final int sizeX, sizeY, sizeZ;
 
-    public BlockArray(int x, int y, int z, boolean biomes) {
+    private final byte[][][] arrayBiome;
+    private final byte[][][] arrayLight;
+
+    private final int sizeX, sizeY, sizeZ, flags;
+
+    public BlockArray(int x, int y, int z, int flags) {
         if (x == 0 || y == 0 || z == 0) throw new IllegalArgumentException("size 0 voxel array");
         this.sizeX = x;
         this.sizeY = y;
         this.sizeZ = z;
+        this.flags = flags;
+
         this.arrayId = new short[x][y][z];
         this.arrayData = new byte[x][y][z];
-        this.arrayBiome = biomes? new byte[x][y][z] : null;
+        this.arrayBiome = (flags & FLAG_BIOMES) != 0? new byte[x][y][z] : null;
+        this.arrayLight = (flags & FLAG_LIGHT)  != 0? new byte[x][y][z] : null;
     }
 
     public BlockArray(int x, int y, int z) {
-        this(x, y, z, false);
+        this(x, y, z, 0);
     }
 
     public void fill(short id, byte data) {
@@ -55,11 +67,13 @@ public class BlockArray implements Serializable, Cloneable {
         if (xmax >= getSizeX() || ymax >= getSizeY() || zmax >= getSizeZ())
             throw new IllegalArgumentException("max ("+xmax+","+ymax+","+zmax+") out of boundaries");
 
-        BlockArray result = new BlockArray(xmax-xmin+1, ymax-ymin+1, zmax-zmin+1, hasBiomes());
-        for (int x = xmin; x<=xmax; x++)
-            for (int y = ymin; y<=ymax; y++)
-                for (int z = zmin; z<=zmax; z++)
-                    result.setBlock(x-xmin, y-ymin, z-zmin, getId(x, y, z), getData(x, y, z));
+        BlockArray result = new BlockArray(xmax-xmin+1, ymax-ymin+1, zmax-zmin+1, getFlags());
+        for (int x = xmin; x<=xmax; x++) for (int y = ymin; y<=ymax; y++) for (int z = zmin; z<=zmax; z++) {
+            final int x2 = x-xmin, y2 = y-ymin, z2 = z-zmin;
+            result.setBlock(x2, y2, z2, getId(x, y, z), getData(x, y, z));
+            if (hasBiomes()) result.setBiome(x2, y2, z2, getBiome(x, y, z));
+            if (hasLight()) result.setBlockLight(x2, y2, z2, getBlockLight(x, y, z));
+        }
 
         return result;
     }
@@ -89,6 +103,15 @@ public class BlockArray implements Serializable, Cloneable {
      */
     public int getSizeZ() {
         return sizeZ;
+    }
+
+    /**
+     * Returns all the extra content flags this array was created with.
+     *
+     * @return this array's extra flags
+     */
+    public int getFlags() {
+        return flags;
     }
 
     /**
@@ -176,6 +199,20 @@ public class BlockArray implements Serializable, Cloneable {
     }
 
     /**
+     * Returns the block light at the specified position.
+     *
+     * @param x the x-coordinate
+     * @param y the y-coordinate
+     * @param z the z-coordinate
+     * @return the biome at the specified position
+     * @throws IllegalStateException if the array stores no light
+     */
+    public byte getBlockLight(int x, int y, int z) {
+        if (!hasLight()) throw new IllegalStateException("block array stores no light");
+        return arrayLight[x][y][z];
+    }
+
+    /**
      * Returns the total amount of visible blocks in this array.
      *
      * @return the amount of blocks
@@ -198,9 +235,20 @@ public class BlockArray implements Serializable, Cloneable {
      * Returns whether this block array stores biomes.
      *
      * @return whether this block array stores biomes
+     * @see #FLAG_BIOMES
      */
     public boolean hasBiomes() {
         return arrayBiome != null;
+    }
+
+    /**
+     * Returns whether this block array stores block light.
+     *
+     * @return whether this block array stores block light
+     * @see #FLAG_LIGHT
+     */
+    public boolean hasLight() {
+        return arrayLight != null;
     }
 
     /**
@@ -264,12 +312,13 @@ public class BlockArray implements Serializable, Cloneable {
         setBiome(pos.getX(), pos.getY(), pos.getZ(), biome);
     }
 
-    public void remove(int x, int y, int z) {
-        setBlock(x, y, z, BlockKey.AIR);
+    public void setBlockLight(int x, int y, int z, byte level) {
+        if (!hasLight()) throw new IllegalArgumentException("this block array has no block light");
+        arrayLight[x][y][z] = level;
     }
 
-    public void remove(BlockVector pos) {
-        remove(pos.getX(), pos.getY(), pos.getZ());
+    public void setBlockLight(BlockVector pos, byte level) {
+        setBlockLight(pos.getX(), pos.getY(), pos.getZ(), level);
     }
 
     //MISC

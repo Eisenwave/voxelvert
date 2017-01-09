@@ -9,7 +9,7 @@ import net.grian.vv.util.Colors;
 
 import java.util.logging.Logger;
 
-public class ConverterBlocksVoxels implements Converter<BlockArray, VoxelArray> {
+public class ConverterBlocksToVoxels implements Converter<BlockArray, VoxelArray> {
 
             /** do not place voxel for non-full blocks */
     public final static int

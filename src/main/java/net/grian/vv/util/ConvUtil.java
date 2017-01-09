@@ -9,9 +9,10 @@ public final class ConvUtil {
     private final static ConvManager manager = new ConvManager();
 
     static {
-        manager.add(new ConverterBlocksVoxels());
+        manager.add(new ConverterBlocksToVoxels());
         manager.add(new ConverterColorExtractor());
         manager.add(new ConverterImageTexture());
+        manager.add(new ConverterMeshToArray());
         manager.add(new ConverterTextureArranger());
         manager.add(new ConverterTextureImage());
         manager.add(new ConverterTextureStackVoxelizer());

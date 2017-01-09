@@ -1,33 +1,61 @@
 package net.grian.vv.cache;
 
+import net.grian.vv.io.DeserializerExtractableArray;
+import net.grian.vv.io.ExtractableColor;
+import net.grian.vv.util.Resources;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
-import net.grian.vv.convert.Converter;
-import net.grian.vv.core.*;
-
-/**
- * A VoxelVert registry.
- */
 public class Registry {
 
-    private final Map<String, Class<?>> knownFormats = new HashMap<>();
-    private final Map<Class<?>[], Converter<?, ?>> converters = new HashMap<>();
+    private final Logger logger;
 
-    /**
-     * Returns the class of a known format by its name. For example, {@code getKnownFormat("voxels")} returns
-     * {@link VoxelArray#getClass()}.
-     *
-     * @param name the name of the format
-     * @return the class of the format
-     */
-    public Class<?> getKnownFormat(String name) {
-        return knownFormats.get(name);
+    private final Map<String, ExtractableColor[]> colorArrays = new HashMap<>();
+
+    public Registry(Logger logger) {
+        this.logger = logger;
     }
 
-    @SuppressWarnings("unchecked")
-    public <A, B> Converter<A, B> getConverter(Class<A> from, Class<B> to) {
-        return (Converter<A, B>) converters.get(new Class[] {from, to});
+    public Registry() {
+        this(Logger.getGlobal());
     }
+
+    public void loadResources() {
+        loadColorExtractors();
+    }
+
+    public void loadColorExtractors() {
+        File dir = Resources.getFile(getClass(), "color_extractors");
+        File[] files = dir.listFiles();
+        if (files == null) {
+            logger.warning(dir+" is empty");
+            return;
+        }
+
+        for (File file : files) {
+            String name = file.getName();
+            name = name.substring(0, name.lastIndexOf('.'));
+            try {
+                colorArrays.put(name, new DeserializerExtractableArray().deserialize(file));
+            } catch (IOException ex) {
+                logger.warning("failed to load extractor: "+name);
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public ExtractableColor[] getColors(String name) {
+        return colorArrays.get(name);
+    }
+
+    public void putColors(String name, ExtractableColor[] colors) {
+        colorArrays.put(name, colors);
+    }
+
+
 
 }
