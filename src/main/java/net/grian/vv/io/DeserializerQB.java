@@ -12,12 +12,7 @@ import java.util.logging.Logger;
 
 public class DeserializerQB implements Deserializer<VoxelMesh> {
 
-    private final static int
-            CURRENT_VERSION = 0x01_01_00_00,
-            CODEFLAG = 2,
-            NEXTSLICEFLAG = 6;
-
-    private boolean compressed, visibilityMaskEncoded;
+    private boolean compressed, visibilityMaskEncoded, zLeft;
     private int colorFormat, numMatrices;
     private VoxelMesh mesh;
 
@@ -39,8 +34,9 @@ public class DeserializerQB implements Deserializer<VoxelMesh> {
         deserializeHeader(dataStream);
         logger.info("deserializing "+numMatrices+" matrices with"+
                 ": compression="+compressed+
+                ", colorFormat="+colorFormat+
                 ", visMaskEncoded="+visibilityMaskEncoded+
-                ", colorFormat="+colorFormat);
+                ", zLeft="+zLeft);
 
         mesh = new VoxelMesh();
         for (int i = 0; i < numMatrices; i++)
@@ -52,17 +48,29 @@ public class DeserializerQB implements Deserializer<VoxelMesh> {
 
     private void deserializeHeader(DataInputStream stream) throws IOException {
         int version = stream.readInt(); //big endian
-        if (version != CURRENT_VERSION)
-            throw new FileVersionException(version+" != current ("+CURRENT_VERSION+")");
+        if (version != SerializerQB.CURRENT_VERSION)
+            throw new FileVersionException(version+" != current ("+SerializerQB.CURRENT_VERSION+")");
 
-        colorFormat = stream.readInt();
-        if (colorFormat != 0 && colorFormat != 1)
+        this.colorFormat = stream.readInt();
+        if (colorFormat != SerializerQB.COLOR_FORMAT_RGBA && colorFormat != SerializerQB.COLOR_FORMAT_BGRA)
             throw new FileSyntaxException("unknown color format: "+colorFormat);
 
-        @SuppressWarnings("unused") int zAxisOrientation = stream.readInt();
-        compressed = stream.readInt() != 0;
-        visibilityMaskEncoded = stream.readInt() != 0;
-        numMatrices = readLittleInt(stream);
+        int zAxisOrientation = stream.readInt();
+        if (zAxisOrientation != SerializerQB.Z_ORIENT_LEFT && zAxisOrientation != SerializerQB.Z_ORIENT_RIGHT)
+            throw new FileSyntaxException("unknown z axis orientation: "+zAxisOrientation);
+        this.zLeft = zAxisOrientation==SerializerQB.Z_ORIENT_LEFT;
+
+        int compressedInt = readLittleInt(stream);
+        if (compressedInt != SerializerQB.UNCOMPRESSED && compressedInt != SerializerQB.COMPRESSED)
+            throw new FileSyntaxException("unknown compression: "+compressedInt);
+        this.compressed = compressedInt == SerializerQB.COMPRESSED;
+
+        int visEncodedInt = readLittleInt(stream);
+        if (visEncodedInt != SerializerQB.VIS_MASK_UNENCODED && visEncodedInt != SerializerQB.VIS_MASK_ENCODED)
+            throw new FileSyntaxException("unknown vis mask encoding: "+visEncodedInt);
+        this.visibilityMaskEncoded = visEncodedInt == SerializerQB.VIS_MASK_ENCODED;
+
+        this.numMatrices = readLittleInt(stream);
     }
 
     private void deserializeMatrix(DataInputStream stream) throws IOException {
@@ -89,17 +97,19 @@ public class DeserializerQB implements Deserializer<VoxelMesh> {
 
     private VoxelArray readUncompressed(int sizeX, int sizeY, int sizeZ, DataInputStream stream) throws IOException {
         VoxelArray matrix = new VoxelArray(sizeX, sizeY, sizeZ);
+        final int maxZ = sizeZ-1;
 
         for(int z = 0; z < sizeX; z++)
             for(int y = 0; y < sizeY; y++)
                 for(int x = 0; x < sizeZ; x++)
-                    matrix.setRGB(x, y, z, asARGB(stream.readInt()));
+                    matrix.setRGB(x, y, (zLeft? z : maxZ-z), asARGB(stream.readInt()));
 
         return matrix;
     }
 
     private VoxelArray readCompressed(int sizeX, int sizeY, int sizeZ, DataInputStream stream) throws IOException {
         VoxelArray matrix = new VoxelArray(sizeX, sizeY, sizeZ);
+        final int maxZ = sizeZ-1;
 
         for (int z = 0; z<sizeZ; z++) {
             int index = 0;
@@ -107,20 +117,20 @@ public class DeserializerQB implements Deserializer<VoxelMesh> {
             while (true) {
                 int data = readLittleInt(stream);
 
-                if (data == NEXTSLICEFLAG) break;
-                else if (data == CODEFLAG) {
+                if (data == SerializerQB.NEXTSLICEFLAG) break;
+                else if (data == SerializerQB.CODEFLAG) {
                     int count = readLittleInt(stream);
                     data = stream.readInt();
 
                     for(int i = 0; i < count; i++) {
                         int x = index%sizeX, y = index/sizeX;
-                        matrix.setRGB(x, y, z, asARGB(data));
+                        matrix.setRGB(x, y, (zLeft? z : maxZ-z), asARGB(data));
                         index++;
                     }
                 }
                 else {
                     int x = index%sizeX, y = index/sizeX;
-                    matrix.setRGB(x, y, z, asARGB(IOMath.invertBytes(data)));
+                    matrix.setRGB(x, y, (zLeft? z : maxZ-z), asARGB(IOMath.invertBytes(data)));
                     index++;
                 }
             }
