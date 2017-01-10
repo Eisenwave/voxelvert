@@ -13,12 +13,9 @@ public class DeserializerSchematicTest {
 
     @Test
     public void deserialize() throws Exception {
-        InputStream stream = Resources.getStream(getClass(), "bunny.schematic");
-        assertNotNull(stream);
-
-        BlockArray array = new DeserializerSchematic().deserialize(stream);
-        stream.close();
+        BlockArray array = new DeserializerSchematic().deserialize(getClass(), "bunny.schematic");
         System.out.println(array);
+        assertNotNull(array);
     }
 
 }

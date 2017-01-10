@@ -9,12 +9,10 @@ public interface Serializer<T> {
 
     public void serialize(T object, OutputStream stream) throws IOException;
 
-    public default void serialize(T object, File file) throws ParseException {
-        try (FileOutputStream stream = new FileOutputStream(file)) {
-            serialize(object, stream);
-        } catch (IOException ex) {
-            throw new ParseException(ex);
-        }
+    public default void serialize(T object, File file) throws IOException {
+        FileOutputStream stream = new FileOutputStream(file);
+        serialize(object, stream);
+        stream.close();
     }
 
 }

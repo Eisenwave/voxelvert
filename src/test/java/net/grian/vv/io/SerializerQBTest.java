@@ -14,10 +14,8 @@ public class SerializerQBTest {
 
     @Test
     public void serialize() throws Exception {
-        InputStream inStream = Resources.getStream(getClass(), "sniper.qb");
-        VoxelMesh mesh = new DeserializerQB().deserialize(inStream);
+        VoxelMesh mesh = new DeserializerQB().deserialize(getClass(), "sniper.qb");
         System.out.println("serializing mesh: "+mesh);
-        inStream.close();
 
         File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\SerializerQBTest.qb");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
@@ -25,7 +23,7 @@ public class SerializerQBTest {
         new SerializerQB().serialize(mesh, out);
 
         VoxelMesh mesh2 = new DeserializerQB().deserialize(out);
-        inStream.close();
+        assertNotNull(mesh2);
     }
 
 }

@@ -20,10 +20,8 @@ public class DeserializerQBTest {
 
     @Test
     public void deserialize() throws Exception {
-        InputStream stream = Resources.getStream(getClass(), "sniper.qb");
-        VoxelMesh mesh = new DeserializerQB().deserialize(stream);
+        VoxelMesh mesh = new DeserializerQB().deserialize(getClass(), "sniper.qb");
         System.out.println("mesh = "+mesh);
-        stream.close();
 
         assertNotNull(mesh);
 

@@ -24,9 +24,7 @@ public class ConverterBlocksToVoxelsTest {
     @Test
     public void invoke() throws Exception {
         long now = System.currentTimeMillis();
-        InputStream stream = Resources.getStream(getClass(), "bunny.schematic");
-        BlockArray blocks = new DeserializerSchematic().deserialize(stream);
-        stream.close();
+        BlockArray blocks = new DeserializerSchematic().deserialize(getClass(), "bunny.schematic");
         System.out.println((System.currentTimeMillis()-now)+": "+blocks);
 
         ExtractableColor[] extractableColors = VoxelVertTest.getInstance().getRegistry().getColors("default");
