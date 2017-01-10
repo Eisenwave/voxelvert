@@ -5,13 +5,12 @@ import net.grian.spatium.geo.BlockVector;
 import net.grian.vv.util.Colors;
 import net.grian.vv.util.RGBValue;
 
-import java.awt.*;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 
-public class VoxelArray implements Cloneable, Serializable, Iterable<VoxelArray.Voxel> {
+public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<VoxelArray.Voxel> {
 
     private final int[][][] voxels;
 
@@ -70,6 +69,7 @@ public class VoxelArray implements Cloneable, Serializable, Iterable<VoxelArray.
      *
      * @return the size on the x-axis
      */
+    @Override
     public int getSizeX() {
         return voxels.length;
     }
@@ -79,6 +79,7 @@ public class VoxelArray implements Cloneable, Serializable, Iterable<VoxelArray.
      *
      * @return the size on the y-axis
      */
+    @Override
     public int getSizeY() {
         return voxels[0].length;
     }
@@ -88,21 +89,9 @@ public class VoxelArray implements Cloneable, Serializable, Iterable<VoxelArray.
      *
      * @return the size on the z-axis
      */
+    @Override
     public int getSizeZ() {
         return voxels[0][0].length;
-    }
-
-    /**
-     * Returns the volume of the voxel array.
-     *
-     * @return the volume
-     */
-    public int getVolume() {
-        return getSizeX() * getSizeY() * getSizeZ();
-    }
-
-    public BlockVector getDimensions() {
-        return BlockVector.fromXYZ(getSizeX(), getSizeY(), getSizeZ());
     }
 
     /**
@@ -182,25 +171,39 @@ public class VoxelArray implements Cloneable, Serializable, Iterable<VoxelArray.
     //CHECKERS
 
     /**
-     * Returns whether the array contains a voxel at the given position. This is the case unless the voxel array
-     * contains a completely transparent voxel <code>(alpha = 0) </code> at the coordinates.
+     * <p>
+     *     Returns whether the array contains a voxel at the given position.
+     * </p>
+     * <p>
+     *     This is the case unless the voxel array contains a completely transparent voxel <code>(alpha = 0) </code>
+     *     at the coordinates.
+     * </p>
      *
-     * @param x the x position
-     * @param y the y position
-     * @param z the z position
+     * @param x the x-coordinate
+     * @param y the y-coordinate
+     * @param z the z-coordinate
      * @return whether the array contains a voxel
      */
+    @Override
     public boolean contains(int x, int y, int z) {
         return Colors.isVisible(getRGB(x, y, z));
     }
 
     /**
-     * Returns whether the array contains a voxel at the given position.
-     * @param v the voxel position
+     * <p>
+     *     Returns whether the array contains a voxel at the given position.
+     * </p>
+     * <p>
+     *     This is the case unless the voxel array contains a completely transparent voxel <code>(alpha = 0)</code>
+     *     at the position.
+     * </p>
+     *
+     * @param pos the position
      * @return whether the array contains a voxel
      */
-    public boolean contains(BlockVector v) {
-        return contains(v.getX(), v.getY(), v.getZ());
+    @Override
+    public boolean contains(BlockVector pos) {
+        return contains(pos.getX(), pos.getY(), pos.getZ());
     }
 
     //SETTERS
@@ -391,7 +394,7 @@ public class VoxelArray implements Cloneable, Serializable, Iterable<VoxelArray.
             this(copyOf.x, copyOf.y, copyOf.z);
         }
 
-        private Voxel(BlockVector pos, Color color) {
+        private Voxel(BlockVector pos) {
             this(pos.getX(), pos.getY(), pos.getZ());
         }
 

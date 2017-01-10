@@ -25,10 +25,10 @@ public final class ConvManager {
     @SuppressWarnings("unchecked")
     public <A,B> B convert(A from, Class<A> fromClass, Class<B> toClass, Object... args) {
         ConvKey<A,B> key = new ConvKey<>(fromClass, toClass);
-        if (converters.containsKey(key)) {
+        if (converters.containsKey(key))
             return ((Converter<A,B>) converters.get(key)).invoke(from, args);
-        }
-        else throw new ConversionPathException("missing: "+fromClass.getSimpleName()+" -> "+toClass.getSimpleName());
+        else
+            throw new ConversionPathException("missing: "+fromClass.getSimpleName()+" -> "+toClass.getSimpleName());
     }
 
     /*

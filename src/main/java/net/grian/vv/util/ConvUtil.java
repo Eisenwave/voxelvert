@@ -9,6 +9,7 @@ public final class ConvUtil {
     private final static ConvManager manager = new ConvManager();
 
     static {
+        manager.add(new ConverterBitmapMerger());
         manager.add(new ConverterBlocksToVoxels());
         manager.add(new ConverterColorExtractor());
         manager.add(new ConverterImageTexture());

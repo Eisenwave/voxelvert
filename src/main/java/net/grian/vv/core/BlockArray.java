@@ -6,7 +6,7 @@ import org.bukkit.block.Biome;
 
 import java.io.Serializable;
 
-public class BlockArray implements Serializable, Cloneable {
+public class BlockArray implements Bitmap3D, Serializable, Cloneable {
 
     /** store block biomes */
     public final static int
@@ -78,29 +78,17 @@ public class BlockArray implements Serializable, Cloneable {
         return result;
     }
 
-    /**
-     * Returns the size of the array on the x-axis.
-     *
-     * @return the size on the x-axis
-     */
+    @Override
     public int getSizeX() {
         return sizeX;
     }
 
-    /**
-     * Returns the size of the array on the y-axis.
-     *
-     * @return the size on the y-axis
-     */
+    @Override
     public int getSizeY() {
         return sizeY;
     }
 
-    /**
-     * Returns the size of the array on the z-axis.
-     *
-     * @return the size on the z-axis
-     */
+    @Override
     public int getSizeZ() {
         return sizeZ;
     }
@@ -112,19 +100,6 @@ public class BlockArray implements Serializable, Cloneable {
      */
     public int getFlags() {
         return flags;
-    }
-
-    /**
-     * Returns the volume of the voxel array.
-     *
-     * @return the volume
-     */
-    public int getVolume() {
-        return getSizeX() * getSizeY() * getSizeZ();
-    }
-
-    public BlockVector getDimensions() {
-        return BlockVector.fromXYZ(getSizeX(), getSizeY(), getSizeZ());
     }
 
     /**
@@ -252,24 +227,27 @@ public class BlockArray implements Serializable, Cloneable {
     }
 
     /**
-     * Returns whether the array contains a block at the given position.
+     * Returns whether the array contains a non-air block at the given position.
      *
      * @param x the x position
      * @param y the y position
      * @param z the z position
      * @return whether the array contains a block
      */
+    @Override
     public boolean contains(int x, int y, int z) {
         return getId(x, y, z) != 0;
     }
 
     /**
-     * Returns whether the array contains a voxel at the given position.
-     * @param v the voxel position
-     * @return whether the array contains a voxel
+     * Returns whether the array contains a non-air block at the given position.
+     *
+     * @param pos the position
+     * @return whether the array contains a block
      */
-    public boolean contains(BlockVector v) {
-        return contains(v.getX(), v.getY(), v.getZ());
+    @Override
+    public boolean contains(BlockVector pos) {
+        return contains(pos.getX(), pos.getY(), pos.getZ());
     }
 
     //SETTERS
