@@ -10,7 +10,7 @@ import net.grian.vv.io.ANSI;
 import net.grian.vv.io.DeserializerQEF;
 import net.grian.vv.io.DeserializerSchematic;
 import net.grian.vv.io.SerializerQEF;
-import net.grian.vv.util.Colors;
+import net.grian.vv.util.ColorMath;
 import net.grian.vv.util.ConvUtil;
 import net.grian.vv.util.Resources;
 import org.junit.Test;
@@ -135,7 +135,7 @@ public class VoxelVertInformalTests {
 
         long now = System.currentTimeMillis();
         VoxelArray array = new VoxelArray(128, 128, 128);
-        array.fill(Colors.SOLID_RED);
+        array.fill(ColorMath.SOLID_RED);
         System.out.println("generated "+array+" array in "+(System.currentTimeMillis()-now)+"ms");
 
         long now2 = System.currentTimeMillis();
@@ -151,7 +151,7 @@ public class VoxelVertInformalTests {
                 long now = System.currentTimeMillis();
                 VoxelArray array = new VoxelArray(resolution, resolution, resolution);
                 Random r = new Random();
-                array.forEachPosition(pos -> {if (r.nextBoolean()) array.setRGB(pos, Colors.SOLID_RED);});
+                array.forEachPosition(pos -> {if (r.nextBoolean()) array.setRGB(pos, ColorMath.SOLID_RED);});
                 System.out.println("generated "+array+" array in "+(System.currentTimeMillis()-now)+"ms");
 
                 long now2 = System.currentTimeMillis();

@@ -1,7 +1,7 @@
 package net.grian.vv.io;
 
 import net.grian.vv.core.BlockKey;
-import net.grian.vv.util.Colors;
+import net.grian.vv.util.ColorMath;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -108,8 +108,8 @@ public class ExtractableColor {
             for (int u = 0; u < width; u++)
                 for (int v = 0; v < height; v++) {
                     int rgb = image.getRGB(u, v);
-                    if (Colors.isInvisible(rgb)) continue;
-                    int[] color = Colors.split(rgb);
+                    if (ColorMath.isInvisible(rgb)) continue;
+                    int[] color = ColorMath.split(rgb);
 
                     for (int i = 0; i < color.length; i++)
                         sum[i] += color[i];
@@ -118,8 +118,8 @@ public class ExtractableColor {
                 }
 
             return count == 0 ?
-                    Colors.INVISIBLE_WHITE :
-                    Colors.fromRGB(sum[1] / count, sum[2] / count, sum[3] / count, sum[0] / count);
+                    ColorMath.INVISIBLE_WHITE :
+                    ColorMath.fromRGB(sum[1] / count, sum[2] / count, sum[3] / count, sum[0] / count);
         }
 
     }

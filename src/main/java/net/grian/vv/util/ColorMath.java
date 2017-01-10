@@ -2,8 +2,11 @@ package net.grian.vv.util;
 
 import java.awt.Color;
 
+/**
+ * A utility library for performing calculations with colors represented as primitive ARGB integers.
+ */
 @SuppressWarnings("unused")
-public final class Colors {
+public final class ColorMath {
 
     public final static int
     INVISIBLE_WHITE = 0x00_FF_FF_FF,
@@ -19,30 +22,9 @@ public final class Colors {
     DEBUG1 = SOLID_MAGENTA,
     DEFAULT_TINT = 0xFF_8DB360;
 
-    private Colors() {}
+    private ColorMath() {}
 
     //"CONSTRUCTORS"
-
-    public static Color asColorRGB(int red, int green, int blue, int alpha) {
-        return new Color(red, green, blue, alpha);
-    }
-
-    public static Color asColorRGB(int red, int green, int blue) {
-        return new Color(red, green, blue, 255);
-    }
-
-    public static Color asColorHSB(int hue, int saturation, int brightness, int alpha) {
-        int color = Color.HSBtoRGB(hue, saturation, brightness);
-        color = (color & 0x00FFFFFF) | (alpha<<24);
-
-        return new Color (color, true);
-    }
-
-    public static Color asColorHSB(int hue, int saturation, int brightness) {
-        int color = Color.HSBtoRGB(hue, saturation, brightness);
-
-        return new Color (color, true);
-    }
 
     public static int fromRGB(int r, int g, int b, int a) {
         if (r > 0xFF || g > 0xFF || b > 0xFF || a > 0xFF)
@@ -72,37 +54,26 @@ public final class Colors {
     public static int fromTintedRGB(int rgb, int tint) {
         final int luma = luminance2(rgb);
         return fromRGB(
-                (red(tint) * luma) / 255,
+                (red(tint) * luma)   / 255,
                 (green(tint) * luma) / 255,
-                (blue(tint) * luma) / 255
-        );
+                (blue(tint) * luma)  / 255);
     }
+
+    //OPERATIONS
 
     /**
      * Returns the total difference between the components of two colors.
      *
-     * @param c1 first color
-     * @param c2 second color
+     * @param a first color
+     * @param b second color
      * @param transparency false if transparency is ignored
      * @return difference between colors
      */
-    public static int componentDifference(int c1, int c2, boolean transparency) {
-        int a1= (c1>>24) &255;
-        int r1= (c1>>16) &255;
-        int g1= (c1>>8)  &255;
-        int b1= c1       &255;
-
-        int a2= (c2>>24) &255;
-        int r2= (c2>>16) &255;
-        int g2= (c2>>8)  &255;
-        int b2= c2       &255;
-
-        if (transparency) {
-            return Math.abs(b2-b1) + Math.abs(g2-g1) + Math.abs(r2-r1) + Math.abs(a2-a1);
-        }
-        else {
-            return Math.abs(b2-b1) + Math.abs(g2-g1) + Math.abs(r2-r1);
-        }
+    public static int componentDifference(int a, int b, boolean transparency) {
+        int difference = Math.abs(red(a)-red(b)) +Math.abs(green(a)-green(b)) + Math.abs(blue(a)-blue(b));
+        if (transparency)
+            difference += Math.abs(alpha(a)-alpha(b));
+        return difference;
     }
 
     /**
@@ -147,19 +118,21 @@ public final class Colors {
         return visualDifference(red(a), green(a), blue(a), red(b), green(b), blue(b));
     }
 
-    public static Color multiply(int rgb, float factor) {
-        if (factor < 0 ) throw new IllegalArgumentException("invalid factor "+factor);
-
-        int[] argb = split(rgb);
-
-        for (int i = 0; i<4; i++) {
-            argb[i] = (int) Math.min(255, argb[i]*factor);
-        }
-
-        return new Color(argb[1], argb[2], argb[3], argb[0]);
-    }
-
-    public static int stack(float btmR, float btmG, float btmB, float btmA, float topR, float topG, float topB, float topA) {
+    /**
+     * "Stacks" two colors which means rendering one color in front of another or rendering one layer above another.
+     *
+     * @param btmR the bottom layer red
+     * @param btmG the bottom layer green
+     * @param btmB the bottom layer blue
+     * @param btmA the bottom layer alpha
+     * @param topR the top layer red
+     * @param topG the top layer green
+     * @param topB the top layer blue
+     * @param topA the top layer alpha
+     * @return a new rendered color
+     */
+    public static int stack(float btmR, float btmG, float btmB, float btmA,
+                            float topR, float topG, float topB, float topA) {
         final float
                 deficit = (1 - topA),
                 outA = topA + btmA*deficit;
@@ -171,10 +144,30 @@ public final class Colors {
                 outA);
     }
 
+    /**
+     * "Stacks" two colors which means rendering one color in front of another or rendering one layer above another.
+     *
+     * @param btmR the bottom layer red
+     * @param btmG the bottom layer green
+     * @param btmB the bottom layer blue
+     * @param btmA the bottom layer alpha
+     * @param topR the top layer red
+     * @param topG the top layer green
+     * @param topB the top layer blue
+     * @param topA the top layer alpha
+     * @return a new rendered color
+     */
     public static int stack(int btmR, int btmG, int btmB, int btmA, int topR, int topG, int topB, int topA) {
         return stack(btmR/255F, btmG/255F, btmB/255F, btmA/255F, topR/255F, topG/255F, topB/255F, topA/255F);
     }
 
+    /**
+     * "Stacks" two colors which means rendering one color in front of another or rendering one layer above another.
+     *
+     * @param bottom the bottom layer color
+     * @param top the top layer color
+     * @return a new rendered color
+     */
     public static int stack(int bottom, int top) {
         final int topAlpha = alpha(top);
         return topAlpha == 0? bottom : stack(
@@ -194,39 +187,99 @@ public final class Colors {
         return anaglyph(red(rgb), green(rgb), blue(rgb), alpha(rgb));
     }
 
+    /**
+     * Returns an accurate luminance value of a color.
+     *
+     * @param r the red channel (0-1)
+     * @param g the green channel (0-1)
+     * @param b the blue channel (0-1)
+     * @return the color's luminance
+     */
     public static float luminance(float r, float g, float b) {
         //min to compensate for result > 1 due to imprecision
-        return Math.min(1, 0.2126F*r + 0.7152F*g + 0.0722F*b);
+        return Math.min(1F, 0.2126F*r + 0.7152F*g + 0.0722F*b);
     }
 
+    /**
+     * Returns an accurate luminance value of a color.
+     *
+     * @param r the red channel (0-0xFF)
+     * @param g the green channel (0-0xFF)
+     * @param b the blue channel (0-0xFF)
+     * @return the color's luminance
+     */
     public static float luminance(int r, int g, int b) {
         return luminance(r/255F, g/255F, b/255F);
     }
 
+    /**
+     * Returns an accurate luminance value of a color.
+     *
+     * @param rgb an ARGB color
+     * @return the color's luminance
+     */
     public static float luminance(int rgb) {
         return luminance(red(rgb), green(rgb), blue(rgb));
     }
 
+    /**
+     * Returns a fast approximation of the luminance of a color.
+     *
+     * @param r the red channel (0-0xFF)
+     * @param g the green channel (0-0xFF)
+     * @param b the blue channel (0-0xFF)
+     * @return the color's luminance
+     */
     public static int luminance2(int r, int b, int g) {
         return (r+r+r + b + g+g+g+g) >> 3;
     }
 
+    /**
+     * Returns a fast approximation of the luminance of a color.
+     *
+     * @param rgb an ARGB color
+     * @return the color's luminance
+     */
     public static int luminance2(int rgb) {
         return luminance2(red(rgb), green(rgb), blue(rgb));
     }
 
+    /**
+     * Returns the alpha channel of an ARGB color.
+     *
+     * @param rgb the color
+     * @return the color's alpha channel
+     */
     public static int alpha(int rgb) {
         return rgb >> 24 & 0xFF;
     }
 
+    /**
+     * Returns the red channel of an ARGB color.
+     *
+     * @param rgb the color
+     * @return the color's red channel
+     */
     public static int red(int rgb) {
         return rgb >> 16 & 0xFF;
     }
 
+    /**
+     * Returns the green channel of an ARGB color.
+     *
+     * @param rgb the color
+     * @return the color's green channel
+     */
     public static int green(int rgb) {
         return rgb >> 8 & 0xFF;
     }
 
+    /**
+     * Returns the blue channel of an ARGB color.
+     *
+     * @param rgb the color
+     * @return the color's blue channel
+     */
     public static int blue(int rgb) {
         return rgb & 0xFF;
     }

@@ -2,19 +2,11 @@ package net.grian.vv.convert;
 
 import net.grian.vv.cache.ColorMap;
 import net.grian.vv.core.BlockColor;
-import net.grian.vv.core.BlockKey;
 import net.grian.vv.io.ExtractableColor;
 import net.grian.vv.util.Arguments;
-import net.grian.vv.util.Colors;
-import org.bukkit.Material;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
 import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class ConverterColorExtractor implements Converter<ZipFile, ColorMap> {

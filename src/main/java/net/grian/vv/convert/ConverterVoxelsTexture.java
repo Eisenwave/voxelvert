@@ -7,7 +7,7 @@ import net.grian.vv.core.Texture;
 import net.grian.vv.core.VoxelArray.Voxel;
 import net.grian.vv.core.VoxelArray;
 import net.grian.vv.util.Arguments;
-import net.grian.vv.util.Colors;
+import net.grian.vv.util.ColorMath;
 
 public class ConverterVoxelsTexture implements Converter<VoxelArray, Texture> {
 
@@ -67,7 +67,7 @@ public class ConverterVoxelsTexture implements Converter<VoxelArray, Texture> {
                 for (int w = 0; w < depth; w++) {
                     int[] xyz = remapper.remap(u, v, w);
                     int top = array.getRGB(xyz[0], xyz[1], xyz[2]);
-                    if (isOpaque(rgb = Colors.stack(rgb, top))) break;
+                    if (isOpaque(rgb = ColorMath.stack(rgb, top))) break;
                 }
                 texture.set(u, v, rgb);
             }

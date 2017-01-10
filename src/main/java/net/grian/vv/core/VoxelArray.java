@@ -2,7 +2,7 @@ package net.grian.vv.core;
 
 import net.grian.spatium.geo.BlockSelection;
 import net.grian.spatium.geo.BlockVector;
-import net.grian.vv.util.Colors;
+import net.grian.vv.util.ColorMath;
 import net.grian.vv.util.RGBValue;
 
 import java.io.Serializable;
@@ -163,7 +163,7 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
         for (int x = 0; x<limX; x++)
             for (int y = 0; y<limY; y++)
                 for (int z = 0; z<limZ; z++)
-                    if (Colors.isVisible(getRGB(x, y, z))) count++;
+                    if (ColorMath.isVisible(getRGB(x, y, z))) count++;
 
         return count;
     }
@@ -186,7 +186,7 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
      */
     @Override
     public boolean contains(int x, int y, int z) {
-        return Colors.isVisible(getRGB(x, y, z));
+        return ColorMath.isVisible(getRGB(x, y, z));
     }
 
     /**
@@ -217,7 +217,7 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
     }
 
     public void remove(int x, int y, int z) {
-        setRGB(x, y, z, Colors.INVISIBLE_WHITE);
+        setRGB(x, y, z, ColorMath.INVISIBLE_WHITE);
     }
 
     //MISC
@@ -260,7 +260,7 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
         for (int x = 0; x<limX; x++)
             for (int y = 0; y<limY; y++)
                 for (int z = 0; z<limZ; z++)
-                    if (Colors.isVisible(getRGB(x, y, z)))
+                    if (ColorMath.isVisible(getRGB(x, y, z)))
                         action.accept(new Voxel(x, y, z));
     }
 
@@ -424,7 +424,7 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
         }
 
         public void remove() {
-            setRGB(Colors.INVISIBLE_WHITE);
+            setRGB(ColorMath.INVISIBLE_WHITE);
         }
 
         @Override

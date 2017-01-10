@@ -5,9 +5,7 @@ import net.grian.vv.core.BlockArray;
 import net.grian.vv.core.BlockColor;
 import net.grian.vv.core.VoxelArray;
 import net.grian.vv.util.Arguments;
-import net.grian.vv.util.Colors;
-
-import java.util.logging.Logger;
+import net.grian.vv.util.ColorMath;
 
 public class ConverterBlocksToVoxels implements Converter<BlockArray, VoxelArray> {
 
@@ -18,9 +16,9 @@ public class ConverterBlocksToVoxels implements Converter<BlockArray, VoxelArray
             IGNORE_ALPHA = 1 << 1,
             /** use visual occupation as multiplier for alpha channel */
             USE_OCCUPATION = 1 << 2,
-            /** display missing entries in the {@link ColorMap} as {@link Colors#DEBUG1}*/
+            /** display missing entries in the {@link ColorMap} as {@link ColorMath#DEBUG1}*/
             SHOW_MISSING = 1 << 3,
-            /** apply {@link Colors#DEFAULT_TINT} as tint (always true if block array has no biomes) */
+            /** apply {@link ColorMath#DEFAULT_TINT} as tint (always true if block array has no biomes) */
             DEFAULT_TINT = 1 << 4;
 
     @Override
@@ -60,19 +58,19 @@ public class ConverterBlocksToVoxels implements Converter<BlockArray, VoxelArray
             BlockColor color = colors.get(blocks.getBlock(x, y, z));
 
             if (color == null) {
-                if (show_missing) voxels.setRGB(x, y, z, Colors.DEBUG1);
+                if (show_missing) voxels.setRGB(x, y, z, ColorMath.DEBUG1);
                 continue;
             }
             if (color.isInvisible() || full_blocks && color.getOccupation() < 1) continue;
 
             int rgb = color.getRGB();
-            if (ignore_alpha) rgb = Colors.isInvisible(rgb)? rgb : rgb | 0xFF_000000;
-            if (use_occupation) rgb = Colors.fromRGB(
-                    Colors.red(rgb),Colors.green(rgb), Colors.blue(rgb),
-                    (int) (Colors.alpha(rgb) * color.getVisualOccupation()));
+            if (ignore_alpha) rgb = ColorMath.isInvisible(rgb)? rgb : rgb | 0xFF_000000;
+            if (use_occupation) rgb = ColorMath.fromRGB(
+                    ColorMath.red(rgb), ColorMath.green(rgb), ColorMath.blue(rgb),
+                    (int) (ColorMath.alpha(rgb) * color.getVisualOccupation()));
             if (color.hasTint()) {
-                int tint = default_tint? Colors.DEFAULT_TINT : Colors.DEFAULT_TINT; //TODO add actual getter
-                rgb = Colors.fromTintedRGB(rgb, tint);
+                int tint = default_tint? ColorMath.DEFAULT_TINT : ColorMath.DEFAULT_TINT; //TODO add actual getter
+                rgb = ColorMath.fromTintedRGB(rgb, tint);
             }
 
             voxels.setRGB(x, y, z, rgb);

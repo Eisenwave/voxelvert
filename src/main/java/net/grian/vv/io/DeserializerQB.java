@@ -3,7 +3,7 @@ package net.grian.vv.io;
 import net.grian.spatium.util.IOMath;
 import net.grian.vv.core.VoxelArray;
 import net.grian.vv.core.VoxelMesh;
-import net.grian.vv.util.Colors;
+import net.grian.vv.util.ColorMath;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -155,13 +155,13 @@ public class DeserializerQB implements Deserializer<VoxelMesh> {
         int argb;
 
         switch (colorFormat) {
-            case 0: argb = Colors.fromRGB( //RGBA
+            case 0: argb = ColorMath.fromRGB( //RGBA
                     (color >> 24) & 0xFF,
                     (color >> 16) & 0xFF,
                     (color >> 8) & 0xFF,
                     color & 0xFF);
                 break;
-            case 1: argb = Colors.fromRGB( //BGRA
+            case 1: argb = ColorMath.fromRGB( //BGRA
                     color & 0xFF,
                     (color >> 24) & 0xFF,
                     (color >> 16) & 0xFF,
@@ -172,7 +172,7 @@ public class DeserializerQB implements Deserializer<VoxelMesh> {
 
         //if any side is visible, make color solid
         if (visibilityMaskEncoded) {
-            if ((Colors.alpha(argb) != 0)) argb |= 0xFF_000000;
+            if ((ColorMath.alpha(argb) != 0)) argb |= 0xFF_000000;
             else argb &= 0x00_FFFFFF;
         }
 
