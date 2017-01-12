@@ -4,7 +4,7 @@ import net.grian.vv.core.Texture;
 
 import java.awt.image.BufferedImage;
 
-public class ConverterTextureImage implements Converter<Texture, BufferedImage> {
+public class ConverterTextureToImage implements Converter<Texture, BufferedImage> {
 
     @Override
     public Class<Texture> getFrom() {

@@ -58,4 +58,15 @@ public class Arguments {
             throw new IllegalArgumentException(msg);
     }
 
+    public static void requireNonnull(Object arg) {
+        if (arg==null)
+            throw new IllegalArgumentException("arg must not be null");
+    }
+
+    public static void requireNonnull(Object... args) {
+        for (int i = 0; i<args.length; i++)
+            if (args[i] == null)
+                throw new IllegalArgumentException("arg" + i +" must not be null");
+    }
+
 }

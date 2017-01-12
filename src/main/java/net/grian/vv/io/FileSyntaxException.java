@@ -1,9 +1,11 @@
 package net.grian.vv.io;
 
+import java.io.IOException;
+
 /**
  * Thrown when a file can not be parsed due to invalid syntax.
  */
-public class FileSyntaxException extends ParseException {
+public class FileSyntaxException extends IOException {
 
     public FileSyntaxException() {
         super();

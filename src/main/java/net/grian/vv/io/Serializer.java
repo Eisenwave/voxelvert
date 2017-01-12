@@ -1,5 +1,7 @@
 package net.grian.vv.io;
 
+import net.grian.vv.util.Resources;
+
 import java.io.*;
 
 /**
@@ -13,6 +15,10 @@ public interface Serializer<T> {
         FileOutputStream stream = new FileOutputStream(file);
         serialize(object, stream);
         stream.close();
+    }
+
+    public default void serialize(T object, Class<?> clazz, String resPath) throws IOException {
+        serialize(object, Resources.getFile(clazz, resPath));
     }
 
 }

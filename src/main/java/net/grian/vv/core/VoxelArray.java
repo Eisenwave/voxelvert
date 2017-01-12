@@ -1,5 +1,6 @@
 package net.grian.vv.core;
 
+import net.grian.spatium.enums.Direction;
 import net.grian.spatium.geo.BlockSelection;
 import net.grian.spatium.geo.BlockVector;
 import net.grian.vv.util.ColorMath;
@@ -14,9 +15,14 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
 
     private final int[][][] voxels;
 
+    private final int sizeX, sizeY, sizeZ;
+
     public VoxelArray(int x, int y, int z) {
         if (x == 0 || y == 0 || z == 0) throw new IllegalArgumentException("size 0 voxel array");
         this.voxels = new int[x][y][z];
+        this.sizeX = x;
+        this.sizeY = y;
+        this.sizeZ = z;
     }
 
     /**
@@ -71,7 +77,7 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
      */
     @Override
     public int getSizeX() {
-        return voxels.length;
+        return sizeX;
     }
 
     /**
@@ -81,7 +87,7 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
      */
     @Override
     public int getSizeY() {
-        return voxels[0].length;
+        return sizeY;
     }
 
     /**
@@ -91,7 +97,7 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
      */
     @Override
     public int getSizeZ() {
-        return voxels[0][0].length;
+        return sizeZ;
     }
 
     /**
@@ -425,6 +431,25 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
 
         public void remove() {
             setRGB(ColorMath.INVISIBLE_WHITE);
+        }
+
+        /**
+         * Returns whether the side of the voxel is visible. This is the case if there is no voxel on the side next
+         * to it.
+         *
+         * @param side the side
+         * @return whether the side of the voxel is visible
+         */
+        public boolean isVisible(Direction side) {
+            switch (side) {
+                case NEGATIVE_X: return x==0 || !VoxelArray.this.contains(x-1, y, z);
+                case POSITIVE_X: return x==sizeX-1 || !VoxelArray.this.contains(x+1, y, z);
+                case NEGATIVE_Y: return y==0 || !VoxelArray.this.contains(x, y-1, z);
+                case POSITIVE_Y: return y==sizeY-1 || !VoxelArray.this.contains(x, y+1, z);
+                case NEGATIVE_Z: return z==0 || !VoxelArray.this.contains(x, y, z-1);
+                case POSITIVE_Z: return z==sizeZ-1 || !VoxelArray.this.contains(x, y, z+1);
+                default: throw new IllegalArgumentException("unknown direction: "+side);
+            }
         }
 
         @Override

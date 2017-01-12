@@ -4,6 +4,7 @@ import net.grian.vv.core.BlockArray;
 import net.grian.vv.io.*;
 import net.grian.vv.nbt.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,49 +14,42 @@ import java.util.zip.GZIPInputStream;
 public class DeserializerSchematic implements Deserializer<BlockArray> {
 
     @Override
-    public BlockArray deserialize(InputStream stream) throws ParseException {
-        BlockArray result;
-        try {
-            NBTInputStream nbtStream = new NBTInputStream(new GZIPInputStream(stream));
+    public BlockArray deserialize(InputStream stream) throws IOException {
+        NBTInputStream nbtStream = new NBTInputStream(new GZIPInputStream(stream));
+        NamedTag rootTag = nbtStream.readNamedTag();
+        nbtStream.close();
 
-            // Schematic tag
-            NamedTag rootTag = nbtStream.readNamedTag();
-            nbtStream.close();
-            if (!rootTag.getName().equals("Schematic"))
-                throw new FileFormatException("Tag 'Schematic' does not exist or is not first");
+        if (!rootTag.getName().equals("Schematic"))
+            throw new FileFormatException("Tag 'Schematic' does not exist or is not first");
 
-            CompoundTag schematicTag = (CompoundTag) rootTag.getTag();
+        CompoundTag schematicTag = (CompoundTag) rootTag.getTag();
 
-            Map<String, Tag> schematic = schematicTag.getValue();
-            if (!schematic.containsKey("Blocks"))
-                throw new FileSyntaxException("Schematic file is missing a 'Blocks' tag");
+        Map<String, Tag> schematic = schematicTag.getValue();
+        if (!schematic.containsKey("Blocks"))
+            throw new FileSyntaxException("Schematic file is missing a 'Blocks' tag");
 
-            final short
-                    sizeX = getChildTag(schematic, "Width",  ShortTag.class).getValue(),
-                    sizeY = getChildTag(schematic, "Height", ShortTag.class).getValue(),
-                    sizeZ = getChildTag(schematic, "Length", ShortTag.class).getValue();
-            result = new BlockArray(sizeX, sizeY, sizeZ);
+        final short
+                sizeX = getChildTag(schematic, "Width",  ShortTag.class).getValue(),
+                sizeY = getChildTag(schematic, "Height", ShortTag.class).getValue(),
+                sizeZ = getChildTag(schematic, "Length", ShortTag.class).getValue();
+        BlockArray result = new BlockArray(sizeX, sizeY, sizeZ);
 
-            String materials = getChildTag(schematic, "Materials", StringTag.class).getValue();
-            if (!materials.equals("Alpha"))
-                throw new FileVersionException("Schematic file is not an Alpha schematic");
+        String materials = getChildTag(schematic, "Materials", StringTag.class).getValue();
+        if (!materials.equals("Alpha"))
+            throw new FileVersionException("Schematic file is not an Alpha schematic");
 
-            short[] blocks;
-            byte[] datas = getChildTag(schematic, "Data", ByteArrayTag.class).getValue();
-            {
-                byte[] baseBlocks = getChildTag(schematic, "Blocks", ByteArrayTag.class).getValue();
-                byte[] addBlocks = schematic.containsKey("AddBlocks")?
-                        getChildTag(schematic, "AddBlocks", ByteArrayTag.class).getValue() : new byte[0];
-                blocks = combine(baseBlocks, addBlocks);
-            }
+        short[] blocks;
+        byte[] datas = getChildTag(schematic, "Data", ByteArrayTag.class).getValue();
+        {
+            byte[] baseBlocks = getChildTag(schematic, "Blocks", ByteArrayTag.class).getValue();
+            byte[] addBlocks = schematic.containsKey("AddBlocks")?
+                    getChildTag(schematic, "AddBlocks", ByteArrayTag.class).getValue() : new byte[0];
+            blocks = combine(baseBlocks, addBlocks);
+        }
 
-            for (int x = 0; x < sizeX; ++x) for (int y = 0; y < sizeY; ++y) for (int z = 0; z < sizeZ; ++z) {
-                final int index = y*sizeX*sizeZ + z*sizeX + x;
-                result.setBlock(x, y, z, blocks[index], datas[index]);
-            }
-
-        } catch (Throwable ex) {
-            throw ex instanceof ParseException? (ParseException) ex : new ParseException(ex);
+        for (int x = 0; x < sizeX; ++x) for (int y = 0; y < sizeY; ++y) for (int z = 0; z < sizeZ; ++z) {
+            final int index = y*sizeX*sizeZ + z*sizeX + x;
+            result.setBlock(x, y, z, blocks[index], datas[index]);
         }
 
         return result;

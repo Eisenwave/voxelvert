@@ -1,27 +1,28 @@
 package net.grian.vv.convert;
 
+import net.grian.vv.core.BaseRectangle;
+import net.grian.vv.core.RectangleArrangement;
 import net.grian.vv.core.Texture;
-import org.bukkit.entity.Player;
-import net.grian.vv.convert.ConverterTextureArranger.TileMap;
+import net.grian.vv.util.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class ConverterTextureArranger implements Converter<Texture[], TileMap> {
+public class ConverterRectangleArranger implements Converter<BaseRectangle[], RectangleArrangement> {
 
     @Override
-    public Class<Texture[]> getFrom() {
-        return Texture[].class;
+    public Class<BaseRectangle[]> getFrom() {
+        return BaseRectangle[].class;
     }
 
     @Override
-    public Class<TileMap> getTo() {
-        return TileMap.class;
+    public Class<RectangleArrangement> getTo() {
+        return RectangleArrangement.class;
     }
 
     @Override
-    public TileMap invoke(Texture[] from, Object[] args) {
+    public RectangleArrangement invoke(BaseRectangle[] from, Object[] args) {
         Arrays.sort(from);
 
         return null;
@@ -69,28 +70,6 @@ public class ConverterTextureArranger implements Converter<Texture[], TileMap> {
             for (Texture t : this)
                 result += t.getHeight();
             return result;
-        }
-
-    }
-
-    public static class TileMap {
-
-        private final Texture texture;
-        private final Texture.Tile[] tiles;
-
-        public TileMap(Texture texture, Texture.Tile[] tiles) {
-            Objects.requireNonNull(texture);
-            Objects.requireNonNull(tiles);
-            this.texture = texture;
-            this.tiles = tiles;
-        }
-
-        public Texture getTexture() {
-            return texture;
-        }
-
-        public Texture.Tile[] getTiles() {
-            return tiles;
         }
 
     }

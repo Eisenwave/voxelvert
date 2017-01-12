@@ -34,18 +34,27 @@ public class Texture implements Serializable, BaseTexture {
         setCapacity(getWidth() + width, getHeight() + height);
     }
 
-    public void paste(Texture texture, final int u, final int v) {
+    public void paste(BaseTexture texture, final int u, final int v) {
         final int w = texture.getWidth(), h = texture.getHeight();
         if (w + u > this.getWidth())
             throw new IllegalArgumentException("texture width out of bounds");
         if (h + v > this.getHeight())
             throw new IllegalArgumentException("texture height out of bounds");
 
-        internalPaste(texture.content, w, h, u, v);
+        if (texture instanceof Texture)
+            internalPaste(((Texture) texture).content, w, h, u, v);
+        else
+            internalPaste(texture, w, h, u, v);
     }
 
     public void paste(Texture texture) {
         paste(texture, 0, 0);
+    }
+
+    private void internalPaste(BaseTexture content, int w, int h, int u, int v) {
+        for (int i = 0; i < w; i++)
+            for (int j = 0; j < h; j++)
+                this.content[i + u][j + v] = content.get(i, j);
     }
 
     private void internalPaste(int[][] content, int w, int h, int u, int v) {
@@ -54,74 +63,24 @@ public class Texture implements Serializable, BaseTexture {
                 this.content[i + u][j + v] = content[i][j];
     }
 
+    @Override
     public int getWidth() {
         return content.length;
     }
 
+    @Override
     public int getHeight() {
         return content[0].length;
     }
 
+    @Override
     public int get(int u, int v) {
         return content[u][v];
     }
 
+    @Override
     public void set(int u, int v, int rgb) {
         content[u][v] = rgb;
-    }
-
-    @Deprecated
-    public static class Tile {
-
-        private int au, av, bu, bv;
-
-        public Tile(int au, int av, int bu, int bv) {
-            this.au = au;
-            this.av = av;
-            this.bu = bu;
-            this.bv = bv;
-        }
-
-        public int getWidth() {
-            return Math.abs(au - bu);
-        }
-
-        public int getHeight() {
-            return Math.abs(av - bv);
-        }
-
-        public int getAU() {
-            return au;
-        }
-
-        public int getAV() {
-            return av;
-        }
-
-        public int getBU() {
-            return bu;
-        }
-
-        public int getBV() {
-            return bv;
-        }
-
-        public void setAU(int au) {
-            this.au = au;
-        }
-
-        public void setAV(int av) {
-            this.av = av;
-        }
-
-        public void setBU(int bu) {
-            this.bu = bu;
-        }
-
-        public void setBV(int bv) {
-            this.bv = bv;
-        }
-
     }
 
 }

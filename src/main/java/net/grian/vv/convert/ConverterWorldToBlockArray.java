@@ -6,7 +6,7 @@ import net.grian.vv.util.Arguments;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-public class ConverterWorldBlockArray implements Converter<World, BlockArray> {
+public class ConverterWorldToBlockArray implements Converter<World, BlockArray> {
 
     @Override
     public Class<World> getFrom() {

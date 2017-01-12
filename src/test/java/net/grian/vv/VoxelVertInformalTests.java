@@ -108,8 +108,8 @@ public class VoxelVertInformalTests {
         VoxelArray array = new DeserializerQEF(LOGGER).deserialize(file);
 
         for (Direction dir : Direction.values()) {
-            Texture texture = new ConverterVoxelsTexture().invoke(array, dir, true, true);
-            BufferedImage image = new ConverterTextureImage().invoke(texture);
+            Texture texture = new ConverterVoxelsToTexture().invoke(array, dir, true, true);
+            BufferedImage image = new ConverterTextureToImage().invoke(texture);
             String fname = "vvg_test_"+dir.name()+".png";
             File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\maps\\"+fname);
             if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);

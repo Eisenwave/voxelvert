@@ -5,6 +5,7 @@ import net.grian.vv.core.Bitmap3D;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class ConverterBitmapMerger implements Converter<Bitmap3D, BlockSelection[]> {
@@ -27,11 +28,15 @@ public class ConverterBitmapMerger implements Converter<Bitmap3D, BlockSelection
 
     @Override
     public BlockSelection[] invoke(Bitmap3D map, Object... args) {
+        int cancel = args.length>0? (Integer) args[0] : 3;
+        if (cancel < 0) throw new IllegalArgumentException("cancel point must be positive");
+
         logger.info("merging "+map+" ...");
         final int
                 limX = map.getSizeX(),
                 limY = map.getSizeY(),
                 limZ = map.getSizeZ();
+        if (cancel == 0) return resultFromBits(map, limX, limY, limZ);
 
         LineList[][] lines = mergeX(map, limX, limY, limZ);
         {
@@ -40,6 +45,7 @@ public class ConverterBitmapMerger implements Converter<Bitmap3D, BlockSelection
                 count += lines[y][z].size();
             logger.info("1: merged array into "+count+" lines");
         }
+        if (cancel <= 1) return resultFromLines(lines, limY, limZ);
 
         PlaneList[] planes = mergeY(lines, limY, limZ);
         {
@@ -47,14 +53,54 @@ public class ConverterBitmapMerger implements Converter<Bitmap3D, BlockSelection
             for (PlaneList planeList : planes) count += planeList.size();
             logger.info("2: merged lines into "+count+" planes");
         }
+        if (cancel <= 2) return resultFromPlanes(planes, limZ);
 
         BoxList boxes = mergeZ(planes, limZ);
         logger.info("3: merged planes into "+boxes.size()+" boxes");
 
+        return resultFromBoxes(boxes);
+    }
+
+    private static BlockSelection[] resultFromBoxes(BoxList boxes) {
         BlockSelection[] result = new BlockSelection[boxes.size()];
         int index = 0;
         for (BoxList.Entry box : boxes)
             result[index++] = BlockSelection.fromPoints(box.xmin, box.ymin, box.zmin, box.xmax, box.ymax, box.zmax);
+
+        return result;
+    }
+
+    private static BlockSelection[] resultFromPlanes(PlaneList[] planes, int limZ) {
+        List<BlockSelection> result = new ArrayList<>();
+
+        for (int z = 0; z<limZ; z++) {
+            PlaneList zPlanes = planes[z];
+            for (PlaneList.Entry plane : zPlanes)
+                result.add(BlockSelection.fromPoints(plane.xmin, plane.ymin, z, plane.xmax, plane.ymax, z));
+        }
+
+        return result.toArray(new BlockSelection[result.size()]);
+    }
+
+    private static BlockSelection[] resultFromLines(LineList[][] lines, int limY, int limZ) {
+        List<BlockSelection> result = new ArrayList<>();
+
+        for (int y = 0; y<limY; y++) for (int z = 0; z<limZ; z++) {
+            LineList yzLines = lines[y][z];
+            for (LineList.Entry line : yzLines)
+                result.add(BlockSelection.fromPoints(line.min, y, z, line.max, y, z));
+        }
+
+        return result.toArray(new BlockSelection[result.size()]);
+    }
+
+    private static BlockSelection[] resultFromBits(Bitmap3D bitmap, int limX, int limY, int limZ) {
+        BlockSelection[] result = new BlockSelection[limX*limY*limZ];
+
+        for (int x = 0; x<limX; x++) for (int y = 0; y<limY; y++) for (int z = 0; z<limZ; z++) {
+            if (bitmap.contains(x, y, z))
+                result[x + y * limX + z * limX * limY] = BlockSelection.fromPoints(x, y, z, x, y, z);
+        }
 
         return result;
     }
@@ -117,20 +163,24 @@ public class ConverterBitmapMerger implements Converter<Bitmap3D, BlockSelection
                 planes.add(plane);
 
                 //loop through all lines further in y-direction than the current one
-                for (int i = y+1; i<limY; i++) {
-                    LineList lineList = lines[i][z];
-                    Iterator<LineList.Entry> iter = lineList.iterator();
+                mergeLoop: for (int i = y+1; i<limY; i++) {
+
+                    Iterator<LineList.Entry> iter = lines[i][z].iterator();
                     //loop through all entries on the line
                     while (iter.hasNext()) {
                         LineList.Entry line2 = iter.next();
-                        //early break since all following lines will start further in x than this one
-                        if (line2.min > line.min) break;
+                        //early merge break since all following lines will start further in x than this one
+                        if (line2.min > line.min) break mergeLoop;
                         if (line2.equals(line)) {
                             //line can be merged into current plane, thus stretch the current plane and remove the line
                             plane.ymax = i;
                             iter.remove();
+                            //continue merging on next y
+                            continue mergeLoop;
                         }
                     }
+
+                    break;
                 }
             }
         }
@@ -154,24 +204,28 @@ public class ConverterBitmapMerger implements Converter<Bitmap3D, BlockSelection
             result.add(box);
 
             //loop through all planes further in z than this one
-            for (int i = z+1; i<limZ; i++) {
+            mergeLoop: for (int i = z+1; i<limZ; i++) {
 
                 Iterator<PlaneList.Entry> iter = planes[i].iterator();
                 //loop through all entries on further planes
                 while (iter.hasNext()) {
                     PlaneList.Entry plane2 = iter.next();
-                    //early break since all following planes will start further in y than this one
-                    if (plane2.ymin > plane.ymin) break;
-                    else if (plane2.ymin == plane.ymin) {
-                        //early break since all following planes will start further in x or y than current one
-                        if (plane2.xmin > plane.xmin) break;
-                        else if (plane2.xmin == plane.xmin) {
+                    //early merge break since all following planes will start further in y than this one
+                    if (plane2.ymin > plane.ymin) break mergeLoop;
+                    if (plane2.ymin == plane.ymin) {
+                        //early merge break since all following planes will start further in x or y than current one
+                        if (plane2.xmin > plane.xmin) break mergeLoop;
+                        if (plane2.xmin == plane.xmin && plane2.xmax == plane.xmax && plane2.ymax == plane.ymax) {
                             //plane can be merged into current box, thus stretch the current box and remove the plane
                             box.zmax = i;
                             iter.remove();
+                            //continue merging on next z
+                            continue mergeLoop;
                         }
                     }
                 }
+
+                break;
             }
         }
 
@@ -223,7 +277,7 @@ public class ConverterBitmapMerger implements Converter<Bitmap3D, BlockSelection
             private boolean equals(Entry plane) {
                 return
                         this.xmin == plane.xmin && this.ymin == plane.ymin &&
-                                this.xmax == plane.xmax && this.ymax == plane.ymax;
+                        this.xmax == plane.xmax && this.ymax == plane.ymax;
             }
 
         }
@@ -253,7 +307,7 @@ public class ConverterBitmapMerger implements Converter<Bitmap3D, BlockSelection
             private boolean equals(Entry box) {
                 return
                         this.xmin == box.xmin && this.ymin == box.ymin && this.zmin == box.zmin &&
-                                this.xmax == box.xmax && this.ymax == box.ymax && this.zmax == box.zmax;
+                        this.xmax == box.xmax && this.ymax == box.ymax && this.zmax == box.zmax;
             }
 
         }

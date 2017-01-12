@@ -1,9 +1,11 @@
 package net.grian.vv.io;
 
+import java.io.IOException;
+
 /**
  * Thrown when a file of wrong format is being read or written.
  */
-public class FileFormatException extends ParseException {
+public class FileFormatException extends IOException {
 
     public FileFormatException() {
         super();

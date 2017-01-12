@@ -12,17 +12,18 @@ public final class ConvUtil {
         manager.add(new ConverterBitmapMerger());
         manager.add(new ConverterBlocksToVoxels());
         manager.add(new ConverterColorExtractor());
-        manager.add(new ConverterImageTexture());
+        manager.add(new ConverterImageToTexture());
         manager.add(new ConverterMeshToArray());
-        manager.add(new ConverterTextureArranger());
-        manager.add(new ConverterTextureImage());
+        manager.add(new ConverterRectangleArranger());
+        manager.add(new ConverterTextureToImage());
         manager.add(new ConverterTextureStackVoxelizer());
         manager.add(new ConverterTextureVoxelizer());
         manager.add(new ConverterVoxelMerger());
-        manager.add(new ConverterVoxelMeshElements());
-        manager.add(new ConverterVoxelsBlocks());
-        manager.add(new ConverterVoxelsTexture());
-        manager.add(new ConverterWorldBlockArray());
+        manager.add(new ConverterVoxelsToModel());
+        manager.add(new ConverterVoxelsToSTL());
+        manager.add(new ConverterVoxelsToBlocks());
+        manager.add(new ConverterVoxelsToTexture());
+        manager.add(new ConverterWorldToBlockArray());
     }
 
     public static <A,B> B convert(A from, Class<A> fromClass, Class<B> toClass, Object... args) {

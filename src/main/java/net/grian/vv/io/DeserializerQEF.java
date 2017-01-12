@@ -1,10 +1,6 @@
 package net.grian.vv.io;
 
 import net.grian.vv.core.VoxelArray;
-import net.grian.vv.io.Deserializer;
-import net.grian.vv.io.FileSyntaxException;
-import net.grian.vv.io.FileVersionException;
-import net.grian.vv.io.ParseException;
 
 import java.awt.*;
 import java.io.*;
@@ -14,7 +10,7 @@ import java.util.logging.Logger;
  * Deserializer designed for parsing Qubicle Exchange Format files (version 0.2). These files are text files for storing
  * voxels which begin with a constant header, size and color definition and end with a series of voxels.
  */
-public class DeserializerQEF implements Deserializer<VoxelArray> {
+public class DeserializerQEF implements Parser<VoxelArray> {
 
     private final Logger logger;
 
@@ -25,29 +21,25 @@ public class DeserializerQEF implements Deserializer<VoxelArray> {
         this.logger = logger;
     }
 
-    public VoxelArray deserialize(InputStream stream) throws ParseException {
-        try (Reader reader = new InputStreamReader(stream)) {
-            logger.info("parsing qef ...");
-            BufferedReader buffReader = new BufferedReader(reader);
-            String line;
+    @Override
+    public VoxelArray deserialize(Reader reader) throws IOException {
+        BufferedReader buffReader = new BufferedReader(reader);
+        logger.info("parsing qef ...");
 
-            int num = 0;
-            while ((line = buffReader.readLine()) != null) {
-                parseLine(++num, line);
-            }
-            logger.info("completed parsing qef ("+voxels.size()+"/"+voxels.getVolume()+" voxels)");
+        String line;
 
-            return voxels;
-        } catch (Throwable ex) {
-            throw new ParseException(ex);
-        }
+        int num = 0;
+        while ((line = buffReader.readLine()) != null) parseLine(++num, line);
+        logger.info("completed parsing qef ("+voxels.size()+"/"+voxels.getVolume()+" voxels)");
+
+        buffReader.close();
+        return voxels;
     }
 
-    private void parseLine(int num, String line) throws ParseException {
-        if (num == 1 || num == 3) //worthless header lines
-            return;
+    private void parseLine(int num, String line) throws IOException {
+        if (num == 1 || num == 3) return; //header lines
 
-        else if (num == 2) {
+        if (num == 2) {
             if (line.equals("Version 0.2"))
                 logger.info("parsing file of version '"+line+"'");
             else

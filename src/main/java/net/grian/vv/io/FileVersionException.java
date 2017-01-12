@@ -1,9 +1,11 @@
 package net.grian.vv.io;
 
+import java.io.IOException;
+
 /**
  * Thrown when parsing a particular file version or style is not supported by parser.
  */
-public class FileVersionException extends ParseException {
+public class FileVersionException extends IOException {
 
     public FileVersionException() {
         super();

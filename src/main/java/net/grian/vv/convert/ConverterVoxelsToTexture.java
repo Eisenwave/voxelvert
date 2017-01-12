@@ -9,7 +9,7 @@ import net.grian.vv.core.VoxelArray;
 import net.grian.vv.util.Arguments;
 import net.grian.vv.util.ColorMath;
 
-public class ConverterVoxelsTexture implements Converter<VoxelArray, Texture> {
+public class ConverterVoxelsToTexture implements Converter<VoxelArray, Texture> {
 
     @Override
     public Class<VoxelArray> getFrom() {

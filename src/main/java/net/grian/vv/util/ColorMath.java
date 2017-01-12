@@ -43,12 +43,12 @@ public final class ColorMath {
         return fromRGB(r, g, b, 0xFF);
     }
 
-    public static int fromHSB(int h, int s, int b, int a) {
-        return (fromHSB(h, s, b) & 0x00FFFFFF) | (a<<24);
+    public static int fromHSB(float h, float s, float b, float a) {
+        return (fromHSB(h, s, b) & 0x00FFFFFF) | ((int) (a*255)<<24);
     }
 
-    public static int fromHSB(int r, int g, int b) {
-        return Color.HSBtoRGB(r, g, b);
+    public static int fromHSB(float h, float s, float b) {
+        return Color.HSBtoRGB(h, s, b);
     }
 
     public static int fromTintedRGB(int rgb, int tint) {

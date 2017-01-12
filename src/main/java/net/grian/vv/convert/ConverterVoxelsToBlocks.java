@@ -10,7 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-public class ConverterVoxelsBlocks implements Converter<VoxelArray, BlockSelection> {
+public class ConverterVoxelsToBlocks implements Converter<VoxelArray, BlockSelection> {
 
     @Override
     public Class<VoxelArray> getFrom() {
