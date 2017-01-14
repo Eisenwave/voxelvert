@@ -9,7 +9,7 @@ import net.grian.vv.util.ConvUtil;
 
 import java.util.*;
 
-public class ConverterVoxelsToModel implements Converter<VoxelMesh, MCModel> {
+public class ConverterVoxelsToMC implements Converter<VoxelMesh, MCModel> {
 
     private final static String TEXTURE_NAME = "texture";
 

@@ -37,6 +37,26 @@ public class RectangleArrangement implements Iterable<RectangleArrangement.Entry
         return height;
     }
 
+    public int size() {
+        return content.size();
+    }
+
+    public void clear() {
+        content.clear();
+    }
+
+    public void add(Entry entry) {
+        if (entry.getU()+entry.getRectangle().getWidth() > this.width)
+            throw new IllegalArgumentException("entry exceeds boundaries (0-"+width+")in width");
+        if (entry.getV()+entry.getRectangle().getHeight() > this.height)
+            throw new IllegalArgumentException("entry exceeds boundaries (0-"+height+")in height");
+        content.add(entry);
+    }
+
+    public void add(int u, int v, BaseRectangle rectangle) {
+        add(new Entry(u, v, rectangle));
+    }
+
     @Override
     public Iterator<Entry> iterator() {
         return content.iterator();
@@ -48,6 +68,8 @@ public class RectangleArrangement implements Iterable<RectangleArrangement.Entry
         private final BaseRectangle rectangle;
 
         public Entry(int u, int v, BaseRectangle rectangle) {
+            if (u < 0) throw new IllegalArgumentException("u must be positive");
+            if (v < 0) throw new IllegalArgumentException("v must be positive");
             this.u = u;
             this.v = v;
             this.rectangle = rectangle;

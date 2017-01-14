@@ -6,6 +6,7 @@ import net.grian.spatium.geo.BlockVector;
 import net.grian.vv.util.ColorMath;
 import net.grian.vv.util.RGBValue;
 
+import javax.annotation.Nullable;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -35,6 +36,11 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
             this.setRGB(v.getX()+x, v.getY()+y, v.getZ()+z, v.getRGB());
     }
 
+    /**
+     * Fills the entire voxel array with a single rgb value.
+     *
+     * @param rgb the rgb value
+     */
     public void fill(int rgb) {
         final int limX = getSizeX(), limY = getSizeY(), limZ = getSizeZ();
 
@@ -42,6 +48,18 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
             for (int y = 0; y<limY; y++)
                 for (int z = 0; z<limZ; z++)
                     voxels[x][y][z] = rgb;
+    }
+
+    /**
+     * <p>
+     *     Fills the entire voxel array with {@link ColorMath#INVISIBLE_WHITE}, effectively deleting all voxels.
+     * </p>
+     * <p>
+     *     The boundaries of the array are not affected by this operation.
+     * </p>
+     */
+    public void clear() {
+        fill(ColorMath.INVISIBLE_WHITE);
     }
 
     /**
@@ -110,21 +128,20 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
     }
 
     /**
-     * Returns the voxel at the specified coordinates.
+     * Returns the voxel at the specified coordinates or null if there is no voxel at the coordinates.
      *
      * @param x the x-coordinate
      * @param y the y-coordinate
      * @param z the z-coordinate
      * @return the voxel at the specified coordinates
      */
+    @Nullable
     public Voxel getVoxel(int x, int y, int z) {
-        int rgb = getRGB(x, y, z);
-        if (rgb >> 24 == 0) return null;
-        return new Voxel(x, y, z);
+        return ColorMath.isVisible(getRGB(x, y, z))? new Voxel(x, y, z) : null;
     }
 
     /**
-     * Returns the voxel at the specified position.
+     * Returns the voxel at the specified coordinates or null if there is no voxel at the coordinates.
      *
      * @param v the position
      * @return the voxel at the specified position
@@ -246,6 +263,13 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
         return obj instanceof VoxelArray && equals((VoxelArray) obj);
     }
 
+    /**
+     * Returns whether this array is equal to another array. This condition is met of the arrays are equal in size and
+     * equal in content.
+     *
+     * @param array the array
+     * @return whether the arrays are equal
+     */
     public boolean equals(VoxelArray array) {
         final int limX = getSizeX(), limY = getSizeY(), limZ = getSizeZ();
         if (limX != array.getSizeX() || limY != array.getSizeY() || limZ != array.getSizeZ())
@@ -386,6 +410,19 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
 
     }
 
+    /**
+     * <p>
+     *     A temporary class representing one position inside a {@link VoxelArray}.
+     * </p>
+     * <p>
+     *     Permanently storing a {@link Voxel} should be strictly avoided as this will result in a reference to its
+     *     underlying array, keeping it from being garbage collected and introducing potential memory leaks.
+     * </p>
+     * <p>
+     *     Ideally, this object should be disposed of at the end of iteration over the underlying array.
+     * </p>
+     *
+     */
     public class Voxel implements RGBValue, Serializable, Cloneable {
 
         private final int x, y, z;
@@ -416,6 +453,11 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
             return z;
         }
 
+        /**
+         * Returns the position of the voxel in its voxel array as a block vector.
+         *
+         * @return the position of the voxel
+         */
         public BlockVector getPosition() {
             return BlockVector.fromXYZ(x, y, z);
         }
@@ -425,31 +467,97 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
             return VoxelArray.this.getRGB(x, y, z);
         }
 
+        /**
+         * <p>
+         *     Changes the RGB value of the voxel. This change is also applied to the underlying array in which the
+         *     voxel is placed.
+         * </p>
+         * <p>
+         *     Assigning an RGB value with an alpha value of 0 is equivalent to removing the voxel from its array, as
+         *     voxels can not be invisible.
+         * </p>
+         *
+         * @param rgb the rgb value to be assigned to the voxel
+         * @see Voxel#remove(int, int, int)
+         */
         public void setRGB(int rgb) {
             VoxelArray.this.setRGB(x, y, z, rgb);
         }
 
+        /**
+         * <p>
+         *     Sets the RGB value of the voxel to {@link ColorMath#INVISIBLE_WHITE}. Although this color is technically
+         *     white, its alpha channel is exactly 0. Using the white color it is possible to distinguish between
+         *     unassigned voxels ({@link ColorMath#INVISIBLE_BLACK}) and deleted voxels.
+         * </p>
+         * <p>
+         *     Assigning an RGB value with an alpha value of 0 is equivalent to removing the voxel from its array, as
+         *     voxels can not be invisible.
+         * </p>
+         */
         public void remove() {
             setRGB(ColorMath.INVISIBLE_WHITE);
         }
 
         /**
-         * Returns whether the side of the voxel is visible. This is the case if there is no voxel on the side next
-         * to it.
+         * <p>
+         *     Returns whether a face of the voxel is visible.
+         * </p>
+         * <p>
+         *     A face is always visible if there is no voxel covering that face. This also applies if the voxel face can
+         *     not be covered by another voxel due to the array containing it ending at the face.
+         * </p>
          *
          * @param side the side
-         * @return whether the side of the voxel is visible
+         * @return whether the face of the voxel is visible
          */
         public boolean isVisible(Direction side) {
             switch (side) {
                 case NEGATIVE_X: return x==0 || !VoxelArray.this.contains(x-1, y, z);
-                case POSITIVE_X: return x==sizeX-1 || !VoxelArray.this.contains(x+1, y, z);
                 case NEGATIVE_Y: return y==0 || !VoxelArray.this.contains(x, y-1, z);
-                case POSITIVE_Y: return y==sizeY-1 || !VoxelArray.this.contains(x, y+1, z);
                 case NEGATIVE_Z: return z==0 || !VoxelArray.this.contains(x, y, z-1);
+                case POSITIVE_X: return x==sizeX-1 || !VoxelArray.this.contains(x+1, y, z);
+                case POSITIVE_Y: return y==sizeY-1 || !VoxelArray.this.contains(x, y+1, z);
                 case POSITIVE_Z: return z==sizeZ-1 || !VoxelArray.this.contains(x, y, z+1);
                 default: throw new IllegalArgumentException("unknown direction: "+side);
             }
+        }
+
+        /**
+         * <p>
+         *    Returns a map representing the visibility of each side of the voxel.
+         * </p>
+         * <p>
+         *     A face is always visible if there is no voxel covering that face. This also applies if the voxel face can
+         *     not be covered by another voxel due to the array containing it ending at the face.
+         * </p>
+         * <p>
+         *     The ordinal of the {@link Direction} represents the index of the bit which can 0 (covered) or 1 (visible).
+         *     Checking which side is visible can be done with the formulas:
+         *     <ul>
+         *         <li><code>value >> ordinal & 1 == 1</code></li>
+         *         <li><code>value & 1 << ordinal != 0</code></li>
+         *     </ul>
+         * </p>
+         * <p>
+         *     If the returned byte is exactly 0, the voxel is covered from every side, if it is {@code 0b00111111}
+         *     the voxel is visible from every side.
+         * </p>
+         *
+         * @return a bitmap representing which faces are visible
+         */
+        public byte getFaceVisibility() {
+            byte result = 0;
+
+            if (x==0 || !VoxelArray.this.contains(x-1, y, z)) result |= Direction.NEGATIVE_X.ordinal();
+            if (y==0 || !VoxelArray.this.contains(x, y-1, z)) result |= Direction.NEGATIVE_Y.ordinal();
+            if (z==0 || !VoxelArray.this.contains(x, y, z-1)) result |= Direction.NEGATIVE_Z.ordinal();
+
+            if (x==sizeX-1 || !VoxelArray.this.contains(x+1, y, z)) result |= Direction.POSITIVE_X.ordinal();
+            if (y==sizeY-1 || !VoxelArray.this.contains(x, y+1, z)) result |= Direction.POSITIVE_Y.ordinal();
+            if (z==sizeZ-1 || !VoxelArray.this.contains(x, y, z+1)) result |= Direction.POSITIVE_Z.ordinal();
+
+            return result;
         }
 
         @Override

@@ -47,10 +47,10 @@ public class STLModel {
 
     public static class STLTriangle {
 
-        private final Vertex normal, a, b, c;
+        private final Vertex3f normal, a, b, c;
         private final short attribute;
 
-        public STLTriangle(Vertex normal, Vertex a, Vertex b, Vertex c, short attribute) {
+        public STLTriangle(Vertex3f normal, Vertex3f a, Vertex3f b, Vertex3f c, short attribute) {
             Arguments.requireNonnull(normal, a, b, c);
             this.normal = normal;
             this.a = a;
@@ -59,23 +59,23 @@ public class STLModel {
             this.attribute = attribute;
         }
 
-        public STLTriangle(Vertex normal, Vertex a, Vertex b, Vertex c) {
+        public STLTriangle(Vertex3f normal, Vertex3f a, Vertex3f b, Vertex3f c) {
             this(normal, a, b, c, (short) 0);
         }
 
-        public Vertex getA() {
+        public Vertex3f getA() {
             return a;
         }
 
-        public Vertex getB() {
+        public Vertex3f getB() {
             return b;
         }
 
-        public Vertex getC() {
+        public Vertex3f getC() {
             return c;
         }
 
-        public Vertex getNormal() {
+        public Vertex3f getNormal() {
             return normal;
         }
 

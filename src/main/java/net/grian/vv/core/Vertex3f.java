@@ -1,10 +1,10 @@
 package net.grian.vv.core;
 
-public class Vertex {
+public class Vertex3f {
 
     private final float x, y, z;
 
-    public Vertex(float x, float y, float z) {
+    public Vertex3f(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;

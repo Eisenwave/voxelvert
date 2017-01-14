@@ -2,7 +2,7 @@ package net.grian.vv.io;
 
 import net.grian.spatium.util.IOMath;
 import net.grian.vv.core.STLModel;
-import net.grian.vv.core.Vertex;
+import net.grian.vv.core.Vertex3f;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class SerializerSTL implements Serializer<STLModel> {
         stream.writeInt(IOMath.invertBytes(model.size()));
     }
 
-    private void serializeVertex(Vertex vertex, DataOutputStream stream) throws IOException {
+    private void serializeVertex(Vertex3f vertex, DataOutputStream stream) throws IOException {
         stream.writeInt( IOMath.invertBytes(Float.floatToIntBits(vertex.getX())) );
         stream.writeInt( IOMath.invertBytes(Float.floatToIntBits(vertex.getY())) );
         stream.writeInt( IOMath.invertBytes(Float.floatToIntBits(vertex.getZ())) );

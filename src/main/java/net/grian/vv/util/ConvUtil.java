@@ -19,7 +19,7 @@ public final class ConvUtil {
         manager.add(new ConverterTextureStackVoxelizer());
         manager.add(new ConverterTextureVoxelizer());
         manager.add(new ConverterVoxelMerger());
-        manager.add(new ConverterVoxelsToModel());
+        manager.add(new ConverterVoxelsToMC());
         manager.add(new ConverterVoxelsToSTL());
         manager.add(new ConverterVoxelsToBlocks());
         manager.add(new ConverterVoxelsToTexture());
