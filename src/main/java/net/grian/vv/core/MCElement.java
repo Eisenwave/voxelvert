@@ -28,6 +28,11 @@ public class MCElement {
         return uv[d.ordinal()];
     }
 
+    /**
+     * Returns the shape of the element (without rotation).
+     *
+     * @return the element shape
+     */
     public AxisAlignedBB getShape() {
         return shape;
     }
@@ -67,7 +72,7 @@ public class MCElement {
     }
 
     /**
-     * Removes the UV on one side of the box.
+     * Removes the UV on one side of the element.
      *
      * @param side the the side to be enabled
      */
@@ -76,7 +81,13 @@ public class MCElement {
         uv[side.ordinal()] = null;
     }
 
-    public void setUV(Direction side, MCUV uv) {
+    /**
+     * Sets the uv of a side of the element.
+     *
+     * @param side the side
+     * @param uv the uv
+     */
+    public void setUV(Direction side, @Nullable MCUV uv) {
         this.uv[side.ordinal()] = uv;
     }
 

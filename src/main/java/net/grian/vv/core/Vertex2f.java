@@ -1,5 +1,8 @@
 package net.grian.vv.core;
 
+/**
+ * An immutable pair of float coordinates.
+ */
 public class Vertex2f {
 
     private final float x, y;

@@ -6,6 +6,10 @@ import net.grian.vv.util.Arguments;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Object representation of a <i><b>ST</b>ereo<b>L</b>ithography</i> /
+ * <i><b>S</b>tandard <b>T</b>essellation <b>L</b>anguage</i>.
+ */
 public class STLModel {
 
     private final List<STLTriangle> triangles = new ArrayList<>();

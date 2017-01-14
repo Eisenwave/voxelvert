@@ -77,49 +77,66 @@ public class VoxelMesh implements Serializable, Iterable<VoxelMesh.Element> {
 
     public static class Element {
 
-        private final int x, y, z;
+        private final int minX, minY, minZ, maxX, maxY, maxZ;
         private final VoxelArray array;
 
         private Element(int x, int y, int z, VoxelArray array) {
             Objects.requireNonNull(array, "array must not be null");
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            this.minX = x;
+            this.minY = y;
+            this.minZ = z;
+            this.maxX = x + array.getSizeX()-1;
+            this.maxY = y + array.getSizeY()-1;
+            this.maxZ = z + array.getSizeZ()-1;
             this.array = array;
         }
 
         private Element(Element copyOf) {
-            this(copyOf.x, copyOf.y, copyOf.z, copyOf.array);
+            this(copyOf.minX, copyOf.minY, copyOf.minZ, copyOf.array);
         }
 
         public int getMinX() {
-            return x;
+            return minX;
         }
 
         public int getMinY() {
-            return y;
+            return minY;
         }
 
         public int getMinZ() {
-            return z;
+            return minZ;
         }
 
         public int getMaxX() {
-            return x + array.getSizeX();
+            return maxX;
         }
 
         public int getMaxY() {
-            return y + array.getSizeY();
+            return maxY;
         }
 
         public int getMaxZ() {
-            return z + array.getSizeZ();
+            return maxZ;
         }
 
         public BlockVector getPosition() {
-            return BlockVector.fromXYZ(x, y, z);
+            return BlockVector.fromXYZ(minX, minY, minZ);
         }
 
+        /**
+         * Returns the boundaries of the element.
+         *
+         * @return the boundaries of the element
+         */
+        public BlockSelection getBoundaries() {
+            return BlockSelection.fromPoints(minX, minY, minZ, maxX, maxY, maxZ);
+        }
+
+        /**
+         * Returns the array positioned in this element.
+         *
+         * @return the array
+         */
         public VoxelArray getArray() {
             return array;
         }

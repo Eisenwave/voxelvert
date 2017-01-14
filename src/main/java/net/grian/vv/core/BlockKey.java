@@ -29,14 +29,29 @@ public class BlockKey {
         this(material, 0);
     }
 
+    /**
+     * Returns the block id.
+     *
+     * @return the block id
+     */
     public short getId() {
         return id;
     }
 
+    /**
+     * Returns the block data.
+     *
+     * @return the block data
+     */
     public byte getData() {
         return data;
     }
 
+    /**
+     * Returns the block {@link Material}.
+     *
+     * @return the block material
+     */
     public Material getMaterial() {
         return Material.getMaterial(id);
     }

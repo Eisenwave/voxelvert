@@ -6,7 +6,7 @@ import net.grian.spatium.geo.AxisAlignedBB;
 import java.util.*;
 
 /**
- * A Minecraft model.
+ * Object representation of a Minecraft model.
  */
 public class MCModel implements Iterable<MCElement> {
 

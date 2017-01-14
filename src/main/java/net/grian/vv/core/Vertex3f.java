@@ -1,5 +1,8 @@
 package net.grian.vv.core;
 
+/**
+ * An immutable triplet of float coordinates.
+ */
 public class Vertex3f {
 
     private final float x, y, z;

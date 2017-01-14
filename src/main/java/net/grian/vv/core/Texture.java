@@ -6,21 +6,18 @@ import java.io.Serializable;
  * <p>
  *     A basic image format using a two-dimensional array of ARGB integers to represent an image.
  * </p>
- * <p>
- *     The size or capacity of the image is variable and can be adjusted using {@link #setCapacity(int, int)} and
- *     {@link #addCapacity(int, int)}, although the image can not decrease in size through this process.
- * </p>
  */
 public class Texture implements Serializable, BaseTexture {
 
-    private int[][] content = new int[1][1];
+    private final int[][] content;
 
     public Texture(int width, int height) {
-        setCapacity(width, height);
+        if (width < 1) throw new IllegalArgumentException("width < 1");
+        if (height < 1) throw new IllegalArgumentException("height < 1");
+        this.content = new int[width][height];
     }
 
-    public Texture() {}
-
+    /*
     public void setCapacity(int width, int height) {
         if (width < getWidth() || height < getHeight())
             throw new IllegalArgumentException("can not decrease capacity");
@@ -33,6 +30,7 @@ public class Texture implements Serializable, BaseTexture {
         if (width < 0 || height < 0) throw new IllegalArgumentException("can not decrease capacity");
         setCapacity(getWidth() + width, getHeight() + height);
     }
+    */
 
     public void paste(BaseTexture texture, final int u, final int v) {
         final int w = texture.getWidth(), h = texture.getHeight();

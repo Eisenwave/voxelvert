@@ -3,6 +3,9 @@ package net.grian.vv.core;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data representation of a Wavefront Object Model.
+ */
 public class OBJModel {
 
     private final List<Vertex3f> vertices = new ArrayList<>();
