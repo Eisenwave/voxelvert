@@ -30,10 +30,20 @@ public class STLModel {
         return ImmutableList.copyOf(triangles);
     }
 
+    /**
+     * Returns the amount of triangles in this model.
+     *
+     * @return the amount of triangles
+     */
     public int size() {
         return triangles.size();
     }
 
+    /**
+     * Returns the model header.
+     *
+     * @return the model header
+     */
     public String getHeader() {
         return header;
     }

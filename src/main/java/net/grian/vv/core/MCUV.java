@@ -1,5 +1,8 @@
 package net.grian.vv.core;
 
+/**
+ * Minecraft model uv coordinates with a texture reference.
+ */
 public class MCUV {
 
     private String texture;
@@ -15,6 +18,11 @@ public class MCUV {
 
     //GETTERS
 
+    /**
+     * Returns the name of the texture.
+     *
+     * @return the name of the texture
+     */
     public String getTexture() {
         return texture;
     }
