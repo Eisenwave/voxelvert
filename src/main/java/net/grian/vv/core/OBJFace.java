@@ -9,6 +9,11 @@ public class OBJFace {
 
     private final OBJTriplet[] shape;
 
+    /**
+     * Constructs a new face from an array of {@link OBJTriplet} objects, forming the shape of the face.
+     *
+     * @param shape the shape of the face
+     */
     public OBJFace(OBJTriplet... shape) {
         Arguments.requireMin(shape, 1);
         this.shape = shape;

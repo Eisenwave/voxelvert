@@ -18,7 +18,7 @@ public class SerializerModelJSONTest {
         model.addTexture("texture", new Texture(16, 16));
         model.addElement(new MCElement(AxisAlignedBB.fromPoints(0, 0, 0, 16, 16, 16)));
 
-        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\SerializerModelJSONTest.json");
+        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVertPlugin\\files\\SerializerModelJSONTest.json");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
 
         new SerializerModelJSON().serialize(model, out);

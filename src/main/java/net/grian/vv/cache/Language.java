@@ -3,6 +3,6 @@ package net.grian.vv.cache;
 public class Language {
 
     public String
-    PLUGIN_NAME = "VoxelVert";
+    PLUGIN_NAME = "VoxelVertPlugin";
 
 }

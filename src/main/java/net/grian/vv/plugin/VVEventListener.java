@@ -1,4 +1,4 @@
-package net.grian.vv.listener;
+package net.grian.vv.plugin;
 
 import net.grian.spatium.geo.BlockVector;
 import net.grian.vv.cache.UserManager;

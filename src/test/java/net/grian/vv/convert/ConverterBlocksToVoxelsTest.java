@@ -38,7 +38,7 @@ public class ConverterBlocksToVoxelsTest {
 
         Texture texture = ConvUtil.convert(voxels, Texture.class, Direction.NEGATIVE_Z, true, true);
         BufferedImage image = ConvUtil.convert(texture, BufferedImage.class, true, false);
-        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\maps\\ConverterBlocksToVoxelsTest.png");
+        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVertPlugin\\maps\\ConverterBlocksToVoxelsTest.png");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create file");
         ImageIO.write(image, "png", out);
         System.out.println((System.currentTimeMillis()-now)+": done");

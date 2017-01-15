@@ -26,7 +26,7 @@ public class ConverterVoxelMergerTest {
         for (VoxelMesh.Element element : mesh)
             element.getArray().fill(ColorMath.fromHSB(PrimMath.randomFloat(1), 0.5F, 0.75F));
 
-        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ConverterVoxelMergerTest.qb");
+        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVertPlugin\\files\\ConverterVoxelMergerTest.qb");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
 
         new SerializerQB().serialize(mesh, out);

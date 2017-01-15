@@ -61,6 +61,12 @@ public class ConverterBitmapMerger implements Converter<Bitmap3D, BlockSelection
         return resultFromBoxes(boxes);
     }
 
+    /**
+     * Creates block selections from boxes.
+     *
+     * @param boxes the boxes
+     * @return an array of block selections
+     */
     private static BlockSelection[] resultFromBoxes(BoxList boxes) {
         BlockSelection[] result = new BlockSelection[boxes.size()];
         int index = 0;

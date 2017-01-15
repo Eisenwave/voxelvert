@@ -1,13 +1,13 @@
-package net.grian.vv;
+package net.grian.vv.plugin;
 
 import net.grian.vv.cache.Language;
 import net.grian.vv.cache.Registry;
 import org.bukkit.command.Command;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class VoxelVert extends JavaPlugin {
+public class VoxelVertPlugin extends JavaPlugin {
 
-    private static VoxelVert instance;
+    private static VoxelVertPlugin instance;
     private static Registry registry;
     private static Language language;
 
@@ -33,7 +33,7 @@ public class VoxelVert extends JavaPlugin {
         for (Command command : commands);
     }
 
-    public static VoxelVert getInstance() {
+    public static VoxelVertPlugin getInstance() {
         return instance;
     }
 

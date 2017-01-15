@@ -18,7 +18,7 @@ public class SerializerSTLTest {
         VoxelArray voxels = new DeserializerQEF(Logger.getGlobal()).deserialize(getClass(), "sword.qef");
         STLModel model = ConvUtil.convert(voxels, STLModel.class);
 
-        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\SerializerSTLTest.stl");
+        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVertPlugin\\files\\SerializerSTLTest.stl");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed out create "+out);
 
         new SerializerSTL().serialize(model, out);

@@ -40,11 +40,8 @@ public class ConverterVoxelsToMC implements Converter<VoxelMesh, MCModel> {
         //convert voxel colors into textures where faces remain enabled
         List<ArrangeableTexture> faces = renderFaces(boxes);
 
-        //sort faces for rectangle arrangement
-        Collections.sort(faces);
-
         //arrange all textures in a single rectangle
-        RectangleArrangement arrangement = arrangeTextures(faces); //TODO this
+        RectangleArrangement arrangement = arrangeTextures(faces);
 
         //render all arranged rectangles and set uv inside mc-elements
         Texture texture = renderTextureArrangement(arrangement, TEXTURE_NAME);

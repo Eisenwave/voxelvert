@@ -27,7 +27,7 @@ import java.util.zip.ZipFile;
 public class VoxelVertInformalTests {
 
     private final static File
-            DIR_VV = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert"),
+            DIR_VV = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVertPlugin"),
             DIR_VV_FILES = new File(DIR_VV+File.separator+"files"),
             DIR_VV_MAPS = new File(DIR_VV+File.separator+"maps");
 
@@ -111,7 +111,7 @@ public class VoxelVertInformalTests {
             Texture texture = new ConverterVoxelsToTexture().invoke(array, dir, true, true);
             BufferedImage image = new ConverterTextureToImage().invoke(texture);
             String fname = "vvg_test_"+dir.name()+".png";
-            File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\maps\\"+fname);
+            File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVertPlugin\\maps\\"+fname);
             if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
             ImageIO.write(image, "png", out);
             //if (dir == Direction.POSITIVE_X)

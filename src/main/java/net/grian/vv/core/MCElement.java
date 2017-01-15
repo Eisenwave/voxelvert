@@ -13,6 +13,11 @@ public class MCElement {
     private AxisAlignedBB shape;
     private final MCUV[] uv = new MCUV[Direction.values().length];
 
+    /**
+     * Constructs a new element with a given shape.
+     *
+     * @param shape the element shape
+     */
     public MCElement(AxisAlignedBB shape) {
         setShape(shape);
     }

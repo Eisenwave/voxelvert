@@ -231,12 +231,26 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
 
     //SETTERS
 
+    /**
+     * Sets the voxel color at a given position.
+     *
+     * @param x the x-coordinate
+     * @param y the y-coordinate
+     * @param z the z-coordinate
+     * @param rgb the voxel color
+     */
     public void setRGB(int x, int y, int z, int rgb) {
         voxels[x][y][z] = rgb;
     }
 
-    public void setRGB(BlockVector v, int rgb) {
-        setRGB(v.getX(), v.getY(), v.getZ(), rgb);
+    /**
+     * Sets the voxel color at a given position.
+     *
+     * @param pos the position
+     * @param rgb the voxel color
+     */
+    public void setRGB(BlockVector pos, int rgb) {
+        setRGB(pos.getX(), pos.getY(), pos.getZ(), rgb);
     }
 
     public void remove(int x, int y, int z) {

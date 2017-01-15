@@ -29,7 +29,7 @@ public class DeserializerQBTest {
         Texture texture = ConvUtil.convert(array, Texture.class, Direction.NEGATIVE_Z, true, true);
         BufferedImage image = ConvUtil.convert(texture, BufferedImage.class);
 
-        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\maps\\DeserializerQBTest.png");
+        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVertPlugin\\maps\\DeserializerQBTest.png");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
 
         ImageIO.write(image, "png", out);

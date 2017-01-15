@@ -58,6 +58,13 @@ public class RectangleArrangement implements Iterable<RectangleArrangement.Entry
     }
 
     @Override
+    public String toString() {
+        return RectangleArrangement.class.getSimpleName()+
+                "{width="+getWidth()+
+                ",height="+getHeight()+"}";
+    }
+
+    @Override
     public Iterator<Entry> iterator() {
         return content.iterator();
     }

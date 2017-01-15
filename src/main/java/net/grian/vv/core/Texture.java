@@ -11,10 +11,21 @@ public class Texture implements Serializable, BaseTexture {
 
     private final int[][] content;
 
+    final int width, height;
+
+    /**
+     * Constructs a new texture with a given width and height.
+     *
+     * @param width the texture width
+     * @param height the texture height
+     */
     public Texture(int width, int height) {
         if (width < 1) throw new IllegalArgumentException("width < 1");
         if (height < 1) throw new IllegalArgumentException("height < 1");
+
         this.content = new int[width][height];
+        this.width = width;
+        this.height = height;
     }
 
     /*
@@ -31,6 +42,15 @@ public class Texture implements Serializable, BaseTexture {
         setCapacity(getWidth() + width, getHeight() + height);
     }
     */
+
+    /**
+     * Returns new graphics for this texture.
+     *
+     * @return the texture graphics
+     */
+    public TextureGraphics getGraphics() {
+        return new TextureGraphics(this);
+    }
 
     public void paste(BaseTexture texture, final int u, final int v) {
         final int w = texture.getWidth(), h = texture.getHeight();
@@ -63,12 +83,12 @@ public class Texture implements Serializable, BaseTexture {
 
     @Override
     public int getWidth() {
-        return content.length;
+        return width;
     }
 
     @Override
     public int getHeight() {
-        return content[0].length;
+        return height;
     }
 
     @Override
