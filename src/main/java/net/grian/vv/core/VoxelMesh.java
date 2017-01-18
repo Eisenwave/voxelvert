@@ -24,6 +24,30 @@ public class VoxelMesh implements Serializable, Iterable<VoxelMesh.Element> {
         return list.size();
     }
 
+    /**
+     * Returns the combined volume of all voxel arrays in this mesh.
+     *
+     * @return the combined volume of all arrays
+     */
+    public int getCombinedVolume() {
+        int v = 0;
+        for (Element e : list)
+            v += e.getArray().getVolume();
+        return v;
+    }
+
+    /**
+     * Returns the total amount of voxels in this mesh.
+     *
+     * @return the voxel count
+     */
+    public int voxelCount() {
+        int count = 0;
+        for (Element e : list)
+            count += e.getArray().size();
+        return count;
+    }
+
     public VoxelMesh.Element[] getElements() {
         return list.toArray(new Element[list.size()]);
     }
@@ -80,7 +104,7 @@ public class VoxelMesh implements Serializable, Iterable<VoxelMesh.Element> {
         private final int minX, minY, minZ, maxX, maxY, maxZ;
         private final VoxelArray array;
 
-        private Element(int x, int y, int z, VoxelArray array) {
+        public Element(int x, int y, int z, VoxelArray array) {
             Objects.requireNonNull(array, "array must not be null");
             this.minX = x;
             this.minY = y;
@@ -91,7 +115,7 @@ public class VoxelMesh implements Serializable, Iterable<VoxelMesh.Element> {
             this.array = array;
         }
 
-        private Element(Element copyOf) {
+        public Element(Element copyOf) {
             this(copyOf.minX, copyOf.minY, copyOf.minZ, copyOf.array);
         }
 

@@ -3,17 +3,22 @@ package net.grian.vv.core;
 /**
  * Minecraft model uv coordinates with a texture reference.
  */
-public class MCUV {
+public class MCUV implements BaseRectangle {
 
     private String texture;
-    private int xmin, ymin, xmax, ymax;
+    private int xmin, ymin, xmax, ymax, rotation;
+
+    public MCUV(String texture, int xmin, int ymin, int xmax, int ymax, int rotation) {
+        setTexture(texture);
+        setMinX(xmin);
+        setMinY(ymin);
+        setMaxX(xmax);
+        setMaxY(ymax);
+        setRotation(rotation);
+    }
 
     public MCUV(String texture, int xmin, int ymin, int xmax, int ymax) {
-        this.texture = texture;
-        this.xmin = xmin;
-        this.ymin = ymin;
-        this.xmax = xmax;
-        this.ymax = ymax;
+        this(texture, xmin, ymin, xmax, ymax, 0);
     }
 
     //GETTERS
@@ -43,11 +48,30 @@ public class MCUV {
         return ymax;
     }
 
-    public void setTexture(String texture) {
-        this.texture = texture;
+    /**
+     * Returns the rotation of the uv in degrees. The returned value can be either 0, 90, 180 or 270.
+     *
+     * @return the uv rotation
+     */
+    public int getRotation() {
+        return rotation;
+    }
+
+    @Override
+    public int getWidth() {
+        return Math.abs(xmax - xmin) + 1;
+    }
+
+    @Override
+    public int getHeight() {
+        return Math.abs(ymax - ymin) + 1;
     }
 
     //SETTERS
+
+    public void setTexture(String texture) {
+        this.texture = texture;
+    }
 
     public void setMinX(int x) {
         if (x < 0) throw new IllegalArgumentException("x must be positive");
@@ -69,4 +93,9 @@ public class MCUV {
         this.ymax = y;
     }
 
+    public void setRotation(int rotation) {
+        if (rotation % 90 != 0) throw new IllegalArgumentException("rotation must be multiple of 90");
+        if (rotation < 0 || rotation >= 360) throw new IllegalArgumentException("rotation out of range (0-359)");
+        this.rotation = rotation;
+    }
 }

@@ -2,6 +2,7 @@ package net.grian.vv.convert;
 
 import net.grian.vv.core.BaseRectangle;
 import net.grian.vv.core.RectangleArrangement;
+import net.grian.vv.util.Arguments;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -19,11 +20,6 @@ public class ConverterRectangleArranger implements Converter<BaseRectangle[], Re
         return RectangleArrangement.class;
     }
 
-    @Override
-    public RectangleArrangement invoke(BaseRectangle[] from, Object[] args) {
-        return invoke(from);
-    }
-
     private final Logger logger;
 
     public ConverterRectangleArranger(Logger logger) {
@@ -34,29 +30,32 @@ public class ConverterRectangleArranger implements Converter<BaseRectangle[], Re
         this(Logger.getGlobal());
     }
 
+    @Override
+    public RectangleArrangement invoke(BaseRectangle[] from, Object[] args) {
+        return invoke(from);
+    }
+
     public RectangleArrangement invoke(BaseRectangle[] rectangles) {
         if (rectangles.length == 0) throw new IllegalArgumentException("can not sort empty rectangle array");
-
-        logger.log(Level.FINE, "arranging "+rectangles.length+" rectangles");
+        System.out.println("arranging "+rectangles.length+" rectangles");
 
         Arrays.sort(rectangles, (a, b) -> {
             int result = b.getHeight() - a.getHeight();
             return result == 0? b.getWidth() - a.getWidth() : result;
         });
-        logger.log(Level.FINE, "sorted rectangles");
 
         RectangleBucket[] buckets = sortInBuckets(rectangles);
-        logger.log(Level.FINE, "sorted into "+buckets.length+" buckets");
+        System.out.println("sorted into "+buckets.length+" buckets");
 
         RectangleArrangement result = render(buckets);
-        logger.log(Level.FINE, "rendered as "+result);
+        System.out.println("rendered as "+result);
 
         return result;
     }
 
     private RectangleBucket[] sortInBuckets(BaseRectangle[] rectangles) {
         if (rectangles.length == 1) {
-            logger.log(Level.FINE, "special case (single rectangle)");
+            System.out.println("special case (single rectangle)");
             BaseRectangle rectangle = rectangles[0];
             RectangleBucket bucket = new RectangleBucket(rectangle.getWidth(), rectangle.getHeight());
             bucket.add(rectangle);
@@ -68,19 +67,18 @@ public class ConverterRectangleArranger implements Converter<BaseRectangle[], Re
 
         //special case: only one bucket can be created due to tall rectangles
         if (maxH > maxW) {
-            logger.log(Level.FINE, "special case (maxH >= maxW)");
+            System.out.println("special case (maxH >= maxW)");
             RectangleBucket[] buckets = {new RectangleBucket(maxH, maxH)};
             for (BaseRectangle rectangle : rectangles)
                 buckets[0].add(rectangle);
             return buckets;
         }
 
-
         //regular case: increase bucket count until buckets exceed bounds in height
-        logger.log(Level.FINE, "regular case (multiple buckets optimal)");
+        System.out.println("regular case (multiple buckets optimal)");
         int[] simulation = simulateArrangement(rectangles, maxW);
         final int bucketCount = simulation[0], dims = simulation[1];
-        logger.log(Level.FINE, "conclusion: "+bucketCount+" buckets in "+dims+"x"+dims+" square");
+        System.out.println("conclusion: "+bucketCount+" buckets in "+dims+"x"+dims+" square");
 
         int i = 0;
         RectangleBucket[] buckets = new RectangleBucket[bucketCount];
@@ -107,11 +105,12 @@ public class ConverterRectangleArranger implements Converter<BaseRectangle[], Re
     private int[] simulateArrangement(BaseRectangle[] rectangles, int totalWidth) {
         int outBucketCount = -1, outDims = -1;
 
+        final int initHeight = rectangles[0].getHeight();
         outer: for (int div = 2 ;; div++) {
             final int dims = totalWidth / div;
             int bucketCount = 1;
 
-            int w = 0, h = 0;
+            int w = 0, h = initHeight;
             for (BaseRectangle rectangle : rectangles) {
                 final int recWidth = rectangle.getWidth(), recHeight = rectangle.getHeight();
 
@@ -149,8 +148,8 @@ public class ConverterRectangleArranger implements Converter<BaseRectangle[], Re
     }
 
     private static RectangleArrangement render(RectangleBucket[] buckets) {
-        int[] dims = getDimensions(buckets);
-        RectangleArrangement arrangement = new RectangleArrangement(dims[0], dims[1]);
+        final int dims = buckets[0].getWidth();
+        RectangleArrangement arrangement = new RectangleArrangement(dims, dims);
 
         int v = 0;
         for (RectangleBucket bucket : buckets) {

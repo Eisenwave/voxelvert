@@ -53,6 +53,15 @@ public class Arguments {
         requireRange(arg, min, max, name, "%s (%s) must be in range from %s, %s");
     }
 
+    public static void requireNonnull(Iterable<?> args, String msg) {
+        for (Object arg : args)
+            if (arg == null) throw new IllegalArgumentException(msg);
+    }
+
+    public static void requireNonnull(Iterable<?> args) {
+        requireNonnull(args, "args must not be null");
+    }
+
     public static void requireNonnull(Object arg, String msg) {
         if (arg==null)
             throw new IllegalArgumentException(msg);

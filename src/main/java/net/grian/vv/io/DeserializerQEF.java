@@ -21,6 +21,10 @@ public class DeserializerQEF implements Parser<VoxelArray> {
         this.logger = logger;
     }
 
+    public DeserializerQEF() {
+        this(Logger.getGlobal());
+    }
+
     @Override
     public VoxelArray deserialize(Reader reader) throws IOException {
         BufferedReader buffReader = new BufferedReader(reader);

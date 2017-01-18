@@ -2,12 +2,14 @@ package net.grian.vv.convert;
 
 import net.grian.spatium.enums.Direction;
 import net.grian.spatium.geo.BlockSelection;
-import net.grian.spatium.geo.BlockVector;
 import net.grian.vv.core.*;
 import net.grian.vv.util.Arguments;
 import net.grian.vv.util.ConvUtil;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Logger;
 
 public class ConverterVoxelsToMC implements Converter<VoxelMesh, MCModel> {
 
@@ -23,25 +25,48 @@ public class ConverterVoxelsToMC implements Converter<VoxelMesh, MCModel> {
         return MCModel.class;
     }
 
+    private final Logger logger;
+
+    public ConverterVoxelsToMC(Logger logger) {
+        this.logger = logger;
+    }
+
+    public ConverterVoxelsToMC() {
+        this(Logger.getGlobal());
+    }
+
     @Override
     public MCModel invoke(VoxelMesh from, Object[] args) {
+        return invoke(from);
+    }
+
+    public MCModel invoke(VoxelMesh from) {
         Arguments.requireNonnull(from, "from must not be null");
-        Arguments.requireNonnull(args, "args must not be null");
 
         //create new empty model
         MCModel model = new MCModel();
 
         //convert mesh voxels into boxes and fill model with resulting mc-elements
         Collection<BlockyBox> boxes = toBlockyBoxes(from, model);
+        System.out.println("generated "+boxes.size()+" boxes");
 
         //disable geometrically obstructed faces
         optimizeFaces(boxes);
 
+        /*
+        //remove all boxes with disabled faces only
+        optimizeBoxes(boxes);
+        System.out.println("optimized boxes ("+boxes.size()+" remaining)");
+        */
+
         //convert voxel colors into textures where faces remain enabled
-        List<ArrangeableTexture> faces = renderFaces(boxes);
+        Collection<ArrangeableTexture> faces = renderFaces(boxes);
+        Arguments.requireNonnull(faces); //contains null from this point on
+        System.out.println("rendered "+faces.size()+" faces");
 
         //arrange all textures in a single rectangle
         RectangleArrangement arrangement = arrangeTextures(faces);
+        System.out.println("arranged textures: "+arrangement);
 
         //render all arranged rectangles and set uv inside mc-elements
         Texture texture = renderTextureArrangement(arrangement, TEXTURE_NAME);
@@ -84,24 +109,34 @@ public class ConverterVoxelsToMC implements Converter<VoxelMesh, MCModel> {
      * @param boxes the box collection
      */
     private static void optimizeFaces(Collection<BlockyBox> boxes) {
-        boxes.parallelStream().forEach(box -> {
+        boxes.forEach(box -> {
             final BlockSelection shape = box.getShape();
 
             for (Direction side : Direction.values()) {
                 BlockSelection surface = getSurface(shape, side);
-                BlockVector min = surface.getMin(), max = surface.getMax();
 
+                //check whether surface min and max are both inside any other box
                 for (BlockyBox box2 : boxes) {
                     BlockSelection shape2 = box2.getShape();
-                    if (shape2.contains(min) && shape2.contains(max))
+                    if (shape2.contains(surface)) {
                         box.disableTexture(side);
+                        break;
+                    }
                 }
+
             }
         });
+    }
 
+    /**
+     * Unused since the merging process makes it impossible for boxes to be completely disabled.
+     *
+     * @param boxes the boxes
+     */
+    public static void optimizeBoxes(Collection<BlockyBox> boxes) {
         Iterator<BlockyBox> iter = boxes.iterator();
         while (iter.hasNext())
-            if (!iter.next().isFullyDisabled())
+            if (iter.next().isFullyDisabled())
                 iter.remove();
     }
 
@@ -111,9 +146,9 @@ public class ConverterVoxelsToMC implements Converter<VoxelMesh, MCModel> {
      * @param boxes the box collection
      * @return a list containing all generated textures
      */
-    private static List<ArrangeableTexture> renderFaces(Collection<BlockyBox> boxes) {
+    private static Collection<ArrangeableTexture> renderFaces(Collection<BlockyBox> boxes) {
         ConverterVoxelsToTexture converter = new ConverterVoxelsToTexture();
-        List<ArrangeableTexture> result = new LinkedList<>();
+        Queue<ArrangeableTexture> result = new ConcurrentLinkedQueue<>();
 
         boxes.parallelStream().forEach(box -> {
             VoxelArray array = box.getSource().getArray();
@@ -141,14 +176,27 @@ public class ConverterVoxelsToMC implements Converter<VoxelMesh, MCModel> {
             ArrangeableTexture arrTexture = (ArrangeableTexture) entry.getRectangle();
             result.paste(arrTexture.getTexture(), entry.getU(), entry.getV());
 
+            Direction side = arrTexture.getSide();
             MCUV uv = new MCUV(txName, entry.getU(), entry.getV(),
                     entry.getU()+arrTexture.getWidth(),
-                    entry.getV()+arrTexture.getHeight());
+                    entry.getV()+arrTexture.getHeight(),
+                    getUVRotation(side));
 
-            arrTexture.getParent().getHandle().setUV(arrTexture.getSide(), uv);
+            arrTexture.getParent().getHandle().setUV(side, uv);
         });
 
         return result;
+    }
+
+    private final static int[] rotations;
+    static {
+        rotations = new int[Direction.values().length];
+        rotations[Direction.NEGATIVE_Y.ordinal()] = 270;
+        rotations[Direction.POSITIVE_Y.ordinal()] = 90;
+    }
+
+    private static int getUVRotation(Direction direction) {
+        return rotations[direction.ordinal()];
     }
 
     /**
@@ -157,12 +205,13 @@ public class ConverterVoxelsToMC implements Converter<VoxelMesh, MCModel> {
      * @param rectangles a sorted rectangle list
      * @return a single texture
      */
-    private static RectangleArrangement arrangeTextures(List<? extends BaseRectangle> rectangles) {
+    private static RectangleArrangement arrangeTextures(Collection<? extends BaseRectangle> rectangles) {
+        Arguments.requireNonnull(rectangles);
         BaseRectangle[] array = rectangles.toArray(new BaseRectangle[rectangles.size()]);
         return ConvUtil.convert(array, RectangleArrangement.class);
     }
 
-    private static BlockSelection getSurface(BlockSelection box, Direction side) {
+    public static BlockSelection getSurface(BlockSelection box, Direction side) {
         int coord;
         switch (side) {
             case NEGATIVE_X: coord = box.getMinX()-1; break;
@@ -182,8 +231,8 @@ public class ConverterVoxelsToMC implements Converter<VoxelMesh, MCModel> {
                     box.getMinX(), coord, box.getMinZ(),
                     box.getMaxX(), coord, box.getMaxZ());
             case Z: return BlockSelection.fromPoints(
-                    coord, box.getMinY(), box.getMinZ(),
-                    coord, box.getMaxY(), box.getMaxZ());
+                    box.getMinX(), box.getMinY(), coord,
+                    box.getMaxX(), box.getMaxY(), coord);
             default: throw new AssertionError(side.axis());
         }
     }
@@ -199,7 +248,7 @@ public class ConverterVoxelsToMC implements Converter<VoxelMesh, MCModel> {
 
         private final Texture[] textures = new Texture[Direction.values().length];
 
-        private byte disabled = 0b00111111;
+        private byte visMask = 0b00111111;
 
         public BlockyBox(VoxelMesh.Element source, BlockSelection shape, MCElement handle) {
             this.source = source;
@@ -228,15 +277,15 @@ public class ConverterVoxelsToMC implements Converter<VoxelMesh, MCModel> {
         }
 
         public boolean hasEnabledTexture(Direction side) {
-            return (disabled & 1 << side.ordinal()) != 0;
+            return (visMask & (1 << side.ordinal())) != 0;
         }
 
         public void disableTexture(Direction side) {
-            disabled &= ~(1 << side.ordinal());
+            visMask &= ~(1 << side.ordinal());
         }
 
         public boolean isFullyDisabled() {
-            return disabled == 0;
+            return visMask == 0;
         }
 
     }

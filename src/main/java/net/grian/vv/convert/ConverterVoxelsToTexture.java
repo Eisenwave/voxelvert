@@ -124,8 +124,8 @@ public class ConverterVoxelsToTexture implements Converter<VoxelArray, Texture> 
     private static CoordinateRemapper getRemapper(Direction dir, int width, int height, int depth) {
         final int umax = width-1, vmax = height-1, wmax = depth-1;
         switch (dir) {
-            case NEGATIVE_X: return (u,v,w) -> new int[] {w,      vmax-v, umax-u};
-            case POSITIVE_X: return (u,v,w) -> new int[] {wmax-w, vmax-v, u};
+            case NEGATIVE_X: return (u,v,w) -> new int[] {w,      vmax-v, u};
+            case POSITIVE_X: return (u,v,w) -> new int[] {wmax-w, vmax-v, umax-u};
             case NEGATIVE_Y: return (u,v,w) -> new int[] {v,      w,      u};
             case POSITIVE_Y: return (u,v,w) -> new int[] {vmax-v, wmax-w, u};
             case NEGATIVE_Z: return (u,v,w) -> new int[] {umax-u, vmax-v, w};

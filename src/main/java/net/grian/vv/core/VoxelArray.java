@@ -124,7 +124,7 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
      * @return the array boundaries
      */
     public BlockSelection getBoundaries() {
-        return BlockSelection.fromPoints(0, 0, 0, getSizeX(), getSizeY(), getSizeZ());
+        return BlockSelection.fromPoints(0, 0, 0, sizeX-1, sizeY-1, sizeZ-1);
     }
 
     /**
@@ -180,12 +180,11 @@ public class VoxelArray implements Bitmap3D, Cloneable, Serializable, Iterable<V
      * @return the amount of voxels
      */
     public int size() {
-        final int limX = getSizeX(), limY = getSizeY(), limZ = getSizeZ();
         int count = 0;
 
-        for (int x = 0; x<limX; x++)
-            for (int y = 0; y<limY; y++)
-                for (int z = 0; z<limZ; z++)
+        for (int x = 0; x<sizeX; x++)
+            for (int y = 0; y<sizeY; y++)
+                for (int z = 0; z<sizeZ; z++)
                     if (ColorMath.isVisible(getRGB(x, y, z))) count++;
 
         return count;

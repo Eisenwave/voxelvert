@@ -6,6 +6,7 @@ import net.grian.vv.core.VoxelArray;
 import net.grian.vv.core.VoxelMesh;
 import net.grian.vv.util.ConvUtil;
 import net.grian.vv.util.Resources;
+import org.junit.Assert;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;

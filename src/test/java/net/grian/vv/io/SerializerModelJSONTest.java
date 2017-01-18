@@ -24,4 +24,14 @@ public class SerializerModelJSONTest {
         new SerializerModelJSON().serialize(model, out);
     }
 
+    /*
+    @Test
+    public void downUVNumber() throws Exception {
+        float a = 0, b = 1.23456789F, c = -1.23456789F;
+        Assert.assertEquals(    0F, SerializerModelJSON.downUVNumber(a));
+        Assert.assertEquals( 1.23F, SerializerModelJSON.downUVNumber(b));
+        Assert.assertEquals(-1.23F, SerializerModelJSON.downUVNumber(c));
+    }
+    */
+
 }

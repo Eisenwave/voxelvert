@@ -4,12 +4,11 @@ import com.google.gson.stream.JsonWriter;
 import net.grian.spatium.enums.Direction;
 import net.grian.spatium.geo.AxisAlignedBB;
 import net.grian.spatium.geo.Vector;
-import net.grian.vv.core.MCUV;
-import net.grian.vv.core.Texture;
-import net.grian.vv.core.MCElement;
-import net.grian.vv.core.MCModel;
+import net.grian.vv.core.*;
 
 import java.io.*;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 public class SerializerModelJSON implements Serializer<MCModel> {
 
@@ -83,25 +82,61 @@ public class SerializerModelJSON implements Serializer<MCModel> {
         MCUV uv = element.getUV(dir);
         assert uv != null;
         String textureName = uv.getTexture();
-        int width, height;
-        {
-            Texture texture = model.getTexture(textureName);
-            if (texture == null) throw new IOException("missing texture reference: "+textureName);
-            width = texture.getWidth();
-            height = texture.getHeight();
-        }
+        int[] dims = getDimensions(textureName);
+        float[] jsonUV = toJSONUV(uv, dims[0], dims[1]);
+        int rotation = uv.getRotation();
 
-        writer.beginObject();
+        writer.beginObject().setIndent("");
         writer.name("uv")
                 .beginArray()
-                .value((uv.getMinX()+1) * 16F / width)
-                .value((uv.getMinY()+1) * 16F / height)
-                .value((uv.getMaxX()+1) * 16F / width)
-                .value((uv.getMaxY()+1) * 16F / height)
+                .value(jsonUV[0]).value(jsonUV[1]).value(jsonUV[2]).value(jsonUV[3])
                 .endArray();
 
-        writer.name("texture").value(textureName);
+        writer.name("texture").value("#"+textureName);
+        if (rotation != 0)
+            writer.name("rotation").value(rotation);
+
         writer.endObject();
+        writer.setIndent(INDENT);
+    }
+
+    private int[] getDimensions(String textureName) throws IOException {
+        Texture texture = model.getTexture(textureName);
+        if (texture == null) throw new IOException("missing texture reference: "+textureName);
+        return new int[] {
+                texture.getWidth(),
+                texture.getHeight()
+        };
+    }
+
+    private static float[] toJSONUV(MCUV uv, int width, int height) {
+        final float mx = 16F / width, my = 16F / height;
+
+        return new float[] {
+                uv.getMinX() * mx,
+                uv.getMinY() * my,
+                uv.getMaxX() * mx,
+                uv.getMaxY() * my
+        };
+    }
+
+    private final static DecimalFormat UV_DEC_FORMAT;
+    static {
+        UV_DEC_FORMAT = new DecimalFormat("#.##");
+        UV_DEC_FORMAT.setRoundingMode(RoundingMode.DOWN);
+    }
+
+    private final static float ANTI_BLEED = 1F / 1024;
+
+    /**
+     * Rounds a number towards 8, leaving two decimals of accuracy. This both reduces JSON file size and prevents edge
+     * bleeding.
+     *
+     * @param coordinate the coordinate to round
+     * @return a rounded coordinate
+     */
+    public static float preventBleed(float coordinate) {
+        return (coordinate >= 8)? coordinate-ANTI_BLEED : coordinate+ANTI_BLEED;
     }
 
     private void writeVector(Vector vector, JsonWriter writer) throws IOException {
@@ -115,5 +150,6 @@ public class SerializerModelJSON implements Serializer<MCModel> {
         for (float f : floats) writer.value(f);
         writer.endArray().setIndent(INDENT);
     }
+
 
 }

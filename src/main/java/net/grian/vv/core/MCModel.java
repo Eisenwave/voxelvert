@@ -24,6 +24,18 @@ public class MCModel implements Iterable<MCElement> {
     }
 
     /**
+     * Returns the combined volume of all elements.
+     *
+     * @return the combined volume of all elements
+     */
+    public float getCombinedVolume() {
+        float v = 0;
+        for (MCElement e : elements)
+            v += e.getShape().getVolume();
+        return v;
+    }
+
+    /**
      * Adds a named texture to the model.
      *
      * @param name the texture name
