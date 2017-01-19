@@ -1,8 +1,7 @@
 package net.grian.vv.core;
 
+import net.grian.spatium.util.RGBValue;
 import org.bukkit.Material;
-
-import net.grian.vv.util.RGBValue;
 
 public class BlockColor implements RGBValue {
 

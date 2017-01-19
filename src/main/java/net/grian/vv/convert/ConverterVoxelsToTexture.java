@@ -3,11 +3,10 @@ package net.grian.vv.convert;
 import com.sun.istack.internal.NotNull;
 import net.grian.spatium.enums.Axis;
 import net.grian.spatium.enums.Direction;
+import net.grian.spatium.util.ColorMath;
+import net.grian.spatium.voxel.VoxelArray;
 import net.grian.vv.core.Texture;
-import net.grian.vv.core.VoxelArray.Voxel;
-import net.grian.vv.core.VoxelArray;
 import net.grian.vv.util.Arguments;
-import net.grian.vv.util.ColorMath;
 
 public class ConverterVoxelsToTexture implements Converter<VoxelArray, Texture> {
 
@@ -155,7 +154,7 @@ public class ConverterVoxelsToTexture implements Converter<VoxelArray, Texture> 
                 xmin = array.getSizeX()-1, ymin = array.getSizeY()-1, zmin = array.getSizeZ()-1;
 
         boolean empty = true;
-        for (Voxel voxel : array) {
+        for (VoxelArray.Voxel voxel : array) {
             if (empty) empty = false;
             int x = voxel.getX(), y = voxel.getY(), z = voxel.getZ();
             if (x < xmin) xmin = x;

@@ -1,7 +1,7 @@
 package net.grian.vv.convert;
 
 import net.grian.spatium.geo.BlockSelection;
-import net.grian.vv.core.VoxelArray;
+import net.grian.spatium.voxel.VoxelArray;
 import net.grian.vv.core.VoxelMesh;
 
 public class ConverterMeshToArray implements Converter<VoxelMesh, VoxelArray> {

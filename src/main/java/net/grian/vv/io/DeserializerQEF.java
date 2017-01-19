@@ -1,10 +1,10 @@
 package net.grian.vv.io;
 
-import net.grian.vv.core.VoxelArray;
-
 import java.awt.*;
 import java.io.*;
 import java.util.logging.Logger;
+
+import net.grian.spatium.voxel.VoxelArray;
 
 /**
  * Deserializer designed for parsing Qubicle Exchange Format files (version 0.2). These files are text files for storing

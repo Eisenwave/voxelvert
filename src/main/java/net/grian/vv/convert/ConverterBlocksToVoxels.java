@@ -1,11 +1,11 @@
 package net.grian.vv.convert;
 
+import net.grian.spatium.util.ColorMath;
+import net.grian.spatium.voxel.BlockArray;
+import net.grian.spatium.voxel.VoxelArray;
 import net.grian.vv.cache.ColorMap;
-import net.grian.vv.core.BlockArray;
 import net.grian.vv.core.BlockColor;
-import net.grian.vv.core.VoxelArray;
 import net.grian.vv.util.Arguments;
-import net.grian.vv.util.ColorMath;
 
 public class ConverterBlocksToVoxels implements Converter<BlockArray, VoxelArray> {
 

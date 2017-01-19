@@ -1,9 +1,9 @@
 package net.grian.vv.io;
 
+import net.grian.spatium.util.ColorMath;
 import net.grian.spatium.util.IOMath;
-import net.grian.vv.core.VoxelArray;
+import net.grian.spatium.voxel.VoxelArray;
 import net.grian.vv.core.VoxelMesh;
-import net.grian.vv.util.ColorMath;
 
 import java.io.DataInputStream;
 import java.io.IOException;

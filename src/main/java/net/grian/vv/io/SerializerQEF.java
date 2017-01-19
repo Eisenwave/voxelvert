@@ -1,8 +1,6 @@
 package net.grian.vv.io;
 
-import net.grian.vv.core.VoxelArray.Voxel;
-import net.grian.vv.core.VoxelArray;
-import net.grian.vv.io.Serializer;
+import net.grian.spatium.voxel.VoxelArray;
 
 import java.awt.*;
 import java.io.*;
@@ -69,7 +67,7 @@ public class SerializerQEF implements Serializer<VoxelArray> {
 
     private void writeVoxels(BufferedWriter writer) throws IOException {
         logger.info("writing "+compressedArray.size()+" voxels to file ...");
-        for (Voxel voxel : compressedArray) {
+        for (VoxelArray.Voxel voxel : compressedArray) {
             final int color = (voxel.getRGB() & 0xFFFFFF) -1;
             writer.write(voxel.getX()+" "+voxel.getY()+" "+voxel.getZ()+" "+color);
             writer.newLine();
@@ -81,7 +79,7 @@ public class SerializerQEF implements Serializer<VoxelArray> {
         int colorIndex = 0;
         compressedArray = new VoxelArray(array.getSizeX(), array.getSizeY(), array.getSizeZ());
 
-        for (Voxel v : array) {
+        for (VoxelArray.Voxel v : array) {
             Color color = v.getColor();
             if (colors.containsKey(color)) {
                 compressedArray.setRGB(v.getX(), v.getY(), v.getZ(), 0xFF_000000 | colors.get(color));

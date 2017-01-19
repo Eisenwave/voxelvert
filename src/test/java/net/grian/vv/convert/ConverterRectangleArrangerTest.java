@@ -1,10 +1,10 @@
 package net.grian.vv.convert;
 
+import net.grian.spatium.util.ColorMath;
 import net.grian.spatium.util.PrimMath;
 import net.grian.vv.core.BaseRectangle;
 import net.grian.vv.core.RectangleArrangement;
 import net.grian.vv.core.Texture;
-import net.grian.vv.util.ColorMath;
 import net.grian.vv.util.ConvUtil;
 import org.junit.Test;
 
@@ -12,8 +12,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
-import static org.junit.Assert.*;
 
 public class ConverterRectangleArrangerTest {
 

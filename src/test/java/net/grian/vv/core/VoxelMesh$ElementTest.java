@@ -2,6 +2,7 @@ package net.grian.vv.core;
 
 import net.grian.spatium.geo.BlockSelection;
 import net.grian.spatium.geo.BlockVector;
+import net.grian.spatium.voxel.VoxelArray;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

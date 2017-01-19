@@ -2,13 +2,10 @@ package net.grian.vv.convert;
 
 import net.grian.spatium.geo.BlockSelection;
 import net.grian.spatium.geo.BlockVector;
+import net.grian.spatium.voxel.VoxelArray;
 import net.grian.vv.cache.ColorMap;
-import net.grian.vv.core.VoxelArray.Voxel;
-import net.grian.vv.core.VoxelArray;
 import net.grian.vv.util.Arguments;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 
 public class ConverterVoxelsToBlocks implements Converter<VoxelArray, BlockSelection> {
 

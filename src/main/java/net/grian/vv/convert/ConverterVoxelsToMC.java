@@ -2,12 +2,12 @@ package net.grian.vv.convert;
 
 import net.grian.spatium.enums.Direction;
 import net.grian.spatium.geo.BlockSelection;
+import net.grian.spatium.voxel.VoxelArray;
 import net.grian.vv.core.*;
 import net.grian.vv.util.Arguments;
 import net.grian.vv.util.ConvUtil;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Logger;
 

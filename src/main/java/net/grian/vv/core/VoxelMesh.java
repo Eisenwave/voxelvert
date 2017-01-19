@@ -2,6 +2,7 @@ package net.grian.vv.core;
 
 import net.grian.spatium.geo.BlockSelection;
 import net.grian.spatium.geo.BlockVector;
+import net.grian.spatium.voxel.VoxelArray;
 
 import java.io.Serializable;
 import java.util.ArrayList;

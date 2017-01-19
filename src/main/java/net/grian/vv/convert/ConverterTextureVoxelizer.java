@@ -2,8 +2,8 @@ package net.grian.vv.convert;
 
 import net.grian.spatium.enums.Axis;
 import net.grian.spatium.enums.Direction;
+import net.grian.spatium.voxel.VoxelArray;
 import net.grian.vv.core.Texture;
-import net.grian.vv.core.VoxelArray;
 import net.grian.vv.util.Arguments;
 
 public class ConverterTextureVoxelizer implements Converter<Texture, VoxelArray> {

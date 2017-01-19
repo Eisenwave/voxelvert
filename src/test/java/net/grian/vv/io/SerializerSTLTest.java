@@ -1,15 +1,13 @@
 package net.grian.vv.io;
 
+import net.grian.spatium.voxel.VoxelArray;
 import net.grian.vv.core.STLModel;
-import net.grian.vv.core.VoxelArray;
 import net.grian.vv.util.ConvUtil;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
-
-import static org.junit.Assert.*;
 
 public class SerializerSTLTest {
 

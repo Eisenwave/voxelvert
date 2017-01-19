@@ -1,19 +1,16 @@
 package net.grian.vv.io;
 
 import net.grian.spatium.enums.Direction;
+import net.grian.spatium.voxel.VoxelArray;
 import net.grian.vv.core.Texture;
-import net.grian.vv.core.VoxelArray;
 import net.grian.vv.core.VoxelMesh;
 import net.grian.vv.util.ConvUtil;
-import net.grian.vv.util.Resources;
-import org.junit.Assert;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 import static org.junit.Assert.*;
 

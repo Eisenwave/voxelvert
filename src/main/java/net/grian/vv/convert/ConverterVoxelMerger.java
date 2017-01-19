@@ -1,14 +1,10 @@
 package net.grian.vv.convert;
 
 import net.grian.spatium.geo.BlockSelection;
-import net.grian.vv.core.Bitmap3D;
-import net.grian.vv.core.VoxelArray;
+import net.grian.spatium.voxel.Bitmap3D;
+import net.grian.spatium.voxel.VoxelArray;
 import net.grian.vv.core.VoxelMesh;
 import net.grian.vv.util.ConvUtil;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.logging.Logger;
 
 public class ConverterVoxelMerger implements Converter<VoxelArray, VoxelMesh> {
 

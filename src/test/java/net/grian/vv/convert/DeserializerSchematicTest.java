@@ -1,11 +1,8 @@
 package net.grian.vv.convert;
 
-import net.grian.vv.core.BlockArray;
+import net.grian.spatium.voxel.BlockArray;
 import net.grian.vv.io.DeserializerSchematic;
-import net.grian.vv.util.Resources;
 import org.junit.Test;
-
-import java.io.InputStream;
 
 import static org.junit.Assert.*;
 

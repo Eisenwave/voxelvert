@@ -1,7 +1,6 @@
 package net.grian.vv.io;
 
-import net.grian.vv.core.BlockArray;
-import net.grian.vv.io.*;
+import net.grian.spatium.voxel.BlockArray;
 import net.grian.vv.nbt.*;
 
 import java.io.IOException;

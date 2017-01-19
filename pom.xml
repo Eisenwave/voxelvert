@@ -40,13 +40,23 @@
             <id>sk89q</id>
             <url>http://maven.sk89q.com/artifactory/repo/</url>
         </repository>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>net.grian</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.11-R1</version>
+            <groupId>net.grian.spatium</groupId>
+            <artifactId>spatium</artifactId>
+            <version>0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.11.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

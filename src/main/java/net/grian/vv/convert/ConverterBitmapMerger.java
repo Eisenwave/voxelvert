@@ -1,7 +1,7 @@
 package net.grian.vv.convert;
 
 import net.grian.spatium.geo.BlockSelection;
-import net.grian.vv.core.Bitmap3D;
+import net.grian.spatium.voxel.Bitmap3D;
 
 import java.util.ArrayList;
 import java.util.Iterator;

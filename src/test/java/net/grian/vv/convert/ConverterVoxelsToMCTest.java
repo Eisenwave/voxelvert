@@ -2,21 +2,19 @@ package net.grian.vv.convert;
 
 import net.grian.spatium.enums.Direction;
 import net.grian.spatium.geo.BlockSelection;
+import net.grian.spatium.voxel.VoxelArray;
 import net.grian.vv.core.MCModel;
-import net.grian.vv.core.VoxelArray;
 import net.grian.vv.core.VoxelMesh;
 import net.grian.vv.io.DeserializerQB;
 import net.grian.vv.io.DeserializerQEF;
 import net.grian.vv.io.SerializerImage;
 import net.grian.vv.io.SerializerModelJSON;
-import net.grian.vv.util.ColorMath;
 import net.grian.vv.util.ConvUtil;
 import org.junit.Test;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

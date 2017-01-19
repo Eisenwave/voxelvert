@@ -1,7 +1,7 @@
 package net.grian.vv.io;
 
-import net.grian.vv.core.BlockKey;
-import net.grian.vv.util.ColorMath;
+import net.grian.spatium.util.ColorMath;
+import net.grian.spatium.voxel.BlockKey;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
