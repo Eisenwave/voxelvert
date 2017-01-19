@@ -113,20 +113,24 @@ public class SerializerModelJSON implements Serializer<MCModel> {
         final float mx = 16F / width, my = 16F / height;
 
         return new float[] {
-                uv.getMinX() * mx,
-                uv.getMinY() * my,
-                uv.getMaxX() * mx,
-                uv.getMaxY() * my
+                down(uv.getMinX() * mx + ANTI_BLEED),
+                down(uv.getMinY() * my + ANTI_BLEED),
+                down(uv.getMaxX() * mx - ANTI_BLEED),
+                down(uv.getMaxY() * my - ANTI_BLEED)
         };
     }
 
     private final static DecimalFormat UV_DEC_FORMAT;
     static {
-        UV_DEC_FORMAT = new DecimalFormat("#.##");
+        UV_DEC_FORMAT = new DecimalFormat("##.######");
         UV_DEC_FORMAT.setRoundingMode(RoundingMode.DOWN);
     }
 
-    private final static float ANTI_BLEED = 1F / 1024;
+    private final static float ANTI_BLEED = 1/128F;
+
+    private static float down(float number) {
+        return (int) (number * 256) / 256F;
+    }
 
     /**
      * Rounds a number towards 8, leaving two decimals of accuracy. This both reduces JSON file size and prevents edge
