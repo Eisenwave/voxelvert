@@ -6,7 +6,8 @@
 
     <groupId>net.grian.vv</groupId>
     <artifactId>VoxelVert</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1</version>
+
     <build>
         <plugins>
             <plugin>
@@ -51,6 +52,12 @@
             <groupId>net.grian.spatium</groupId>
             <artifactId>spatium</artifactId>
             <version>0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.grian</groupId>
+            <artifactId>Torrens</artifactId>
+            <version>1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

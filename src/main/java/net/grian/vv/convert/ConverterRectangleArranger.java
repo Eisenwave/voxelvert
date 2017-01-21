@@ -1,11 +1,9 @@
 package net.grian.vv.convert;
 
-import net.grian.vv.core.BaseRectangle;
+import net.grian.torrens.object.BaseRectangle;
 import net.grian.vv.core.RectangleArrangement;
-import net.grian.vv.util.Arguments;
 
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ConverterRectangleArranger implements Converter<BaseRectangle[], RectangleArrangement> {

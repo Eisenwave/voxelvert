@@ -6,7 +6,7 @@ public final class ConvUtil {
 
     private ConvUtil() {}
 
-    private final static ConvManager manager = new ConvManager();
+    private final static ConversionManager manager = new ConversionManager();
 
     static {
         manager.add(new ConverterBitmapMerger());
@@ -14,6 +14,8 @@ public final class ConvUtil {
         manager.add(new ConverterColorExtractor());
         manager.add(new ConverterImageToTexture());
         manager.add(new ConverterMeshToArray());
+        manager.add(new ConverterMeshToQB());
+        manager.add(new ConverterQBToMesh());
         manager.add(new ConverterRectangleArranger());
         manager.add(new ConverterTextureToImage());
         manager.add(new ConverterTextureStackVoxelizer());

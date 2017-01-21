@@ -1,7 +1,9 @@
 package net.grian.vv.io;
 
 import net.grian.spatium.voxel.VoxelArray;
-import net.grian.vv.core.STLModel;
+import net.grian.torrens.io.DeserializerQEF;
+import net.grian.torrens.io.SerializerSTL;
+import net.grian.torrens.object.STLModel;
 import net.grian.vv.util.ConvUtil;
 import org.junit.Test;
 

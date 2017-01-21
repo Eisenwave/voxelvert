@@ -1,18 +1,17 @@
 package net.grian.vv;
 
 import net.grian.spatium.enums.Direction;
+import net.grian.spatium.util.ColorMath;
+import net.grian.spatium.voxel.VoxelArray;
 import net.grian.vv.convert.*;
-import net.grian.vv.core.Texture;
-import net.grian.vv.core.VoxelArray;
-import net.grian.vv.core.VoxelArray.Voxel;
+import net.grian.torrens.object.Texture;
 import net.grian.vv.core.VoxelMesh;
-import net.grian.vv.io.ANSI;
-import net.grian.vv.io.DeserializerQEF;
-import net.grian.vv.io.DeserializerSchematic;
-import net.grian.vv.io.SerializerQEF;
-import net.grian.vv.util.ColorMath;
+import net.grian.torrens.util.ANSI;
+import net.grian.torrens.io.DeserializerQEF;
+import net.grian.torrens.io.DeserializerSchematic;
+import net.grian.torrens.io.SerializerQEF;
 import net.grian.vv.util.ConvUtil;
-import net.grian.vv.util.Resources;
+import net.grian.torrens.util.Resources;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
@@ -85,19 +84,19 @@ public class VoxelVertInformalTests {
         array.setRGB(0, 0, 1, 0xFF_FF_00_FF);
 
         System.out.println("ARRAY 1: ("+array.size()+")");
-        for (Voxel v : array)
+        for (VoxelArray.Voxel v : array)
             System.out.println(v);
 
         VoxelArray array2 = new VoxelArray(2, 3, 4);
         array2.fill(0xFF_FF_FF_FF);
 
         System.out.println("ARRAY 2: ("+array2.size()+")");
-        for (Voxel v : array2)
+        for (VoxelArray.Voxel v : array2)
             System.out.println(v);
 
         VoxelArray array3 = new VoxelArray(3, 5, 7);
         System.out.println("ARRAY 3: ("+array3.size()+"/"+array3.getVolume()+")");
-        for (Voxel v : array3)
+        for (VoxelArray.Voxel v : array3)
             System.out.println(v);
     }
 

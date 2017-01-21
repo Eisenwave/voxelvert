@@ -1,5 +1,7 @@
 package net.grian.vv.core;
 
+import net.grian.torrens.object.BaseRectangle;
+
 import java.util.*;
 
 public class RectangleArrangement implements Iterable<RectangleArrangement.Entry>, BaseRectangle {

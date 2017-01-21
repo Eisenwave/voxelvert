@@ -1,23 +1,17 @@
 package net.grian.vv.io;
 
 import com.google.gson.*;
-import net.grian.utilities.JsonUtil;
-import net.grian.vv.core.BlockKey;
-import org.apache.commons.io.IOUtils;
+import net.grian.spatium.voxel.BlockKey;
+import net.grian.torrens.error.FileSyntaxException;
+import net.grian.torrens.io.Parser;
 
-import java.io.*;
+import java.io.Reader;
 
-public class DeserializerExtractableArray implements Deserializer<ExtractableColor[]> {
+public class DeserializerExtractableArray implements Parser<ExtractableColor[]> {
 
     @Override
-    public ExtractableColor[] deserialize(InputStream stream) throws IOException {
-        return deserialize(IOUtils.toString(stream));
-    }
-
-    public ExtractableColor[] deserialize(String json) throws FileSyntaxException {
-        JsonElement element = JsonUtil.parse(json);
-        if (!(element instanceof JsonArray)) throw new FileSyntaxException("json root must be an array");
-        return deserialize((JsonArray) element);
+    public ExtractableColor[] deserialize(Reader reader) throws FileSyntaxException {
+        return deserialize(new Gson().fromJson(reader, JsonArray.class));
     }
 
     public ExtractableColor[] deserialize(JsonArray root) throws FileSyntaxException {
@@ -34,7 +28,7 @@ public class DeserializerExtractableArray implements Deserializer<ExtractableCol
         return colors;
     }
 
-    public static ExtractableColor deserializeColor(JsonObject json) throws FileSyntaxException {
+    private static ExtractableColor deserializeColor(JsonObject json) throws FileSyntaxException {
         JsonElement elementBlock = json.get("block");
         if (elementBlock == null) throw new FileSyntaxException(json+" is missing element 'block'");
         if (!elementBlock.isJsonPrimitive()) throw new FileSyntaxException("'block' must be primitive");

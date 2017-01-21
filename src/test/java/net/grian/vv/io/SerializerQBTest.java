@@ -1,29 +1,28 @@
 package net.grian.vv.io;
 
-import net.grian.vv.core.VoxelMesh;
-import net.grian.vv.util.Resources;
+import net.grian.torrens.io.DeserializerQB;
+import net.grian.torrens.io.SerializerQB;
+import net.grian.torrens.object.QBModel;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-
-import static org.junit.Assert.*;
 
 public class SerializerQBTest {
 
     @Test
     public void serialize() throws Exception {
-        VoxelMesh mesh = new DeserializerQB().deserialize(getClass(), "sniper.qb");
-        System.out.println("serializing mesh: "+mesh);
+        QBModel model = new DeserializerQB().deserialize(getClass(), "sniper.qb");
+        System.out.println("serializing model: "+model);
 
         File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVertPlugin\\files\\SerializerQBTest.qb");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
 
-        new SerializerQB().serialize(mesh, out);
+        new SerializerQB().serialize(model, out);
 
-        VoxelMesh mesh2 = new DeserializerQB().deserialize(out);
-        assertNotNull(mesh2);
+        QBModel model2 = new DeserializerQB().deserialize(out);
+        Assert.assertNotNull(model2);
     }
 
 }

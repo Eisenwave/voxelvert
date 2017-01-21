@@ -5,11 +5,11 @@ import net.grian.spatium.voxel.BlockArray;
 import net.grian.spatium.voxel.VoxelArray;
 import net.grian.vv.VoxelVertTest;
 import net.grian.vv.cache.ColorMap;
-import net.grian.vv.core.Texture;
-import net.grian.vv.io.DeserializerSchematic;
+import net.grian.torrens.object.Texture;
+import net.grian.torrens.io.DeserializerSchematic;
 import net.grian.vv.io.ExtractableColor;
 import net.grian.vv.util.ConvUtil;
-import net.grian.vv.util.Resources;
+import net.grian.torrens.util.Resources;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;

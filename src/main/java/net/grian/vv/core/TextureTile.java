@@ -1,5 +1,7 @@
 package net.grian.vv.core;
 
+import net.grian.torrens.object.BaseTexture;
+
 public class TextureTile implements BaseTexture {
 
     private final BaseTexture texture;

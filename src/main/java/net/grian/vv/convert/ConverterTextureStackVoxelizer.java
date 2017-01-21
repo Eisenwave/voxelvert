@@ -1,7 +1,7 @@
 package net.grian.vv.convert;
 
 import net.grian.spatium.voxel.VoxelArray;
-import net.grian.vv.core.Texture;
+import net.grian.torrens.object.Texture;
 import net.grian.vv.util.Arguments;
 
 import java.util.ArrayList;

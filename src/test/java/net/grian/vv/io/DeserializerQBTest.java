@@ -2,7 +2,9 @@ package net.grian.vv.io;
 
 import net.grian.spatium.enums.Direction;
 import net.grian.spatium.voxel.VoxelArray;
-import net.grian.vv.core.Texture;
+import net.grian.torrens.io.DeserializerQB;
+import net.grian.torrens.object.QBModel;
+import net.grian.torrens.object.Texture;
 import net.grian.vv.core.VoxelMesh;
 import net.grian.vv.util.ConvUtil;
 import org.junit.Test;
@@ -18,7 +20,8 @@ public class DeserializerQBTest {
 
     @Test
     public void deserialize() throws Exception {
-        VoxelMesh mesh = new DeserializerQB().deserialize(getClass(), "sniper.qb");
+        QBModel model = new DeserializerQB().deserialize(getClass(), "sniper.qb");
+        VoxelMesh mesh = ConvUtil.convert(model, VoxelMesh.class);
         System.out.println("mesh = "+mesh);
 
         assertNotNull(mesh);

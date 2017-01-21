@@ -2,9 +2,9 @@ package net.grian.vv.convert;
 
 import net.grian.spatium.enums.Direction;
 import net.grian.spatium.voxel.VoxelArray;
-import net.grian.vv.core.OBJFace;
-import net.grian.vv.core.OBJModel;
-import net.grian.vv.core.Vertex3f;
+import net.grian.torrens.object.OBJFace;
+import net.grian.torrens.object.OBJModel;
+import net.grian.torrens.object.Vertex3f;
 import net.grian.vv.util.Arguments;
 
 public class ConverterVoxelsToOBJ implements Converter<VoxelArray, OBJModel> {

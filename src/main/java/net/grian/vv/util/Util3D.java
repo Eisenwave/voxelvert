@@ -1,7 +1,7 @@
 package net.grian.vv.util;
 
 import net.grian.spatium.enums.Direction;
-import net.grian.vv.core.Vertex3f;
+import net.grian.torrens.object.Vertex3f;
 
 public final class Util3D {
 

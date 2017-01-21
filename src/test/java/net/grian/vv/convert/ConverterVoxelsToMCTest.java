@@ -3,12 +3,13 @@ package net.grian.vv.convert;
 import net.grian.spatium.enums.Direction;
 import net.grian.spatium.geo.BlockSelection;
 import net.grian.spatium.voxel.VoxelArray;
-import net.grian.vv.core.MCModel;
+import net.grian.torrens.io.DeserializerQB;
+import net.grian.torrens.io.SerializerPNG;
+import net.grian.torrens.object.MCModel;
+import net.grian.torrens.object.QBModel;
 import net.grian.vv.core.VoxelMesh;
-import net.grian.vv.io.DeserializerQB;
-import net.grian.vv.io.DeserializerQEF;
-import net.grian.vv.io.SerializerImage;
-import net.grian.vv.io.SerializerModelJSON;
+import net.grian.torrens.io.DeserializerQEF;
+import net.grian.torrens.io.SerializerModelJSON;
 import net.grian.vv.util.ConvUtil;
 import org.junit.Test;
 
@@ -55,23 +56,25 @@ public class ConverterVoxelsToMCTest {
 
         File imgOut = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ConverterVoxelsToMCTest.png");
         if (!imgOut.exists() && !imgOut.createNewFile()) throw new IOException("failed to create texture");
-        new SerializerImage().serialize(image, imgOut);
+        new SerializerPNG().serialize(image, imgOut);
     }
 
     @Test
     public void testVolumePreserve() throws Exception {
-        VoxelMesh mesh = new DeserializerQB().deserialize(getClass(), "sniper.qb");
-        MCModel model = ConvUtil.convert(mesh, MCModel.class);
+        QBModel model = new DeserializerQB().deserialize(getClass(), "sniper.qb");
+        VoxelMesh mesh = ConvUtil.convert(model, VoxelMesh.class);
+        MCModel mc = ConvUtil.convert(mesh, MCModel.class);
 
-        assertEquals(mesh.getCombinedVolume(), (int) model.getCombinedVolume());
+        assertEquals(mesh.getCombinedVolume(), (int) mc.getCombinedVolume());
     }
 
     @Test
     public void testElementsPreserve() throws Exception {
-        VoxelMesh mesh = new DeserializerQB().deserialize(getClass(), "sniper.qb");
-        MCModel model = ConvUtil.convert(mesh, MCModel.class);
+        QBModel model = new DeserializerQB().deserialize(getClass(), "sniper.qb");
+        VoxelMesh mesh = ConvUtil.convert(model, VoxelMesh.class);
+        MCModel mc = ConvUtil.convert(mesh, MCModel.class);
 
-        assertEquals(mesh.size(), model.size());
+        assertEquals(mesh.size(), mc.size());
     }
 
 }

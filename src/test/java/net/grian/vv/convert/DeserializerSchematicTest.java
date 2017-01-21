@@ -1,7 +1,7 @@
 package net.grian.vv.convert;
 
 import net.grian.spatium.voxel.BlockArray;
-import net.grian.vv.io.DeserializerSchematic;
+import net.grian.torrens.io.DeserializerSchematic;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

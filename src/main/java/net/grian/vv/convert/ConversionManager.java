@@ -4,27 +4,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-@SuppressWarnings("SpellCheckingInspection")
-public final class ConvManager {
+public final class ConversionManager {
 
-    private final Map<ConvKey<?,?>, Converter<?,?>> converters = new HashMap<>();
+    private final Map<ConversionKey<?,?>, Converter<?,?>> converters = new HashMap<>();
 
-    public ConvManager() {}
+    public ConversionManager() {}
 
     public <A,B> boolean add(Converter<A,B> converter) {
-        ConvKey<A,B> key = new ConvKey<>(converter.getFrom(), converter.getTo());
+        ConversionKey<A,B> key = new ConversionKey<>(converter.getFrom(), converter.getTo());
         return converters.put(key, converter) == null;
     }
 
     @SuppressWarnings("unchecked")
     public <A,B> Converter<A,B> get(Class<A> from, Class<B> to) {
-        ConvKey<A,B> key = new ConvKey<>(from, to);
+        ConversionKey<A,B> key = new ConversionKey<>(from, to);
         return (Converter<A, B>) converters.get(key);
     }
 
     @SuppressWarnings("unchecked")
     public <A,B> B convert(A from, Class<A> fromClass, Class<B> toClass, Object... args) {
-        ConvKey<A,B> key = new ConvKey<>(fromClass, toClass);
+        ConversionKey<A,B> key = new ConversionKey<>(fromClass, toClass);
         if (converters.containsKey(key))
             return ((Converter<A,B>) converters.get(key)).invoke(from, args);
         else
@@ -41,12 +40,12 @@ public final class ConvManager {
     }
     */
 
-    private static class ConvKey<A, B> {
+    private static class ConversionKey<A, B> {
 
         private final Class<A> from;
         private final Class<B> to;
 
-        public ConvKey(Class<A> from, Class<B> to) {
+        public ConversionKey(Class<A> from, Class<B> to) {
             Objects.requireNonNull(from);
             Objects.requireNonNull(to);
             this.from = from;
@@ -64,13 +63,13 @@ public final class ConvManager {
         @Override
         public boolean equals(Object obj) {
             try {
-                return equals((ConvKey) obj);
+                return equals((ConversionKey) obj);
             } catch (ClassCastException ex) {
                 return false;
             }
         }
 
-        public boolean equals(ConvKey<?,?> key) {
+        public boolean equals(ConversionKey<?,?> key) {
             return this.from.equals(key.from) && this.to.equals(key.to);
         }
 

@@ -1,6 +1,6 @@
 package net.grian.vv.convert;
 
-import net.grian.vv.core.Texture;
+import net.grian.torrens.object.Texture;
 
 import java.awt.image.BufferedImage;
 

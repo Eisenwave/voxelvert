@@ -3,7 +3,7 @@ package net.grian.vv.convert;
 import net.grian.spatium.enums.Axis;
 import net.grian.spatium.enums.Direction;
 import net.grian.spatium.voxel.VoxelArray;
-import net.grian.vv.core.Texture;
+import net.grian.torrens.object.Texture;
 import net.grian.vv.util.Arguments;
 
 public class ConverterTextureVoxelizer implements Converter<Texture, VoxelArray> {
@@ -53,6 +53,15 @@ public class ConverterTextureVoxelizer implements Converter<Texture, VoxelArray>
         }
     }
 
+    /**
+     * Returns a {@link CoordinateRemapper} for a given direction for given boundaries.
+     *
+     * @param direction the direction
+     * @param x the x-boundaries
+     * @param y the y-boundaries
+     * @param z the z-boundaries
+     * @return a new coordinate remapper
+     */
     private static CoordinateRemapper getRemapper(Direction direction, int x, int y, int z) {
         final int xmax = x-1, ymax = y-1, zmax = z-1;
         switch (direction) {

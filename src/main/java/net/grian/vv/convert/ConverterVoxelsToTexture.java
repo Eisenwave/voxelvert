@@ -5,7 +5,7 @@ import net.grian.spatium.enums.Axis;
 import net.grian.spatium.enums.Direction;
 import net.grian.spatium.util.ColorMath;
 import net.grian.spatium.voxel.VoxelArray;
-import net.grian.vv.core.Texture;
+import net.grian.torrens.object.Texture;
 import net.grian.vv.util.Arguments;
 
 public class ConverterVoxelsToTexture implements Converter<VoxelArray, Texture> {
@@ -66,7 +66,7 @@ public class ConverterVoxelsToTexture implements Converter<VoxelArray, Texture> 
                 for (int w = 0; w < depth; w++) {
                     int[] xyz = remapper.remap(u, v, w);
                     int top = array.getRGB(xyz[0], xyz[1], xyz[2]);
-                    if (isOpaque(rgb = ColorMath.stack(rgb, top))) break;
+                    if (ColorMath.isSolid(rgb = ColorMath.stack(rgb, top))) break;
                 }
                 texture.set(u, v, rgb);
             }
@@ -79,16 +79,6 @@ public class ConverterVoxelsToTexture implements Converter<VoxelArray, Texture> 
         }
 
         return texture;
-    }
-
-    /**
-     * Checks whether a given ARGB integer represents a fully opaque <code>(alpha = 255)</code> color.
-     *
-     * @param argb the color
-     * @return whether the color is fully opaque
-     */
-    private static boolean isOpaque(int argb) {
-        return (argb & 0xFF_00_00_00) == 0xFF_00_00_00;
     }
 
     /**
@@ -120,6 +110,15 @@ public class ConverterVoxelsToTexture implements Converter<VoxelArray, Texture> 
         }
     }
 
+    /**
+     * Returns a {@link CoordinateRemapper} for a given direction for given texture dimensions.
+     *
+     * @param dir the direction
+     * @param width the texture width (u-limit)
+     * @param height the texture height (v-limit)
+     * @param depth the texture depth (w-limit)
+     * @return a new coordinate remapper
+     */
     private static CoordinateRemapper getRemapper(Direction dir, int width, int height, int depth) {
         final int umax = width-1, vmax = height-1, wmax = depth-1;
         switch (dir) {

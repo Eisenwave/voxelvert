@@ -2,9 +2,9 @@ package net.grian.vv.convert;
 
 import net.grian.spatium.util.ColorMath;
 import net.grian.spatium.util.PrimMath;
-import net.grian.vv.core.BaseRectangle;
+import net.grian.torrens.object.BaseRectangle;
 import net.grian.vv.core.RectangleArrangement;
-import net.grian.vv.core.Texture;
+import net.grian.torrens.object.Texture;
 import net.grian.vv.util.ConvUtil;
 import org.junit.Test;
 
