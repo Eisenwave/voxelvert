@@ -8,7 +8,7 @@ import net.grian.torrens.io.SerializerQB;
 import net.grian.torrens.object.QBModel;
 import net.grian.vv.core.VoxelMesh;
 import net.grian.torrens.io.DeserializerQEF;
-import net.grian.vv.util.ConvUtil;
+import net.grian.vv.util.ConvertUtil;
 import org.junit.Test;
 
 import java.io.File;
@@ -21,12 +21,12 @@ public class ConverterVoxelMergerTest {
 
     @Test
     public void mergeQB() throws Exception {
-        QBModel model = new DeserializerQB().deserialize(getClass(), "sniper.qb");
-        VoxelMesh mesh = ConvUtil.convert(model, VoxelMesh.class);
-        VoxelArray array = ConvUtil.convert(mesh, VoxelArray.class); //turn into flat voxels
+        QBModel model = new DeserializerQB().fromResource(getClass(), "sniper.qb");
+        VoxelMesh mesh = ConvertUtil.convert(model, VoxelMesh.class);
+        VoxelArray array = ConvertUtil.convert(mesh, VoxelArray.class); //turn into flat voxels
 
-        mesh = ConvUtil.convert(array, VoxelMesh.class); //merge back into mesh (only x-merge)
-        model = ConvUtil.convert(mesh, QBModel.class);
+        mesh = ConvertUtil.convert(array, VoxelMesh.class); //merge back into mesh (only x-merge)
+        model = ConvertUtil.convert(mesh, QBModel.class);
 
         for (VoxelMesh.Element element : mesh)
             element.getArray().fill(ColorMath.fromHSB(PrimMath.randomFloat(1), 0.5F, 0.75F));
@@ -34,23 +34,23 @@ public class ConverterVoxelMergerTest {
         File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ConverterVoxelMergerTest.qb");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
 
-        new SerializerQB().serialize(model, out);
+        new SerializerQB().toFile(model, out);
     }
 
     @Test
     public void mergeQEF() throws Exception {
-        VoxelArray array = new DeserializerQEF().deserialize(getClass(), "sword.qef");
-        VoxelMesh mesh = ConvUtil.convert(array, VoxelMesh.class);
+        VoxelArray array = new DeserializerQEF().fromResource(getClass(), "sword.qef");
+        VoxelMesh mesh = ConvertUtil.convert(array, VoxelMesh.class);
 
         for (VoxelMesh.Element element : mesh)
             element.getArray().fill(ColorMath.fromHSB(PrimMath.randomFloat(1), 0.5F, 0.75F));
 
-        QBModel model = ConvUtil.convert(mesh, QBModel.class);
+        QBModel model = ConvertUtil.convert(mesh, QBModel.class);
 
         File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ConverterVoxelMergerTest2.qb");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
 
-        new SerializerQB().serialize(model, out);
+        new SerializerQB().toFile(model, out);
     }
 
     /**
@@ -64,7 +64,7 @@ public class ConverterVoxelMergerTest {
         VoxelArray array = new VoxelArray(8, 8, 8);
         Random r = new Random();
         array.forEachPosition(pos -> {if (r.nextBoolean()) array.setRGB(pos, ColorMath.SOLID_RED);});
-        VoxelMesh mesh = ConvUtil.convert(array, VoxelMesh.class);
+        VoxelMesh mesh = ConvertUtil.convert(array, VoxelMesh.class);
 
         assertEquals(array.size(), mesh.getCombinedVolume());
     }
@@ -82,7 +82,7 @@ public class ConverterVoxelMergerTest {
         array.forEachPosition(pos -> {if (r.nextBoolean()) array.setRGB(pos, ColorMath.SOLID_RED);});
 
         final int count = array.size();
-        VoxelMesh mesh = ConvUtil.convert(array, VoxelMesh.class);
+        VoxelMesh mesh = ConvertUtil.convert(array, VoxelMesh.class);
 
         assertEquals(count, mesh.voxelCount());
     }

@@ -1,7 +1,7 @@
 package net.grian.vv.io;
 
 import net.grian.torrens.io.Deserializer;
-import net.grian.torrens.io.Parser;
+import net.grian.torrens.io.TextDeserializer;
 import net.grian.torrens.io.Serializer;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.Map;
 public class IORegistry {
 
     private final Map<Class<?>, Deserializer<?>> deserializers = new HashMap<>();
-    private final Map<Class<?>, Parser<?>> parsers = new HashMap<>();
+    private final Map<Class<?>, TextDeserializer<?>> parsers = new HashMap<>();
     private final Map<Class<?>, Serializer<?>> serializers = new HashMap<>();
 
     public IORegistry() {}
@@ -28,7 +28,7 @@ public class IORegistry {
             throw new IllegalStateException("no deserializer found for: "+clazz);
 
         Deserializer<T> deserializer = (Deserializer<T>) deserializers.get(clazz);
-        return deserializer.deserialize(stream);
+        return deserializer.fromStream(stream);
     }
 
     public <T> T deserialize(Class<T> clazz, Reader reader) throws IOException {
@@ -37,8 +37,8 @@ public class IORegistry {
         if (!parsers.containsKey(clazz))
             throw new IllegalStateException("no deserializer found for: "+clazz);
 
-        Parser<T> parser = (Parser<T>) parsers.get(clazz);
-        return parser.deserialize(reader);
+        TextDeserializer<T> parser = (TextDeserializer<T>) parsers.get(clazz);
+        return parser.fromReader(reader);
     }
 
     public <T> void serialize(T object, Class<T> clazz, OutputStream stream) throws IOException {
@@ -50,7 +50,7 @@ public class IORegistry {
             throw new IllegalStateException("no deserializer found for: "+clazz);
 
         Serializer<T> serializer = (Serializer<T>) serializers.get(clazz);
-        serializer.serialize(object, stream);
+        serializer.toStream(object, stream);
     }
 
     public <T> void serialize(T object, OutputStream stream) throws IOException {

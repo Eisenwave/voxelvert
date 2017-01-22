@@ -2,14 +2,14 @@ package net.grian.vv.util;
 
 import net.grian.vv.convert.*;
 
-public final class ConvUtil {
+public final class ConvertUtil {
 
-    private ConvUtil() {}
+    private ConvertUtil() {}
 
     private final static ConversionManager manager = new ConversionManager();
 
     static {
-        manager.add(new ConverterBitmapMerger());
+        manager.add(new ConverterBitFieldMerger());
         manager.add(new ConverterBlocksToVoxels());
         manager.add(new ConverterColorExtractor());
         manager.add(new ConverterImageToTexture());
@@ -22,6 +22,8 @@ public final class ConvUtil {
         manager.add(new ConverterTextureVoxelizer());
         manager.add(new ConverterVoxelMerger());
         manager.add(new ConverterVoxelsToMC());
+        manager.add(new ConverterVoxelsToOBJModel());
+        manager.add(new ConverterVoxelsToQB());
         manager.add(new ConverterVoxelsToSTL());
         manager.add(new ConverterVoxelsToBlocks());
         manager.add(new ConverterVoxelsToTexture());

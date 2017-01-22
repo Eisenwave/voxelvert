@@ -10,7 +10,7 @@ import net.grian.torrens.util.ANSI;
 import net.grian.torrens.io.DeserializerQEF;
 import net.grian.torrens.io.DeserializerSchematic;
 import net.grian.torrens.io.SerializerQEF;
-import net.grian.vv.util.ConvUtil;
+import net.grian.vv.util.ConvertUtil;
 import net.grian.torrens.util.Resources;
 import org.junit.Test;
 
@@ -104,7 +104,7 @@ public class VoxelVertInformalTests {
         title("VOXEL SIDEWAYS RENDERS");
 
         File file = new File(DIR_VV_FILES+File.separator+"Barrett.qef");
-        VoxelArray array = new DeserializerQEF(LOGGER).deserialize(file);
+        VoxelArray array = new DeserializerQEF(LOGGER).fromFile(file);
 
         for (Direction dir : Direction.values()) {
             Texture texture = new ConverterVoxelsToTexture().invoke(array, dir, true, true);
@@ -125,8 +125,8 @@ public class VoxelVertInformalTests {
         File out = new File(directory+File.separator+"vvg_test_output.qef");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create file "+out);
 
-        VoxelArray array = new DeserializerQEF(LOGGER).deserialize(in);
-        new SerializerQEF(LOGGER).serialize(array, out);
+        VoxelArray array = new DeserializerQEF(LOGGER).fromFile(in);
+        new SerializerQEF(LOGGER).toFile(array, out);
     }
 
     private static void testMergingPerformance() {
@@ -175,16 +175,16 @@ public class VoxelVertInformalTests {
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create file "+out);
 
         BufferedImage image = ImageIO.read(in);
-        Texture texture = ConvUtil.convert(image, BufferedImage.class, Texture.class);
+        Texture texture = ConvertUtil.convert(image, BufferedImage.class, Texture.class);
         VoxelArray array = new ConverterTextureVoxelizer().invoke(texture, Direction.POSITIVE_X);
-        new SerializerQEF(LOGGER).serialize(array, out);
+        new SerializerQEF(LOGGER).toFile(array, out);
     }
 
     private static void testVoxelMerging() throws IOException {
         title("VOXEL MERGING");
 
         InputStream qef = Resources.getStream(VoxelVertInformalTests.class, "/cube32.qef");
-        VoxelArray array = new DeserializerQEF(LOGGER).deserialize(qef);
+        VoxelArray array = new DeserializerQEF(LOGGER).fromStream(qef);
         VoxelMesh cluster = new ConverterVoxelMerger().invoke(array);
         System.out.println(array+" -> "+cluster);
         qef.close();
@@ -200,7 +200,7 @@ public class VoxelVertInformalTests {
     private static void testSchematicIO() throws IOException {
         title("SCHEMATIC IO");
 
-        new DeserializerSchematic().deserialize(Resources.getStream(VoxelVertInformalTests.class, "bunny.schematic"));
+        new DeserializerSchematic().fromStream(Resources.getStream(VoxelVertInformalTests.class, "bunny.schematic"));
     }
 
     private static void title(String title) {

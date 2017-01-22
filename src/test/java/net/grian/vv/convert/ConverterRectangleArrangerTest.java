@@ -5,7 +5,7 @@ import net.grian.spatium.util.PrimMath;
 import net.grian.torrens.object.BaseRectangle;
 import net.grian.vv.core.RectangleArrangement;
 import net.grian.torrens.object.Texture;
-import net.grian.vv.util.ConvUtil;
+import net.grian.vv.util.ConvertUtil;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
@@ -29,14 +29,14 @@ public class ConverterRectangleArrangerTest {
         }
 
         long now = System.currentTimeMillis();
-        RectangleArrangement arrangement = ConvUtil.convert(rectangles, RectangleArrangement.class);
+        RectangleArrangement arrangement = ConvertUtil.convert(rectangles, RectangleArrangement.class);
         System.out.println("arranged "+rectangles.length+" rectangles in "+(System.currentTimeMillis()-now)+"ms");
 
         Texture render = new Texture(arrangement.getWidth(), arrangement.getHeight());
         for (RectangleArrangement.Entry entry : arrangement)
             render.paste((Texture) entry.getRectangle(), entry.getU(), entry.getV());
 
-        BufferedImage image = ConvUtil.convert(render, BufferedImage.class);
+        BufferedImage image = ConvertUtil.convert(render, BufferedImage.class);
 
         String path = "D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ConverterRectangleArrangerTest.png";
         File out = new File(path);

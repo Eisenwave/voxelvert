@@ -40,7 +40,7 @@ public class Registry {
             String name = file.getName();
             name = name.substring(0, name.lastIndexOf('.'));
             try {
-                colorArrays.put(name, new DeserializerExtractableArray().deserialize(file));
+                colorArrays.put(name, new DeserializerExtractableArray().fromFile(file));
             } catch (IOException ex) {
                 logger.warning("failed to load extractor: "+name);
                 ex.printStackTrace();

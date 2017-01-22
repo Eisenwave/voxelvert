@@ -11,7 +11,7 @@ import net.grian.torrens.util.Resources;
 import net.grian.vv.VoxelVertTest;
 import net.grian.vv.cache.ColorMap;
 import net.grian.vv.convert.ConverterBlocksToVoxels;
-import net.grian.vv.util.ConvUtil;
+import net.grian.vv.util.ConvertUtil;
 import org.junit.Test;
 
 import java.awt.image.BufferedImage;
@@ -28,23 +28,23 @@ public class DeserializerSchematicTest {
 
     @Test
     public void deserialize() throws Exception {
-        BlockArray blocks = new DeserializerSchematic().deserialize(getClass(), "bunny.schematic");
+        BlockArray blocks = new DeserializerSchematic().fromResource(getClass(), "bunny.schematic");
 
         assertEquals(COAL_BLOCK, blocks.getBlock(50, 30, 36));
 
         ExtractableColor[] extractableColors = VoxelVertTest.getInstance().getRegistry().getColors("default");
         ZipFile pack = Resources.getZipFile(getClass(), "resourcepacks/default.zip");
-        ColorMap colors = ConvUtil.convert(pack, ColorMap.class, new Object[] {extractableColors});
+        ColorMap colors = ConvertUtil.convert(pack, ColorMap.class, new Object[] {extractableColors});
         final int flags = ConverterBlocksToVoxels.SHOW_MISSING;
 
-        VoxelArray voxels = ConvUtil.convert(blocks, VoxelArray.class, colors, flags);
-        Texture front = ConvUtil.convert(voxels, Texture.class, Direction.NEGATIVE_Z, true, false);
-        BufferedImage image = ConvUtil.convert(front, BufferedImage.class);
+        VoxelArray voxels = ConvertUtil.convert(blocks, VoxelArray.class, colors, flags);
+        Texture front = ConvertUtil.convert(voxels, Texture.class, Direction.NEGATIVE_Z, true, false);
+        BufferedImage image = ConvertUtil.convert(front, BufferedImage.class);
 
         File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\maps\\DeserializerSchematicTest.png");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
 
-        new SerializerPNG().serialize(image, out);
+        new SerializerPNG().toFile(image, out);
     }
 
 }

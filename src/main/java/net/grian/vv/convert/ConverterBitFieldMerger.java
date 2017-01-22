@@ -1,18 +1,18 @@
 package net.grian.vv.convert;
 
 import net.grian.spatium.geo.BlockSelection;
-import net.grian.spatium.voxel.Bitmap3D;
+import net.grian.spatium.voxel.BitArray3;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class ConverterBitmapMerger implements Converter<Bitmap3D, BlockSelection[]> {
+public class ConverterBitFieldMerger implements Converter<BitArray3, BlockSelection[]> {
 
     @Override
-    public Class<Bitmap3D> getFrom() {
-        return Bitmap3D.class;
+    public Class<BitArray3> getFrom() {
+        return BitArray3.class;
     }
 
     @Override
@@ -22,12 +22,12 @@ public class ConverterBitmapMerger implements Converter<Bitmap3D, BlockSelection
 
     private final Logger logger;
 
-    public ConverterBitmapMerger() {
+    public ConverterBitFieldMerger() {
         this.logger = Logger.getGlobal();
     }
 
     @Override
-    public BlockSelection[] invoke(Bitmap3D map, Object... args) {
+    public BlockSelection[] invoke(BitArray3 map, Object... args) {
         int cancel = args.length>0? (Integer) args[0] : 3;
         if (cancel < 0) throw new IllegalArgumentException("cancel point must be positive");
 
@@ -100,7 +100,7 @@ public class ConverterBitmapMerger implements Converter<Bitmap3D, BlockSelection
         return result.toArray(new BlockSelection[result.size()]);
     }
 
-    private static BlockSelection[] resultFromBits(Bitmap3D bitmap, int limX, int limY, int limZ) {
+    private static BlockSelection[] resultFromBits(BitArray3 bitmap, int limX, int limY, int limZ) {
         BlockSelection[] result = new BlockSelection[limX*limY*limZ];
 
         for (int x = 0; x<limX; x++) for (int y = 0; y<limY; y++) for (int z = 0; z<limZ; z++) {
@@ -117,7 +117,7 @@ public class ConverterBitmapMerger implements Converter<Bitmap3D, BlockSelection
      * @param bitmap the initial bitmap
      * @return a 2D array of voxel arrays lists representing a YxZ array of lines
      */
-    private static LineList[][] mergeX(Bitmap3D bitmap, int limX, int limY, int limZ) {
+    private static LineList[][] mergeX(BitArray3 bitmap, int limX, int limY, int limZ) {
         LineList[][] result = new LineList[limY][limZ];
 
         for (int y = 0; y<limY; y++) for (int z = 0; z<limZ; z++) {

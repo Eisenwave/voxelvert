@@ -6,7 +6,7 @@ import net.grian.spatium.voxel.VoxelArray;
 import net.grian.torrens.object.*;
 import net.grian.vv.core.*;
 import net.grian.vv.util.Arguments;
-import net.grian.vv.util.ConvUtil;
+import net.grian.vv.util.ConvertUtil;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -209,7 +209,7 @@ public class ConverterVoxelsToMC implements Converter<VoxelMesh, MCModel> {
     private static RectangleArrangement arrangeTextures(Collection<? extends BaseRectangle> rectangles) {
         Arguments.requireNonnull(rectangles);
         BaseRectangle[] array = rectangles.toArray(new BaseRectangle[rectangles.size()]);
-        return ConvUtil.convert(array, RectangleArrangement.class);
+        return ConvertUtil.convert(array, RectangleArrangement.class);
     }
 
     public static BlockSelection getSurface(BlockSelection box, Direction side) {

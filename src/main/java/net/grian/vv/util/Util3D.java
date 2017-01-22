@@ -14,7 +14,7 @@ public final class Util3D {
             NORMALS[dir.ordinal()] = Util3D.internalNormalOf(dir);
     }
 
-    public static Vertex3f internalNormalOf(Direction dir) {
+    private static Vertex3f internalNormalOf(Direction dir) {
         switch (dir) {
             case NEGATIVE_X: return new Vertex3f(-1, 0, 0);
             case POSITIVE_X: return new Vertex3f( 1, 0, 0);

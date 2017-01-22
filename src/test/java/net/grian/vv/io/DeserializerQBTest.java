@@ -6,7 +6,7 @@ import net.grian.torrens.io.DeserializerQB;
 import net.grian.torrens.object.QBModel;
 import net.grian.torrens.object.Texture;
 import net.grian.vv.core.VoxelMesh;
-import net.grian.vv.util.ConvUtil;
+import net.grian.vv.util.ConvertUtil;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
@@ -20,15 +20,15 @@ public class DeserializerQBTest {
 
     @Test
     public void deserialize() throws Exception {
-        QBModel model = new DeserializerQB().deserialize(getClass(), "sniper.qb");
-        VoxelMesh mesh = ConvUtil.convert(model, VoxelMesh.class);
+        QBModel model = new DeserializerQB().fromResource(getClass(), "sniper.qb");
+        VoxelMesh mesh = ConvertUtil.convert(model, VoxelMesh.class);
         System.out.println("mesh = "+mesh);
 
         assertNotNull(mesh);
 
-        VoxelArray array = ConvUtil.convert(mesh, VoxelArray.class);
-        Texture texture = ConvUtil.convert(array, Texture.class, Direction.NEGATIVE_Z, true, true);
-        BufferedImage image = ConvUtil.convert(texture, BufferedImage.class);
+        VoxelArray array = ConvertUtil.convert(mesh, VoxelArray.class);
+        Texture texture = ConvertUtil.convert(array, Texture.class, Direction.NEGATIVE_Z, true, true);
+        BufferedImage image = ConvertUtil.convert(texture, BufferedImage.class);
 
         File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVertPlugin\\maps\\DeserializerQBTest.png");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);

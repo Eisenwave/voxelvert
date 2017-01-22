@@ -10,7 +10,7 @@ import net.grian.torrens.object.QBModel;
 import net.grian.vv.core.VoxelMesh;
 import net.grian.torrens.io.DeserializerQEF;
 import net.grian.torrens.io.SerializerModelJSON;
-import net.grian.vv.util.ConvUtil;
+import net.grian.vv.util.ConvertUtil;
 import org.junit.Test;
 
 import java.awt.image.BufferedImage;
@@ -45,34 +45,34 @@ public class ConverterVoxelsToMCTest {
     @Test
     public void invoke() throws Exception {
         Logger.getGlobal().setLevel(Level.FINE);
-        VoxelArray voxels = new DeserializerQEF(Logger.getGlobal()).deserialize(getClass(), "debug.qef");
-        VoxelMesh mesh = ConvUtil.convert(voxels, VoxelMesh.class);
+        VoxelArray voxels = new DeserializerQEF(Logger.getGlobal()).fromResource(getClass(), "debug.qef");
+        VoxelMesh mesh = ConvertUtil.convert(voxels, VoxelMesh.class);
         MCModel model = new ConverterVoxelsToMC().invoke(mesh);
-        BufferedImage image = ConvUtil.convert(model.getTexture("texture"), BufferedImage.class);
+        BufferedImage image = ConvertUtil.convert(model.getTexture("texture"), BufferedImage.class);
 
         File jsonOut = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ConverterVoxelsToMCTest.json");
         if (!jsonOut.exists() && !jsonOut.createNewFile()) throw new IOException("failed to create json");
-        new SerializerModelJSON().serialize(model, jsonOut);
+        new SerializerModelJSON().toFile(model, jsonOut);
 
         File imgOut = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ConverterVoxelsToMCTest.png");
         if (!imgOut.exists() && !imgOut.createNewFile()) throw new IOException("failed to create texture");
-        new SerializerPNG().serialize(image, imgOut);
+        new SerializerPNG().toFile(image, imgOut);
     }
 
     @Test
     public void testVolumePreserve() throws Exception {
-        QBModel model = new DeserializerQB().deserialize(getClass(), "sniper.qb");
-        VoxelMesh mesh = ConvUtil.convert(model, VoxelMesh.class);
-        MCModel mc = ConvUtil.convert(mesh, MCModel.class);
+        QBModel model = new DeserializerQB().fromResource(getClass(), "sniper.qb");
+        VoxelMesh mesh = ConvertUtil.convert(model, VoxelMesh.class);
+        MCModel mc = ConvertUtil.convert(mesh, MCModel.class);
 
         assertEquals(mesh.getCombinedVolume(), (int) mc.getCombinedVolume());
     }
 
     @Test
     public void testElementsPreserve() throws Exception {
-        QBModel model = new DeserializerQB().deserialize(getClass(), "sniper.qb");
-        VoxelMesh mesh = ConvUtil.convert(model, VoxelMesh.class);
-        MCModel mc = ConvUtil.convert(mesh, MCModel.class);
+        QBModel model = new DeserializerQB().fromResource(getClass(), "sniper.qb");
+        VoxelMesh mesh = ConvertUtil.convert(model, VoxelMesh.class);
+        MCModel mc = ConvertUtil.convert(mesh, MCModel.class);
 
         assertEquals(mesh.size(), mc.size());
     }

@@ -3,14 +3,14 @@ package net.grian.vv.io;
 import com.google.gson.*;
 import net.grian.spatium.voxel.BlockKey;
 import net.grian.torrens.error.FileSyntaxException;
-import net.grian.torrens.io.Parser;
+import net.grian.torrens.io.TextDeserializer;
 
 import java.io.Reader;
 
-public class DeserializerExtractableArray implements Parser<ExtractableColor[]> {
+public class DeserializerExtractableArray implements TextDeserializer<ExtractableColor[]> {
 
     @Override
-    public ExtractableColor[] deserialize(Reader reader) throws FileSyntaxException {
+    public ExtractableColor[] fromReader(Reader reader) throws FileSyntaxException {
         return deserialize(new Gson().fromJson(reader, JsonArray.class));
     }
 

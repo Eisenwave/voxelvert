@@ -1,10 +1,10 @@
 package net.grian.vv.convert;
 
 import net.grian.spatium.geo.BlockSelection;
-import net.grian.spatium.voxel.Bitmap3D;
+import net.grian.spatium.voxel.BitArray3;
 import net.grian.spatium.voxel.VoxelArray;
 import net.grian.vv.core.VoxelMesh;
-import net.grian.vv.util.ConvUtil;
+import net.grian.vv.util.ConvertUtil;
 
 public class ConverterVoxelMerger implements Converter<VoxelArray, VoxelMesh> {
 
@@ -20,7 +20,7 @@ public class ConverterVoxelMerger implements Converter<VoxelArray, VoxelMesh> {
 
     @Override
     public VoxelMesh invoke(VoxelArray array, Object... args) {
-        BlockSelection[] boxes = ConvUtil.convert(array, Bitmap3D.class, BlockSelection[].class, args);
+        BlockSelection[] boxes = ConvertUtil.convert(array, BitArray3.class, BlockSelection[].class, args);
 
         return cut(array, boxes); //cut arrays out of array using zones
     }
