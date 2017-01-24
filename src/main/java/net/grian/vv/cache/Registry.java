@@ -1,8 +1,8 @@
 package net.grian.vv.cache;
 
+import net.grian.torrens.util.Resources;
 import net.grian.vv.io.DeserializerExtractableArray;
 import net.grian.vv.io.ExtractableColor;
-import net.grian.torrens.util.Resources;
 
 import java.io.File;
 import java.io.IOException;

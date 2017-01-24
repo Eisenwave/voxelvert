@@ -3,7 +3,8 @@ package net.grian.vv.convert;
 import net.grian.torrens.object.BaseRectangle;
 import net.grian.vv.core.RectangleArrangement;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 public class ConverterRectangleArranger implements Converter<BaseRectangle[], RectangleArrangement> {

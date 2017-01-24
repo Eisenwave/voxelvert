@@ -5,7 +5,7 @@ import net.grian.spatium.geo.BlockVector;
 import net.grian.spatium.voxel.VoxelArray;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class VoxelMesh$ElementTest {
 

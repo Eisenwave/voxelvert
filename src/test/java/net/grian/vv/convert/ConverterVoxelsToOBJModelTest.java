@@ -3,7 +3,7 @@ package net.grian.vv.convert;
 import net.grian.spatium.util.ColorMath;
 import net.grian.spatium.voxel.VoxelArray;
 import net.grian.torrens.io.DeserializerQEF;
-import net.grian.torrens.io.SerializerOBJ;
+import net.grian.torrens.io.SerializerOBJModel;
 import net.grian.torrens.object.OBJFace;
 import net.grian.torrens.object.OBJModel;
 import net.grian.torrens.object.OBJTriplet;
@@ -15,7 +15,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 public class ConverterVoxelsToOBJModelTest {
 
@@ -36,7 +36,7 @@ public class ConverterVoxelsToOBJModelTest {
         File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ConverterVoxelsToOBJModelTest.obj");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create: "+out);
 
-        new SerializerOBJ().toFile(model, out);
+        new SerializerOBJModel().toFile(model, out);
     }
 
     @Test
@@ -49,7 +49,7 @@ public class ConverterVoxelsToOBJModelTest {
         File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ConverterVoxelsToOBJModelTest.obj");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create: "+out);
 
-        new SerializerOBJ().toFile(model, out);
+        new SerializerOBJModel().toFile(model, out);
     }
 
     @Test

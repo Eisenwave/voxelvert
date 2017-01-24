@@ -4,7 +4,7 @@ import net.grian.spatium.voxel.BlockArray;
 import net.grian.torrens.io.DeserializerSchematic;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 public class DeserializerSchematicTest {
 

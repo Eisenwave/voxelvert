@@ -5,13 +5,12 @@ import net.grian.spatium.util.Flags;
 import net.grian.spatium.voxel.VoxelArray;
 import net.grian.torrens.io.DeserializerQEF;
 import net.grian.torrens.io.SerializerQEF;
-import net.grian.torrens.util.ANSI;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class VoxelCanvasTest {
 
@@ -22,7 +21,7 @@ public class VoxelCanvasTest {
 
         canvas.selectContent(false);
         canvas.drawRaw((x, y, z) -> {
-            float brightness = Flags.bitSum(voxels.getVisibilityMap(x, y, z)) / 6F;
+            float brightness = Flags.bitSum(voxels.getVisibilityMask(x, y, z)) / 6F;
             return ColorMath.fromRGB(brightness, brightness, brightness);
         });
 
@@ -34,6 +33,17 @@ public class VoxelCanvasTest {
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
 
         new SerializerQEF().toFile(content, out);
+    }
+
+    @Test
+    public void drawLine() throws Exception {
+        VoxelCanvas canvas = new VoxelCanvas(64, 64, 64);
+        canvas.drawLine(0, 7, 15, 63, 63, 63, ColorMath.DEBUG1);
+
+        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\VoxelCanvasTest_drawLine.qef");
+        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
+
+        new SerializerQEF().toFile(canvas.getContent(), out);
     }
 
     @Test

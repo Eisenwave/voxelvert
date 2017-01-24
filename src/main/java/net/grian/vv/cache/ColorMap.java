@@ -1,9 +1,9 @@
 package net.grian.vv.cache;
 
 import net.grian.spatium.voxel.BlockKey;
+import net.grian.torrens.util.Resources;
 import net.grian.vv.convert.ConverterColorExtractor;
 import net.grian.vv.core.BlockColor;
-import net.grian.torrens.util.Resources;
 
 import java.io.IOException;
 import java.util.HashMap;

@@ -1,9 +1,12 @@
 package net.grian.vv.core;
 
+import net.grian.spatium.Spatium;
 import net.grian.spatium.array.BooleanArray3;
 import net.grian.spatium.function.Int3Consumer;
 import net.grian.spatium.function.Int3IntFunction;
 import net.grian.spatium.function.Int3Predicate;
+import net.grian.spatium.geo.BlockVector;
+import net.grian.spatium.util.PrimMath;
 import net.grian.spatium.voxel.VoxelArray;
 
 import java.util.function.Consumer;
@@ -75,10 +78,12 @@ public class VoxelCanvas {
     // DRAW
 
     public void draw(int x, int y, int z, int rgb) {
-        if (
-                x >= 0 && y >= 0 && z >= 0 &&
-                x < sizeX && y < sizeY && z < sizeZ &&
-                selection.get(x, y, z))
+        if (x >= 0 && y >= 0 && z >= 0 && x < sizeX && y < sizeY && z < sizeZ)
+            internalDraw(x, y, z, rgb);
+    }
+
+    private void internalDraw(int x, int y, int z, int rgb) {
+        if (selection.contains(x, y, z))
             content.setRGB(x, y, z, rgb);
     }
 
@@ -96,6 +101,192 @@ public class VoxelCanvas {
 
     public void drawRaw(Int3IntFunction function) {
         forEachPosition( (x, y, z) -> draw(x, y, z, function.apply(x, y, z)) );
+    }
+
+    /**
+     * Draws a box from one voxel to another.
+     *
+     * @param x0 the first voxel x
+     * @param y0 the first voxel y
+     * @param z0 the first voxel z
+     * @param x1 the second voxel x
+     * @param y1 the second voxel y
+     * @param z1 the second voxel z
+     * @param rgb the line color
+     */
+    public void drawBox(int x0, int y0, int z0, int x1, int y1, int z1, int rgb) {
+        internalDrawBox(
+                Math.max(Math.min(x0, x1), 0),
+                Math.max(Math.min(y0, y1), 0),
+                Math.max(Math.min(z0, z1), 0),
+                Math.min(Math.max(x0, x1), sizeX-1),
+                Math.min(Math.max(y0, y1), sizeY-1),
+                Math.min(Math.max(z0, z1), sizeZ-1),
+                rgb);
+    }
+
+    private void internalDrawBox(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, int rgb) {
+        for (int x = minX; x<maxX; x++)
+            for (int y = minY; y<maxY; y++)
+                for (int z = minZ; z<maxZ; z++)
+                    internalDraw(x, y, z, rgb);
+    }
+
+    /**
+     * Draws an ellipse from one voxel to another.
+     *
+     * @param x0 the first voxel x
+     * @param y0 the first voxel y
+     * @param z0 the first voxel z
+     * @param x1 the second voxel x
+     * @param y1 the second voxel y
+     * @param z1 the second voxel z
+     * @param rgb the line color
+     */
+    public void drawEllipse(int x0, int y0, int z0, int x1, int y1, int z1, int rgb) {
+        internalDrawEllipse(
+                (x0 + x1) / 2,
+                (y0 + y1) / 2,
+                (z0 + z1) / 2,
+                Math.abs(x1 - x0),
+                Math.abs(y1 - y0),
+                Math.abs(z1 - z0),
+                rgb);
+    }
+
+    /**
+     * Draws a sphere around a voxel.
+     *
+     * @param x0 the first voxel x
+     * @param y0 the first voxel y
+     * @param z0 the first voxel z
+     * @param size the size of the size
+     * @param rgb the line color
+     */
+    public void drawSphere(int x0, int y0, int z0, int size, int rgb) {
+        if (size < 0) return;
+        internalDrawSphere(x0, y0, z0, size, rgb);
+    }
+
+    private void internalDrawSphere(float cenX, float cenY, float cenZ, float r, int rgb) {
+        final int
+                minX = (int) (cenX - r), minY = (int) (cenY - r), minZ = (int) (cenZ - r),
+                maxX = (int) (cenX + r), maxY = (int) (cenY + r), maxZ = (int) (cenZ + r);
+
+        for (int x = minX; x<maxX; x++)
+            for (int y = minY; y<maxY; y++)
+                for (int z = minZ; z<maxZ; z++) {
+                    float dist = Spatium.hypot(x-cenX, y-cenY, z-cenZ);
+                    if (dist <= r)
+                        draw(x, y, z, rgb);
+                }
+    }
+
+    private void internalDrawEllipse(float cenX, float cenY, float cenZ, float rx, float ry, float rz, int rgb) {
+        final int
+                minX = (int) (cenX - rx), minY = (int) (cenY - ry), minZ = (int) (cenZ - rz),
+                maxX = (int) (cenX + rx), maxY = (int) (cenY + ry), maxZ = (int) (cenZ + rz);
+
+        for (int x = minX; x<maxX; x++)
+            for (int y = minY; y<maxY; y++)
+                for (int z = minZ; z<maxZ; z++) {
+                    float dist = Spatium.hypot(x-cenX, y-cenY, z-cenZ);
+                    if (dist <= rx && dist <= ry && dist <= rz)
+                        internalDraw(x, y, z, rgb);
+                }
+    }
+
+    /**
+     * Draws a line from one voxel to another.
+     *
+     * @param x0 the first voxel x
+     * @param y0 the first voxel y
+     * @param z0 the first voxel z
+     * @param x1 the second voxel x
+     * @param y1 the second voxel y
+     * @param z1 the second voxel z
+     * @param rgb the line color
+     */
+    public void drawLine(int x0, int y0, int z0, int x1, int y1, int z1, int rgb) {
+        if (x0 == x1 && y0 == y1 && z0 == z1) {
+            draw(x0, y0, z0, rgb);
+            return;
+        }
+
+        internalDrawLine(
+                Math.max(Math.min(x0, x1), 0),
+                Math.max(Math.min(y0, y1), 0),
+                Math.max(Math.min(z0, z1), 0),
+                Math.min(Math.max(x0, x1), sizeX-1),
+                Math.min(Math.max(y0, y1), sizeY-1),
+                Math.min(Math.max(z0, z1), sizeZ-1),
+                rgb);
+    }
+
+    /**
+     * Draws a line from one voxel to another.
+     *
+     * @param a the first voxel
+     * @param b the first voxel
+     * @param rgb the line color
+     */
+    public void drawLine(BlockVector a, BlockVector b, int rgb) {
+        drawLine(a.getX(), a.getY(), a.getZ(), b.getX(), b.getY(), b.getZ(), rgb);
+    }
+
+    @SuppressWarnings("Duplicates")
+    private void internalDrawLine(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, int rgb) {
+        final int dx = maxX-minX, dy = maxY-minY, dz = maxZ-minZ, dmax = PrimMath.max(dx, dy, dz);
+        int err0 = dmax / 2, err1 = err0;
+
+        if (dmax == dx) {
+            for (int x=minX, y=minY, z=minZ; x<=maxX; x++) {
+                internalDraw(x, y, z, rgb);
+
+                err0 -= dy;
+                if (err0 < 0) {
+                    err0 += dx;
+                    y++;
+                }
+                err1 -= dz;
+                if (err1 < 0) {
+                    err1 += dx;
+                    z++;
+                }
+            }
+        }
+        else if (dmax == dy) {
+            for (int x=minX, y=minY, z=minZ; x<=maxX; y++) {
+                internalDraw(x, y, z, rgb);
+
+                err0 -= dx;
+                if (err0 < 0) {
+                    err0 += dy;
+                    x++;
+                }
+                err1 -= dz;
+                if (err1 < 0) {
+                    err1 += dy;
+                    z++;
+                }
+            }
+        }
+        else if (dmax == dz) {
+            for (int x=minX, y=minY, z=minZ; x<=maxX; z++) {
+                internalDraw(x, y, z, rgb);
+
+                err0 -= dx;
+                if (err0 < 0) {
+                    err0 += dz;
+                    x++;
+                }
+                err1 -= dy;
+                if (err1 < 0) {
+                    err1 += dz;
+                    y++;
+                }
+            }
+        }
     }
 
     // SELECT
@@ -130,12 +321,12 @@ public class VoxelCanvas {
 
     // IS SELECTED
 
-    public boolean contains(int x, int y, int z) {
-        return content.contains(x, y, z);
+    public boolean hasContent(int x, int y, int z) {
+        return x >= 0 && y >= 0 && z >= 0 && x < sizeX && y < sizeY && z < sizeZ && content.contains(x, y, z);
     }
 
     public boolean isSelected(int x, int y, int z) {
-        return selection.contains(x, y, z);
+        return x >= 0 && y >= 0 && z >= 0 && x < sizeX && y < sizeY && z < sizeZ && selection.contains(x, y, z);
     }
 
     // ITERATION
@@ -163,4 +354,5 @@ public class VoxelCanvas {
                 "{content="+content+
                 ",selected="+getSelection().size()+"}";
     }
+
 }

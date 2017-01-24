@@ -1,8 +1,8 @@
 package net.grian.vv.io;
 
 import net.grian.torrens.io.Deserializer;
-import net.grian.torrens.io.TextDeserializer;
 import net.grian.torrens.io.Serializer;
+import net.grian.torrens.io.TextDeserializer;
 
 import java.io.IOException;
 import java.io.InputStream;

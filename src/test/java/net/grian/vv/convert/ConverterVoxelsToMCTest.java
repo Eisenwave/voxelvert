@@ -4,12 +4,12 @@ import net.grian.spatium.enums.Direction;
 import net.grian.spatium.geo.BlockSelection;
 import net.grian.spatium.voxel.VoxelArray;
 import net.grian.torrens.io.DeserializerQB;
+import net.grian.torrens.io.DeserializerQEF;
+import net.grian.torrens.io.SerializerModelJSON;
 import net.grian.torrens.io.SerializerPNG;
 import net.grian.torrens.object.MCModel;
 import net.grian.torrens.object.QBModel;
 import net.grian.vv.core.VoxelMesh;
-import net.grian.torrens.io.DeserializerQEF;
-import net.grian.torrens.io.SerializerModelJSON;
 import net.grian.vv.util.ConvertUtil;
 import org.junit.Test;
 
@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ConverterVoxelsToMCTest {
 

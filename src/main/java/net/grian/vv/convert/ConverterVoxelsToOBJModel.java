@@ -3,10 +3,14 @@ package net.grian.vv.convert;
 import net.grian.spatium.array.IntArray3;
 import net.grian.spatium.enums.Direction;
 import net.grian.spatium.util.Flags;
+import net.grian.spatium.util.PrimMath;
 import net.grian.spatium.voxel.VoxelArray;
 import net.grian.torrens.object.*;
 import net.grian.vv.util.Arguments;
 import net.grian.vv.util.Util3D;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConverterVoxelsToOBJModel implements Converter<VoxelArray, OBJModel> {
 
@@ -83,50 +87,12 @@ public class ConverterVoxelsToOBJModel implements Converter<VoxelArray, OBJModel
                 cubeIndex(0, 1, 1)};
     }
 
-    private static Vertex3f[] faceOf(VoxelArray.Voxel voxel, Direction dir) {
-        final int x = voxel.getX(), y = voxel.getY(), z = voxel.getZ();
-
-        switch (dir) {
-            case NEGATIVE_X: return new Vertex3f[] {
-                    new Vertex3f(x, y,   z),
-                    new Vertex3f(x, y+1, z),
-                    new Vertex3f(x, y+1, z+1),
-                    new Vertex3f(x, y,   z+1)};
-            case NEGATIVE_Y: return new Vertex3f[] {
-                    new Vertex3f(x,   y, z),
-                    new Vertex3f(x+1, y, z),
-                    new Vertex3f(x+1, y, z+1),
-                    new Vertex3f(x,   y, z+1)};
-            case NEGATIVE_Z: return new Vertex3f[] {
-                    new Vertex3f(x,   y,   z),
-                    new Vertex3f(x,   y+1, z),
-                    new Vertex3f(x+1, y+1, z),
-                    new Vertex3f(x+1, y,   z),};
-            case POSITIVE_X: return new Vertex3f[] {
-                    new Vertex3f(x+1, y,   z),
-                    new Vertex3f(x+1, y+1, z),
-                    new Vertex3f(x+1, y+1, z+1),
-                    new Vertex3f(x+1, y,   z+1)};
-            case POSITIVE_Y: return new Vertex3f[] {
-                    new Vertex3f(x,   y+1, z),
-                    new Vertex3f(x+1, y+1, z),
-                    new Vertex3f(x+1, y+1, z+1),
-                    new Vertex3f(x,   y+1, z+1)};
-            case POSITIVE_Z: return new Vertex3f[] {
-                    new Vertex3f(x,   y,   z+1),
-                    new Vertex3f(x+1, y,   z+1),
-                    new Vertex3f(x+1, y+1, z+1),
-                    new Vertex3f(x,   y+1, z+1),};
-            default: throw new IllegalArgumentException("unknown direction: "+dir);
-        }
-    }
-
     /**
      * <p>
      *     Returns the relative face of a cube of a certain direction.
      * </p>
      * <p>
-     *     The result is an int[] of length 4. Each element is an index in {@link #CUBE_VERTICES}.
+     *     The result is an int[] of hypot 4. Each element is an index in {@link #CUBE_VERTICES}.
      * </p>
      *
      * @param dir the direction of the face
@@ -182,16 +148,20 @@ public class ConverterVoxelsToOBJModel implements Converter<VoxelArray, OBJModel
     }
 
     @Override
-    public OBJModel invoke(VoxelArray voxels, Object... args) {
-        Arguments.requireNonnull(voxels, args);
+    public OBJModel invoke(VoxelArray array, Object... args) {
+        Arguments.requireNonnull(array, args);
 
-        IntArray3 vertexGrid = new IntArray3(voxels.getSizeX()+1, voxels.getSizeY()+1, voxels.getSizeZ()+1);
+        IntArray3 vertexGrid = new IntArray3(array.getSizeX()+1, array.getSizeY()+1, array.getSizeZ()+1);
         //vertexGrid.forEachIndex(((x, y, z) -> vertexGrid.set(x, y, z, -1)));
 
         OBJModel model = new OBJModel();
         addCubeNormals(model);
 
-        voxels.forEach(voxel -> addVoxel(voxel, model, vertexGrid));
+        TempVoxel[] voxels = prepareVoxels(array);
+        addMaterials(voxels, model);
+
+        for (TempVoxel voxel : voxels)
+            addVoxel(voxel, model, vertexGrid);
 
         return model;
     }
@@ -201,44 +171,86 @@ public class ConverterVoxelsToOBJModel implements Converter<VoxelArray, OBJModel
             model.addNormal(Util3D.normalOf(direction));
     }
 
-    private static void addVoxel(VoxelArray.Voxel voxel, OBJModel model, IntArray3 vertexGrid) {
-        final byte visibility = voxel.getVisibilityMap();
-        final int x = voxel.getX(), y = voxel.getY(), z = voxel.getZ();
+    private static TempVoxel[] prepareVoxels(VoxelArray array) {
+        List<TempVoxel> voxels = new ArrayList<>();
 
+        final int limX = array.getSizeX(), limY = array.getSizeY(), limZ = array.getSizeZ();
+        for (int x = 0; x<limX; x++) for (int y = 0; y<limY; y++) for (int z = 0; z<limZ; z++) {
+            byte mask = array.getVisibilityMask(x, y, z);
+            if (mask != 0)
+                voxels.add(new TempVoxel(x, y, z, array.getRGB(x, y, z), mask));
+        }
+
+        return voxels.toArray(new TempVoxel[voxels.size()]);
+    }
+
+    private static void addMaterials(TempVoxel[] voxels, OBJModel model) {
+        OBJMaterialLibrary mtllib = new OBJMaterialLibrary("voxel_materials");
+        model.setMaterials(mtllib);
+
+        OBJMaterial material = new OBJMaterial(mtllib, "Voxels");
+        material.setIlluminationModel(2);
+
+        Texture texture = assignUV(voxels, model);
+        mtllib.addMap("voxel_texture", texture);
+        material.setDiffuseMap("voxel_texture");
+    }
+
+    private static Texture assignUV(TempVoxel[] voxels, OBJModel model) {
+        final int dims = (int) PrimMath.ceil(Math.sqrt(voxels.length));
+
+        Texture texture = new Texture(dims, dims);
+
+        for (int u = 0; u<dims; u++) for (int v = 0; v<dims; v++) {
+            TempVoxel voxel = voxels[u + v*dims];
+            texture.set(u, v, voxel.rgb);
+
+            final int initIndex = model.getTextureVertexCount();
+            voxel.uv[0] = initIndex+1;
+            voxel.uv[1] = initIndex+2;
+            voxel.uv[2] = initIndex+3;
+            voxel.uv[3] = initIndex+4;
+
+            Vertex2f min = new Vertex2f(dims-u-1, dims-v-1);
+            Vertex2f max = new Vertex2f(dims-u, dims-v);
+
+            model.addTexture(min);
+            model.addTexture(new Vertex2f(min.getX(), max.getY()));
+            model.addTexture(max);
+            model.addTexture(new Vertex2f(max.getX(), min.getY()));
+        }
+
+        return texture;
+    }
+
+    private static void addVoxel(TempVoxel voxel, OBJModel model, IntArray3 vertexGrid) {
         //ensures that vertices exist in order to create faces
-        initVertices(model, vertexGrid, x, y, z, visibility);
+        initVertices(model, vertexGrid, voxel.x, voxel.y, voxel.z, voxel.mask);
 
         Direction[] directions = Direction.values();
         for (int d = 0; d<directions.length; d++) {
 
             //for this index, directions[d] is visible
-            if (Flags.get(visibility, d)) {
+            if (Flags.get(voxel.mask, d)) {
                 int[] face = faceOf(directions[d]);
-
-                //vertex texture
-                int[] vt = new int[face.length]; //TODO add textures
-                for (int i = 0; i<face.length; i++)
-                    vt[i] = -1;
 
                 //vertex
                 int[] v = new int[face.length];
                 for (int i = 0; i<face.length; i++) {
                     Vertex3i vertex = CUBE_VERTICES[face[i]];
-                    v[i] = vertexGrid.get(x+vertex.getX(), y+vertex.getY(), z+vertex.getZ());
+                    v[i] = vertexGrid.get(voxel.x+vertex.getX(), voxel.y+vertex.getY(), voxel.z+vertex.getZ());
                 }
 
                 //face
                 OBJTriplet[] triplets = new OBJTriplet[face.length];
                 for (int i = 0; i<face.length; i++) {
                     //note that the direction ordinal +1 is equal to the normal index in the model
-                    triplets[i] = new OBJTriplet(v[i], vt[i], d+1);
+                    triplets[i] = new OBJTriplet(v[i], voxel.uv[i], d+1);
                 }
 
                 model.addFace(new OBJFace(triplets));
             }
         }
-
-
     }
 
     /**
@@ -268,9 +280,24 @@ public class ConverterVoxelsToOBJModel implements Converter<VoxelArray, OBJModel
                     model.addVertex(new Vertex3f(gridX, gridY, gridZ));
                     vertexGrid.set(gridX, gridY, gridZ, model.getVertexCount());
                 }
-
             }
         }
+    }
+
+    private static class TempVoxel {
+
+        private final int x, y, z, rgb;
+        private final byte mask;
+        private final int[] uv = new int[4];
+
+        private TempVoxel(int x, int y, int z, int rgb, byte mask) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.rgb = rgb;
+            this.mask = mask;
+        }
+
     }
 
 }

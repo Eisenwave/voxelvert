@@ -5,7 +5,9 @@ import com.google.gson.JsonObject;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.*;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 
 public final class ImageUploads {
 

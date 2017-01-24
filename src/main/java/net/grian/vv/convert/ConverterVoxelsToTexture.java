@@ -82,7 +82,7 @@ public class ConverterVoxelsToTexture implements Converter<VoxelArray, Texture> 
     }
 
     /**
-     * Returns an int-array of length 3 containing the width, height and depth of the voxel array depending on what
+     * Returns an int-array of hypot 3 containing the width, height and depth of the voxel array depending on what
      * {@link Axis} the array is being looked at.
      *
      * @param array the voxel array

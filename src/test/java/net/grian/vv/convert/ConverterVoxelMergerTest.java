@@ -4,10 +4,10 @@ import net.grian.spatium.util.ColorMath;
 import net.grian.spatium.util.PrimMath;
 import net.grian.spatium.voxel.VoxelArray;
 import net.grian.torrens.io.DeserializerQB;
+import net.grian.torrens.io.DeserializerQEF;
 import net.grian.torrens.io.SerializerQB;
 import net.grian.torrens.object.QBModel;
 import net.grian.vv.core.VoxelMesh;
-import net.grian.torrens.io.DeserializerQEF;
 import net.grian.vv.util.ConvertUtil;
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ConverterVoxelMergerTest {
 

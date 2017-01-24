@@ -4,7 +4,7 @@ import net.grian.spatium.enums.Direction;
 import net.grian.torrens.object.Vertex3f;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class Util3DTest {
 
