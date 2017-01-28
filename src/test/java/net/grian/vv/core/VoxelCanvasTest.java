@@ -1,7 +1,14 @@
 package net.grian.vv.core;
 
+import net.grian.spatium.Spatium;
+import net.grian.spatium.cache.CacheMath;
+import net.grian.spatium.geo.AxisAlignedBB;
+import net.grian.spatium.geo.OrientedBB;
+import net.grian.spatium.geo.Path;
+import net.grian.spatium.geo.Vector;
 import net.grian.spatium.util.ColorMath;
 import net.grian.spatium.util.Flags;
+import net.grian.spatium.util.PrimMath;
 import net.grian.spatium.voxel.VoxelArray;
 import net.grian.torrens.io.DeserializerQEF;
 import net.grian.torrens.io.SerializerQEF;
@@ -13,6 +20,13 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 
 public class VoxelCanvasTest {
+
+    private static void print(VoxelArray voxels, String name) throws IOException {
+        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\"+name+".qef");
+        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
+
+        new SerializerQEF().toFile(voxels, out);
+    }
 
     @Test
     public void drawVisibility() throws Exception {
@@ -29,10 +43,7 @@ public class VoxelCanvasTest {
         System.out.println(voxels+" = "+content);
         assertEquals(voxels.size(), content.size());
 
-        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\VoxelCanvasTest.qef");
-        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
-
-        new SerializerQEF().toFile(content, out);
+        print(content, "VoxelCanvasTest_drawVisibility");
     }
 
     @Test
@@ -40,10 +51,39 @@ public class VoxelCanvasTest {
         VoxelCanvas canvas = new VoxelCanvas(64, 64, 64);
         canvas.drawLine(0, 7, 15, 63, 63, 63, ColorMath.DEBUG1);
 
-        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\VoxelCanvasTest_drawLine.qef");
-        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
+        print(canvas.getContent(), "VoxelCanvasTest_drawLine");
+    }
 
-        new SerializerQEF().toFile(canvas.getContent(), out);
+    @Test
+    public void drawPath() throws Exception {
+        VoxelCanvas canvas = new VoxelCanvas(64, 64, 64);
+
+        Path ray = Path.linear(
+                Vector.fromXYZ(0.5F, 0.5F, 0.5F),
+                Vector.fromXYZ(63.5F, 63.5F, 63.5F));
+        canvas.drawPath(ray, 1F, ColorMath.DEBUG1);
+
+        for (int i = 0; i<10; i++) {
+            Path circle = Path.circle(
+                    Vector.fromXYZ(32, 32, 32), //center
+                    20, //radius
+                    Vector.random(1)); //normal
+            canvas.drawPath(circle, 128, ColorMath.fromHSB(PrimMath.randomFloat(1F), 0.5F, 0.75F));
+        }
+
+        print(canvas.getContent(), "VoxelCanvasTest_drawPath");
+    }
+
+    @Test
+    public void drawSpace() throws Exception {
+        VoxelCanvas canvas = new VoxelCanvas(64, 64, 64);
+        OrientedBB box = OrientedBB.fromAABB(AxisAlignedBB.fromPoints(16, 16, 16, 48, 48, 48));
+        box.rotateX(Spatium.radians(45));
+        box.rotateZ(Math.atan(CacheMath.INV_SQRT_2));//
+
+        canvas.drawSpace(box, ColorMath.DEBUG2);
+
+        print(canvas.getContent(), "VoxelCanvasTest_drawSpace");
     }
 
     @Test

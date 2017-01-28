@@ -17,7 +17,7 @@ public class SerializerQBTest {
         System.out.println("serializing model: "+model);
 
         File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVertPlugin\\files\\SerializerQBTest.qb");
-        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
+        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to fromPoints "+out);
 
         new SerializerQB().toFile(model, out);
 

@@ -111,7 +111,7 @@ public class VoxelVertInformalTests {
             BufferedImage image = new ConverterTextureToImage().invoke(texture);
             String fname = "vvg_test_"+dir.name()+".png";
             File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVertPlugin\\maps\\"+fname);
-            if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
+            if (!out.exists() && !out.createNewFile()) throw new IOException("failed to fromPoints "+out);
             ImageIO.write(image, "png", out);
             //if (dir == Direction.POSITIVE_X)
             //    System.out.println("UPLOADED TO: "+ ImageUploads.uploadImage(out));
@@ -123,10 +123,10 @@ public class VoxelVertInformalTests {
 
         File in = new File(directory+File.separator+name);
         File out = new File(directory+File.separator+"vvg_test_output.qef");
-        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create file "+out);
+        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to fromPoints file "+out);
 
         VoxelArray array = new DeserializerQEF(LOGGER).fromFile(in);
-        new SerializerQEF(LOGGER).toFile(array, out);
+        new SerializerQEF().toFile(array, out);
     }
 
     private static void testMergingPerformance() {
@@ -172,12 +172,12 @@ public class VoxelVertInformalTests {
 
         File in = new File(directory+File.separator+name);
         File out = new File(directory+File.separator+"vvg_test_imgvoxelization.qef");
-        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create file "+out);
+        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to fromPoints file "+out);
 
         BufferedImage image = ImageIO.read(in);
         Texture texture = ConvertUtil.convert(image, BufferedImage.class, Texture.class);
         VoxelArray array = new ConverterTextureVoxelizer().invoke(texture, Direction.POSITIVE_X);
-        new SerializerQEF(LOGGER).toFile(array, out);
+        new SerializerQEF().toFile(array, out);
     }
 
     private static void testVoxelMerging() throws IOException {

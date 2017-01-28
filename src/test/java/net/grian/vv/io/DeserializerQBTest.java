@@ -31,7 +31,7 @@ public class DeserializerQBTest {
         BufferedImage image = ConvertUtil.convert(texture, BufferedImage.class);
 
         File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVertPlugin\\maps\\DeserializerQBTest.png");
-        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
+        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to fromPoints "+out);
 
         ImageIO.write(image, "png", out);
     }

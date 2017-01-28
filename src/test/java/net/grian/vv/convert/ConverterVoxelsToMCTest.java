@@ -51,11 +51,11 @@ public class ConverterVoxelsToMCTest {
         BufferedImage image = ConvertUtil.convert(model.getTexture("texture"), BufferedImage.class);
 
         File jsonOut = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ConverterVoxelsToMCTest.json");
-        if (!jsonOut.exists() && !jsonOut.createNewFile()) throw new IOException("failed to create json");
+        if (!jsonOut.exists() && !jsonOut.createNewFile()) throw new IOException("failed to fromPoints json");
         new SerializerModelJSON().toFile(model, jsonOut);
 
         File imgOut = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ConverterVoxelsToMCTest.png");
-        if (!imgOut.exists() && !imgOut.createNewFile()) throw new IOException("failed to create texture");
+        if (!imgOut.exists() && !imgOut.createNewFile()) throw new IOException("failed to fromPoints texture");
         new SerializerPNG().toFile(image, imgOut);
     }
 

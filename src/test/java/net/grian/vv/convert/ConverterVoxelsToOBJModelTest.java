@@ -34,7 +34,7 @@ public class ConverterVoxelsToOBJModelTest {
         model.addFace(new OBJFace(new OBJTriplet(3, 0, 2), new OBJTriplet(2, 0, 2), new OBJTriplet(1, 0, 2)));
 
         File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ConverterVoxelsToOBJModelTest.obj");
-        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create: "+out);
+        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to fromPoints: "+out);
 
         new SerializerOBJModel().toFile(model, out);
     }
@@ -47,7 +47,7 @@ public class ConverterVoxelsToOBJModelTest {
         OBJModel model = ConvertUtil.convert(voxels, OBJModel.class);
 
         File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ConverterVoxelsToOBJModelTest.obj");
-        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create: "+out);
+        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to fromPoints: "+out);
 
         new SerializerOBJModel().toFile(model, out);
     }

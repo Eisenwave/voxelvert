@@ -40,7 +40,7 @@ public class ConverterRectangleArrangerTest {
 
         String path = "D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ConverterRectangleArrangerTest.png";
         File out = new File(path);
-        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
+        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to fromPoints "+out);
 
         ImageIO.write(image, "png", out);
     }

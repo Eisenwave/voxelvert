@@ -19,7 +19,7 @@ public class SerializerSTLTest {
         STLModel model = ConvertUtil.convert(voxels, STLModel.class);
 
         File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVertPlugin\\files\\SerializerSTLTest.stl");
-        if (!out.exists() && !out.createNewFile()) throw new IOException("failed out create "+out);
+        if (!out.exists() && !out.createNewFile()) throw new IOException("failed out fromPoints "+out);
 
         new SerializerSTL().toFile(model, out);
     }

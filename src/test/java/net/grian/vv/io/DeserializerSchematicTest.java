@@ -42,7 +42,7 @@ public class DeserializerSchematicTest {
         BufferedImage image = ConvertUtil.convert(front, BufferedImage.class);
 
         File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\maps\\DeserializerSchematicTest.png");
-        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
+        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to fromPoints "+out);
 
         new SerializerPNG().toFile(image, out);
     }

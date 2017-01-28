@@ -6,6 +6,9 @@ import net.grian.spatium.function.Int3Consumer;
 import net.grian.spatium.function.Int3IntFunction;
 import net.grian.spatium.function.Int3Predicate;
 import net.grian.spatium.geo.BlockVector;
+import net.grian.spatium.geo.Path;
+import net.grian.spatium.geo.Space;
+import net.grian.spatium.iter.PathIterator;
 import net.grian.spatium.util.PrimMath;
 import net.grian.spatium.voxel.VoxelArray;
 
@@ -82,6 +85,10 @@ public class VoxelCanvas {
             internalDraw(x, y, z, rgb);
     }
 
+    public void draw(BlockVector pos, int rgb) {
+        draw(pos.getX(), pos.getY(), pos.getZ(), rgb);
+    }
+
     private void internalDraw(int x, int y, int z, int rgb) {
         if (selection.contains(x, y, z))
             content.setRGB(x, y, z, rgb);
@@ -100,7 +107,29 @@ public class VoxelCanvas {
     }
 
     public void drawRaw(Int3IntFunction function) {
-        forEachPosition( (x, y, z) -> draw(x, y, z, function.apply(x, y, z)) );
+        forEachPosition( (x, y, z) -> internalDraw(x, y, z, function.apply(x, y, z)) );
+    }
+
+    public void drawIf(Int3Predicate predicate, int rgb) {
+        forEachPosition( (x, y, z) -> {
+            if (predicate.test(x, y, z)) internalDraw(x, y, z, rgb);
+        } );
+    }
+
+    public void drawPath(Path path, float interval, int rgb) {
+        PathIterator iterator = new PathIterator(path, interval);
+        while (iterator.hasNext())
+            draw(iterator.next().toBlockVector(), rgb);
+    }
+
+    public void drawPath(Path path, int steps, int rgb) {
+        PathIterator iterator = new PathIterator(path, steps);
+        while (iterator.hasNext())
+            draw(iterator.next().toBlockVector(), rgb);
+    }
+
+    public void drawSpace(Space space, int rgb) {
+        drawIf(space::contains, rgb);
     }
 
     /**
