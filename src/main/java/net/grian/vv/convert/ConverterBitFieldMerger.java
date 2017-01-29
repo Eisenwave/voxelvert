@@ -3,6 +3,7 @@ package net.grian.vv.convert;
 import net.grian.spatium.geo.BlockSelection;
 import net.grian.spatium.voxel.BitArray3;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -20,10 +21,15 @@ public class ConverterBitFieldMerger implements Converter<BitArray3, BlockSelect
         return BlockSelection[].class;
     }
 
+    @Nullable
     private final Logger logger;
+    
+    public ConverterBitFieldMerger(Logger logger) {
+        this.logger = logger;
+    }
 
     public ConverterBitFieldMerger() {
-        this.logger = Logger.getGlobal();
+        logger = null;
     }
 
     @Override
@@ -31,7 +37,7 @@ public class ConverterBitFieldMerger implements Converter<BitArray3, BlockSelect
         int cancel = args.length>0? (Integer) args[0] : 3;
         if (cancel < 0) throw new IllegalArgumentException("cancel point must be positive");
 
-        logger.info("merging "+map+" ...");
+        if (logger != null) logger.info("merging "+map+" ...");
         final int
                 limX = map.getSizeX(),
                 limY = map.getSizeY(),
@@ -43,7 +49,7 @@ public class ConverterBitFieldMerger implements Converter<BitArray3, BlockSelect
             int count = 0;
             for (int y = 0; y<limY; y++) for (int z = 0; z<limZ; z++)
                 count += lines[y][z].size();
-            logger.info("1: merged array into "+count+" lines");
+            if (logger != null) logger.info("1: merged array into "+count+" lines");
         }
         if (cancel <= 1) return resultFromLines(lines, limY, limZ);
 
@@ -51,12 +57,12 @@ public class ConverterBitFieldMerger implements Converter<BitArray3, BlockSelect
         {
             int count = 0;
             for (PlaneList planeList : planes) count += planeList.size();
-            logger.info("2: merged lines into "+count+" planes");
+            if (logger != null) logger.info("2: merged lines into "+count+" planes");
         }
         if (cancel <= 2) return resultFromPlanes(planes, limZ);
 
         BoxList boxes = mergeZ(planes, limZ);
-        logger.info("3: merged planes into "+boxes.size()+" boxes");
+        if (logger != null) logger.info("3: merged planes into "+boxes.size()+" boxes");
 
         return resultFromBoxes(boxes);
     }

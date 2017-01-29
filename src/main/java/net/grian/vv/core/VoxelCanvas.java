@@ -2,13 +2,11 @@ package net.grian.vv.core;
 
 import net.grian.spatium.Spatium;
 import net.grian.spatium.array.BooleanArray3;
-import net.grian.spatium.function.Int3Consumer;
-import net.grian.spatium.function.Int3IntFunction;
-import net.grian.spatium.function.Int3Predicate;
-import net.grian.spatium.geo.BlockVector;
-import net.grian.spatium.geo.Path;
-import net.grian.spatium.geo.Space;
+import net.grian.spatium.coll.Distances;
+import net.grian.spatium.function.*;
+import net.grian.spatium.geo.*;
 import net.grian.spatium.iter.PathIterator;
+import net.grian.spatium.util.ColorMath;
 import net.grian.spatium.util.PrimMath;
 import net.grian.spatium.voxel.VoxelArray;
 
@@ -182,7 +180,105 @@ public class VoxelCanvas {
                 Math.abs(z1 - z0),
                 rgb);
     }
-
+    
+    /**
+     * Draws a triangle into the canvas.
+     *
+     * @param triangle the triangle
+     * @param rgb the color
+     */
+    public void drawTriangle(Triangle triangle, int rgb) {
+        Vector
+            a = triangle.getA(),
+            ab = Vector.between(a, triangle.getB()),
+            ac = Vector.between(a, triangle.getC());
+        
+        float //subtract epsilon to account for imprecision and prevent holes
+            incrB = (float) (1 / Distances.hypotCubical(ab) - Spatium.EPSILON),
+            incrC = (float) (1 / Distances.hypotCubical(ac) - Spatium.EPSILON);
+        
+        for (float baryB = 0; baryB <= 1; baryB += incrB) {
+            Vector offB = ab.clone().multiply(baryB);
+            
+            for (float baryC = 0; baryC <= 1; baryC += incrC) {
+                if (baryB + baryC > 1) break;
+                Vector offC = ac.clone().multiply(baryC);
+    
+                draw(
+                    (int) (a.getX() + offB.getX() + offC.getX()),
+                    (int) (a.getY() + offB.getY() + offC.getY()),
+                    (int) (a.getZ() + offB.getZ() + offC.getZ()),
+                    rgb);
+            }
+        }
+    }
+    
+    /**
+     * Draws a triangle into the canvas.
+     *
+     * @param triangle the triangle
+     * @param rgbA the vertex color of A
+     * @param rgbB the vertex color of B
+     * @param rgbC the vertex color of C
+     */
+    public void drawTriangle(Triangle triangle, int rgbA, int rgbB, int rgbC) {
+        final int
+            redA = ColorMath.red(rgbA),   redB = ColorMath.red(rgbB),   redC = ColorMath.red(rgbC),
+            grnA = ColorMath.green(rgbA), grnB = ColorMath.green(rgbB), grnC = ColorMath.green(rgbC),
+            bluA = ColorMath.blue(rgbA),  bluB = ColorMath.blue(rgbB),  bluC = ColorMath.blue(rgbC),
+            alpA = ColorMath.alpha(rgbA), alpB = ColorMath.alpha(rgbB), alpC = ColorMath.alpha(rgbC);
+    
+        drawBarycentrics(triangle, (a, b, c) -> ColorMath.fromRGB(
+            (int) (redA*a + redB*b + redC*c),
+            (int) (grnA*a + grnB*b + grnC*c),
+            (int) (bluA*a + bluB*b + bluC*c),
+            (int) (alpA*a + alpB*b + alpC*c)));
+        
+    }
+    
+    /**
+     * <p>
+     *     Loops through all barycentric coordinates of the triangle and uses a given {@link Float3IntFunction} to draw
+     *     an rgb value into the triangle.
+     * </p>
+     * <p>
+     *     Barycentric coordinates always add up to one, thus this function may be safely used to draw vertex colors
+     *     and such.
+     * </p>
+     * <p>
+     *     Reference: <a href="https://en.wikipedia.org/wiki/Barycentric_coordinate_system">Barycentric coordinates</a>
+     * </p>
+     *
+     * @param triangle the triangle
+     * @param function the function to apply
+     */
+    public void drawBarycentrics(Triangle triangle, Float3IntFunction function) {
+        Vector
+            a = triangle.getA(),
+            ab = Vector.between(a, triangle.getB()),
+            ac = Vector.between(a, triangle.getC());
+        
+        float //subtract epsilon to account for imprecision and prevent holes
+            incrB = (float) (1 / Distances.hypotCubical(ab) - Spatium.EPSILON),
+            incrC = (float) (1 / Distances.hypotCubical(ac) - Spatium.EPSILON);
+        
+        for (float baryB = 0; baryB <= 1; baryB += incrB) {
+            Vector offB = ab.clone().multiply(baryB);
+            
+            for (float baryC = 0; baryC <= 1; baryC += incrC) {
+                float baryA = 1 - (baryB + baryC);
+                if (baryA < 0) break;
+                Vector offC = ac.clone().multiply(baryC);
+                
+                draw(
+                    (int) (a.getX() + offB.getX() + offC.getX()),
+                    (int) (a.getY() + offB.getY() + offC.getY()),
+                    (int) (a.getZ() + offB.getZ() + offC.getZ()),
+                    function.apply(baryA, baryB, baryC));
+            }
+        }
+    }
+    
     /**
      * Draws a sphere around a voxel.
      *

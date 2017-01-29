@@ -1,5 +1,6 @@
 package net.grian.vv.convert;
 
+import net.grian.spatium.array.Incrementer2;
 import net.grian.spatium.array.IntArray3;
 import net.grian.spatium.enums.Direction;
 import net.grian.spatium.util.Flags;
@@ -173,13 +174,14 @@ public class ConverterVoxelsToOBJModel implements Converter<VoxelArray, OBJModel
 
     private static TempVoxel[] prepareVoxels(VoxelArray array) {
         List<TempVoxel> voxels = new ArrayList<>();
-
-        final int limX = array.getSizeX(), limY = array.getSizeY(), limZ = array.getSizeZ();
-        for (int x = 0; x<limX; x++) for (int y = 0; y<limY; y++) for (int z = 0; z<limZ; z++) {
+        
+        array.forEachPosition((x,y,z) ->  {
+            if (!array.contains(x, y, z)) return;
+            
             byte mask = array.getVisibilityMask(x, y, z);
             if (mask != 0)
                 voxels.add(new TempVoxel(x, y, z, array.getRGB(x, y, z), mask));
-        }
+        });
 
         return voxels.toArray(new TempVoxel[voxels.size()]);
     }
@@ -189,35 +191,44 @@ public class ConverterVoxelsToOBJModel implements Converter<VoxelArray, OBJModel
         model.setMaterials(mtllib);
 
         OBJMaterial material = new OBJMaterial(mtllib, "Voxels");
+        mtllib.addMaterial(material);
         material.setIlluminationModel(2);
 
         Texture texture = assignUV(voxels, model);
-        mtllib.addMap("voxel_texture", texture);
-        material.setDiffuseMap("voxel_texture");
+        mtllib.addMap("voxel_texture.png", texture);
+        material.setDiffuseMap("voxel_texture.png");
     }
 
     private static Texture assignUV(TempVoxel[] voxels, OBJModel model) {
         final int dims = (int) PrimMath.ceil(Math.sqrt(voxels.length));
 
         Texture texture = new Texture(dims, dims);
-
-        for (int u = 0; u<dims; u++) for (int v = 0; v<dims; v++) {
-            TempVoxel voxel = voxels[u + v*dims];
-            texture.set(u, v, voxel.rgb);
-
+        Incrementer2 increment = new Incrementer2(dims, dims);
+    
+        for (TempVoxel voxel : voxels) {
+            int[] uv = increment.current();
+            texture.set(uv[0], uv[1], voxel.rgb);
+        
             final int initIndex = model.getTextureVertexCount();
-            voxel.uv[0] = initIndex+1;
-            voxel.uv[1] = initIndex+2;
-            voxel.uv[2] = initIndex+3;
-            voxel.uv[3] = initIndex+4;
-
-            Vertex2f min = new Vertex2f(dims-u-1, dims-v-1);
-            Vertex2f max = new Vertex2f(dims-u, dims-v);
-
-            model.addTexture(min);
-            model.addTexture(new Vertex2f(min.getX(), max.getY()));
-            model.addTexture(max);
-            model.addTexture(new Vertex2f(max.getX(), min.getY()));
+            voxel.uv[0] = initIndex + 1;
+            voxel.uv[1] = initIndex + 2;
+            voxel.uv[2] = initIndex + 3;
+            voxel.uv[3] = initIndex + 4;
+        
+            float div = (float) dims;
+            
+            float
+                minU = (uv[0]+1 - 0.1F)         / div,
+                minV = (dims-uv[1]-1 + 0.1F) / div,
+                maxU = (uv[0] + 0.1F)      / div,
+                maxV = (dims-uv[1] - 0.1F) / div;
+        
+            model.addTexture(new Vertex2f(minU, minV));
+            model.addTexture(new Vertex2f(minU, maxV));
+            model.addTexture(new Vertex2f(maxU, maxV));
+            model.addTexture(new Vertex2f(maxU, minV));
+        
+            increment.increment();
         }
 
         return texture;

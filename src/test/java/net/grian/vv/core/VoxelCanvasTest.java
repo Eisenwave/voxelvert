@@ -2,10 +2,7 @@ package net.grian.vv.core;
 
 import net.grian.spatium.Spatium;
 import net.grian.spatium.cache.CacheMath;
-import net.grian.spatium.geo.AxisAlignedBB;
-import net.grian.spatium.geo.OrientedBB;
-import net.grian.spatium.geo.Path;
-import net.grian.spatium.geo.Vector;
+import net.grian.spatium.geo.*;
 import net.grian.spatium.util.ColorMath;
 import net.grian.spatium.util.Flags;
 import net.grian.spatium.util.PrimMath;
@@ -44,6 +41,22 @@ public class VoxelCanvasTest {
         assertEquals(voxels.size(), content.size());
 
         print(content, "VoxelCanvasTest_drawVisibility");
+    }
+    
+    @Test
+    public void drawTriangle() throws Exception {
+        VoxelCanvas canvas = new VoxelCanvas(256, 256, 256);
+        Triangle triangle = Triangle.fromPoints(
+            0, 0, 0,
+            250, 127, 8,
+            8, 128, 250);
+        
+        long now = System.nanoTime();
+        canvas.drawTriangle(triangle, ColorMath.SOLID_RED, ColorMath.SOLID_GREEN, ColorMath.SOLID_BLUE);
+        double time = (System.nanoTime()-now) / CacheMath.BILLION;
+        System.out.println("drawing triangle took "+time+" s");
+        
+        print(canvas.getContent(), "VoxelCanvasTest_Triangle");
     }
 
     @Test
