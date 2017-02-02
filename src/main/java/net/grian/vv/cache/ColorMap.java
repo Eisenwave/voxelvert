@@ -2,7 +2,7 @@ package net.grian.vv.cache;
 
 import net.grian.spatium.voxel.BlockKey;
 import net.grian.torrens.util.Resources;
-import net.grian.vv.convert.ConverterColorExtractor;
+import net.grian.vv.clsvert.ClassverterColorExtractor;
 import net.grian.vv.core.BlockColor;
 
 import java.io.IOException;
@@ -11,15 +11,15 @@ import java.util.Map;
 import java.util.zip.ZipFile;
 
 public class ColorMap extends HashMap<BlockKey, BlockColor> {
-
+    
+        /** Accept no blocks with a smaller space occupation */
     public final static int
-            /** Accept no blocks with a smaller space occupation */
-            INSIST_OCCUPATION = 1,
-            UNTINTED = 1 << 1,
-            /** Completely ignore alpha channel */
-            IGNORE_ALPHA = 1 << 2,
-            /** Accept no blocks with lower alpha */
-            INSIST_ALPHA = 1 << 3;
+        INSIST_OCCUPATION = 1,
+        UNTINTED = 1 << 1,
+        /** Completely ignore alpha channel */
+        IGNORE_ALPHA = 1 << 2,
+        /** Accept no blocks with lower alpha */
+        INSIST_ALPHA = 1 << 3;
 
 
     private final String name;
@@ -30,7 +30,7 @@ public class ColorMap extends HashMap<BlockKey, BlockColor> {
 
     public static ColorMap loadDefault() throws IOException {
         ZipFile zip = Resources.getZipFile(ColorMap.class, "resourcepacks/default.zip");
-        return new ConverterColorExtractor().invoke(zip);
+        return new ClassverterColorExtractor().invoke(zip);
     }
 
     public BlockColor get(BlockKey key) {

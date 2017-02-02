@@ -1,6 +1,6 @@
 package net.grian.vv.core;
 
-import net.grian.torrens.object.BaseRectangle;
+import net.grian.torrens.img.BaseRectangle;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,6 +1,6 @@
 package net.grian.vv.core;
 
-import net.grian.torrens.object.BaseTexture;
+import net.grian.torrens.img.BaseTexture;
 
 public class TextureTile implements BaseTexture {
 

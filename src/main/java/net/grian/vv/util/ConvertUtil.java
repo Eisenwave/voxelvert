@@ -1,6 +1,8 @@
 package net.grian.vv.util;
 
-import net.grian.vv.convert.*;
+import net.grian.vv.clsvert.ClassverterImageToTexture;
+import net.grian.vv.clsvert.ClassverterTextureToImage;
+import net.grian.vv.clsvert.*;
 
 public final class ConvertUtil {
 
@@ -9,25 +11,25 @@ public final class ConvertUtil {
     private final static ConversionManager manager = new ConversionManager();
 
     static {
-        manager.add(new ConverterBitFieldMerger());
-        manager.add(new ConverterBlocksToVoxels());
-        manager.add(new ConverterColorExtractor());
-        manager.add(new ConverterImageToTexture());
-        manager.add(new ConverterMeshToArray());
-        manager.add(new ConverterMeshToQB());
-        manager.add(new ConverterQBToMesh());
-        manager.add(new ConverterRectangleArranger());
-        manager.add(new ConverterTextureToImage());
-        manager.add(new ConverterTextureStackVoxelizer());
-        manager.add(new ConverterTextureVoxelizer());
-        manager.add(new ConverterVoxelMerger());
-        manager.add(new ConverterVoxelsToMC());
-        manager.add(new ConverterVoxelsToOBJModel());
-        manager.add(new ConverterVoxelsToQB());
-        manager.add(new ConverterVoxelsToSTL());
-        manager.add(new ConverterVoxelsToBlocks());
-        manager.add(new ConverterVoxelsToTexture());
-        manager.add(new ConverterWorldToBlockArray());
+        manager.add(new ClassverterBitFieldMerger());
+        manager.add(new ClassverterBlocksToVoxels());
+        manager.add(new ClassverterColorExtractor());
+        manager.add(new ClassverterImageToTexture());
+        manager.add(new ClassverterMeshToArray());
+        manager.add(new ClassverterMeshToQB());
+        manager.add(new ClassverterQBToMesh());
+        manager.add(new ClassverterRectangleArranger());
+        manager.add(new ClassverterTextureToImage());
+        manager.add(new ClassverterTextureStackVoxelizer());
+        manager.add(new ClassverterTextureVoxelizer());
+        manager.add(new ClassverterVoxelMerger());
+        manager.add(new ClassverterVoxelsToMC());
+        manager.add(new ClassverterVoxelsToOBJ());
+        manager.add(new ClassverterVoxelsToQB());
+        manager.add(new ClassverterVoxelsToSTL());
+        manager.add(new ClassverterVoxelsToBlocks());
+        manager.add(new ClassverterVoxelsToTexture());
+        manager.add(new ClassverterWorldToBlockArray());
     }
 
     public static <A,B> B convert(A from, Class<A> fromClass, Class<B> toClass, Object... args) {

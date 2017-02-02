@@ -1,7 +1,6 @@
 package net.grian.vv.plugin;
 
-import net.grian.spatium.geo.BlockVector;
-import net.grian.vv.cache.UserManager;
+import net.grian.spatium.geo3.BlockVector;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -21,7 +20,7 @@ public class VVEventListener implements Listener {
         if (item != null && item.getType().equals(Material.DIAMOND_AXE)) {
             Block block = e.getBlock();
             BlockVector vector = BlockVector.fromXYZ(block.getX(), block.getY(), block.getZ());
-            UserManager.getInstance().setFirstPosition(player, vector);
+            //UserManager.getInstance().setFirstPosition(player, vector);
         }
     }
 
@@ -33,7 +32,7 @@ public class VVEventListener implements Listener {
         if (item != null && item.getType().equals(Material.DIAMOND_AXE)) {
             Block block = e.getClickedBlock();
             BlockVector vector = BlockVector.fromXYZ(block.getX(), block.getY(), block.getZ());
-            UserManager.getInstance().setSecondPosition(player, vector);
+            //UserManager.getInstance().setSecondPosition(player, vector);
         }
     }
 

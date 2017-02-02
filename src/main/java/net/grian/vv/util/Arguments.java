@@ -52,16 +52,7 @@ public class Arguments {
     public static void requireRange(int arg, int min, int max, String name) {
         requireRange(arg, min, max, name, "%s (%s) must be in range from %s, %s");
     }
-
-    public static void requireNonnull(Iterable<?> args, String msg) {
-        for (Object arg : args)
-            if (arg == null) throw new IllegalArgumentException(msg);
-    }
-
-    public static void requireNonnull(Iterable<?> args) {
-        requireNonnull(args, "args must not be null");
-    }
-
+    
     public static void requireNonnull(Object arg, String msg) {
         if (arg==null)
             throw new IllegalArgumentException(msg);
@@ -71,8 +62,47 @@ public class Arguments {
         if (arg==null)
             throw new IllegalArgumentException("arg must not be null");
     }
-
-    public static void requireNonnull(Object... args) {
+    
+    //ALL NONNULL
+    
+    /**
+     * Throws an {@link IllegalArgumentException} if any of the iterated arguments are null.
+     *
+     * @param args the arguments
+     * @param msg the exception message
+     */
+    public static void requireAllNonnull(Iterable<?> args, String msg) {
+        for (Object arg : args)
+            if (arg == null) throw new IllegalArgumentException(msg);
+    }
+    
+    /**
+     * Throws an {@link IllegalArgumentException} if any of the iterated arguments are null.
+     *
+     * @param args the arguments
+     */
+    public static void requireAllNonnull(Iterable<?> args) {
+        requireAllNonnull(args, "args must not be null");
+    }
+    
+    /**
+     * Throws an {@link IllegalArgumentException} if any of the iterated arguments are null.
+     *
+     * @param args the arguments
+     * @param msg the exception message
+     */
+    public static void requireAllNonnull(Object[] args, String msg) {
+        for (Object arg : args)
+            if (arg == null)
+                throw new IllegalArgumentException(msg);
+    }
+    
+    /**
+     * Throws an {@link IllegalArgumentException} if any of the iterated arguments are null.
+     *
+     * @param args the arguments
+     */
+    public static void requireAllNonnull(Object[] args) {
         for (int i = 0; i<args.length; i++)
             if (args[i] == null)
                 throw new IllegalArgumentException("arg" + i +" must not be null");

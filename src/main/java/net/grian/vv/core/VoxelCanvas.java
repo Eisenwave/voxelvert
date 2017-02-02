@@ -4,13 +4,14 @@ import net.grian.spatium.Spatium;
 import net.grian.spatium.array.BooleanArray3;
 import net.grian.spatium.coll.Distances;
 import net.grian.spatium.function.*;
-import net.grian.spatium.geo.*;
+import net.grian.spatium.geo3.*;
 import net.grian.spatium.iter.PathIterator;
-import net.grian.spatium.util.ColorMath;
 import net.grian.spatium.util.PrimMath;
 import net.grian.spatium.voxel.VoxelArray;
 
 import java.util.function.Consumer;
+
+import static net.grian.spatium.util.ColorMath.*;
 
 public class VoxelCanvas {
 
@@ -51,38 +52,82 @@ public class VoxelCanvas {
     public BooleanArray3 getSelection() {
         return selection;
     }
-
+    
+    /**
+     * Returns the size of this canvas on the x-axis.
+     *
+     * @return the x-size
+     */
     public int getSizeX() {
         return sizeX;
     }
-
+    
+    /**
+     * Returns the size of this canvas on the y-axis.
+     *
+     * @return the y-size
+     */
     public int getSizeY() {
         return sizeY;
     }
-
+    
+    /**
+     * Returns the size of this canvas on the z-axis.
+     *
+     * @return the z-size
+     */
     public int getSizeZ() {
         return sizeZ;
     }
-
+    
+    /**
+     * Returns the volume in voxels of this canvas.
+     *
+     * @return the volume in voxels
+     */
     public int getVolume() {
         return sizeX * sizeY * sizeZ;
     }
-
+    
+    /**
+     * Returns the amount of drawn voxels in this canvas.
+     *
+     * @return the amount of drawn voxels
+     */
     public int contentSize() {
         return content.size();
     }
-
+    
+    /**
+     * Returns the amount of selected voxels in this canvas.
+     *
+     * @return the amount of selected voxels
+     */
     public int selectionSize() {
         return selection.size();
     }
 
     // DRAW
-
+    
+    /**
+     * Safely sets a voxel at a given position to a given rgb value.
+     *
+     * @param x the x-coordinate
+     * @param y the y-coordinate
+     * @param z the z-coordinate
+     * @param rgb the rgb value
+     */
     public void draw(int x, int y, int z, int rgb) {
         if (x >= 0 && y >= 0 && z >= 0 && x < sizeX && y < sizeY && z < sizeZ)
             internalDraw(x, y, z, rgb);
     }
-
+    
+    /**
+     * Safely sets a voxel at a given position to a given rgb value.
+     *
+     * @param pos the voxel position
+     * @param rgb the rgb value
+     */
     public void draw(BlockVector pos, int rgb) {
         draw(pos.getX(), pos.getY(), pos.getZ(), rgb);
     }
@@ -114,13 +159,13 @@ public class VoxelCanvas {
         } );
     }
 
-    public void drawPath(Path path, float interval, int rgb) {
+    public void drawPath(Path3 path, float interval, int rgb) {
         PathIterator iterator = new PathIterator(path, interval);
         while (iterator.hasNext())
             draw(iterator.next().toBlockVector(), rgb);
     }
 
-    public void drawPath(Path path, int steps, int rgb) {
+    public void drawPath(Path3 path, int steps, int rgb) {
         PathIterator iterator = new PathIterator(path, steps);
         while (iterator.hasNext())
             draw(iterator.next().toBlockVector(), rgb);
@@ -187,48 +232,36 @@ public class VoxelCanvas {
      * @param triangle the triangle
      * @param rgb the color
      */
-    public void drawTriangle(Triangle triangle, int rgb) {
-        Vector
-            a = triangle.getA(),
-            ab = Vector.between(a, triangle.getB()),
-            ac = Vector.between(a, triangle.getC());
-        
-        float //subtract epsilon to account for imprecision and prevent holes
-            incrB = (float) (1 / Distances.hypotCubical(ab) - Spatium.EPSILON),
-            incrC = (float) (1 / Distances.hypotCubical(ac) - Spatium.EPSILON);
-        
-        for (float baryB = 0; baryB <= 1; baryB += incrB) {
-            Vector offB = ab.clone().multiply(baryB);
-            
-            for (float baryC = 0; baryC <= 1; baryC += incrC) {
-                if (baryB + baryC > 1) break;
-                Vector offC = ac.clone().multiply(baryC);
-    
-                draw(
-                    (int) (a.getX() + offB.getX() + offC.getX()),
-                    (int) (a.getY() + offB.getY() + offC.getY()),
-                    (int) (a.getZ() + offB.getZ() + offC.getZ()),
-                    rgb);
-            }
-        }
+    public void drawTriangle(Triangle3 triangle, int rgb) {
+        drawBarycentrics(triangle, (x, y, z) -> rgb);
     }
     
     /**
-     * Draws a triangle into the canvas.
+     * <p>
+     *     Draws a triangle with vertex colors into the canvas.
+     * </p>
+     * <p>
+     *     The three vertex colors will be scaled by the baryocentric coordinates <b>a, b, c</b> in the manner:
+     *     <blockquote>
+     *         <code>rgb<sub>abc</sub> = a * rgb<sub>a</sub> + b * rgb<sub>b</sub> + c * rgb<sub>c</sub></code>
+     *     </blockquote>
+     *     With <code>n * rgb</code> defined as multiplying each color channel (including alpha) with <b>n</b>.
+     * </p>
+     *
      *
      * @param triangle the triangle
      * @param rgbA the vertex color of A
      * @param rgbB the vertex color of B
      * @param rgbC the vertex color of C
      */
-    public void drawTriangle(Triangle triangle, int rgbA, int rgbB, int rgbC) {
+    public void drawTriangle(Triangle3 triangle, int rgbA, int rgbB, int rgbC) {
         final int
-            redA = ColorMath.red(rgbA),   redB = ColorMath.red(rgbB),   redC = ColorMath.red(rgbC),
-            grnA = ColorMath.green(rgbA), grnB = ColorMath.green(rgbB), grnC = ColorMath.green(rgbC),
-            bluA = ColorMath.blue(rgbA),  bluB = ColorMath.blue(rgbB),  bluC = ColorMath.blue(rgbC),
-            alpA = ColorMath.alpha(rgbA), alpB = ColorMath.alpha(rgbB), alpC = ColorMath.alpha(rgbC);
+            redA = red(rgbA),   redB = red(rgbB),   redC = red(rgbC),
+            grnA = green(rgbA), grnB = green(rgbB), grnC = green(rgbC),
+            bluA = blue(rgbA),  bluB = blue(rgbB),  bluC = blue(rgbC),
+            alpA = alpha(rgbA), alpB = alpha(rgbB), alpC = alpha(rgbC);
     
-        drawBarycentrics(triangle, (a, b, c) -> ColorMath.fromRGB(
+        drawBarycentrics(triangle, (a, b, c) -> fromRGB(
             (int) (redA*a + redB*b + redC*c),
             (int) (grnA*a + grnB*b + grnC*c),
             (int) (bluA*a + bluB*b + bluC*c),
@@ -252,23 +285,28 @@ public class VoxelCanvas {
      * @param triangle the triangle
      * @param function the function to apply
      */
-    public void drawBarycentrics(Triangle triangle, Float3IntFunction function) {
-        Vector
+    public void drawBarycentrics(Triangle3 triangle, Float3IntFunction function) {
+        Vector3
             a = triangle.getA(),
-            ab = Vector.between(a, triangle.getB()),
-            ac = Vector.between(a, triangle.getC());
+            b = triangle.getB(),
+            c = triangle.getC(),
+            ab = Vector3.between(a, b),
+            ac = Vector3.between(a, c),
+            bc = Vector3.between(b, c);
         
         float //subtract epsilon to account for imprecision and prevent holes
-            incrB = (float) (1 / Distances.hypotCubical(ab) - Spatium.EPSILON),
-            incrC = (float) (1 / Distances.hypotCubical(ac) - Spatium.EPSILON);
+            incrAB = (float) (1 / Distances.hypotCubical(ab) - Spatium.EPSILON),
+            incrAC = (float) (1 / Distances.hypotCubical(ac) - Spatium.EPSILON),
+            incrBC = (float) (1 / Distances.hypotCubical(bc) - Spatium.EPSILON);
         
-        for (float baryB = 0; baryB <= 1; baryB += incrB) {
-            Vector offB = ab.clone().multiply(baryB);
+        //iterate over AB & AC
+        for (float baryB = 0; baryB <= 1; baryB += incrAB) {
+            Vector3 offB = ab.clone().multiply(baryB);
             
-            for (float baryC = 0; baryC <= 1; baryC += incrC) {
+            for (float baryC = 0; baryC <= 1; baryC += incrAC) {
                 float baryA = 1 - (baryB + baryC);
                 if (baryA < 0) break;
-                Vector offC = ac.clone().multiply(baryC);
+                Vector3 offC = ac.clone().multiply(baryC);
                 
                 draw(
                     (int) (a.getX() + offB.getX() + offC.getX()),
@@ -276,6 +314,15 @@ public class VoxelCanvas {
                     (int) (a.getZ() + offB.getZ() + offC.getZ()),
                     function.apply(baryA, baryB, baryC));
             }
+        }
+        
+        //iterate over BC to smooth edge
+        for (float baryC = 0; baryC <= 1; baryC +=incrBC) {
+            draw(
+                (int) (b.getX() + bc.getX() * baryC),
+                (int) (b.getY() + bc.getY() * baryC),
+                (int) (b.getZ() + bc.getZ() * baryC),
+                function.apply(0, 1-baryC, baryC));
         }
     }
     
@@ -381,7 +428,7 @@ public class VoxelCanvas {
             }
         }
         else if (dmax == dy) {
-            for (int x=minX, y=minY, z=minZ; x<=maxX; y++) {
+            for (int x=minX, y=minY, z=minZ; y<=maxY; y++) {
                 internalDraw(x, y, z, rgb);
 
                 err0 -= dx;
@@ -397,7 +444,7 @@ public class VoxelCanvas {
             }
         }
         else if (dmax == dz) {
-            for (int x=minX, y=minY, z=minZ; x<=maxX; z++) {
+            for (int x=minX, y=minY, z=minZ; z<=maxZ; z++) {
                 internalDraw(x, y, z, rgb);
 
                 err0 -= dx;
@@ -443,8 +490,6 @@ public class VoxelCanvas {
                 unselect(x, y, z);
         }));
     }
-
-    // IS SELECTED
 
     public boolean hasContent(int x, int y, int z) {
         return x >= 0 && y >= 0 && z >= 0 && x < sizeX && y < sizeY && z < sizeZ && content.contains(x, y, z);

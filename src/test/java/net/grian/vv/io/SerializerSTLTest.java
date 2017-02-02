@@ -1,27 +1,33 @@
 package net.grian.vv.io;
 
 import net.grian.spatium.voxel.VoxelArray;
-import net.grian.torrens.io.DeserializerQEF;
-import net.grian.torrens.io.SerializerSTL;
-import net.grian.torrens.object.STLModel;
+import net.grian.torrens.qbcl.DeserializerQEF;
+import net.grian.torrens.stl.SerializerSTL;
+import net.grian.torrens.stl.STLModel;
+import net.grian.vv.VVTest;
 import net.grian.vv.util.ConvertUtil;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SerializerSTLTest {
 
     @Test
     public void serialize() throws Exception {
-        VoxelArray voxels = new DeserializerQEF(Logger.getGlobal()).fromResource(getClass(), "sword.qef");
+        Logger logger = VVTest.LOGGER;
+        logger.setLevel(Level.INFO);
+        
+        VoxelArray voxels = new DeserializerQEF(logger).fromResource(getClass(), "sword.qef");
         STLModel model = ConvertUtil.convert(voxels, STLModel.class);
+        logger.fine("converted "+voxels+" to "+model);
 
-        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVertPlugin\\files\\SerializerSTLTest.stl");
+        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\SerializerSTLTest.stl");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed out fromPoints "+out);
-
-        new SerializerSTL().toFile(model, out);
+        
+        new SerializerSTL(logger).toFile(model, out);
     }
 
 }
