@@ -53,7 +53,7 @@ public interface ParsingCommand extends CommandExecutor, TabCompleter, ParseStra
         try {
             parsed = parse(args);
         } catch (IllegalArgumentException ex) {
-            sender.sendMessage(ChatColor.RED+ex.getMessage());
+            sender.sendMessage(ChatColor.RED+"Parsing Error: "+ex.getMessage());
             return true;
         }
         
@@ -73,4 +73,5 @@ public interface ParsingCommand extends CommandExecutor, TabCompleter, ParseStra
         
         return result;
     }
+    
 }

@@ -9,6 +9,7 @@ import net.grian.torrens.mc.SerializerMCModel;
 import net.grian.torrens.img.SerializerPNG;
 import net.grian.torrens.mc.MCModel;
 import net.grian.torrens.qbcl.QBModel;
+import net.grian.vv.VVTest;
 import net.grian.vv.core.VoxelMesh;
 import net.grian.vv.util.ConvertUtil;
 import org.junit.Test;
@@ -44,17 +45,19 @@ public class ClassverterVoxelsToMCTest {
 
     @Test
     public void invoke() throws Exception {
-        Logger.getGlobal().setLevel(Level.FINE);
-        VoxelArray voxels = new DeserializerQEF(Logger.getGlobal()).fromResource(getClass(), "debug.qef");
+        Logger logger = VVTest.LOGGER;
+        logger.setLevel(Level.FINE);
+        
+        VoxelArray voxels = new DeserializerQEF(logger).fromResource(getClass(), "debug.qef");
         VoxelMesh mesh = ConvertUtil.convert(voxels, VoxelMesh.class);
         MCModel model = new ClassverterVoxelsToMC().invoke(mesh);
         BufferedImage image = ConvertUtil.convert(model.getTexture("texture"), BufferedImage.class);
 
-        File jsonOut = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ClassverterVoxelsToMCTest.json");
+        File jsonOut = new File(VVTest.DIR_FILES, "ClassverterVoxelsToMCTest.json");
         if (!jsonOut.exists() && !jsonOut.createNewFile()) throw new IOException("failed to fromPoints json");
         new SerializerMCModel().toFile(model, jsonOut);
 
-        File imgOut = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ClassverterVoxelsToMCTest.png");
+        File imgOut = new File(VVTest.DIR_FILES, "ClassverterVoxelsToMCTest.png");
         if (!imgOut.exists() && !imgOut.createNewFile()) throw new IOException("failed to fromPoints texture");
         new SerializerPNG().toFile(image, imgOut);
     }

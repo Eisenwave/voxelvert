@@ -8,13 +8,10 @@ import net.grian.vv.wedit.WEUtil;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-public class BukkitVVUser implements VVUser {
+public class BukkitVVUser extends AbstractVVUser {
     
     private final static File
         PLUGIN_DIR = VVPlugin.getInstance().getDataFolder(),
@@ -22,8 +19,6 @@ public class BukkitVVUser implements VVUser {
     
     private final Player player;
     private final File dir;
-    
-    private final Map<String, Object> data = new HashMap<>();
     
     public BukkitVVUser(Player player) {
         this.player = player;
@@ -57,21 +52,6 @@ public class BukkitVVUser implements VVUser {
     }
     
     //DATA
-    
-    @Override
-    public <T> void putData(String name, @Nullable T object, Class<T> type) {
-        if (object != null)
-            data.put(name, object);
-    }
-    
-    public boolean removeData(String name) {
-        return data.remove(name) != null;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public <T> T getData(String name) {
-        return (T) data.get(name);
-    }
     
     @SuppressWarnings("deprecation")
     public BlockSet getSelection() {

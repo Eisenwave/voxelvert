@@ -25,7 +25,7 @@ public class SerializerQBTest {
         logger.fine("serializing model: "+model);
         int before = model.voxelCount();
 
-        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\SerializerQBTest.qb");
+        File out = new File(VVTest.DIR_FILES, "SerializerQBTest.qb");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
 
         new SerializerQB(logger).toFile(model, out);

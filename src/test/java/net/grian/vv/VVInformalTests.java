@@ -12,7 +12,6 @@ import net.grian.torrens.util.Resources;
 import net.grian.vv.clsvert.*;
 import net.grian.vv.core.VoxelMesh;
 import net.grian.vv.util.ConvertUtil;
-import org.junit.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -20,21 +19,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
-import java.util.logging.Logger;
 import java.util.zip.ZipFile;
 
 public class VVInformalTests {
 
-    private final static File
-            DIR_VV = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVertPlugin"),
-            DIR_VV_FILES = new File(DIR_VV+File.separator+"files"),
-            DIR_VV_MAPS = new File(DIR_VV+File.separator+"maps");
-
-    private final static Logger LOGGER = Logger.getGlobal();
-
     private static void runStandardTests() {
         try {
-            testImageVoxelization(DIR_VV_MAPS, "iloveyouall.png");
+            testImageVoxelization(VVTest.DIR_FILES, "iloveyouall.png");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -126,7 +117,7 @@ public class VVInformalTests {
         title("VOXEL MERGING");
 
         InputStream qef = Resources.getStream(VVInformalTests.class, "/cube32.qef");
-        VoxelArray array = new DeserializerQEF(LOGGER).fromStream(qef);
+        VoxelArray array = new DeserializerQEF(VVTest.LOGGER).fromStream(qef);
         VoxelMesh cluster = new ClassverterVoxelMerger().invoke(array);
         System.out.println(array+" -> "+cluster);
         qef.close();

@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public class ClassverterOBJVoxelizerTest {
     
     private static void saveAsQEF(VoxelArray voxels, String name) throws IOException {
-        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\"+name+".qef");
+        File out = new File(VVTest.DIR_FILES, name+".qef");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
         
         new SerializerQEF().toFile(voxels, out);

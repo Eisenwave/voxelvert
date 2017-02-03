@@ -48,7 +48,7 @@ public class ClassverterBlocksToVoxelsTest {
         now = System.currentTimeMillis();
         Texture texture = ConvertUtil.convert(voxels, Texture.class, Direction.NEGATIVE_Z, true, true);
         BufferedImage image = ConvertUtil.convert(texture, BufferedImage.class, true, false);
-        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\maps\\ClassverterBlocksToVoxelsTest.png");
+        File out = new File(VVTest.DIR_FILES, "ClassverterBlocksToVoxelsTest.png");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to fromPoints file");
         ImageIO.write(image, "png", out);
         logger.fine((System.currentTimeMillis()-now)+": done");

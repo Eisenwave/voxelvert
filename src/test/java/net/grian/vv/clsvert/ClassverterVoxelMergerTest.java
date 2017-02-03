@@ -35,7 +35,7 @@ public class ClassverterVoxelMergerTest {
         for (VoxelMesh.Element element : mesh)
             element.getArray().fill(ColorMath.fromHSB(PrimMath.randomFloat(1), 0.5F, 0.75F));
 
-        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ClassverterVoxelMergerTest.qb");
+        File out = new File(VVTest.DIR_FILES, "ClassverterVoxelMergerTest.qb");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to fromPoints "+out);
 
         new SerializerQB().toFile(model, out);
@@ -51,7 +51,7 @@ public class ClassverterVoxelMergerTest {
 
         QBModel model = ConvertUtil.convert(mesh, QBModel.class);
 
-        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\files\\ConverterVoxelMergerTest2.qb");
+        File out = new File(VVTest.DIR_FILES, "ConverterVoxelMergerTest2.qb");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to fromPoints "+out);
 
         new SerializerQB().toFile(model, out);

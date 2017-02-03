@@ -67,7 +67,7 @@ public class ClassverterRectangleArranger implements Classverter<BaseRectangle[]
 
         //regular case: increase bucket count until buckets exceed bounds in height
         logger.fine("regular case (multiple buckets optimal)");
-        int[] simulation = simulateArrangement(rectangles, maxW);
+        int[] simulation = findArrangement(rectangles, maxW);
         final int bucketCount = simulation[0], dims = simulation[1];
         logger.fine("conclusion: "+bucketCount+" buckets in "+dims+"x"+dims+" square");
 
@@ -87,41 +87,63 @@ public class ClassverterRectangleArranger implements Classverter<BaseRectangle[]
     }
 
     /**
-     * Simulates arranging rectangles in buckets.
+     * <p>
+     *     Simulates arranging rectangles in buckets and returns the best fit.
+     * </p>
+     * <p>
+     *     The result will be an int array containing the amount of buckets and the rectangle dimensions in order.
+     *     (length = 2)
+     * </p>
      *
      * @param rectangles the rectangles
      * @param totalWidth the total width of the rectangles
-     * @return an int array containing the amount of buckets and the rectangle dimensions in order
+     * @return the amount of buckets and rectangle dims
      */
-    private int[] simulateArrangement(BaseRectangle[] rectangles, int totalWidth) {
+    private int[] findArrangement(BaseRectangle[] rectangles, int totalWidth) {
         int outBucketCount = -1, outDims = -1;
-
-        final int initHeight = rectangles[0].getHeight();
-        outer: for (int div = 2 ;; div++) {
+        
+        for (int div = 2 ;; div++) {
             final int dims = totalWidth / div;
-            int bucketCount = 1;
-
-            int w = 0, h = initHeight;
-            for (BaseRectangle rectangle : rectangles) {
-                final int recWidth = rectangle.getWidth(), recHeight = rectangle.getHeight();
-
-                if ((w += recWidth) > dims) {
-                    bucketCount++;
-                    w = recWidth;
-
-                    if ((h += recHeight) > dims) {
-                        //simulation failed
-                        break outer;
-                    }
-                }
-            }
-
+            final int attempt = tryArrangement(rectangles, dims);
+            
+            if (attempt == -1) break;
+            
             //simulation succeeded, set outputs to this loop's temporary vars
-            outBucketCount = bucketCount;
+            outBucketCount = attempt;
             outDims = dims;
         }
 
         return new int[] {outBucketCount, outDims};
+    }
+    
+    /**
+     * Tries out a rectangle arrangement.
+     *
+     * @param rectangles the rectangles to arrange
+     * @param dims the bounding rectangle dimensions
+     * @return -1 if the rectangles don't fit, else the bucket count
+     */
+    private int tryArrangement(BaseRectangle[] rectangles, int dims) {
+        int
+            bucketCount = 1,
+            w = 0,
+            h = rectangles[0].getHeight();
+        
+        for (BaseRectangle rectangle : rectangles) {
+            final int recWidth = rectangle.getWidth(), recHeight = rectangle.getHeight();
+        
+            if ((w += recWidth) > dims) {
+                bucketCount++;
+                w = recWidth;
+            
+                if ((h += recHeight) > dims) {
+                    //simulation failed
+                    return -1;
+                }
+            }
+        }
+    
+        return bucketCount;
     }
 
     /**

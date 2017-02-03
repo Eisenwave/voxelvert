@@ -1,6 +1,11 @@
 package net.grian.vv.cmd;
 
+import net.grian.spatium.voxel.VoxelArray;
 import net.grian.vv.VVTest;
+import net.grian.vv.plugin.UserManager;
+import net.grian.vv.plugin.VVPlugin;
+import net.grian.vv.plugin.VVUser;
+import org.bukkit.command.CommandSender;
 import org.junit.Test;
 
 import java.util.concurrent.TimeoutException;
@@ -29,6 +34,26 @@ public class CmdConvertTest {
             assertTrue(time - 3000 < 100);
             logger.fine("timed out after "+time+"ms");
         }
+    }
+    
+    @Test
+    public void commandTest() throws Exception {
+        Logger logger = VVTest.LOGGER;
+        logger.setLevel(Level.FINE);
+    
+        VVPlugin.initLanguage();
+        
+        CmdConvert cmd = new CmdConvert();
+        CommandSender sender = new DebugCommandSender();
+        String[] args = {"qb", "qubicle/debug.qb", "voxels", "result"};
+        
+        cmd.onCommand(sender, null, "convert", args);
+    
+        VVUser user = UserManager.getInstance().getDebugUser();
+        assertTrue(user.hasData("result"));
+    
+        VoxelArray data = user.getData("result");
+        logger.info(data.toString());
     }
     
 }

@@ -49,9 +49,23 @@ public interface Parser<T> {
         }
     };
     
-    static <T extends Enum<T>> Parser<T> fromEnum(Class<T> clazz) {
+    static <T extends Enum<T>> Parser<T> fromEnum(Class<T> clazz, boolean upperCase) {
         Objects.requireNonNull(clazz);
-        return str -> Enum.valueOf(clazz, str);
+        return str -> {
+            try {
+                if (upperCase) str = str.toUpperCase();
+                return Enum.valueOf(clazz, str);
+            } catch (IllegalArgumentException ex) {
+                String error = "\""+str+"\" is not a "+clazz.getSimpleName();
+                IllegalArgumentException ex2 = new IllegalArgumentException(error);
+                ex2.setStackTrace(ex.getStackTrace());
+                throw ex2;
+            }
+        };
+    }
+    
+    static <T extends Enum<T>> Parser<T> fromEnum(Class<T> clazz) {
+        return fromEnum(clazz, true);
     }
     
     /**

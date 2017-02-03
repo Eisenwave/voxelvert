@@ -34,7 +34,7 @@ public class DeserializerQBTest {
         VoxelArray array = ConvertUtil.convert(mesh, VoxelArray.class);
         Texture texture = ConvertUtil.convert(array, Texture.class, Direction.NEGATIVE_Z, true, true);
 
-        File out = new File("D:\\Users\\Jan\\Desktop\\SERVER\\SERVERS\\TEST\\plugins\\VoxelVert\\maps\\DeserializerQBTest.png");
+        File out = new File(VVTest.DIR_FILES, "DeserializerQBTest.png");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
 
         ImageIO.write(texture.toImage(), "png", out);

@@ -1,9 +1,10 @@
 package net.grian.vv.cmd;
 
+import net.grian.torrens.util.ANSI;
+import net.grian.vv.util.CommandUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
-import org.bukkit.permissions.PermissibleBase;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
@@ -11,16 +12,17 @@ import org.bukkit.plugin.Plugin;
 
 import javax.annotation.Nonnull;
 import java.io.PrintStream;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 /**
  * Implementation of {@link CommandSender} which allows for testing commands using artificial senders.
  */
 public class DebugCommandSender implements CommandSender {
     
-    private final PermissibleBase permissions = new PermissibleBase(this);
     private boolean op = true;
     
     @Nonnull
@@ -32,6 +34,21 @@ public class DebugCommandSender implements CommandSender {
     
     public DebugCommandSender(PrintStream out) {
         this(out::println);
+    }
+    
+    public DebugCommandSender(Logger logger) {
+        this(logger::info);
+    }
+    
+    public DebugCommandSender() {
+        this.msgHandler = msg -> {
+            /*StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+            for (StackTraceElement e : stack) {
+                if (e.isNativeMethod()) break;
+                System.out.println(e);
+            }*/
+            System.out.println(CommandUtil.chatColorToAnsi(msg)+ANSI.RESET);
+        };
     }
     
     @Override
@@ -57,57 +74,55 @@ public class DebugCommandSender implements CommandSender {
     
     @Override
     public boolean isPermissionSet(String name) {
-        return permissions.isPermissionSet(name);
+        return true;
     }
     
     @Override
     public boolean isPermissionSet(Permission perm) {
-        return permissions.isPermissionSet(perm);
+        return true;
     }
     
     @Override
     public boolean hasPermission(String name) {
-        return permissions.hasPermission(name);
+        return true;
     }
     
     @Override
     public boolean hasPermission(Permission perm) {
-        return permissions.hasPermission(perm);
+        return true;
     }
     
     @Override
     public PermissionAttachment addAttachment(Plugin plugin, String name, boolean value) {
-        return permissions.addAttachment(plugin, name, value);
+        throw new UnsupportedOperationException();
     }
     
     @Override
     public PermissionAttachment addAttachment(Plugin plugin) {
-        return permissions.addAttachment(plugin);
+        throw new UnsupportedOperationException();
     }
     
     @Override
     public PermissionAttachment addAttachment(Plugin plugin, String name, boolean value, int ticks) {
-        return permissions.addAttachment(plugin, name, value, ticks);
+        throw new UnsupportedOperationException();
     }
     
     @Override
     public PermissionAttachment addAttachment(Plugin plugin, int ticks) {
-        return permissions.addAttachment(plugin, ticks);
+        throw new UnsupportedOperationException();
     }
     
     @Override
     public void removeAttachment(PermissionAttachment attachment) {
-        permissions.removeAttachment(attachment);
+        throw new UnsupportedOperationException();
     }
     
     @Override
-    public void recalculatePermissions() {
-        permissions.recalculatePermissions();
-    }
+    public void recalculatePermissions() {}
     
     @Override
     public Set<PermissionAttachmentInfo> getEffectivePermissions() {
-        return permissions.getEffectivePermissions();
+        return Collections.emptySet();
     }
     
     @Override

@@ -17,8 +17,8 @@ public final class UserManager {
     }
 
     private final Map<UUID, VVUser> userMap = new WeakHashMap<>();
-    private VVUser consoleUser;
-    private VVUser debugUser;
+    private final VVUser consoleUser = null;
+    private final VVUser debugUser = new DebugVVUser();
     
     @Nonnull
     public VVUser getPlayerUser(UUID id) {
