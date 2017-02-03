@@ -1,5 +1,14 @@
 name: VoxelVertG
-main: net.grian.vv.plugin.VoxelVertPluginPlugin
+main: net.grian.vv.plugin.VVPlugin
 version: 0.1
+author: Headaxe
 depend: []
 softdepend: []
+
+permissions:
+  vv.command.convert:
+    default: op
+
+commands:
+  convert:
+    permission: vv.command.convert
