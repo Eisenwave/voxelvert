@@ -52,7 +52,7 @@ public class CmdConvertTest {
         VVUser user = UserManager.getInstance().getDebugUser();
         assertTrue(user.hasData("result"));
     
-        VoxelArray data = user.getData("result");
+        VoxelArray data = (VoxelArray) user.getData("result");
         logger.info(data.toString());
     }
     

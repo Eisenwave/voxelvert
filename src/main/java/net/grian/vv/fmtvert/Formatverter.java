@@ -1,5 +1,7 @@
 package net.grian.vv.fmtvert;
 
+import net.grian.vv.arg.Argument;
+import net.grian.vv.arg.ArgumentImpl;
 import net.grian.vv.plugin.VVUser;
 
 /**
@@ -24,6 +26,6 @@ public interface Formatverter {
     /**
      * Executes the conversion between formats.
      */
-    public abstract void convert(VVUser user, String from, String to, Object... args) throws Exception;
+    public abstract void convert(VVUser user, String from, String to, Argument... args) throws Exception;
     
 }

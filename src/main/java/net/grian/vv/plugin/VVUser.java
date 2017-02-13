@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * A VoxelVert user.
@@ -41,9 +42,13 @@ public interface VVUser {
     
     abstract boolean removeData(String name);
     
-    abstract <T> T getData(String name);
+    abstract Object getData(String name);
+    
+    abstract Set<String> listData();
     
     abstract boolean hasData(String name);
+    
+    abstract void clearData();
     
     abstract BlockSet getSelection();
     

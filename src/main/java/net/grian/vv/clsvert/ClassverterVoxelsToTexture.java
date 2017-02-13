@@ -1,12 +1,13 @@
 package net.grian.vv.clsvert;
 
-import com.sun.istack.internal.NotNull;
 import net.grian.spatium.enums.Axis;
 import net.grian.spatium.enums.Direction;
 import net.grian.spatium.util.ColorMath;
 import net.grian.spatium.voxel.VoxelArray;
 import net.grian.torrens.img.Texture;
 import net.grian.vv.util.Arguments;
+
+import javax.annotation.Nonnull;
 
 public class ClassverterVoxelsToTexture implements Classverter<VoxelArray, Texture> {
 
@@ -21,7 +22,7 @@ public class ClassverterVoxelsToTexture implements Classverter<VoxelArray, Textu
     }
 
     @Override
-    public Texture invoke(@NotNull VoxelArray from, @NotNull Object... args) {
+    public Texture invoke(@Nonnull VoxelArray from, @Nonnull Object... args) {
         Arguments.requireMin(args, 3);
         Arguments.requireType(args[0], Direction.class);
         Arguments.requireType(args[1], Boolean.class);

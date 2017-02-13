@@ -2,6 +2,7 @@ package net.grian.vv.fmtvert;
 
 import net.grian.spatium.voxel.VoxelArray;
 import net.grian.torrens.qbcl.DeserializerQEF;
+import net.grian.vv.arg.Argument;
 import net.grian.vv.plugin.VVUser;
 
 import java.io.File;
@@ -20,7 +21,7 @@ public class FormatverterQEFVoxels implements Formatverter {
     }
     
     @Override
-    public void convert(VVUser user, String from, String to, Object... args) throws Exception {
+    public void convert(VVUser user, String from, String to, Argument... args) throws Exception {
         File file = user.getFile(from);
         if (!file.exists() || !file.isFile()) throw new IOException("missing or not a file: "+from);
         

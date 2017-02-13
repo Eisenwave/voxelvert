@@ -84,12 +84,14 @@ public class ClassverterOBJVoxelizer implements Classverter<OBJModel, VoxelArray
     }
     
     private static Transformation transformOf(AxisAlignedBB3 box, int x, int y, int z) {
-        Vector3 translation = box.getMin().negate();
+        Vector3 translation = box.getMin();
+        translation.negate();
+        
         double maxDim = PrimMath.max(box.getSizeX(), box.getSizeY(), box.getSizeZ());
         int maxDesiredDim = PrimMath.max(x, y, z);
         double scale = (maxDesiredDim / (maxDim*1.01));
         
-        return v -> v.add(translation).multiply(scale);
+        return v -> {v.add(translation); v.multiply(scale);};
     }
     
     private void drawGroup(OBJModel model, MTLLibrary mtllib, OBJGroup group, Transformation transform, VoxelCanvas canvas) {

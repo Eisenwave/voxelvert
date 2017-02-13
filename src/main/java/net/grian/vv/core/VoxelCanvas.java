@@ -158,6 +158,10 @@ public class VoxelCanvas {
             if (predicate.test(x, y, z)) internalDraw(x, y, z, rgb);
         } );
     }
+    
+    public void drawIfElse(Int3Predicate predicate, int rgbTrue, int rgbFalse) {
+        drawRaw((x, y, z) -> predicate.test(x, y, z)? rgbTrue : rgbFalse);
+    }
 
     public void drawPath(Path3 path, float interval, int rgb) {
         PathIterator iterator = new PathIterator(path, interval);
@@ -301,12 +305,14 @@ public class VoxelCanvas {
         
         //iterate over AB & AC
         for (float baryB = 0; baryB <= 1; baryB += incrAB) {
-            Vector3 offB = ab.clone().multiply(baryB);
+            Vector3 offB = ab.clone();
+            offB.multiply(baryB);
             
             for (float baryC = 0; baryC <= 1; baryC += incrAC) {
                 float baryA = 1 - (baryB + baryC);
                 if (baryA < 0) break;
-                Vector3 offC = ac.clone().multiply(baryC);
+                Vector3 offC = ac.clone();
+                offC.multiply(baryC);
                 
                 draw(
                     (int) (a.getX() + offB.getX() + offC.getX()),

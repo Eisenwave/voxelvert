@@ -1,5 +1,7 @@
 package net.grian.vv.cmd;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 
 @FunctionalInterface
@@ -19,14 +21,18 @@ public interface ParseStrategy {
         }
     };
     
+    @NotNull
     abstract Parser[] formatOf(String[] args);
 
     default Object[] parse(String[] args) {
         Parser[] parsers = formatOf(args);
         Object[] result = new Object[args.length];
         
-        for (int i = 0; i<args.length; i++)
-            result[i] = parsers[i].parse(args[i]);
+        for (int i = 0; i<args.length; i++) {
+            result[i] = i<parsers.length?
+                parsers[i].parse(args[i]) :
+                args[i];
+        }
         
         return result;
     }

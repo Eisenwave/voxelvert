@@ -2,6 +2,8 @@ package net.grian.vv.cmd;
 
 import net.grian.spatium.cache.CacheMath;
 import net.grian.spatium.util.Enumerations;
+import net.grian.vv.arg.Argument;
+import net.grian.vv.arg.ArgumentFactory;
 import net.grian.vv.cache.Language;
 import net.grian.vv.fmtvert.Format;
 import net.grian.vv.fmtvert.Formatverter;
@@ -13,7 +15,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 
 public class CmdConvert implements ParsingCommand {
@@ -68,8 +73,7 @@ public class CmdConvert implements ParsingCommand {
             return;
         }
     
-        Object[] fmtvertArgs = new Object[args.length - 4];
-        System.arraycopy(args, 4, fmtvertArgs, 0, args.length - 4);
+        Argument[] fmtvertArgs = toArguments(args, 4);
         
         Runnable task = () -> {
             try {
@@ -119,6 +123,18 @@ public class CmdConvert implements ParsingCommand {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    
+    @NotNull
+    public static Argument[] toArguments(Object[] args, int start) {
+        List<Argument> argList = new ArrayList<>();
+        for (int i = start; i<args.length; i += 2) {
+            final int index = i-start;
+            String name = (String) args[index];
+            Object value = args[index+1];
+            argList.add(ArgumentFactory.create(name, value));
+        }
+        return argList.toArray(new Argument[argList.size()]);
     }
     
     public static void runWithMaxTime(Runnable task, long maxMillis) throws ExecutionException, InterruptedException,

@@ -2,6 +2,7 @@ package net.grian.vv.plugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
@@ -38,6 +39,15 @@ public final class UserManager {
     @Nonnull
     public VVUser getConsoleUser() {
         return consoleUser;
+    }
+    
+    @Nullable
+    public VVUser getByName(String name) {
+        if (name.equalsIgnoreCase("#CONSOLE")) return consoleUser;
+        else if (name.equalsIgnoreCase("#DEBUG")) return debugUser;
+        
+        Player player = Bukkit.getPlayer(name);
+        return userMap.get(player.getUniqueId());
     }
     
     @Nonnull

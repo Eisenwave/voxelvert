@@ -8,7 +8,21 @@ softdepend: []
 permissions:
   vv.command.convert:
     default: op
+  vv.command.voxelvert:
+    default: op
+  vv.command.vvadmin:
+    default: op
 
 commands:
   convert:
     permission: vv.command.convert
+    aliases: [c]
+    description: convert between formats
+  voxelvert:
+    permission: vv.command.voxelvert
+    aliases: [vv]
+    description: VoxelVert main command
+  vvadmin:
+    permission: vv.command.vvadmin
+    aliases: [vva]
+    description: VoxelVert admin command

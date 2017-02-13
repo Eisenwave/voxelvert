@@ -30,15 +30,6 @@ public class ClassverterVoxelsToBlocks implements Classverter<VoxelArray, BlockS
         ColorMap colors = (ColorMap) args[1];
         World world = (World) args[2];
 
-        BlockVector
-                min = selection.getMin(),
-                max = min.clone().add(from.getSizeX()-1, from.getSizeY()-1, from.getSizeZ()-1);
-
-        BlockSelection target = BlockSelection.between(min, max);
-
-
-        int x = target.getMinX(), y = target.getMinY(), z = target.getMinZ();
-
         /*
         for (Voxel v : from) {
             Material material = colors.getMaterial(v.getColor());
@@ -48,6 +39,6 @@ public class ClassverterVoxelsToBlocks implements Classverter<VoxelArray, BlockS
         }
         */
 
-        return target;
+        return selection;
     }
 }

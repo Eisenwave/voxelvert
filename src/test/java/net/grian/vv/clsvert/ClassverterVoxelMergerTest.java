@@ -94,7 +94,7 @@ public class ClassverterVoxelMergerTest {
     @Test
     public void testWorstCaseMerging() throws Exception {
         Logger logger = VVTest.LOGGER;
-        logger.setLevel(Level.INFO);
+        logger.setLevel(Level.FINE);
         
         Thread thread = new Thread(() -> {
             for (int i = 0; i<8; i++) {

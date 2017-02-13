@@ -100,7 +100,7 @@ public class VoxelCanvasTest {
     }
 
     @Test
-    public void drawSpace() throws Exception {
+    public void drawSpace_OBB() throws Exception {
         VoxelCanvas canvas = new VoxelCanvas(64, 64, 64);
         OrientedBB3 box = OrientedBB3.fromAABB(AxisAlignedBB3.fromPoints(16, 16, 16, 48, 48, 48));
         box.rotateX(Spatium.radians(45));
@@ -108,7 +108,27 @@ public class VoxelCanvasTest {
 
         canvas.drawSpace(box, ColorMath.DEBUG2);
 
-        saveAsQEF(canvas.getContent(), "VoxelCanvasTest_drawSpace");
+        saveAsQEF(canvas.getContent(), "VoxelCanvasTest_drawSpace_OBB");
+    }
+    
+    @Test
+    public void drawSpace_Cone() throws Exception {
+        VoxelCanvas canvas = new VoxelCanvas(128, 128, 128);
+        //Cone aaCone = Cone.fromApexDirRadius(0, 0, 0, 16, 0, 0, 8);
+        Cone orCone = Cone.fromApexDirRadius(0, 0, 0, 80, 80, 80, 40);
+        
+        //canvas.drawIf(aaCone::contains, ColorMath.DEBUG1);
+        canvas.drawIf(orCone::contains, ColorMath.DEBUG2);
+        saveAsQEF(canvas.getContent(), "VoxelCanvasTest_drawSpace_Cone");
+    }
+    
+    @Test
+    public void drawSpace_Sphere() throws Exception {
+        VoxelCanvas canvas = new VoxelCanvas(300, 300, 300);
+        Sphere sphere = Sphere.fromCenterAndRadius(0, 0, 0, 250);
+        
+        canvas.drawSpace(sphere, ColorMath.SOLID_RED);
+        saveAsQEF(canvas.getContent(), "VoxelCanvasTest_drawSpace_Sphere");
     }
 
     @Test

@@ -3,6 +3,7 @@ package net.grian.vv.fmtvert;
 import net.grian.spatium.voxel.VoxelArray;
 import net.grian.torrens.qbcl.DeserializerQB;
 import net.grian.torrens.qbcl.QBModel;
+import net.grian.vv.arg.Argument;
 import net.grian.vv.core.VoxelMesh;
 import net.grian.vv.plugin.VVUser;
 import net.grian.vv.util.ConvertUtil;
@@ -23,12 +24,12 @@ public class FormatverterQBVoxels implements Formatverter {
     }
     
     @Override
-    public void convert(VVUser user, String from, String to, Object... args) throws Exception {
+    public void convert(VVUser user, String from, String to, Argument... args) throws Exception {
         File file = user.getFile(from);
         if (!file.exists() || !file.isFile()) throw new IOException("missing or not a file: "+from);
         
-        QBModel qb = new DeserializerQB().fromFile(file);
-        VoxelMesh mesh = ConvertUtil.convert(qb, VoxelMesh.class);
+        QBModel model = new DeserializerQB().fromFile(file);
+        VoxelMesh mesh = ConvertUtil.convert(model, VoxelMesh.class);
         VoxelArray array = ConvertUtil.convert(mesh, VoxelArray.class);
         
         user.putData(to, array);

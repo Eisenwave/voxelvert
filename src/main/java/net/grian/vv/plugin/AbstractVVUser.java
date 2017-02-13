@@ -2,9 +2,7 @@ package net.grian.vv.plugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public abstract class AbstractVVUser implements VVUser {
     
@@ -27,10 +25,19 @@ public abstract class AbstractVVUser implements VVUser {
         return data.remove(name) != null;
     }
     
-    @SuppressWarnings("unchecked")
     @Override
-    public <T> T getData(String name) {
-        return (T) data.get(name);
+    public Object getData(String name) {
+        return data.get(name);
+    }
+    
+    @Override
+    public Set<String> listData() {
+        return Collections.unmodifiableSet(data.keySet());
+    }
+    
+    @Override
+    public void clearData() {
+        data.clear();
     }
     
     @Override

@@ -51,7 +51,8 @@ public class RaysTest {
         TextureCanvas graphics = texture.getGraphics();
         graphics.drawRaw((x,y) -> {
             Vector3 target = Vector3.fromXYZ(0, (y-128) / 100D, (x-128) / 100D );
-            Ray3 ray = Ray3.between(origin, target).normalize();
+            Ray3 ray = Ray3.between(origin, target);
+            ray.normalize();
 
             double t = Rays.cast(ray, triangle);
             return Double.isFinite(t) ? ColorMath.SOLID_WHITE : ColorMath.SOLID_BLACK;

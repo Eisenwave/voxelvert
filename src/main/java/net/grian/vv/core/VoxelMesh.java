@@ -52,7 +52,7 @@ public class VoxelMesh implements Serializable, Iterable<VoxelMesh.Element> {
     public VoxelMesh.Element[] getElements() {
         return list.toArray(new Element[list.size()]);
     }
-
+    
     public BlockSelection getBoundaries() {
         if (isEmpty()) throw new IllegalStateException("empty meshes have no boundaries");
         int

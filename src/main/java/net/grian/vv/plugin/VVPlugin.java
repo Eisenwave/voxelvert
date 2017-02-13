@@ -2,6 +2,7 @@ package net.grian.vv.plugin;
 
 import net.grian.vv.cache.Registry;
 import net.grian.vv.cmd.CmdConvert;
+import net.grian.vv.cmd.CmdVVAdmin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import static net.grian.vv.cache.Language.define;
@@ -27,6 +28,7 @@ public class VVPlugin extends JavaPlugin {
 
     private void initCommands() {
         getCommand("convert").setExecutor(new CmdConvert());
+        getCommand("vvadmin").setExecutor(new CmdVVAdmin());
     }
 
     public static VVPlugin getInstance() {

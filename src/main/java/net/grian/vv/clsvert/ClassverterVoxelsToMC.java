@@ -101,7 +101,9 @@ public class ClassverterVoxelsToMC implements Classverter<VoxelMesh, MCModel> {
 
         for (VoxelMesh.Element voxels : mesh) {
             VoxelArray array = voxels.getArray();
-            BlockSelection blockBounds = array.getBoundaries().move(voxels.getMinX(), voxels.getMinY(), voxels.getMinZ());
+            BlockSelection blockBounds = array.getBoundaries();
+            blockBounds.move(voxels.getMinX(), voxels.getMinY(), voxels.getMinZ());
+            
             MCElement element = new MCElement(blockBounds.toBoundingBox());
             model.addElement(element);
 
