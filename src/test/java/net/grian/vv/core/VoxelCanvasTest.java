@@ -92,7 +92,7 @@ public class VoxelCanvasTest {
             Path3 circle = Path3.circle(
                     Vector3.fromXYZ(32, 32, 32), //center
                     20, //radius
-                    Vector3.random(1)); //normal
+                    Vectors3.random(1)); //normal
             canvas.drawPath(circle, 128, ColorMath.fromHSB(PrimMath.randomFloat(1F), 0.5F, 0.75F));
         }
 

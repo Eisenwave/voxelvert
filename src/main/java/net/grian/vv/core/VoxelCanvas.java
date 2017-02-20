@@ -2,7 +2,7 @@ package net.grian.vv.core;
 
 import net.grian.spatium.Spatium;
 import net.grian.spatium.array.BooleanArray3;
-import net.grian.spatium.coll.Distances;
+import net.grian.spatium.rel.Distances;
 import net.grian.spatium.function.*;
 import net.grian.spatium.geo3.*;
 import net.grian.spatium.iter.PathIterator;
@@ -305,14 +305,12 @@ public class VoxelCanvas {
         
         //iterate over AB & AC
         for (float baryB = 0; baryB <= 1; baryB += incrAB) {
-            Vector3 offB = ab.clone();
-            offB.multiply(baryB);
+            Vector3 offB = ab.clone().multiply(baryB);
             
             for (float baryC = 0; baryC <= 1; baryC += incrAC) {
                 float baryA = 1 - (baryB + baryC);
                 if (baryA < 0) break;
-                Vector3 offC = ac.clone();
-                offC.multiply(baryC);
+                Vector3 offC = ac.clone().multiply(baryC);
                 
                 draw(
                     (int) (a.getX() + offB.getX() + offC.getX()),
