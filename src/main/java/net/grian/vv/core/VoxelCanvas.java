@@ -2,7 +2,7 @@ package net.grian.vv.core;
 
 import net.grian.spatium.Spatium;
 import net.grian.spatium.array.BooleanArray3;
-import net.grian.spatium.rel.Distances;
+import net.grian.spatium.coll.Distances;
 import net.grian.spatium.function.*;
 import net.grian.spatium.geo3.*;
 import net.grian.spatium.iter.PathIterator;
