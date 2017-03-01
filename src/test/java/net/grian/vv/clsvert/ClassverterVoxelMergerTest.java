@@ -91,6 +91,7 @@ public class ClassverterVoxelMergerTest {
         assertEquals(count, mesh.voxelCount());
     }
 
+    /*
     @Test
     public void testWorstCaseMerging() throws Exception {
         Logger logger = VVTest.LOGGER;
@@ -118,5 +119,6 @@ public class ClassverterVoxelMergerTest {
             e.printStackTrace();
         }
     }
+    */
 
 }

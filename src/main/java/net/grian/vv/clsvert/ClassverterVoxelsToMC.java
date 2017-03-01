@@ -1,6 +1,7 @@
 package net.grian.vv.clsvert;
 
 import net.grian.spatium.enums.Direction;
+import net.grian.spatium.geo3.AxisAlignedBB;
 import net.grian.spatium.geo3.BlockSelection;
 import net.grian.spatium.voxel.VoxelArray;
 import net.grian.torrens.img.BaseRectangle;
@@ -102,7 +103,7 @@ public class ClassverterVoxelsToMC implements Classverter<VoxelMesh, MCModel> {
         for (VoxelMesh.Element voxels : mesh) {
             VoxelArray array = voxels.getArray();
             BlockSelection blockBounds = array.getBoundaries();
-            blockBounds.move(voxels.getMinX(), voxels.getMinY(), voxels.getMinZ());
+            blockBounds.translate(voxels.getMinX(), voxels.getMinY(), voxels.getMinZ());
             
             MCElement element = new MCElement(blockBounds.toBoundingBox());
             model.addElement(element);

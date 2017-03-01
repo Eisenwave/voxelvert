@@ -49,16 +49,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.grian.spatium</groupId>
-            <artifactId>spatium</artifactId>
-            <version>0.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.grian</groupId>
+            <groupId>net.grian.torrens</groupId>
             <artifactId>Torrens</artifactId>
             <version>1.0</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -77,6 +70,11 @@
             <artifactId>annotations</artifactId>
             <version>15.0</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.grian.spatium</groupId>
+            <artifactId>spatium</artifactId>
+            <version>0.1</version>
         </dependency>
     </dependencies>
 

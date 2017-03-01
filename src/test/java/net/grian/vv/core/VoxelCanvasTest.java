@@ -92,7 +92,7 @@ public class VoxelCanvasTest {
             Path3 circle = Path3.circle(
                     Vector3.fromXYZ(32, 32, 32), //center
                     20, //radius
-                    Vectors3.random(1)); //normal
+                    Vectors.random3(1)); //normal
             canvas.drawPath(circle, 128, ColorMath.fromHSB(PrimMath.randomFloat(1F), 0.5F, 0.75F));
         }
 
@@ -102,7 +102,7 @@ public class VoxelCanvasTest {
     @Test
     public void drawSpace_OBB() throws Exception {
         VoxelCanvas canvas = new VoxelCanvas(64, 64, 64);
-        OrientedBB3 box = OrientedBB3.fromAABB(AxisAlignedBB3.fromPoints(16, 16, 16, 48, 48, 48));
+        OrientedBB box = OrientedBB.fromAABB(AxisAlignedBB.fromPoints(16, 16, 16, 48, 48, 48));
         box.rotateX(Spatium.radians(45));
         box.rotateZ(Math.atan(CacheMath.INV_SQRT_2));//
 
@@ -124,8 +124,8 @@ public class VoxelCanvasTest {
     
     @Test
     public void drawSpace_Sphere() throws Exception {
-        VoxelCanvas canvas = new VoxelCanvas(300, 300, 300);
-        Sphere sphere = Sphere.fromCenterAndRadius(0, 0, 0, 250);
+        VoxelCanvas canvas = new VoxelCanvas(64, 64, 64);
+        Sphere sphere = Sphere.fromCenterRadius(31, 31, 31, 50);
         
         canvas.drawSpace(sphere, ColorMath.SOLID_RED);
         saveAsQEF(canvas.getContent(), "VoxelCanvasTest_drawSpace_Sphere");

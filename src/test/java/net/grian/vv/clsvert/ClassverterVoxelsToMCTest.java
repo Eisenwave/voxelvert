@@ -27,13 +27,13 @@ public class ClassverterVoxelsToMCTest {
     @Test
     public void getSurface() throws Exception {
         final BlockSelection
-                box = BlockSelection.fromPoints(1, 2, 3, 2, 8, 18),
-                surfaceNX = ClassverterVoxelsToMC.getSurface(box, Direction.NEGATIVE_X),
-                surfacePX = ClassverterVoxelsToMC.getSurface(box, Direction.POSITIVE_X),
-                surfaceNY = ClassverterVoxelsToMC.getSurface(box, Direction.NEGATIVE_Y),
-                surfacePY = ClassverterVoxelsToMC.getSurface(box, Direction.POSITIVE_Y),
-                surfaceNZ = ClassverterVoxelsToMC.getSurface(box, Direction.NEGATIVE_Z),
-                surfacePZ = ClassverterVoxelsToMC.getSurface(box, Direction.POSITIVE_Z);
+            box = BlockSelection.fromPoints(1, 2, 3, 2, 8, 18),
+            surfaceNX = ClassverterVoxelsToMC.getSurface(box, Direction.NEGATIVE_X),
+            surfacePX = ClassverterVoxelsToMC.getSurface(box, Direction.POSITIVE_X),
+            surfaceNY = ClassverterVoxelsToMC.getSurface(box, Direction.NEGATIVE_Y),
+            surfacePY = ClassverterVoxelsToMC.getSurface(box, Direction.POSITIVE_Y),
+            surfaceNZ = ClassverterVoxelsToMC.getSurface(box, Direction.NEGATIVE_Z),
+            surfacePZ = ClassverterVoxelsToMC.getSurface(box, Direction.POSITIVE_Z);
 
         assertEquals(surfaceNX, BlockSelection.fromPoints(0, 2, 3, 0, 8, 18));
         assertEquals(surfacePX, BlockSelection.fromPoints(3, 2, 3, 3, 8, 18));

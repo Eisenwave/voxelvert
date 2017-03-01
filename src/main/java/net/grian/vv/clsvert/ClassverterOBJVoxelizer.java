@@ -1,6 +1,6 @@
 package net.grian.vv.clsvert;
 
-import net.grian.spatium.geo3.AxisAlignedBB3;
+import net.grian.spatium.geo3.AxisAlignedBB;
 import net.grian.spatium.geo3.Triangle3;
 import net.grian.spatium.geo3.Vector3;
 import net.grian.spatium.transform.Transformation;
@@ -83,7 +83,7 @@ public class ClassverterOBJVoxelizer implements Classverter<OBJModel, VoxelArray
         return canvas.getContent();
     }
     
-    private static Transformation transformOf(AxisAlignedBB3 box, int x, int y, int z) {
+    private static Transformation transformOf(AxisAlignedBB box, int x, int y, int z) {
         Vector3 translation = box.getMin().negate();
         
         double maxDim = PrimMath.max(box.getSizeX(), box.getSizeY(), box.getSizeZ());

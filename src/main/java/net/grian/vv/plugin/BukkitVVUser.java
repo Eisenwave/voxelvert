@@ -1,7 +1,6 @@
 package net.grian.vv.plugin;
 
-import com.sk89q.worldedit.IncompleteRegionException;
-import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.bukkit.selections.Selection;
 import com.sk89q.worldedit.regions.Region;
 import net.grian.vv.core.BlockSet;
 import net.grian.vv.wedit.WEUtil;
@@ -53,15 +52,16 @@ public class BukkitVVUser extends AbstractVVUser {
     
     //DATA
     
+    @Override
+    public File getFile(String relPath) throws IOException {
+        return super.getFile(relPath);
+    }
+    
     @SuppressWarnings("deprecation")
     public BlockSet getSelection() {
-        WorldEdit we = WorldEdit.getInstance();
-        try {
-            Region region = we.getSession(player.getName()).getRegion();
-            return WEUtil.blockSetOf(region);
-        } catch (IncompleteRegionException e) {
-            return null;
-        }
+        Selection selection = WEUtil.selectionOf(player);
+        Region region = selection.getRegionSelector().getIncompleteRegion();
+        return WEUtil.blockSetOf(region);
     }
     
 }

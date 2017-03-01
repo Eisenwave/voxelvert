@@ -23,7 +23,7 @@ public class RaysTest {
 
     @Test
     public void draw_Ray_Sphere() throws Exception {
-        Sphere sphere = Sphere.fromCenterAndRadius(0, 0, 2, 1);
+        Sphere sphere = Sphere.fromCenterRadius(0, 0, 2, 1);
 
         Texture texture = rayTrace(256, 256, 1.25F, 1.25F, ray -> {
             double[] entryExit = Rays.pierce(ray, sphere);
@@ -63,7 +63,7 @@ public class RaysTest {
 
     @Test
     public void draw_Ray_AABB() throws Exception {
-        AxisAlignedBB3 aabb = AxisAlignedBB3.fromPoints(-1, -1, 1, 1, 1, 3);
+        AxisAlignedBB aabb = AxisAlignedBB.fromPoints(-1, -1, 1, 1, 1, 3);
 
         Texture texture = rayTrace(256, 256, 1.25F, 1.25F, ray -> {
             double t = Rays.cast(ray, aabb);
@@ -79,7 +79,7 @@ public class RaysTest {
         Logger logger = VVTest.LOGGER;
         logger.setLevel(Level.FINE);
         
-        OrientedBB3 box = OrientedBB3.fromAABB(AxisAlignedBB3.fromPoints(-1, -1, 1, 1, 1, 3));
+        OrientedBB box = OrientedBB.fromAABB(AxisAlignedBB.fromPoints(-1, -1, 1, 1, 1, 3));
         box.rotateY(Spatium.radians(45));
         Slab3 slabX = box.getSlabX(), slabY = box.getSlabY(), slabZ = box.getSlabZ();
         logger.fine(slabX.toString());

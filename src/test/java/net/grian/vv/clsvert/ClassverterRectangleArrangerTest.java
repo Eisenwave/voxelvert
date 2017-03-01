@@ -27,7 +27,7 @@ public class ClassverterRectangleArrangerTest {
         logger.setLevel(Level.INFO);
         
         long now = System.currentTimeMillis();
-        BaseRectangle[] rectangles = new BaseRectangle[512];
+        BaseRectangle[] rectangles = new BaseRectangle[32];
         for (int i = 0; i<rectangles.length; i++) {
             Texture texture = new Texture(i+1, i+1);
             float hue = PrimMath.randomFloat(1);

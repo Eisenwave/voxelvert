@@ -41,10 +41,10 @@ public class ClassverterVoxelsToOBJTest {
 
         new SerializerOBJ().toFile(model, out);
     }
-
+    
     @Test
     public void convertDebugVoxels() throws Exception {
-        VoxelArray voxels = getVoxelizedSword();
+        VoxelArray voxels = getMiniDebug();
         assertNotNull(voxels);
 
         OBJModel model = ConvertUtil.convert(voxels, OBJModel.class);
@@ -83,6 +83,7 @@ public class ClassverterVoxelsToOBJTest {
         return new DeserializerQEF().fromResource(ClassverterVoxelsToOBJTest.class, "minidebug.qef");
     }
 
+    /*
     @Test
     public void convertPerformance() throws Exception {
         VoxelArray voxels = new VoxelArray(256, 256, 256);
@@ -92,5 +93,6 @@ public class ClassverterVoxelsToOBJTest {
         TestUtil.printMillis(() -> ConvertUtil.convert(voxels, OBJModel.class), voxels+" to obj #2");
         TestUtil.printMillis(() -> ConvertUtil.convert(voxels, OBJModel.class), voxels+" to obj #3");
     }
+    */
 
 }
