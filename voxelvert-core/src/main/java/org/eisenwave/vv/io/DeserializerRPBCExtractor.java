@@ -1,11 +1,10 @@
 package org.eisenwave.vv.io;
 
 import com.google.gson.*;
-import eisenwave.commons.io.TextDeserializer;
 import net.grian.torrens.error.FileSyntaxException;
+import net.grian.torrens.io.TextDeserializer;
 import net.grian.torrens.object.Rectangle4i;
 import net.grian.torrens.schematic.BlockKey;
-import org.eisenwave.vv.object.BlockColor;
 import org.eisenwave.vv.object.Tint;
 import org.jetbrains.annotations.NotNull;
 

@@ -1,6 +1,6 @@
 package org.eisenwave.vv.object;
 
-import eisenwave.commons.util.PrimMath;
+import net.grian.spatium.util.PrimMath;
 import net.grian.spatium.util.Spatium;
 import net.grian.spatium.array.BooleanArray3;
 import net.grian.spatium.function.*;

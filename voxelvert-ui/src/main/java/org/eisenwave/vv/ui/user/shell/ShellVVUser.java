@@ -1,6 +1,6 @@
 package org.eisenwave.vv.ui.user.shell;
 
-import eisenwave.commons.util.Strings;
+import net.grian.spatium.util.*;
 import org.eisenwave.vv.ui.VoxelVert;
 import org.eisenwave.vv.ui.cmd.ClsvertLogger;
 import org.eisenwave.vv.ui.user.VVInventory;

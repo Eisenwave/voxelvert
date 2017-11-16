@@ -33,6 +33,12 @@
             <version>0.1</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>me.eisenwave.inv</groupId>
+            <artifactId>eisen-inventories</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
 
         <dependency>
             <groupId>net.grian</groupId>

@@ -1,6 +1,6 @@
 package org.eisenwave.vv.io;
 
-import eisenwave.commons.io.Serializer;
+import net.grian.torrens.io.Serializer;
 import net.grian.torrens.schematic.BlockKey;
 import org.eisenwave.vv.object.BlockColor;
 import org.eisenwave.vv.object.BlockColorTable;

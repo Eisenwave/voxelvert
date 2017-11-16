@@ -1,8 +1,8 @@
 package org.eisenwave.vv.io;
 
-import eisenwave.commons.io.Deserializer;
 import net.grian.torrens.error.FileFormatException;
 import net.grian.torrens.error.FileVersionException;
+import net.grian.torrens.io.Deserializer;
 import net.grian.torrens.schematic.BlockKey;
 import org.eisenwave.vv.object.BlockColorTable;
 import org.eisenwave.vv.object.BlockColor;
@@ -23,7 +23,7 @@ public class DeserializerBCT implements Deserializer<BlockColorTable> {
         
         BlockColorTable result = new BlockColorTable();
         for (int i = 0; i < count; i++) {
-            byte id = dataStream.readByte();
+            int id = dataStream.readUnsignedByte();
             byte data = dataStream.readByte();
             int argb = dataStream.readInt();
             short volume = dataStream.readShort();

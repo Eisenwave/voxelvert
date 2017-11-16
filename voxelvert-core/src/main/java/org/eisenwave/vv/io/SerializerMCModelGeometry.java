@@ -1,9 +1,9 @@
 package org.eisenwave.vv.io;
 
 import com.google.gson.stream.JsonWriter;
-import eisenwave.commons.io.TextSerializer;
 import net.grian.spatium.enums.Direction;
 import net.grian.torrens.img.Texture;
+import net.grian.torrens.io.TextSerializer;
 import net.grian.torrens.object.BoundingBox6f;
 import net.grian.torrens.object.Vertex3f;
 import org.eisenwave.vv.object.MCUV;

@@ -1,7 +1,7 @@
 package org.eisenwave.vv;
 
-import eisenwave.commons.io.ANSI;
-import eisenwave.commons.util.PrimMath;
+import net.grian.spatium.util.*;
+import net.grian.torrens.util.ANSI;
 
 import java.time.Instant;
 import java.time.ZoneId;

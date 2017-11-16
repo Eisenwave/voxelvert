@@ -1,7 +1,7 @@
 package org.eisenwave.vv.clsvert;
 
-import eisenwave.commons.io.ANSI;
 import net.grian.torrens.object.Vertex3f;
+import net.grian.torrens.util.ANSI;
 import net.grian.torrens.util.ColorMath;
 import net.grian.spatium.util.TestUtil;
 import net.grian.torrens.img.Texture;

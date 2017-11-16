@@ -1,7 +1,7 @@
 package org.eisenwave.vv.clsvert;
 
-import eisenwave.commons.io.ANSI;
-import eisenwave.commons.util.PrimMath;
+import net.grian.spatium.util.*;
+import net.grian.torrens.util.ANSI;
 import net.grian.torrens.util.ColorMath;
 import net.grian.torrens.voxel.DeserializerQB;
 import net.grian.torrens.voxel.DeserializerQEF;

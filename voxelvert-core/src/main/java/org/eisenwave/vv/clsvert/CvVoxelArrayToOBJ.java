@@ -1,7 +1,6 @@
 package org.eisenwave.vv.clsvert;
 
-import eisenwave.commons.util.Flags;
-import eisenwave.commons.util.PrimMath;
+import net.grian.spatium.util.*;
 import net.grian.spatium.array.IntArray3;
 import net.grian.spatium.enums.Direction;
 import net.grian.spatium.util.Incrementer2;

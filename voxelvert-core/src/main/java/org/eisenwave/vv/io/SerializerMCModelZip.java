@@ -1,8 +1,8 @@
 package org.eisenwave.vv.io;
 
-import eisenwave.commons.io.Serializer;
 import net.grian.torrens.img.Texture;
 import net.grian.torrens.io.DeserializerByteArray;
+import net.grian.torrens.io.Serializer;
 import org.eisenwave.vv.object.MCModel;
 
 import javax.imageio.ImageIO;

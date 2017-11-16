@@ -1,7 +1,7 @@
 package org.eisenwave.vv.clsvert;
 
-import eisenwave.commons.io.ANSI;
-import eisenwave.commons.util.PrimMath;
+import net.grian.spatium.util.*;
+import net.grian.torrens.util.ANSI;
 import net.grian.torrens.util.ColorMath;
 import net.grian.spatium.util.TestUtil;
 import net.grian.torrens.img.Texture;
@@ -82,7 +82,7 @@ public class CvRectangleArrangerTest {
         
         System.out.println("result: "+ ANSI.FG_YELLOW+result+ANSI.RESET);
         if (printEff)
-            System.out.println("efficiency: "+ANSI.FG_YELLOW+result.getEfficiency()+ANSI.RESET);
+            System.out.println("efficiency: "+ ANSI.FG_YELLOW+result.getEfficiency()+ANSI.RESET);
     }
     
     private static class EmptyRectangle implements BaseRectangle {

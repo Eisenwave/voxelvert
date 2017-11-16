@@ -1,6 +1,6 @@
 package org.eisenwave.vv.clsvert;
 
-import eisenwave.commons.util.FastMath;
+import net.grian.spatium.util.FastMath;
 import org.eisenwave.vv.object.RectangleArrangement;
 import org.eisenwave.vv.object.BaseRectangle;
 import org.jetbrains.annotations.NotNull;

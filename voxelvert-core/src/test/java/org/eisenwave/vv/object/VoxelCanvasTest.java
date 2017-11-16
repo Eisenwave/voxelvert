@@ -1,6 +1,6 @@
 package org.eisenwave.vv.object;
 
-import eisenwave.commons.util.Flags;
+import net.grian.spatium.util.*;
 import net.grian.torrens.util.ColorMath;
 import net.grian.torrens.voxel.DeserializerQEF;
 import net.grian.torrens.voxel.SerializerQEF;

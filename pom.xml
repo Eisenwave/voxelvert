@@ -31,19 +31,10 @@
         </plugins>
     </build>
 
-    <dependencies>
-        <dependency>
-            <groupId>me.eisenwave.inv</groupId>
-            <artifactId>eisen-inventories</artifactId>
-            <version>1.0</version>
-        </dependency>
-    </dependencies>
-
     <modules>
         <module>voxelvert-ui</module>
         <module>voxelvert-bukkit</module>
         <module>voxelvert-core</module>
-        <module>voxelvert-bukkit-gui</module>
     </modules>
 
     <distributionManagement>

@@ -1,6 +1,6 @@
 package org.eisenwave.vv.ui.util;
 
-import eisenwave.commons.util.Strings;
+import net.grian.spatium.util.*;
 
 public class StringProgressBar {
     

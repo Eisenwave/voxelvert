@@ -1,6 +1,6 @@
 package org.eisenwave.vv.ui.cmd;
 
-import eisenwave.commons.io.ANSI;
+import net.grian.torrens.util.ANSI;
 import org.apache.commons.io.IOUtils;
 import org.eisenwave.vv.object.Language;
 import org.eisenwave.vv.ui.fmtvert.Format;

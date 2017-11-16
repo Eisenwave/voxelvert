@@ -1,6 +1,6 @@
 package org.eisenwave.vv.clsvert;
 
-import eisenwave.commons.util.PrimMath;
+import net.grian.spatium.util.PrimMath;
 import net.grian.torrens.object.BoundingBox6f;
 import net.grian.torrens.object.Vertex2f;
 import net.grian.torrens.object.Vertex3f;

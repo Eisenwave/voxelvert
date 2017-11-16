@@ -1,9 +1,9 @@
 package org.eisenwave.vv.clsvert;
 
-import eisenwave.commons.util.FastMath;
-import eisenwave.commons.util.PrimMath;
 import net.grian.spatium.array.BooleanArray3;
 import net.grian.spatium.enums.Direction;
+import net.grian.spatium.util.FastMath;
+import net.grian.spatium.util.PrimMath;
 import net.grian.torrens.img.BaseTexture;
 import net.grian.torrens.img.Texture;
 import net.grian.torrens.object.BoundingBox6f;

@@ -33,6 +33,8 @@ import static org.eisenwave.vv.ui.fmtvert.Format.*;
 @SuppressWarnings("Duplicates")
 public final class FormatverterFactory {
     
+    public final static String DEFAULT_BCT = "colors/default.bct";
+    
     private final static Logger VERBOSE_LOGGER;
     static {
         VERBOSE_LOGGER = Logger.getLogger("vv");
@@ -168,7 +170,7 @@ public final class FormatverterFactory {
                 ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
                 set(1);
                 
-                BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), "colors/default.colors");
+                BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
                 set(2);
                 
                 assert blocks != null;
@@ -223,7 +225,7 @@ public final class FormatverterFactory {
                 ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
                 set(1);
                 
-                BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), "colors/default.colors");
+                BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
                 set(2);
                 
                 assert blocks != null;
@@ -290,7 +292,7 @@ public final class FormatverterFactory {
             ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
             set(1);
             
-            BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), "colors/default.colors");
+            BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
             set(2);
             
             assert blocks != null;
@@ -335,7 +337,7 @@ public final class FormatverterFactory {
             ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
             set(1);
             
-            BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), "colors/default.colors");
+            BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
             set(2);
             
             assert blocks != null;
@@ -444,7 +446,7 @@ public final class FormatverterFactory {
             ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
             set(1);
             
-            BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), "colors/default.colors");
+            BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
             set(2);
             
             assert blocks != null;
