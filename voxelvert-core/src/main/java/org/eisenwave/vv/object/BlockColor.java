@@ -27,6 +27,12 @@ public class BlockColor implements RGBValue {
         this.perVol = (float) Math.cbrt(volume / 4096F);
     }
     
+    public BlockColor(int rgb) {
+        this.rgb = rgb;
+        this.volume = 4096;
+        this.perVol = 1F;
+    }
+    
     @Override
     public int getRGB() {
         return rgb;

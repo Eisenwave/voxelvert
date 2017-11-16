@@ -16,7 +16,7 @@ public class Format implements Comparable<Format> {
     
     /** Color database for assigning blocks to rgb values, derived from texture pack */
     public final static Format
-    COLORS = new Format("colors", false, "colors"),
+        BLOCK_COLOR_TABLE = new Format("colors", false, "bct"),
     
     /** An image */
     IMAGE = new Format("image", false, "bmp", "gif", "jpg", "jpeg", "png"),
@@ -24,7 +24,7 @@ public class Format implements Comparable<Format> {
     /** Minecraft model */
     MODEL = new Format("model", false),
     
-    /** Qubicle Exchange Format*/
+    /** Qubicle Exchange Format */
     QEF = new Format("qef", false, "qef"),
     
     /** Qubicle Binary */
@@ -96,7 +96,7 @@ public class Format implements Comparable<Format> {
             if (condition.test(f))
                 return f;
         }
-    
+        
         return null;
     }
     

@@ -11,7 +11,7 @@ VoxelVert uses two custom file formats:
 The resource pack extractor format is a subset of `JSON` which specifies how to extract block colors out of a default
 resource pack.
 
-### Block Color Table (`.colors`)
+### Block Color Table (`.bct`)
 Block color tables are simple binary files which store the color of each block and id. The specification is as follows:
 ````EBNF
 table = header, {entry};
@@ -25,3 +25,4 @@ data = ? byte in range 0 - 15 ?
 color = byte, byte, byte, byte; (* bytes represent alpha, red, green, blue channels *)
 volume = ? short in range 0 - 4096 ?
 ````
+On Linux, you can inspect the data of a BCT file without the header using `xxd -b -s 11 -c 8 my_color_table.bct`

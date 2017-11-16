@@ -1,10 +1,10 @@
 {
-    "colormaps": {
+    "colormap": {
         "foliage": "colormap/foliage.png",
         "grass": "colormap/grass.png"
     },
     "blocks": [
-        {"id": 0, "data": 0, "type": "rgb", "value": "0x00FFFFFF", "voxels": 0},
+        {"id": 0, "data": 0, "type": "rgb", "rgb": "0x00FFFFFF", "voxels": 0},
         {"id": 1, "data": 0, "type": "texture", "texture": "blocks/stone.png"},
         {"id": 1, "data": 1, "type": "texture", "texture": "blocks/stone_granite.png"},
         {"id": 1, "data": 2, "type": "texture", "texture": "blocks/stone_granite_smooth.png"},
@@ -439,7 +439,7 @@
         {"id": 163, "data": 0, "type": "texture", "texture": "blocks/planks_acacia.png", "voxels": 3072},
         {"id": 164, "data": 0, "type": "texture", "texture": "blocks/planks_big_oak.png", "voxels": 3072},
         {"id": 165, "data": 0, "type": "texture", "texture": "blocks/slime.png"},
-        {"id": 166, "data": 0, "type": "rgb", "value": "0x00FFFFFF"},
+        {"id": 166, "data": 0, "type": "rgb", "rgb": "0x00FFFFFF"},
         {"id": 167, "data": 0, "type": "texture", "texture": "blocks/iron_block.png", "voxels": 1024},
         {"id": 168, "data": 0, "type": "texture", "texture": "blocks/prismarine_rough.png"},
         {"id": 168, "data": 1, "type": "texture", "texture": "blocks/prismarine_bricks.png"},
@@ -538,7 +538,7 @@
         {"id": 207, "data": 2, "type": "texture", "texture": "blocks/beetroots_stage_2.png", "voxels": 1536},
         {"id": 207, "data": 3, "type": "texture", "texture": "blocks/beetroots_stage_3.png", "voxels": 2048},
         {"id": 208, "data": 0, "type": "texture", "texture": "blocks/grass_path_top.png", "voxels": 3840},
-        {"id": 209, "data": 0, "type": "rgb", "value": "0xFF000000"},
+        {"id": 209, "data": 0, "type": "rgb", "rgb": "0xFF000000"},
         {"id": 210, "data": 0, "type": "texture", "texture": "blocks/repeating_command_block_front.png"},
         {"id": 211, "data": 0, "type": "texture", "texture": "blocks/chain_command_block_front.png"},
         {"id": 212, "data": 0, "type": "texture", "texture": "blocks/frosted_ice_0.png"},
@@ -549,7 +549,7 @@
         {"id": 214, "data": 0, "type": "texture", "texture": "blocks/nether_wart_block.png"},
         {"id": 215, "data": 0, "type": "texture", "texture": "blocks/red_nether_brick.png"},
         {"id": 216, "data": 0, "type": "texture", "texture": "blocks/bone_block_side.png"},
-        {"id": 217, "data": 0, "type": "rgb", "value": "0x00FFFFFF", "voxels": 0},
+        {"id": 217, "data": 0, "type": "rgb", "rgb": "0x00FFFFFF", "voxels": 0},
         {"id": 218, "data": 0, "type": "texture", "texture": "blocks/observer_front_horizontal.png"},
         {
             "id": 219, "data": "0-15", "type": "texture_area", "texture": "entity/shulker/shulker_white.png",

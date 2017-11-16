@@ -171,7 +171,7 @@ public class ShellConversionInitializer implements VVInitializer {
         
         if (user.acceptsUpdates()) {
             final String
-                prefix = ANSI.BOLD, suffix = ANSI.BOLD_OFF,
+                prefix = ANSI.BOLD, suffix = ANSI.RESET,
                 preOn = ANSI.FG_GREEN, sufOn = ANSI.FG_RESET,
                 updateFormat = prefix+"Progress at %03d%% [%s]"+suffix;
     

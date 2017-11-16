@@ -6,8 +6,8 @@ import net.grian.torrens.stl.DeserializerSTL;
 import net.grian.torrens.voxel.*;
 import net.grian.torrens.wavefront.*;
 import org.eisenwave.vv.io.SerializerMCModelZip;
-import org.eisenwave.vv.object.ColorMap;
-import org.eisenwave.vv.io.SerializerColors;
+import org.eisenwave.vv.object.BlockColorTable;
+import org.eisenwave.vv.io.SerializerBCT;
 import org.eisenwave.vv.ui.fmtvert.Format;
 import net.grian.torrens.img.DeserializerImage;
 import net.grian.torrens.img.Texture;
@@ -171,12 +171,12 @@ public class VVInventoryImpl implements VVInventory {
         switch (format.getId()) {
     
             case "colors": {
-                if (object instanceof ColorMap) {
+                if (object instanceof BlockColorTable) {
                     File file = new File(dir, name);
-                    new SerializerColors().toFile((ColorMap) object, file);
+                    new SerializerBCT().toFile((BlockColorTable) object, file);
                     return true;
                 }
-                else throw new IOException("object must be a "+ColorMap.class.getSimpleName());
+                else throw new IOException("object must be a "+BlockColorTable.class.getSimpleName());
             }
     
             case "model": {

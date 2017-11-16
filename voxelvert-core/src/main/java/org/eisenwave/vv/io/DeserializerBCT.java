@@ -2,12 +2,9 @@ package org.eisenwave.vv.io;
 
 import eisenwave.commons.io.Deserializer;
 import net.grian.torrens.error.FileFormatException;
-import net.grian.torrens.error.FileSyntaxException;
-import eisenwave.nbt.*;
-import eisenwave.nbt.io.NBTDeserializer;
 import net.grian.torrens.error.FileVersionException;
 import net.grian.torrens.schematic.BlockKey;
-import org.eisenwave.vv.object.ColorMap;
+import org.eisenwave.vv.object.BlockColorTable;
 import org.eisenwave.vv.object.BlockColor;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,16 +12,16 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class DeserializerColors implements Deserializer<ColorMap> {
+public class DeserializerBCT implements Deserializer<BlockColorTable> {
     
     @NotNull
     @Override
-    public ColorMap fromStream(InputStream stream) throws IOException {
+    public BlockColorTable fromStream(InputStream stream) throws IOException {
         DataInputStream dataStream = new DataInputStream(stream);
         verifyHeader(dataStream);
         int count = dataStream.readInt();
         
-        ColorMap result = new ColorMap();
+        BlockColorTable result = new BlockColorTable();
         for (int i = 0; i < count; i++) {
             byte id = dataStream.readByte();
             byte data = dataStream.readByte();

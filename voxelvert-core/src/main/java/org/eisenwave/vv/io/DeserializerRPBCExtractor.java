@@ -6,14 +6,14 @@ import net.grian.torrens.error.FileSyntaxException;
 import net.grian.torrens.object.Rectangle4i;
 import net.grian.torrens.schematic.BlockKey;
 import org.eisenwave.vv.object.BlockColor;
+import org.eisenwave.vv.object.Tint;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Reader;
 
 public class DeserializerRPBCExtractor implements TextDeserializer<RPBCExtractor> {
     
-    public final static int
-        DEFAULT_TINT = BlockColor.TINT_NONE,
+    public final static short
         DEFAULT_VOXELS = 4096;
     
     private RPBCExtractor result;
@@ -21,10 +21,11 @@ public class DeserializerRPBCExtractor implements TextDeserializer<RPBCExtractor
     @NotNull
     @Override
     public RPBCExtractor fromReader(Reader reader) throws FileSyntaxException {
-        return deserialize(new Gson().fromJson(reader, JsonArray.class));
+        JsonObject root = new Gson().fromJson(reader, JsonObject.class);
+        return deserializeBlocks(root.getAsJsonArray("blocks"));
     }
     
-    public RPBCExtractor deserialize(JsonArray root) throws FileSyntaxException {
+    public RPBCExtractor deserializeBlocks(JsonArray root) throws FileSyntaxException {
         final int length = root.size();
         result = new RPBCExtractor();
         
@@ -93,11 +94,11 @@ public class DeserializerRPBCExtractor implements TextDeserializer<RPBCExtractor
             else throw new FileSyntaxException("'data' must be a number or a string");
         }
         
-        final int tint;
+        final Tint tint;
         {
             JsonElement elementTint = json.get("tint");
             if (elementTint == null)
-                tint = DEFAULT_TINT;
+                tint = Tint.NONE;
             else if (!elementTint.isJsonPrimitive())
                 throw new FileSyntaxException("'tint' must be primitive");
             else
@@ -139,8 +140,8 @@ public class DeserializerRPBCExtractor implements TextDeserializer<RPBCExtractor
             }
             
             case "rgb": {
-                JsonPrimitive primitiveValue = getPrimitive(json, "value");
-                String value = deserializeString(primitiveValue, "value");
+                JsonPrimitive primitiveValue = getPrimitive(json, "rgb");
+                String value = deserializeString(primitiveValue, "rgb");
                 
                 for (BlockKey block : blocks)
                     result.put(block, parseHex(value), voxels, tint);
@@ -216,15 +217,15 @@ public class DeserializerRPBCExtractor implements TextDeserializer<RPBCExtractor
         return primitive.getAsByte();
     }
     
-    private static int deserializeTint(JsonPrimitive primitive) throws FileSyntaxException {
+    private static Tint deserializeTint(JsonPrimitive primitive) throws FileSyntaxException {
         if (primitive.isNumber()) {
-            return primitive.getAsInt();
+            return Tint.CONSTANT;
         }
         else if (primitive.isString()) {
             switch (primitive.getAsString()) {
-                case "none": return BlockColor.TINT_NONE;
-                case "grass": return BlockColor.TINT_GRASS;
-                case "foliage": return BlockColor.TINT_FOLIAGE;
+                case "none": return Tint.NONE;
+                case "grass": return Tint.GRASS;
+                case "foliage": return Tint.FOLIAGE;
                 default: throw new FileSyntaxException("invalid tint type '" + primitive.getAsString() + "'");
             }
         }

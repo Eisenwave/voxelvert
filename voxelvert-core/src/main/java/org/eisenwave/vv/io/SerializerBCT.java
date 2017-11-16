@@ -3,25 +3,25 @@ package org.eisenwave.vv.io;
 import eisenwave.commons.io.Serializer;
 import net.grian.torrens.schematic.BlockKey;
 import org.eisenwave.vv.object.BlockColor;
-import org.eisenwave.vv.object.ColorMap;
+import org.eisenwave.vv.object.BlockColorTable;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
 
-public class SerializerColors implements Serializer<ColorMap> {
+public class SerializerBCT implements Serializer<BlockColorTable> {
     
     public final static int VERSION = 1;
     
     @Override
-    public void toStream(ColorMap map, OutputStream stream) throws IOException {
+    public void toStream(BlockColorTable map, OutputStream stream) throws IOException {
         DataOutputStream dataStream = new DataOutputStream(stream);
         dataStream.writeByte('B');
         dataStream.writeByte('C');
         dataStream.writeByte('T');
-        dataStream.write(VERSION);
-        dataStream.write(map.size());
+        dataStream.writeInt(VERSION);
+        dataStream.writeInt(map.size());
         
         for (Map.Entry<BlockKey, BlockColor> entry : map.entrySet()) {
             BlockKey block = entry.getKey();

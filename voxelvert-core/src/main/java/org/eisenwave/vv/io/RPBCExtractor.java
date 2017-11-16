@@ -5,20 +5,18 @@ import net.grian.torrens.object.Rectangle4i;
 import net.grian.torrens.schematic.BlockKey;
 import net.grian.torrens.util.ColorMath;
 import org.eisenwave.vv.object.BlockColor;
-import org.eisenwave.vv.object.ColorMap;
+import org.eisenwave.vv.object.BlockColorTable;
+import org.eisenwave.vv.object.Tint;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import static org.eisenwave.vv.object.BlockColor.*;
 
 /**
  * A resource pack block color extractor.
@@ -30,7 +28,7 @@ import static org.eisenwave.vv.object.BlockColor.*;
  */
 public class RPBCExtractor {
     
-    private final Map<BlockKey, ExtractableColor> blockColors = new HashMap<>();
+    private final Map<BlockKey, ExtractableColor> blockColors = new LinkedHashMap<>();
     
     // GETTERS & OPERATIONS
     
@@ -38,12 +36,12 @@ public class RPBCExtractor {
         return blockColors.size();
     }
     
-    public ColorMap extract(ZipFile zip) {
+    public BlockColorTable extract(ZipFile zip) {
         //logger.info("converting rp to color map using "+colors.length+" colors");
         
         String name = zip.getName();
         name = name.substring(0, name.lastIndexOf('.'));
-        ColorMap result = new ColorMap();
+        BlockColorTable result = new BlockColorTable();
         
         forEach((block, color) -> {
             int rgb;
@@ -53,7 +51,8 @@ public class RPBCExtractor {
                 return;
             }
             
-            result.put(block, new BlockColor(rgb, color.getVoxels() / 4096F, color.getTint()));
+            //TODO bake tint
+            result.put(block, new BlockColor(rgb, color.getVoxels() / 4096F));
         });
         
         return result;
@@ -72,9 +71,9 @@ public class RPBCExtractor {
      *
      * @param block the block
      */
-    public void put(@NotNull BlockKey block, int rgb, int voxels, int tint) {
+    public void put(@NotNull BlockKey block, int rgb, int voxels, Tint tint) {
         ExtractStrategy strategy = new ConstantExtractStrategy(rgb);
-        blockColors.put(block, new ExtractableColor(strategy, voxels, tint));
+        blockColors.put(block, new ExtractableColor(strategy, voxels, tint, 0));
     }
     
     /**
@@ -82,9 +81,9 @@ public class RPBCExtractor {
      *
      * @param block the block
      */
-    public void put(@NotNull BlockKey block, String texturePath, int voxels, int tint) {
+    public void put(@NotNull BlockKey block, String texturePath, int voxels, Tint tint) {
         ExtractStrategy strategy = new TextureExtractStrategy(texturePath);
-        blockColors.put(block, new ExtractableColor(strategy, voxels, tint));
+        blockColors.put(block, new ExtractableColor(strategy, voxels, tint, 0));
     }
     
     /**
@@ -92,9 +91,9 @@ public class RPBCExtractor {
      *
      * @param block the block
      */
-    public void put(@NotNull BlockKey block, String texturePath, Rectangle4i area, int voxels, int tint) {
+    public void put(@NotNull BlockKey block, String texturePath, Rectangle4i area, int voxels, Tint tint) {
         ExtractStrategy strategy = new TextureAreaExtractStrategy(texturePath, area);
-        blockColors.put(block, new ExtractableColor(strategy, voxels, tint));
+        blockColors.put(block, new ExtractableColor(strategy, voxels, tint, 0));
     }
     
     public void clear() {
@@ -112,17 +111,17 @@ public class RPBCExtractor {
         
         private final ExtractStrategy extractor;
         private final int voxels;
-        private final int tint;
+        private final Tint tint;
+        private final int tintValue;
         
-        private ExtractableColor(@NotNull ExtractStrategy extractor, int voxels, int tint) {
+        private ExtractableColor(@NotNull ExtractStrategy extractor, int voxels, @NotNull Tint tint, int tintValue) {
             if (voxels < 0 || voxels > 4096)
                 throw new IllegalArgumentException("amount of voxels must be in range(0,4096)");
-            if (tint < TINT_NONE || tint > TINT_FOLIAGE)
-                throw new IllegalArgumentException("tint type must be in range(0,2)");
             
             this.extractor = extractor;
             this.voxels = voxels;
             this.tint = tint;
+            this.tintValue = tintValue;
         }
         
         public ExtractStrategy getExtractor() {
@@ -133,11 +132,7 @@ public class RPBCExtractor {
             return voxels;
         }
         
-        public boolean hasTint() {
-            return tint != TINT_NONE;
-        }
-        
-        public int getTint() {
+        public Tint getTint() {
             return tint;
         }
         

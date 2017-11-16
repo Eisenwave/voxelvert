@@ -9,10 +9,10 @@ import net.grian.torrens.voxel.VoxelArray;
 import net.grian.torrens.wavefront.MTLLibrary;
 import net.grian.torrens.wavefront.OBJModel;
 import org.eisenwave.vv.object.MCModel;
-import org.eisenwave.vv.object.ColorMap;
+import org.eisenwave.vv.object.BlockColorTable;
 import org.eisenwave.vv.object.Language;
 import org.eisenwave.vv.clsvert.*;
-import org.eisenwave.vv.io.DeserializerColors;
+import org.eisenwave.vv.io.DeserializerBCT;
 import org.eisenwave.vv.io.DeserializerRPBCExtractor;
 import org.eisenwave.vv.io.RPBCExtractor;
 import org.eisenwave.vv.ui.user.VVUser;
@@ -75,7 +75,7 @@ public final class FormatverterFactory {
         map.put(QEF, STL, new FV_QEF_STL());
         map.put(QEF, WAVEFRONT, new FV_QEF_WAVEFRONT());
         
-        map.put(RESOURCE_PACK, COLORS, new FV_RP_COLORS());
+        map.put(RESOURCE_PACK, BLOCK_COLOR_TABLE, new FV_RP_COLORS());
         map.put(RESOURCE_PACK, RESOURCE_PACK, new CopyFormatverter());
     
         map.put(SCHEMATIC, IMAGE, new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY, new FV_BA_IMAGE()));
@@ -168,7 +168,7 @@ public final class FormatverterFactory {
                 ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
                 set(1);
                 
-                ColorMap colors = new DeserializerColors().fromResource(getClass(), "colors/default.colors");
+                BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), "colors/default.colors");
                 set(2);
                 
                 assert blocks != null;
@@ -223,7 +223,7 @@ public final class FormatverterFactory {
                 ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
                 set(1);
                 
-                ColorMap colors = new DeserializerColors().fromResource(getClass(), "colors/default.colors");
+                BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), "colors/default.colors");
                 set(2);
                 
                 assert blocks != null;
@@ -290,7 +290,7 @@ public final class FormatverterFactory {
             ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
             set(1);
             
-            ColorMap colors = new DeserializerColors().fromResource(getClass(), "colors/default.colors");
+            BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), "colors/default.colors");
             set(2);
             
             assert blocks != null;
@@ -335,7 +335,7 @@ public final class FormatverterFactory {
             ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
             set(1);
             
-            ColorMap colors = new DeserializerColors().fromResource(getClass(), "colors/default.colors");
+            BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), "colors/default.colors");
             set(2);
             
             assert blocks != null;
@@ -444,7 +444,7 @@ public final class FormatverterFactory {
             ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
             set(1);
             
-            ColorMap colors = new DeserializerColors().fromResource(getClass(), "colors/default.colors");
+            BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), "colors/default.colors");
             set(2);
             
             assert blocks != null;
@@ -1008,7 +1008,7 @@ public final class FormatverterFactory {
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
             //Logger logger = verbose? user.getLogger() : null;
     
-            String name = "extractors/OLD_default.json";
+            String name = "color_extractors/default.json";
             RPBCExtractor extractor = new DeserializerRPBCExtractor().fromResource(getClass(), name);
             set(1);
             
@@ -1016,10 +1016,10 @@ public final class FormatverterFactory {
             if (verbose) user.print(lang.get("from_rp.colors"), extractor.size(), from);
             set(2);
             
-            ColorMap colors = extractor.extract(zip);
+            BlockColorTable colors = extractor.extract(zip);
             set(3);
             
-            user.getInventory().save(Format.COLORS, colors, to);
+            user.getInventory().save(Format.BLOCK_COLOR_TABLE, colors, to);
             set(4);
         }
         

@@ -6,7 +6,7 @@ import net.grian.torrens.schematic.BlockKey;
 import net.grian.torrens.voxel.VoxelArray;
 import org.eisenwave.vv.object.BlockColor;
 import org.eisenwave.vv.util.Arguments;
-import org.eisenwave.vv.object.ColorMap;
+import org.eisenwave.vv.object.BlockColorTable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,10 +21,10 @@ public class CvBlocksToVoxelArray implements Classverter<BlockStructure, VoxelAr
     IGNORE_ALPHA = 1 << 1,
     /** use visual occupation as multiplier for alpha channel */
     USE_OCCUPATION = 1 << 2,
-    /** display missing entries in the {@link ColorMap} as {@link ColorMath#DEBUG1} */
-    SHOW_MISSING = 1 << 3,
-    /** apply {@link ColorMath#DEFAULT_TINT} as tint (always true if block array has no biomes) */
-    DEFAULT_TINT = 1 << 4;
+    /** display missing entries in the {@link BlockColorTable} as {@link ColorMath#DEBUG1} */
+    SHOW_MISSING = 1 << 3;
+    /* apply {@link ColorMath#DEFAULT_TINT} as tint (always true if block array has no biomes) *
+    DEFAULT_TINT = 1 << 4;*/
     
     @Override
     public Class<BlockStructure> getFrom() {
@@ -39,19 +39,19 @@ public class CvBlocksToVoxelArray implements Classverter<BlockStructure, VoxelAr
     @Override
     public VoxelArray invoke(@NotNull BlockStructure blocks, @NotNull Object... args) {
         Arguments.requireMin(args, 2);
-        Arguments.requireType(args[0], ColorMap.class);
+        Arguments.requireType(args[0], BlockColorTable.class);
         Arguments.requireType(args[1], Integer.class);
         
-        return invoke(blocks, (ColorMap) args[0], (int) args[1]);
+        return invoke(blocks, (BlockColorTable) args[0], (int) args[1]);
     }
     
-    public VoxelArray invoke(BlockStructure blocks, @Nullable ColorMap colors, int flags) {
+    public VoxelArray invoke(BlockStructure blocks, @Nullable BlockColorTable colors, int flags) {
         final boolean
             full_blocks = (flags & FULL_BLOCKS) != 0,
             ignore_alpha = (flags & IGNORE_ALPHA) != 0,
             use_occupation = (flags & USE_OCCUPATION) != 0,
-            show_missing = (flags & SHOW_MISSING) != 0,
-            default_tint = true /*(flags & DEFAULT_TINT) != 0 || !blocks.hasBiomes() TODO reimplement*/;
+            show_missing = (flags & SHOW_MISSING) != 0;
+            //default_tint = true /*(flags & DEFAULT_TINT) != 0 || !blocks.hasBiomes()
         final int
             limX = blocks.getSizeX(), limY = blocks.getSizeY(), limZ = blocks.getSizeZ();
         
@@ -63,7 +63,6 @@ public class CvBlocksToVoxelArray implements Classverter<BlockStructure, VoxelAr
                     
                     final BlockColor color;
                     final BlockKey block = blocks.getBlock(x, y, z);
-                    
                     if (colors == null) {
                         if (block.getId() == 0) continue;
                         color = DEFAULT_COLOR;
@@ -83,10 +82,12 @@ public class CvBlocksToVoxelArray implements Classverter<BlockStructure, VoxelAr
                     if (use_occupation) rgb = ColorMath.fromRGB(
                         ColorMath.red(rgb), ColorMath.green(rgb), ColorMath.blue(rgb),
                         (int) (ColorMath.alpha(rgb) * color.getPerceivedVolume()));
+                    /*
                     if (color.getTint() != BlockColor.TINT_NONE) {
-                        int tint = default_tint? ColorMath.DEFAULT_TINT : ColorMath.DEFAULT_TINT; //TODO add actual getter
+                        int tint = default_tint? ColorMath.DEFAULT_TINT : ColorMath.DEFAULT_TINT;
                         rgb = ColorMath.fromTintedRGB(rgb, tint);
                     }
+                    */
                     
                     voxels.setRGB(x, y, z, rgb);
                 }

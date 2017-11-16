@@ -2,7 +2,7 @@ package org.eisenwave.vv.rp;
 
 import org.eisenwave.vv.io.DeserializerRPBCExtractor;
 import org.eisenwave.vv.io.RPBCExtractor;
-import org.eisenwave.vv.object.ColorMap;
+import org.eisenwave.vv.object.BlockColorTable;
 import org.junit.Test;
 
 import java.io.File;
@@ -29,7 +29,7 @@ public class DeserializerRPBCExtractorTest {
         File file = new File(getClass().getClassLoader().getResource(DEFAULT_RP).getFile());
         ZipFile zip = new ZipFile(file);
         
-        ColorMap colors = extractor.extract(zip);
+        BlockColorTable colors = extractor.extract(zip);
         assertNotNull(colors);
     }
     
