@@ -5,16 +5,49 @@ import net.grian.torrens.error.FileFormatException;
 import net.grian.torrens.error.FileSyntaxException;
 import eisenwave.nbt.*;
 import eisenwave.nbt.io.NBTDeserializer;
+import net.grian.torrens.error.FileVersionException;
 import net.grian.torrens.schematic.BlockKey;
 import org.eisenwave.vv.object.ColorMap;
 import org.eisenwave.vv.object.BlockColor;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class DeserializerColors implements Deserializer<ColorMap> {
     
+    @NotNull
+    @Override
+    public ColorMap fromStream(InputStream stream) throws IOException {
+        DataInputStream dataStream = new DataInputStream(stream);
+        verifyHeader(dataStream);
+        int count = dataStream.readInt();
+        
+        ColorMap result = new ColorMap();
+        for (int i = 0; i < count; i++) {
+            byte id = dataStream.readByte();
+            byte data = dataStream.readByte();
+            int argb = dataStream.readInt();
+            short volume = dataStream.readShort();
+            
+            result.put(new BlockKey(id, data), new BlockColor(argb, volume));
+        }
+        
+        return result;
+    }
+    
+    private static void verifyHeader(DataInputStream stream) throws IOException {
+        if (stream.readByte() != 'B'
+            || stream.readByte() != 'C'
+            || stream.readByte() != 'T')
+            throw new FileFormatException("file is not a block colors table, bct's must start with ASCII \"BCT\"");
+        int version = stream.readInt();
+        if (version != 1)
+            throw new FileVersionException("version " + version + " is not supported");
+    }
+    
+    /*
     @NotNull
     @Override
     public ColorMap fromStream(InputStream stream) throws IOException {
@@ -42,5 +75,6 @@ public class DeserializerColors implements Deserializer<ColorMap> {
         
         return colors;
     }
+    */
     
 }

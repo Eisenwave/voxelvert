@@ -1,20 +1,39 @@
 package org.eisenwave.vv.io;
 
 import eisenwave.commons.io.Serializer;
-import eisenwave.nbt.*;
-import eisenwave.nbt.io.NBTOutputStream;
 import net.grian.torrens.schematic.BlockKey;
 import org.eisenwave.vv.object.BlockColor;
 import org.eisenwave.vv.object.ColorMap;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class SerializerColors implements Serializer<ColorMap> {
     
+    public final static int VERSION = 1;
+    
+    @Override
+    public void toStream(ColorMap map, OutputStream stream) throws IOException {
+        DataOutputStream dataStream = new DataOutputStream(stream);
+        dataStream.writeByte('B');
+        dataStream.writeByte('C');
+        dataStream.writeByte('T');
+        dataStream.write(VERSION);
+        dataStream.write(map.size());
+        
+        for (Map.Entry<BlockKey, BlockColor> entry : map.entrySet()) {
+            BlockKey block = entry.getKey();
+            BlockColor color = entry.getValue();
+            dataStream.writeByte(block.getId());
+            dataStream.writeByte(block.getData());
+            dataStream.writeInt(color.getRGB());
+            dataStream.writeShort(color.getVoxelVolume());
+        }
+    }
+    
+    /*
     @Override
     public void toStream(ColorMap colors, OutputStream stream) throws IOException {
         toStream(colors, new NBTOutputStream(stream));
@@ -42,5 +61,6 @@ public class SerializerColors implements Serializer<ColorMap> {
         
         stream.writeNamedTag(new NBTNamedTag("Colors", list));
     }
+    */
     
 }

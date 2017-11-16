@@ -10,28 +10,21 @@ public class BlockColor implements RGBValue {
         TINT_FOLIAGE = 2;
     
     private final int rgb;
-    private final float relVol, perVol;
-    private final int tint;
+    private final short volume;
+    private final float perVol;
     
-    public BlockColor(int rgb, float vol, int tint) {
-        if (vol < 0 || vol > 1)
-            throw new IllegalArgumentException("volume must be 0-1 (" + vol + ")");
+    public BlockColor(int rgb, float volume) {
+        if (volume < 0 || volume > 1)
+            throw new IllegalArgumentException("volume must be 0-1 (" + volume + ")");
         this.rgb = rgb;
-        this.relVol = vol;
-        this.perVol = (float) Math.cbrt(vol);
-        this.tint = tint;
+        this.volume = (short) (volume * 4096);
+        this.perVol = (float) Math.cbrt(volume);
     }
     
-    public BlockColor(int rgb, float occupation) {
-        this(rgb, occupation, TINT_NONE);
-    }
-    
-    public BlockColor(int rgb, int tint) {
-        this(rgb, 1, tint);
-    }
-    
-    public BlockColor(int rgb) {
-        this(rgb, 1, TINT_NONE);
+    public BlockColor(int rgb, short volume) {
+        this.rgb = rgb;
+        this.volume = volume;
+        this.perVol = (float) Math.cbrt(volume / 4096F);
     }
     
     @Override
@@ -48,7 +41,16 @@ public class BlockColor implements RGBValue {
      * @return the space occupation of the block
      */
     public float getRelativeVolume() {
-        return relVol;
+        return volume / 4096F;
+    }
+    
+    /**
+     * Returns the volume in voxels (0 - 4096).
+     *
+     * @return the volume in voxels
+     */
+    public short getVoxelVolume() {
+        return volume;
     }
     
     /**
@@ -67,13 +69,14 @@ public class BlockColor implements RGBValue {
         return perVol;
     }
     
-    /**
+    /*
      * Returns the type of tint this block has.
      *
      * @return the type of tint the block has
-     */
+     *
     public int getTint() {
         return tint;
     }
+    */
     
 }

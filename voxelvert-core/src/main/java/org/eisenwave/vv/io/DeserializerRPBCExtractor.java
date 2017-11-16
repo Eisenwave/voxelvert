@@ -217,13 +217,18 @@ public class DeserializerRPBCExtractor implements TextDeserializer<RPBCExtractor
     }
     
     private static int deserializeTint(JsonPrimitive primitive) throws FileSyntaxException {
-        if (!primitive.isString()) throw new FileSyntaxException("'tint' must be a string");
-        switch (primitive.getAsString()) {
-            case "none": return BlockColor.TINT_NONE;
-            case "grass": return BlockColor.TINT_GRASS;
-            case "foliage": return BlockColor.TINT_FOLIAGE;
-            default: throw new FileSyntaxException("invalid tint type '" + primitive.getAsString() + "'");
+        if (primitive.isNumber()) {
+            return primitive.getAsInt();
         }
+        else if (primitive.isString()) {
+            switch (primitive.getAsString()) {
+                case "none": return BlockColor.TINT_NONE;
+                case "grass": return BlockColor.TINT_GRASS;
+                case "foliage": return BlockColor.TINT_FOLIAGE;
+                default: throw new FileSyntaxException("invalid tint type '" + primitive.getAsString() + "'");
+            }
+        }
+        else throw new FileSyntaxException("'tint' must be an int or string");
     }
     
 }
