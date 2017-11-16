@@ -1,0 +1,36 @@
+name: VoxelVert
+main: org.eisenwave.vv.bukkit.VoxelVertPlugin
+version: 0.1
+author: Eisenwave
+depend: [WorldEdit]
+softdepend: [BulktEdit]
+
+permissions:
+    vv.cmd.convert:
+        default: op
+    vv.cmd.voxelvert:
+        default: op
+    vv.cmd.voxelvert-list:
+        default: op
+    vv.cmd.voxelvert-remove:
+        default: op
+    vv.cmd.vvadmin:
+        default: op
+
+commands:
+    convert:
+        permission: vv.cmd.convert
+        aliases: [c]
+        description: format converter
+    voxelvert:
+        permission: vv.cmd.voxelvert
+        aliases: [vv]
+        description: configuration/stats command
+    voxelvert-remove:
+        permission: vv.cmd.voxelvert-remove
+        aliases: [vv-rm]
+        description: remove files in vv folder
+    voxelvert-list:
+        permission: vv.cmd.voxelvert-list
+        aliases: [vv-ls]
+        description: list files in vv folder

@@ -1,0 +1,28 @@
+Usage: <input file> <output file> [conversion options]
+
+General Options:
+-f, --formats           List all available formats
+-h, --help              Display this help
+-i, --input <format>    Specify input format (if can't be derived from extension)
+-o, --output <format>   Specify output format (if can't be derived from extension)
+-r, --replace           Replace existing files with output
+-v, --verbose           Print various debug information
+-t, --timeout <ms>      Time limit for conversion in milliseconds
+-T, --threads <count>   Specify amount of threads to be used for conversion
+
+Conversion Of Blocks/Schematics:
+-c, --colors [path]     The color file to be used (else default colors are used)
+--full_blocks           Only turn full blocks into voxels
+--no_alpha              Convert transparent blocks into opaque voxels
+--show_missing          Convert blocks with no voxel color assigned to them into debug color voxels
+--tint <color>          The tint color in hexadecimal (else default color is used)
+
+Conversion Of Images:
+-C, --crop              Crop away transparent borders of the image when rendering
+-d (n|e|s|w|u|d)        Define direction of placement or rendering when converting from/to images
+
+Conversion of Minecraft Models:
+--no_anti_bleed         Disables bleeding prevention in the UV mapping of elements
+
+Conversion of Wavefront Models:
+-R <resolution>         Sets the resolution in voxels to be used by the voxelizer (>= 1)

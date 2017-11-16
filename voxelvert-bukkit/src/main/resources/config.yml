@@ -1,0 +1,12 @@
+# the language file to be used
+# file paths are relative to ${plugin_dir}/bukkit_lang
+language: en_us.lang
+
+# syntax highlighting for messages sent to the user
+syntax_highlighting: true
+
+# verbosity settings for regulating when VoxelVert prints debug information
+verbosity:
+  enable: true
+  disable: true
+  runtime: true

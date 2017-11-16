@@ -4,9 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>net.grian.vv</groupId>
+    <groupId>org.eisenwave.vv</groupId>
     <artifactId>voxelvert</artifactId>
+    <packaging>pom</packaging>
     <version>0.1</version>
+    <name>VoxelVert</name>
+    <description>Voxel format conversion tool</description>
+
+    <developers>
+        <developer>
+            <name>Jan Schultke</name>
+            <email>janschultke@protonmail.com</email>
+        </developer>
+    </developers>
 
     <build>
         <plugins>
@@ -20,6 +30,21 @@
             </plugin>
         </plugins>
     </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>me.eisenwave.inv</groupId>
+            <artifactId>eisen-inventories</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+
+    <modules>
+        <module>voxelvert-ui</module>
+        <module>voxelvert-bukkit</module>
+        <module>voxelvert-core</module>
+        <module>voxelvert-bukkit-gui</module>
+    </modules>
 
     <distributionManagement>
         <repository>
@@ -37,45 +62,6 @@
             <id>nexus</id>
             <url>http://grian.net:8081/repository/grian/</url>
         </repository>
-        <repository>
-            <id>sk89q</id>
-            <url>http://maven.sk89q.com/artifactory/repo/</url>
-        </repository>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
     </repositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>net.grian.torrens</groupId>
-            <artifactId>Torrens</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.11.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.sk89q.worldedit</groupId>
-            <artifactId>worldedit-core</artifactId>
-            <version>6.1.4-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>15.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.grian.spatium</groupId>
-            <artifactId>spatium</artifactId>
-            <version>0.1</version>
-        </dependency>
-    </dependencies>
 
 </project>
