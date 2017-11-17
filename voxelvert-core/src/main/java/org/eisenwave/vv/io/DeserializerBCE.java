@@ -21,7 +21,13 @@ public class DeserializerBCE implements TextDeserializer<BlockColorExtractor> {
     @Override
     public BlockColorExtractor fromReader(Reader reader) throws FileSyntaxException {
         JsonObject root = new Gson().fromJson(reader, JsonObject.class);
-        return deserializeBlocks(root.getAsJsonArray("blocks"));
+        BlockColorExtractor extractor = deserializeBlocks(root.getAsJsonArray("blocks"));
+        
+        String[] maps = deserializeMaps(root.getAsJsonObject("colormap"));
+        extractor.setGrassMap(maps[0]);
+        extractor.setFoliageMap(maps[1]);
+        
+        return extractor;
     }
     
     public BlockColorExtractor deserializeBlocks(JsonArray root) throws FileSyntaxException {
@@ -185,16 +191,46 @@ public class DeserializerBCE implements TextDeserializer<BlockColorExtractor> {
         return primitive.getAsString();
     }
     
+    private static String[] deserializeMaps(JsonObject json) {
+        String[] result = new String[2];
+        JsonPrimitive grass = json.getAsJsonPrimitive("grass");
+        if (grass != null) result[0] = grass.getAsString();
+        
+        JsonPrimitive foliage = json.getAsJsonPrimitive("foliage");
+        if (foliage != null) result[1] = foliage.getAsString();
+        
+        return result;
+    }
+    
+    @NotNull
     private static BlockColorMeta deserializeMeta(JsonObject json) throws FileSyntaxException {
         final Tint tint;
-        {
+        final int tintRGB;
+        tint: {
             JsonElement elementTint = json.get("tint");
-            if (elementTint == null)
+            if (elementTint == null) {
                 tint = Tint.NONE;
+                tintRGB = 0;
+                break tint;
+            }
             else if (!elementTint.isJsonPrimitive())
                 throw new FileSyntaxException("'tint' must be primitive");
-            else
-                tint = deserializeTint(elementTint.getAsJsonPrimitive());
+            
+            JsonPrimitive primitive = elementTint.getAsJsonPrimitive();
+            if (primitive.isNumber()) {
+                tint = Tint.CONSTANT;
+                tintRGB = primitive.getAsInt();
+            }
+            else if (primitive.isString()) {
+                tintRGB = 0;
+                switch (primitive.getAsString()) {
+                    case "none": tint = Tint.NONE; break tint;
+                    case "grass": tint = Tint.GRASS; break tint;
+                    case "foliage": tint = Tint.FOLIAGE; break tint;
+                    default: throw new FileSyntaxException("invalid tint '" + primitive.getAsString() + "'");
+                }
+            }
+            else throw new FileSyntaxException("'tint' must be an int or string");
         }
         
         final short voxels;
@@ -208,9 +244,10 @@ public class DeserializerBCE implements TextDeserializer<BlockColorExtractor> {
                 voxels = deserializeShort(elementVoxels.getAsJsonPrimitive(), "voxels");
         }
         
-        return new BlockColorMeta(voxels, tint);
+        return new BlockColorMeta(voxels, tint, tintRGB);
     }
     
+    @NotNull
     private static Rectangle4i deserializeArea(JsonArray array) throws FileSyntaxException {
         if (array.size() != 4)
             throw new FileSyntaxException("'area' array must have a length of 4");
@@ -227,21 +264,6 @@ public class DeserializerBCE implements TextDeserializer<BlockColorExtractor> {
     private static byte deserializeData(JsonPrimitive primitive) throws FileSyntaxException {
         if (!primitive.isNumber()) throw new FileSyntaxException("'data' must be a number");
         return primitive.getAsByte();
-    }
-    
-    private static Tint deserializeTint(JsonPrimitive primitive) throws FileSyntaxException {
-        if (primitive.isNumber()) {
-            return Tint.CONSTANT;
-        }
-        else if (primitive.isString()) {
-            switch (primitive.getAsString()) {
-                case "none": return Tint.NONE;
-                case "grass": return Tint.GRASS;
-                case "foliage": return Tint.FOLIAGE;
-                default: throw new FileSyntaxException("invalid tint type '" + primitive.getAsString() + "'");
-            }
-        }
-        else throw new FileSyntaxException("'tint' must be an int or string");
     }
     
 }

@@ -33,7 +33,9 @@ import static org.eisenwave.vv.ui.fmtvert.Format.*;
 @SuppressWarnings("Duplicates")
 public final class FormatverterFactory {
     
-    public final static String DEFAULT_BCT = "colors/default.bct";
+    public final static String
+        DEFAULT_BCE = "color_extractors/default.json",
+        DEFAULT_BCT = "colors/default.bct";
     
     private final static Logger VERBOSE_LOGGER;
     static {
@@ -1009,10 +1011,18 @@ public final class FormatverterFactory {
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
             //Logger logger = verbose? user.getLogger() : null;
-    
-            String name = "color_extractors/default.json";
-            BlockColorExtractor extractor = new DeserializerBCE().fromResource(getClass(), name);
+            
+            BlockColorExtractor extractor = new DeserializerBCE().fromResource(getClass(), DEFAULT_BCE);
             set(1);
+            if (verbose) {
+                String grass = extractor.getGrassMap();
+                if (grass != null) user.print(lang.get("from_rp.grass"), grass);
+                else user.print(lang.get("from_rp.no_grass"));
+    
+                String foliage = extractor.getFoliageMap();
+                if (foliage != null) user.print(lang.get("from_rp.foliage"), foliage);
+                else user.print(lang.get("from_rp.no_foliage"));
+            }
             
             ZipFile zip = (ZipFile) user.getInventory().load(Format.RESOURCE_PACK, from);
             if (verbose) user.print(lang.get("from_rp.colors"), extractor.size(), from);

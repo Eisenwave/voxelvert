@@ -5,11 +5,11 @@ import org.jetbrains.annotations.NotNull;
 public class FileBrowserEntry implements Comparable<FileBrowserEntry> {
     
     private final String name;
-    private final FileBrowserType type;
+    private final FileType type;
     
     public FileBrowserEntry(@NotNull String name) {
         this.name = name;
-        this.type = FileBrowserType.fromPath(name);
+        this.type = FileType.fromPath(name);
     }
     
     @NotNull
@@ -18,16 +18,16 @@ public class FileBrowserEntry implements Comparable<FileBrowserEntry> {
     }
     
     @NotNull
-    public FileBrowserType getType() {
+    public FileType getType() {
         return type;
     }
     
     public boolean isVariable() {
-        return type == FileBrowserType.VARIABLE;
+        return type == FileType.VARIABLE;
     }
     
     public boolean isDirectory() {
-        return type == FileBrowserType.DIRECTORY;
+        return type == FileType.DIRECTORY;
     }
     
     @Override

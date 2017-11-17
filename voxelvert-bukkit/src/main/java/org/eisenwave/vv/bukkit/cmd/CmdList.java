@@ -5,7 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.eisenwave.vv.bukkit.VoxelVertPlugin;
-import org.eisenwave.vv.bukkit.inv.FileBrowserType;
+import org.eisenwave.vv.bukkit.inv.FileType;
 import org.eisenwave.vv.bukkit.user.BukkitVoxelVert;
 import org.eisenwave.vv.bukkit.util.CommandUtil;
 import org.eisenwave.vv.ui.user.VVUser;
@@ -42,7 +42,7 @@ public class CmdList implements CommandExecutor {
                 //builder.append(ChatColor.DARK_GRAY);
                 continue;
             }
-            FileBrowserType type = FileBrowserType.fromPath(file);
+            FileType type = FileType.fromPath(file);
             if (type != null) builder.append(type.getPrefix());
             
             builder

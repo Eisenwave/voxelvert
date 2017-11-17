@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import static org.bukkit.Material.*;
 import static org.bukkit.ChatColor.*;
 
-public enum FileBrowserType {
+public enum FileType {
     DIRECTORY(CHEST, BOLD),
     
     VARIABLE(ENDER_CHEST, BOLD, ITALIC),
@@ -39,7 +39,7 @@ public enum FileBrowserType {
     private final Material material;
     private final String prefix;
     
-    FileBrowserType(Material material, ChatColor... colors) {
+    FileType(Material material, ChatColor... colors) {
         this.material = material;
         this.prefix = Arrays.stream(colors).map(ChatColor::toString).collect(Collectors.joining());
     }
@@ -54,7 +54,7 @@ public enum FileBrowserType {
         return prefix;
     }
     
-    public static FileBrowserType fromPath(String path) {
+    public static FileType fromPath(String path) {
         if (path.startsWith("#"))
             return VARIABLE;
         else if (path.endsWith("/"))

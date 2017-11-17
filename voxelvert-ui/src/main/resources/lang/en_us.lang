@@ -48,6 +48,10 @@ from_colors.colors=Color Map contains %d colors
 from_image.face=Placing %s on %s (%s) side
 
 from_rp.colors=Extracting %d colors from %s ...
+from_rp.grass = Using grass color map "%s"
+from_rp.foliage = Using foliage color map "%s"
+from_rp.no_grass = Using no grass color map
+from_rp.no_foliage = Using no foliage color map
 
 from_schematic.blocks=Schematic contains %d blocks
 

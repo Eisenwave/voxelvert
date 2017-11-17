@@ -1,6 +1,6 @@
 package org.eisenwave.vv.bukkit.inv.menu;
 
-import org.eisenwave.vv.bukkit.inv.FileBrowserType;
+import org.eisenwave.vv.bukkit.inv.FileType;
 import org.eisenwave.vv.bukkit.inv.widget.LargeButtonWidget;
 import org.eisenwave.vv.bukkit.inv.widget.ParameterOptionsWidget;
 import nl.klikenklaar.util.gui.buttons.Button;
@@ -27,7 +27,7 @@ public class ConversionFormatChooserMenu extends Menu {
     }
     
     private void drawInfoButton(String name) {
-        Material material = FileBrowserType.fromPath(name).getIcon();
+        Material material = FileType.fromPath(name).getIcon();
         
         setButton(new Button(material, name), 5, 6);
     }

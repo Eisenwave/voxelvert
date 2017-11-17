@@ -1,12 +1,15 @@
 package org.eisenwave.vv.rp;
 
+import net.grian.spatium.util.PrimMath;
 import net.grian.torrens.img.Texture;
 import net.grian.torrens.object.Rectangle4i;
 import net.grian.torrens.schematic.BlockKey;
 import net.grian.torrens.util.ColorMath;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
@@ -25,6 +28,13 @@ import java.util.zip.ZipFile;
  */
 public class BlockColorExtractor {
     
+    private final static float DEFAULT_TEMP = 0.75f, DEFAULT_RAIN = 0.75f;
+    
+    private final static String TEXTURE_PATH = "assets/minecraft/textures/";
+    
+    @Nullable
+    private String grassMap, foliageMap;
+    
     private final Map<BlockKey, ExtractableColor> blockColors = new LinkedHashMap<>();
     
     // GETTERS & OPERATIONS
@@ -36,24 +46,76 @@ public class BlockColorExtractor {
     public BlockColorTable extract(ZipFile zip) {
         //logger.info("converting rp to color map using "+colors.length+" colors");
         
-        String name = zip.getName();
-        name = name.substring(0, name.lastIndexOf('.'));
+        //String name = zip.getName();
+        //name = name.substring(0, name.lastIndexOf('.'));
         BlockColorTable result = new BlockColorTable();
         
-        forEach((block, color) -> {
+        final Texture
+            grass = readColorMap(zip, grassMap),
+            foliage = readColorMap(zip, foliageMap);
+        final int
+            grassRGB = grass != null? getMapColor(grass, DEFAULT_TEMP, DEFAULT_RAIN) : 0xFFFFFFFF,
+            foliageRGB = foliage != null? getMapColor(foliage, DEFAULT_TEMP, DEFAULT_RAIN) : 0xFFFFFFFF;
+        
+        /* System.err.println(Long.toHexString(Integer.toUnsignedLong(grassRGB))
+            + " "
+            + Long.toHexString(Integer.toUnsignedLong(foliageRGB))); */
+        
+        for (Map.Entry<BlockKey, ExtractableColor> entry : blockColors.entrySet()) {
+            BlockKey block = entry.getKey();
+            ExtractableColor color = entry.getValue();
+            
             int rgb;
             try {
                 rgb = color.getStrategy().extract(zip);
             } catch (IOException ex) {
-                return;
+                continue;
             }
-            BlockColorMeta meta = color.getMeta();
             
-            //TODO bake tint
+            BlockColorMeta meta = color.getMeta();
+            Tint tint = meta.getTint();
+            
+            if (tint == Tint.CONSTANT) {
+                int tintRGB = meta.getTintRGB();
+                rgb = ColorMath.applyTint(rgb, tintRGB);
+            }
+            else if (tint == Tint.GRASS && grass != null) {
+                rgb = ColorMath.applyTint(rgb, grassRGB);
+            }
+            else if (tint == Tint.FOLIAGE && foliage != null) {
+                rgb = ColorMath.applyTint(rgb, foliageRGB);
+            }
+            /*
+            else if (tint == Tint.GRASS && grass != null) {
+                int tintRGB = getMapColor(grass, DEFAULT_TEMP, DEFAULT_RAIN);
+                rgb = ColorMath.applyTint(rgb, tintRGB);
+            }
+            else if (tint == Tint.FOLIAGE && foliage != null) {
+                int tintRGB = getMapColor(foliage, DEFAULT_TEMP, DEFAULT_RAIN);
+                rgb = ColorMath.applyTint(rgb, tintRGB);
+            }
+            */
+    
+            /* if (tint != Tint.NONE) {
+                System.out.print(block.getId()+":"+block.getData()+" "+tint);
+                System.out.println("  ->    "+new Color(rgb));
+            } */
             result.put(block, new BlockColor(rgb, meta.getVoxels()));
-        });
+        }
         
         return result;
+    }
+    
+    // GETTERS
+    
+    @Nullable
+    public String getGrassMap() {
+        return grassMap;
+    }
+    
+    @Nullable
+    public String getFoliageMap() {
+        return foliageMap;
     }
     
     // PREDICATES
@@ -63,6 +125,24 @@ public class BlockColorExtractor {
     }
     
     // MUTATORS
+    
+    /**
+     * Sets the path to the grass color map.
+     *
+     * @param path the path
+     */
+    public void setGrassMap(String path) {
+        this.grassMap = path;
+    }
+    
+    /**
+     * Sets the path to the foliage color map.
+     *
+     * @param path the path
+     */
+    public void setFoliageMap(String path) {
+        this.foliageMap = path;
+    }
     
     /**
      * Adds a block and a constant color extractor.
@@ -226,10 +306,36 @@ public class BlockColorExtractor {
         return ColorMath.fromRGB((int) sum[1], (int) sum[2], (int) sum[3], (int) sum[0]);
     }
     
+    @Nullable
+    private static Texture readColorMap(ZipFile zip, @Nullable String path) {
+        if (path == null) return null;
+        
+        ZipEntry entry = zip.getEntry(TEXTURE_PATH + path);
+        if (entry == null) return null;
+        //if (entry == null) throw new IOException("entry not found: " + name);
+        
+        try {
+            return readImage(zip, entry);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+    
     private static Texture readImage(ZipFile zip, ZipEntry entry) throws IOException {
         try (InputStream stream = zip.getInputStream(entry)) {
             return Texture.wrapOrCopy(ImageIO.read(stream));
         }
+    }
+    
+    private static int getMapColor(Texture map, float temp, float rainfall) {
+        int adjW = map.getWidth() - 1;
+        int adjH = map.getHeight() - 1;
+        float adjTemp = PrimMath.clamp01(temp);
+        float adjRain = PrimMath.clamp01(rainfall) * adjTemp;
+        
+        return map.get(
+            adjW - (int) (adjTemp * adjW),
+            adjH - (int) (adjRain * adjH));
     }
     
 }

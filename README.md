@@ -16,13 +16,14 @@ Block color tables are simple binary files which store the color of each block a
 ````EBNF
 table = header, {entry};
 header = "B", "C", "T", version, entryCount; (*ASCII characters*)
-version = int;
-entryCount = int;
 entry = id, data, color, volume;
 
-id = byte;
-data = ? byte in range 0 - 15 ?
-color = byte, byte, byte, byte; (* bytes represent alpha, red, green, blue channels *)
-volume = ? short in range 0 - 4096 ?
+version = uint32;
+entryCount = uint32;
+
+id = uint8;
+data = ? uint8 in range 0 - 15 ?
+color = uint8, uint8, uint8, uint8; (* bytes represent alpha, red, green, blue channels *)
+volume = ? uint16 in range 0 - 4096 ?
 ````
 On Linux, you can inspect the data of a BCT file without the header using `xxd -b -s 11 -c 8 my_color_table.bct`
