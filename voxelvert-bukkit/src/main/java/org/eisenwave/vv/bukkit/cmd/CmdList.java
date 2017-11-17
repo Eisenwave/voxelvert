@@ -5,11 +5,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.eisenwave.vv.bukkit.VoxelVertPlugin;
+import org.eisenwave.vv.bukkit.inv.FileBrowserType;
 import org.eisenwave.vv.bukkit.user.BukkitVoxelVert;
 import org.eisenwave.vv.bukkit.util.CommandUtil;
 import org.eisenwave.vv.ui.user.VVUser;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -42,28 +42,8 @@ public class CmdList implements CommandExecutor {
                 //builder.append(ChatColor.DARK_GRAY);
                 continue;
             }
-            
-            else if (file.endsWith("/"))
-                builder.append(ChatColor.BOLD);
-    
-            else {
-                String ext = CommandUtil.extensionOf(file.toLowerCase());
-    
-                if (ext != null) switch (ext) {
-                    case "png":
-                    case "jpg":
-                    case "jpeg":
-                    case "bmp": builder.append(ChatColor.YELLOW); break;
-                    case "qef": builder.append(ChatColor.LIGHT_PURPLE); break;
-                    case "qb": builder.append(ChatColor.DARK_PURPLE); break;
-                    case "zip": builder.append(ChatColor.GOLD); break;
-                    case "schem":
-                    case "schematic": builder.append(ChatColor.GREEN); break;
-                    case "stl": builder.append(ChatColor.BLUE); break;
-                    case "obj": builder.append(ChatColor.AQUA); break;
-                    case "mtl": builder.append(ChatColor.DARK_AQUA); break;
-                }
-            }
+            FileBrowserType type = FileBrowserType.fromPath(file);
+            if (type != null) builder.append(type.getPrefix());
             
             builder
                 .append(ls[i])

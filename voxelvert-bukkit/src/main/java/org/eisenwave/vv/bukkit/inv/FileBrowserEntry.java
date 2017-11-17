@@ -5,11 +5,11 @@ import org.jetbrains.annotations.NotNull;
 public class FileBrowserEntry implements Comparable<FileBrowserEntry> {
     
     private final String name;
-    private final FileBrowserEntryType type;
+    private final FileBrowserType type;
     
     public FileBrowserEntry(@NotNull String name) {
         this.name = name;
-        this.type = FileBrowserEntryType.fromPath(name);
+        this.type = FileBrowserType.fromPath(name);
     }
     
     @NotNull
@@ -18,25 +18,33 @@ public class FileBrowserEntry implements Comparable<FileBrowserEntry> {
     }
     
     @NotNull
-    public FileBrowserEntryType getType() {
+    public FileBrowserType getType() {
         return type;
+    }
+    
+    public boolean isVariable() {
+        return type == FileBrowserType.VARIABLE;
+    }
+    
+    public boolean isDirectory() {
+        return type == FileBrowserType.DIRECTORY;
     }
     
     @Override
     public int compareTo(@NotNull FileBrowserEntry entry) {
         int result;
     
-        if (this.name.startsWith("#"))
-            result = entry.name.endsWith("#")? 0 : -1;
+        if (this.isVariable())
+            result = entry.isVariable()? 0 : -1;
         else
-            result = entry.name.endsWith("#")? 1 : 0;
+            result = entry.isVariable()? 1 : 0;
         
         if (result != 0) return result;
     
-        if (this.name.endsWith("/"))
-            result = entry.name.endsWith("/")? 0 : -1;
+        if (this.isDirectory())
+            result = entry.isDirectory()? 0 : -1;
         else
-            result = entry.name.endsWith("/")? 1 : 0;
+            result = entry.isDirectory()? 1 : 0;
     
         if (result != 0) return result;
         

@@ -51,12 +51,12 @@ public class ConsoleVVUser implements VVUser {
     
     @Override
     public void print(String msg) {
-        sender.sendMessage( CommandUtil.chatColors(String.format(msgFormat, msg)) );
+        sender.sendMessage(CommandUtil.chatColors(String.format(msgFormat, msg)));
     }
     
     @Override
     public void error(String err) {
-        sender.sendMessage( CommandUtil.chatColors(String.format(errFormat, err)) );
+        sender.sendMessage(CommandUtil.chatColors(String.format(errFormat, err)));
     }
     
     @Override

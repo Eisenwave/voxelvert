@@ -1,6 +1,6 @@
 package org.eisenwave.vv.bukkit.inv.menu;
 
-import org.eisenwave.vv.bukkit.inv.FileBrowserEntryType;
+import org.eisenwave.vv.bukkit.inv.FileBrowserType;
 import org.eisenwave.vv.bukkit.inv.widget.LargeButtonWidget;
 import org.eisenwave.vv.bukkit.inv.widget.ParameterOptionsWidget;
 import nl.klikenklaar.util.gui.buttons.Button;
@@ -39,8 +39,8 @@ public class ConversionOptionsMenu extends Menu {
     }
     
     private void drawInfoButtons(String in, String out) {
-        Material mIn = FileBrowserEntryType.fromPath(in).material();
-        Material mOut = FileBrowserEntryType.fromPath(in).material();
+        Material mIn = FileBrowserType.fromPath(in).getIcon();
+        Material mOut = FileBrowserType.fromPath(in).getIcon();
         
         setButton(new Button(mIn, in), 4, 6);
         setButton(new Button(mOut, out), 6, 6);

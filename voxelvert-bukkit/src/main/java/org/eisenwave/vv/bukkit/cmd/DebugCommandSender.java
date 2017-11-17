@@ -1,7 +1,5 @@
 package org.eisenwave.vv.bukkit.cmd;
 
-import net.grian.torrens.util.ANSI;
-import org.eisenwave.vv.bukkit.util.CommandUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -21,6 +19,7 @@ import java.util.logging.Logger;
 /**
  * Implementation of {@link CommandSender} which allows for testing commands using artificial senders.
  */
+@Deprecated
 public class DebugCommandSender implements CommandSender {
     
     private boolean op = true;
@@ -46,8 +45,8 @@ public class DebugCommandSender implements CommandSender {
             for (StackTraceElement e : stack) {
                 if (e.isNativeMethod()) break;
                 System.out.println(e);
-            }*/
-            System.out.println(CommandUtil.chatColorToAnsi(msg)+ANSI.RESET);
+            }
+            System.out.println(CommandUtil.chatColorToAnsi(msg)+ANSI.RESET);*/
         };
     }
     

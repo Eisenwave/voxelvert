@@ -83,7 +83,7 @@ public class FileBrowserMenu extends Menu {
         private final FileBrowserEntry entry;
         
         public EntryButton(FileBrowserEntry entry) {
-            super(entry.getType().material(), entry.getName());
+            super(entry.getType().getIcon(), entry.getName());
             this.entry = entry;
         }
         

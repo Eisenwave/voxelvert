@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.WeakHashMap;
 
+@Deprecated
 public final class UserManager {
 
     private static UserManager instance = new UserManager();

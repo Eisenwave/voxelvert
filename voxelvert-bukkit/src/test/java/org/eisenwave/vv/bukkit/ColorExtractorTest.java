@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public class ColorExtractorTest {
     
+    @SuppressWarnings("deprecation")
     public void run() throws IOException {
         String str = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("default.json"));
         

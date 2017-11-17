@@ -1,45 +1,60 @@
 package org.eisenwave.vv.bukkit.inv;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.eisenwave.vv.bukkit.util.CommandUtil;
 import org.jetbrains.annotations.Contract;
 
-public enum FileBrowserEntryType {
-    DIRECTORY(Material.CHEST),
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+import static org.bukkit.Material.*;
+import static org.bukkit.ChatColor.*;
+
+public enum FileBrowserType {
+    DIRECTORY(CHEST, BOLD),
     
-    VARIABLE(Material.ENDER_CHEST),
+    VARIABLE(ENDER_CHEST, BOLD, ITALIC),
     
-    FILE(Material.SILVER_SHULKER_BOX),
+    FILE(SILVER_SHULKER_BOX, RESET),
     
-    COLORS(Material.GREEN_SHULKER_BOX),
+    BCT(GREEN_SHULKER_BOX, DARK_GREEN),
     
-    IMAGE(Material.YELLOW_SHULKER_BOX),
+    IMAGE(YELLOW_SHULKER_BOX, YELLOW),
     
-    MTL(Material.BLUE_SHULKER_BOX),
+    MTL(BLUE_SHULKER_BOX, DARK_BLUE),
     
-    QB(Material.MAGENTA_SHULKER_BOX),
+    QB(MAGENTA_SHULKER_BOX, LIGHT_PURPLE),
     
-    QEF(Material.PURPLE_SHULKER_BOX),
+    QEF(PURPLE_SHULKER_BOX, DARK_PURPLE),
     
-    SCHEMATIC(Material.ORANGE_SHULKER_BOX),
+    SCHEMATIC(ORANGE_SHULKER_BOX, GOLD),
     
-    STL(Material.LIME_SHULKER_BOX),
+    STL(LIME_SHULKER_BOX, GREEN),
     
-    WAVEFRONT(Material.LIGHT_BLUE_SHULKER_BOX),
+    WAVEFRONT(LIGHT_BLUE_SHULKER_BOX, AQUA),
     
-    RESOURCE_PACK(Material.CYAN_SHULKER_BOX);
+    RESOURCE_PACK(CYAN_SHULKER_BOX, DARK_AQUA);
     
     private final Material material;
+    private final String prefix;
     
-    FileBrowserEntryType(Material material) {
+    FileBrowserType(Material material, ChatColor... colors) {
         this.material = material;
+        this.prefix = Arrays.stream(colors).map(ChatColor::toString).collect(Collectors.joining());
     }
     
     @Contract(pure = true)
-    public Material material() {
+    public Material getIcon() {
         return material;
     }
     
-    public static FileBrowserEntryType fromPath(String path) {
+    @Contract(pure = true)
+    public String getPrefix() {
+        return prefix;
+    }
+    
+    public static FileBrowserType fromPath(String path) {
         if (path.startsWith("#"))
             return VARIABLE;
         else if (path.endsWith("/"))
@@ -48,7 +63,7 @@ public enum FileBrowserEntryType {
             String ext = CommandUtil.extensionOf(path);
             if (ext == null) return FILE;
             else switch (ext.toLowerCase()) {
-                case "colors": return COLORS;
+                case "colors": return BCT;
                 case "png":
                 case "jpg":
                 case "jpeg":
