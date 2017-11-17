@@ -8,7 +8,7 @@ public class DeserializerRPBCExtractorTest {
 
     @Test
     public void parseHex() throws Exception {
-        final int value = DeserializerRPBCExtractor.parseHex("0xFFFFFFFF");
+        final int value = DeserializerBCE.parseHex("0xFFFFFFFF");
         assertEquals(value >> 24 & 0xFF, 0xFF);
     }
 

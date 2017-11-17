@@ -2,8 +2,8 @@ package org.eisenwave.vv.io;
 
 import net.grian.torrens.io.Serializer;
 import net.grian.torrens.schematic.BlockKey;
-import org.eisenwave.vv.object.BlockColor;
-import org.eisenwave.vv.object.BlockColorTable;
+import org.eisenwave.vv.rp.BlockColor;
+import org.eisenwave.vv.rp.BlockColorTable;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

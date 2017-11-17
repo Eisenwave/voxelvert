@@ -9,12 +9,12 @@ import net.grian.torrens.voxel.VoxelArray;
 import net.grian.torrens.wavefront.MTLLibrary;
 import net.grian.torrens.wavefront.OBJModel;
 import org.eisenwave.vv.object.MCModel;
-import org.eisenwave.vv.object.BlockColorTable;
+import org.eisenwave.vv.rp.BlockColorTable;
 import org.eisenwave.vv.object.Language;
 import org.eisenwave.vv.clsvert.*;
 import org.eisenwave.vv.io.DeserializerBCT;
-import org.eisenwave.vv.io.DeserializerRPBCExtractor;
-import org.eisenwave.vv.io.RPBCExtractor;
+import org.eisenwave.vv.io.DeserializerBCE;
+import org.eisenwave.vv.rp.BlockColorExtractor;
 import org.eisenwave.vv.ui.user.VVUser;
 import net.grian.torrens.voxel.QBModel;
 import net.grian.torrens.stl.STLModel;
@@ -1011,7 +1011,7 @@ public final class FormatverterFactory {
             //Logger logger = verbose? user.getLogger() : null;
     
             String name = "color_extractors/default.json";
-            RPBCExtractor extractor = new DeserializerRPBCExtractor().fromResource(getClass(), name);
+            BlockColorExtractor extractor = new DeserializerBCE().fromResource(getClass(), name);
             set(1);
             
             ZipFile zip = (ZipFile) user.getInventory().load(Format.RESOURCE_PACK, from);

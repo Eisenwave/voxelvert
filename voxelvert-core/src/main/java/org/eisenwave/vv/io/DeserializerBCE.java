@@ -6,27 +6,29 @@ import net.grian.torrens.io.TextDeserializer;
 import net.grian.torrens.object.Rectangle4i;
 import net.grian.torrens.schematic.BlockKey;
 import org.eisenwave.vv.object.Tint;
+import org.eisenwave.vv.rp.BlockColorExtractor;
+import org.eisenwave.vv.rp.BlockColorMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Reader;
 
-public class DeserializerRPBCExtractor implements TextDeserializer<RPBCExtractor> {
+public class DeserializerBCE implements TextDeserializer<BlockColorExtractor> {
     
     public final static short
         DEFAULT_VOXELS = 4096;
     
-    private RPBCExtractor result;
+    private BlockColorExtractor result;
     
     @NotNull
     @Override
-    public RPBCExtractor fromReader(Reader reader) throws FileSyntaxException {
+    public BlockColorExtractor fromReader(Reader reader) throws FileSyntaxException {
         JsonObject root = new Gson().fromJson(reader, JsonObject.class);
         return deserializeBlocks(root.getAsJsonArray("blocks"));
     }
     
-    public RPBCExtractor deserializeBlocks(JsonArray root) throws FileSyntaxException {
+    public BlockColorExtractor deserializeBlocks(JsonArray root) throws FileSyntaxException {
         final int length = root.size();
-        result = new RPBCExtractor();
+        result = new BlockColorExtractor();
         
         for (int i = 0; i < length; i++) {
             JsonElement obj = root.get(i);
@@ -93,27 +95,7 @@ public class DeserializerRPBCExtractor implements TextDeserializer<RPBCExtractor
             else throw new FileSyntaxException("'data' must be a number or a string");
         }
         
-        final Tint tint;
-        {
-            JsonElement elementTint = json.get("tint");
-            if (elementTint == null)
-                tint = Tint.NONE;
-            else if (!elementTint.isJsonPrimitive())
-                throw new FileSyntaxException("'tint' must be primitive");
-            else
-                tint = deserializeTint(elementTint.getAsJsonPrimitive());
-        }
-        
-        final int voxels;
-        {
-            JsonElement elementVoxels = json.get("voxels");
-            if (elementVoxels == null)
-                voxels = DEFAULT_VOXELS;
-            else if (!elementVoxels.isJsonPrimitive())
-                throw new FileSyntaxException("'voxels' must be primitive");
-            else
-                voxels = deserializeInt(elementVoxels.getAsJsonPrimitive(), "voxels");
-        }
+        BlockColorMeta meta = deserializeMeta(json);
         
         switch (type) {
             
@@ -122,7 +104,7 @@ public class DeserializerRPBCExtractor implements TextDeserializer<RPBCExtractor
                 String texture = deserializeString(primitiveTexture, "texture");
                 
                 for (BlockKey block : blocks)
-                    result.put(block, texture, voxels, tint);
+                    result.put(block, meta, texture);
                 break;
             }
             
@@ -134,7 +116,7 @@ public class DeserializerRPBCExtractor implements TextDeserializer<RPBCExtractor
                 Rectangle4i area = deserializeArea(arrayArea);
                 
                 for (BlockKey block : blocks)
-                    result.put(block, texture, area, voxels, tint);
+                    result.put(block, meta, texture, area);
                 break;
             }
             
@@ -143,7 +125,7 @@ public class DeserializerRPBCExtractor implements TextDeserializer<RPBCExtractor
                 String value = deserializeString(primitiveValue, "rgb");
                 
                 for (BlockKey block : blocks)
-                    result.put(block, parseHex(value), voxels, tint);
+                    result.put(block, meta, parseHex(value));
                 break;
             }
             
@@ -188,14 +170,47 @@ public class DeserializerRPBCExtractor implements TextDeserializer<RPBCExtractor
         return elementValue.getAsInt();
     }
     
+    // DESERIALIZE UTIL
+    
     private static int deserializeInt(JsonPrimitive primitive, String name) throws FileSyntaxException {
         if (!primitive.isNumber()) throw new FileSyntaxException(String.format("'%s' must be a number", name));
-        return primitive.getAsNumber().intValue();
+        return primitive.getAsInt();
+    }
+    
+    private static short deserializeShort(JsonPrimitive primitive, String name) throws FileSyntaxException {
+        if (!primitive.isNumber()) throw new FileSyntaxException(String.format("'%s' must be a number", name));
+        return primitive.getAsShort();
     }
     
     private static String deserializeString(JsonPrimitive primitive, String name) throws FileSyntaxException {
         if (!primitive.isString()) throw new FileSyntaxException(String.format("'%s' must be a string", name));
         return primitive.getAsString();
+    }
+    
+    private static BlockColorMeta deserializeMeta(JsonObject json) throws FileSyntaxException {
+        final Tint tint;
+        {
+            JsonElement elementTint = json.get("tint");
+            if (elementTint == null)
+                tint = Tint.NONE;
+            else if (!elementTint.isJsonPrimitive())
+                throw new FileSyntaxException("'tint' must be primitive");
+            else
+                tint = deserializeTint(elementTint.getAsJsonPrimitive());
+        }
+    
+        final short voxels;
+        {
+            JsonElement elementVoxels = json.get("voxels");
+            if (elementVoxels == null)
+                voxels = DEFAULT_VOXELS;
+            else if (!elementVoxels.isJsonPrimitive())
+                throw new FileSyntaxException("'voxels' must be primitive");
+            else
+                voxels = deserializeShort(elementVoxels.getAsJsonPrimitive(), "voxels");
+        }
+        
+        return new BlockColorMeta(voxels, tint);
     }
     
     private static Rectangle4i deserializeArea(JsonArray array) throws FileSyntaxException {

@@ -4,9 +4,9 @@ import net.grian.torrens.schematic.BlockStructure;
 import net.grian.torrens.util.ColorMath;
 import net.grian.torrens.schematic.BlockKey;
 import net.grian.torrens.voxel.VoxelArray;
-import org.eisenwave.vv.object.BlockColor;
+import org.eisenwave.vv.rp.BlockColor;
 import org.eisenwave.vv.util.Arguments;
-import org.eisenwave.vv.object.BlockColorTable;
+import org.eisenwave.vv.rp.BlockColorTable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

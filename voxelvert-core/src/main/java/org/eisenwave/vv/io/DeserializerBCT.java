@@ -4,8 +4,8 @@ import net.grian.torrens.error.FileFormatException;
 import net.grian.torrens.error.FileVersionException;
 import net.grian.torrens.io.Deserializer;
 import net.grian.torrens.schematic.BlockKey;
-import org.eisenwave.vv.object.BlockColorTable;
-import org.eisenwave.vv.object.BlockColor;
+import org.eisenwave.vv.rp.BlockColorTable;
+import org.eisenwave.vv.rp.BlockColor;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInputStream;

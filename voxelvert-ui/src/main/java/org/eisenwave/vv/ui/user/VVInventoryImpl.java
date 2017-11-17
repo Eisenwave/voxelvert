@@ -6,7 +6,7 @@ import net.grian.torrens.stl.DeserializerSTL;
 import net.grian.torrens.voxel.*;
 import net.grian.torrens.wavefront.*;
 import org.eisenwave.vv.io.SerializerMCModelZip;
-import org.eisenwave.vv.object.BlockColorTable;
+import org.eisenwave.vv.rp.BlockColorTable;
 import org.eisenwave.vv.io.SerializerBCT;
 import org.eisenwave.vv.ui.fmtvert.Format;
 import net.grian.torrens.img.DeserializerImage;
