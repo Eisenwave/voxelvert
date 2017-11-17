@@ -1,4 +1,4 @@
-package org.eisenwave.vv.object;
+package org.eisenwave.vv.rp;
 
 import net.grian.torrens.schematic.BlockKey;
 

@@ -1,4 +1,4 @@
-package org.eisenwave.vv.object;
+package org.eisenwave.vv.rp;
 
 import net.grian.torrens.util.RGBValue;
 
@@ -15,7 +15,7 @@ public class BlockColor implements RGBValue {
     
     public BlockColor(int rgb, float volume) {
         if (volume < 0 || volume > 1)
-            throw new IllegalArgumentException("volume must be 0-1 (" + volume + ")");
+            throw new IllegalArgumentException("volume must be in range(0,1) (" + volume + ")");
         this.rgb = rgb;
         this.volume = (short) (volume * 4096);
         this.perVol = (float) Math.cbrt(volume);

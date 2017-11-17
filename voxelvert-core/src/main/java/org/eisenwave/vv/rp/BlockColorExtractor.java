@@ -1,12 +1,9 @@
-package org.eisenwave.vv.io;
+package org.eisenwave.vv.rp;
 
 import net.grian.torrens.img.Texture;
 import net.grian.torrens.object.Rectangle4i;
 import net.grian.torrens.schematic.BlockKey;
 import net.grian.torrens.util.ColorMath;
-import org.eisenwave.vv.object.BlockColor;
-import org.eisenwave.vv.object.BlockColorTable;
-import org.eisenwave.vv.object.Tint;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
@@ -26,7 +23,7 @@ import java.util.zip.ZipFile;
  * <p>
  * Once filled with information, it can be applied to a ZIP file out of which it gets the colors.
  */
-public class RPBCExtractor {
+public class BlockColorExtractor {
     
     private final Map<BlockKey, ExtractableColor> blockColors = new LinkedHashMap<>();
     
@@ -46,13 +43,14 @@ public class RPBCExtractor {
         forEach((block, color) -> {
             int rgb;
             try {
-                rgb = color.getExtractor().extract(zip);
+                rgb = color.getStrategy().extract(zip);
             } catch (IOException ex) {
                 return;
             }
+            BlockColorMeta meta = color.getMeta();
             
             //TODO bake tint
-            result.put(block, new BlockColor(rgb, color.getVoxels() / 4096F));
+            result.put(block, new BlockColor(rgb, meta.getVoxels()));
         });
         
         return result;
@@ -71,9 +69,9 @@ public class RPBCExtractor {
      *
      * @param block the block
      */
-    public void put(@NotNull BlockKey block, int rgb, int voxels, Tint tint) {
+    public void put(@NotNull BlockKey block, @NotNull BlockColorMeta meta, int rgb) {
         ExtractStrategy strategy = new ConstantExtractStrategy(rgb);
-        blockColors.put(block, new ExtractableColor(strategy, voxels, tint, 0));
+        blockColors.put(block, new ExtractableColor(strategy, meta));
     }
     
     /**
@@ -81,9 +79,9 @@ public class RPBCExtractor {
      *
      * @param block the block
      */
-    public void put(@NotNull BlockKey block, String texturePath, int voxels, Tint tint) {
+    public void put(@NotNull BlockKey block, @NotNull BlockColorMeta meta, String texturePath) {
         ExtractStrategy strategy = new TextureExtractStrategy(texturePath);
-        blockColors.put(block, new ExtractableColor(strategy, voxels, tint, 0));
+        blockColors.put(block, new ExtractableColor(strategy, meta));
     }
     
     /**
@@ -91,9 +89,9 @@ public class RPBCExtractor {
      *
      * @param block the block
      */
-    public void put(@NotNull BlockKey block, String texturePath, Rectangle4i area, int voxels, Tint tint) {
+    public void put(@NotNull BlockKey block, @NotNull BlockColorMeta meta, String texturePath, Rectangle4i area) {
         ExtractStrategy strategy = new TextureAreaExtractStrategy(texturePath, area);
-        blockColors.put(block, new ExtractableColor(strategy, voxels, tint, 0));
+        blockColors.put(block, new ExtractableColor(strategy, meta));
     }
     
     public void clear() {
@@ -106,38 +104,30 @@ public class RPBCExtractor {
         blockColors.forEach(action);
     }
     
+    // EXTRACTION
     
     private final class ExtractableColor {
         
-        private final ExtractStrategy extractor;
-        private final int voxels;
-        private final Tint tint;
-        private final int tintValue;
+        private final ExtractStrategy strategy;
+        private BlockColorMeta meta;
         
-        private ExtractableColor(@NotNull ExtractStrategy extractor, int voxels, @NotNull Tint tint, int tintValue) {
-            if (voxels < 0 || voxels > 4096)
-                throw new IllegalArgumentException("amount of voxels must be in range(0,4096)");
-            
-            this.extractor = extractor;
-            this.voxels = voxels;
-            this.tint = tint;
-            this.tintValue = tintValue;
+        private ExtractableColor(@NotNull ExtractStrategy strategy, @NotNull BlockColorMeta meta) {
+            this.strategy = strategy;
+            this.meta = meta;
         }
         
-        public ExtractStrategy getExtractor() {
-            return extractor;
+        public ExtractStrategy getStrategy() {
+            return strategy;
         }
         
-        public int getVoxels() {
-            return voxels;
+        public BlockColorMeta getMeta() {
+            return meta;
         }
-        
-        public Tint getTint() {
-            return tint;
-        }
-        
     }
     
+    /**
+     * A strategy for extracting a single color from a given {@link ZipFile}.
+     */
     @FunctionalInterface
     public static interface ExtractStrategy {
         
