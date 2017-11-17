@@ -5,9 +5,7 @@ import net.grian.torrens.error.FileSyntaxException;
 import net.grian.torrens.io.TextDeserializer;
 import net.grian.torrens.object.Rectangle4i;
 import net.grian.torrens.schematic.BlockKey;
-import org.eisenwave.vv.object.Tint;
-import org.eisenwave.vv.rp.BlockColorExtractor;
-import org.eisenwave.vv.rp.BlockColorMeta;
+import org.eisenwave.vv.rp.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Reader;
@@ -198,7 +196,7 @@ public class DeserializerBCE implements TextDeserializer<BlockColorExtractor> {
             else
                 tint = deserializeTint(elementTint.getAsJsonPrimitive());
         }
-    
+        
         final short voxels;
         {
             JsonElement elementVoxels = json.get("voxels");

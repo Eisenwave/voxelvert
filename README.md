@@ -7,8 +7,8 @@ VoxelVert is a converter for many voxel, 3d, or Minecraft formats developed
 ## File Formats
 VoxelVert uses two custom file formats:
 
-### Resource Pack Extractor (`.json`)
-The resource pack extractor format is a subset of `JSON` which specifies how to extract block colors out of a default
+### Block Color Extractor (`.json`)
+The block color extractor format is a subset of `JSON` which specifies how to extract block colors out of a default
 resource pack.
 
 ### Block Color Table (`.bct`)
