@@ -1,10 +1,10 @@
-package org.eisenwave.vv.bukkit.inv.widget;
+package org.eisenwave.vv.bukkit.gui.old_widget;
 
 import nl.klikenklaar.util.gui.buttons.Button;
 import nl.klikenklaar.util.gui.menus.Menu;
 import org.bukkit.Material;
 
-public class ProgressBarWidget extends Widget {
+public class OLD_ProgressBarWidget extends Widget {
     
     private final static Button BUTTON_OFF = new Button(Material.CONCRETE, 1, (short) 7, null);
     private final static Button BUTTON_ON = new Button(Material.CONCRETE, 1, (short) 5, null);
@@ -12,13 +12,13 @@ public class ProgressBarWidget extends Widget {
     private int width, height;
     private float progress;
     
-    public ProgressBarWidget(Menu menu, int width, int height, int x, int y) {
+    public OLD_ProgressBarWidget(Menu menu, int width, int height, int x, int y) {
         super(menu, x, y);
         setWidth(width);
         setHeight(height);
     }
     
-    public ProgressBarWidget(Menu menu, int width, int height) {
+    public OLD_ProgressBarWidget(Menu menu, int width, int height) {
         this(menu, width, height, 0, 0);
     }
     

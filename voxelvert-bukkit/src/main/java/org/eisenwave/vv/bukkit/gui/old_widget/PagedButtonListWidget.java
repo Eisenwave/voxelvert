@@ -1,4 +1,4 @@
-package org.eisenwave.vv.bukkit.inv.widget;
+package org.eisenwave.vv.bukkit.gui.old_widget;
 
 import nl.klikenklaar.util.gui.buttons.Button;
 import nl.klikenklaar.util.gui.menus.Menu;

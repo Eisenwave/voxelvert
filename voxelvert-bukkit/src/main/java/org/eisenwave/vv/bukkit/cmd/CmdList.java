@@ -5,7 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.eisenwave.vv.bukkit.VoxelVertPlugin;
-import org.eisenwave.vv.bukkit.inv.FileType;
+import org.eisenwave.vv.bukkit.gui.FileType;
 import org.eisenwave.vv.bukkit.user.BukkitVoxelVert;
 import org.eisenwave.vv.bukkit.util.CommandUtil;
 import org.eisenwave.vv.ui.user.VVUser;
@@ -33,24 +33,21 @@ public class CmdList implements CommandExecutor {
         VVUser user = CommandUtil.userOf(vv, sender);
         
         StringBuilder builder = new StringBuilder("List of files and directories:\n");
+        boolean first = true;
         
-        String[] ls = user.getInventory().list();
-        for (int i = 0; i < ls.length-1; i++) {
-            String file = ls[i];
-            
+        for (String file : user.getInventory().list()) {
             if (file.startsWith(".")) {
                 //builder.append(ChatColor.DARK_GRAY);
                 continue;
             }
+            if (first) first = false;
+            else builder.append('\n');
+            
             FileType type = FileType.fromPath(file);
             if (type != null) builder.append(type.getPrefix());
             
-            builder
-                .append(ls[i])
-                .append(ChatColor.RESET)
-                .append("\n");
+            builder.append(file).append(ChatColor.RESET);
         }
-        builder.append(ls[ls.length-1]);
         
         user.print(builder.toString());
         return true;

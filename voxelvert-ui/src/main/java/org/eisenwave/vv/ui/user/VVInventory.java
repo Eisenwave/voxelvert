@@ -6,8 +6,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * A VoxelVert inventory which stores objects of given format with a unique name.
@@ -38,8 +40,9 @@ public interface VVInventory {
         return new File(getDirectory(), name);
     }
     
+    @Deprecated
     @NotNull
-    default String[] list(boolean sort) {
+    default List<String> list(boolean sort) {
         File[] files = getDirectory().listFiles();
         assert files != null;
         
@@ -47,6 +50,7 @@ public interface VVInventory {
         for (int i = 0; i < files.length; i++)
             names[i] = files[i].getName() + (files[i].isDirectory()? "/" : "");
         
+        /*
         if (sort) {
             Arrays.sort(names, Comparator.comparing(String::toLowerCase));
             Arrays.sort(names, (x,y) -> {
@@ -56,13 +60,32 @@ public interface VVInventory {
     
             
         }
+        */
     
-        return names;
+        return Arrays.asList(names);
     }
     
+    /**
+     * Returns a set containing the names of all {@link VVInventoryVariable} objects in this inventory.
+     *
+     * @return the names of all inventory variables
+     */
     @NotNull
-    default String[] list() {
-        return list(true);
+    abstract Set<String> getVariableNames();
+    
+    @NotNull
+    default List<String> list() {
+        List<String> result = new ArrayList<>();
+        
+        result.addAll(getVariableNames());
+        
+        File[] files = getDirectory().listFiles();
+        assert files != null;
+    
+        for (File file : files)
+            result.add(file.getName() + (file.isDirectory()? "/" : ""));
+        
+        return result;
     }
     
     /**

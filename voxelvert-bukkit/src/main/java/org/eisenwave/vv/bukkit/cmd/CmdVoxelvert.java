@@ -1,13 +1,13 @@
 package org.eisenwave.vv.bukkit.cmd;
 
-import com.sk89q.worldedit.entity.Player;
 import nl.klikenklaar.util.gui.menus.Menu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.eisenwave.vv.bukkit.VoxelVertPlugin;
-import org.eisenwave.vv.bukkit.inv.menu.ConversionFormatChooserMenu;
-import org.eisenwave.vv.bukkit.inv.menu.FileBrowserMenu;
+import org.eisenwave.vv.bukkit.gui.menu.ConversionFormatChooserMenu;
+import org.eisenwave.vv.bukkit.gui.menu.FileBrowserMenu;
 import org.eisenwave.vv.bukkit.user.BukkitVoxelVert;
 import org.eisenwave.vv.bukkit.util.CommandUtil;
 import org.eisenwave.vv.object.Language;
@@ -46,8 +46,8 @@ public class CmdVoxelvert implements CommandExecutor {
         
         if (args.length == 0 || args[0].equals("files")) {
             Player player = (Player) sender;
-            new FileBrowserMenu(user.getInventory()); // TODO how the fuck do I show this shit to players
-    
+            FileBrowserMenu menu = new FileBrowserMenu(user.getInventory()); // TODO how the fuck do I show this shit to players
+            menu.showTo(player);
             return true;
         }
         

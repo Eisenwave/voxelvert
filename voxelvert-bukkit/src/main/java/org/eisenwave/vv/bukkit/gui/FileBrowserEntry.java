@@ -1,5 +1,6 @@
-package org.eisenwave.vv.bukkit.inv;
+package org.eisenwave.vv.bukkit.gui;
 
+import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
 public class FileBrowserEntry implements Comparable<FileBrowserEntry> {
@@ -17,9 +18,21 @@ public class FileBrowserEntry implements Comparable<FileBrowserEntry> {
         return name;
     }
     
+    public String getDisplayName() {
+        String clearName;
+        if (name.endsWith("/")) clearName = name.substring(0, name.length() - 1);
+        else clearName = name;
+        
+        return type.getPrefixNoColors() + clearName;
+    }
+    
     @NotNull
     public FileType getType() {
         return type;
+    }
+    
+    public boolean isHidden() {
+        return name.startsWith(".");
     }
     
     public boolean isVariable() {

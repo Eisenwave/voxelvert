@@ -1,16 +1,17 @@
-package org.eisenwave.vv.bukkit.inv.menu;
+package org.eisenwave.vv.bukkit.gui.menu;
 
 import nl.klikenklaar.util.gui.buttons.Button;
 import nl.klikenklaar.util.gui.menus.Menu;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.eisenwave.vv.bukkit.inv.FileBrowserEntry;
+import org.eisenwave.vv.bukkit.gui.FileBrowserEntry;
 import org.eisenwave.vv.ui.user.VVInventory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileBrowserMenu extends Menu {
+@Deprecated
+public class OLD_FileBrowserMenu extends Menu {
     
     private final static Button BACKGROUND = new Button(Material.STAINED_GLASS_PANE, 1, (short) 15, " ");
     
@@ -23,7 +24,7 @@ public class FileBrowserMenu extends Menu {
     
     private int page;
     
-    public FileBrowserMenu(VVInventory handle, int page) {
+    public OLD_FileBrowserMenu(VVInventory handle, int page) {
         super(54, "File Browser");
         this.handle = handle;
     
@@ -38,7 +39,7 @@ public class FileBrowserMenu extends Menu {
         draw(page);
     }
     
-    public FileBrowserMenu(VVInventory handle) {
+    public OLD_FileBrowserMenu(VVInventory handle) {
         this(handle, 0);
     }
     
@@ -100,7 +101,7 @@ public class FileBrowserMenu extends Menu {
     
         @Override
         public boolean[] onClick(Player player) {
-            FileBrowserMenu.this.goToPage(targetPage);
+            OLD_FileBrowserMenu.this.goToPage(targetPage);
             return new boolean[] {true, false};
         }
         

@@ -1,4 +1,4 @@
-package org.eisenwave.vv.bukkit.inv;
+package org.eisenwave.vv.bukkit.gui;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -14,7 +14,7 @@ import static org.bukkit.ChatColor.*;
 public enum FileType {
     DIRECTORY(CHEST, BOLD),
     
-    VARIABLE(ENDER_CHEST, BOLD, ITALIC),
+    VARIABLE(COMMAND, BOLD, ITALIC),
     
     FILE(SILVER_SHULKER_BOX, RESET),
     
@@ -38,10 +38,17 @@ public enum FileType {
     
     private final Material material;
     private final String prefix;
+    private final String prefixNoColors;
     
     FileType(Material material, ChatColor... colors) {
         this.material = material;
-        this.prefix = Arrays.stream(colors).map(ChatColor::toString).collect(Collectors.joining());
+        this.prefix = Arrays.stream(colors)
+            .map(ChatColor::toString)
+            .collect(Collectors.joining());
+        this.prefixNoColors = Arrays.stream(colors)
+            .filter(ChatColor::isFormat)
+            .map(ChatColor::toString)
+            .collect(Collectors.joining());
     }
     
     @Contract(pure = true)
@@ -52,6 +59,11 @@ public enum FileType {
     @Contract(pure = true)
     public String getPrefix() {
         return prefix;
+    }
+    
+    @Contract(pure = true)
+    public String getPrefixNoColors() {
+        return prefixNoColors;
     }
     
     public static FileType fromPath(String path) {

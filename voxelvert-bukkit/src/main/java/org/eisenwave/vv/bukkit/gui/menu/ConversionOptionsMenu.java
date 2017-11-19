@@ -1,15 +1,15 @@
-package org.eisenwave.vv.bukkit.inv.menu;
+package org.eisenwave.vv.bukkit.gui.menu;
 
-import org.eisenwave.vv.bukkit.inv.FileType;
-import org.eisenwave.vv.bukkit.inv.widget.LargeButtonWidget;
-import org.eisenwave.vv.bukkit.inv.widget.ParameterOptionsWidget;
+import org.eisenwave.vv.bukkit.gui.FileType;
+import org.eisenwave.vv.bukkit.gui.old_widget.LargeButtonWidget;
+import org.eisenwave.vv.bukkit.gui.old_widget.ParameterOptionsWidget;
 import nl.klikenklaar.util.gui.buttons.Button;
 import nl.klikenklaar.util.gui.buttons.CommandButton;
 import nl.klikenklaar.util.gui.menus.Menu;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.eisenwave.vv.bukkit.inv.widget.PagedRowListLayout;
+import org.eisenwave.vv.bukkit.gui.old_widget.PagedRowListLayout;
 import org.eisenwave.vv.ui.fmtvert.Format;
 import org.eisenwave.vv.ui.fmtvert.Formatverter;
 import org.eisenwave.vv.ui.fmtvert.FormatverterFactory;

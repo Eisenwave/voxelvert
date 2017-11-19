@@ -1,6 +1,6 @@
-package org.eisenwave.vv.bukkit.inv.menu;
+package org.eisenwave.vv.bukkit.gui.menu;
 
-import org.eisenwave.vv.bukkit.inv.widget.LargeButtonWidget;
+import org.eisenwave.vv.bukkit.gui.old_widget.LargeButtonWidget;
 import nl.klikenklaar.util.gui.buttons.Button;
 import nl.klikenklaar.util.gui.buttons.CommandButton;
 import nl.klikenklaar.util.gui.menus.Menu;

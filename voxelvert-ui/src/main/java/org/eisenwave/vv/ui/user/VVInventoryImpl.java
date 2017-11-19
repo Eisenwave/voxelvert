@@ -23,8 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.zip.ZipFile;
 
 public class VVInventoryImpl implements VVInventory {
@@ -50,6 +49,11 @@ public class VVInventoryImpl implements VVInventory {
     @Override
     public File getDirectory() {
         return dir;
+    }
+    
+    @Override
+    public Set<String> getVariableNames() {
+        return Collections.unmodifiableSet(variables.keySet());
     }
     
     @Override
