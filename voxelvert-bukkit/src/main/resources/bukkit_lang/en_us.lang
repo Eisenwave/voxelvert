@@ -33,23 +33,28 @@ cmd.convert.err.out_alphanumeric=Output must be alphanumeric + (. _ / #)
 #cmd.convert.queue.empty=The queue is empty, your task is being handled right away :)
 cmd.convert.queue.full=There is %d other tasks in the queue, please be patient ...
 
-cmd.remove.err=Couldn't remove "%s"
-cmd.remove.err.missing=Can't remove "%s", no such file exists
+cmd.remove.err.missing=Can't remove &6%s&r, no such file exists
 cmd.remove.err.var=Can't remove variables!
+cmd.remove.failure=Couldn't remove &6%s&r
+cmd.remove.success=Removed &6%s&r
 
-cmd.remove.success=Removed "%s"
+cmd.move.err.missing=Can't move &6%s&r, no such file exists
+cmd.move.err.var=Can't move variables!
+cmd.move.exception=An error occurred when moving the file: &6%s
+cmd.move.failure=Couldn't move &6%s&r to &6%s&r
+cmd.move.success=Moved &6%s&r to &6%s&r
+
+cmd.copy.err.missing=Can't copy &6%s&r, no such file exists
+cmd.copy.err.var=Can't copy variables!
+cmd.copy.exception=An error occurred when copying the file: &6%s
+cmd.copy.failure=Couldn't copy &6%s&r to &6%s&r
+cmd.copy.success=Copied &6%s&r to &6%s&r
 
 cmd.voxelvert.err.no_ext=Input "%s" is not a variable and has no extension!
 
 # generic errors
 err.path_absolute=You are not allowed to use absolute paths!
 err.path_hidden=You are not allowed to use hidden file names!
-
-# allows for syntax highlighting of strings, decimals, color codes and floating points numbers
-syntax.decimal=&e%s&r
-syntax.float=&e%s&r
-syntax.string=&a%s&r
-syntax.color=&c%s&r
 
 # user message formats
 user.msg=&9[VoxelVert]&r %s

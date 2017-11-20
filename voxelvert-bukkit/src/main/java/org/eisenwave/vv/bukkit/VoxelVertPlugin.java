@@ -102,6 +102,8 @@ public class VoxelVertPlugin extends JavaPlugin {
         getCommand("voxelvert").setExecutor(new CmdVoxelvert(this));
         getCommand("voxelvert-list").setExecutor(new CmdList(this));
         getCommand("voxelvert-remove").setExecutor(new CmdRemove(this));
+        getCommand("voxelvert-move").setExecutor(new CmdMove(this));
+        getCommand("voxelvert-copy").setExecutor(new CmdCopy(this));
         return true;
     }
     
