@@ -1,5 +1,6 @@
 package org.eisenwave.vv.bukkit.cmd;
 
+import eisenwave.inv.menu.MenuManager;
 import nl.klikenklaar.util.gui.menus.Menu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -47,7 +48,7 @@ public class CmdVoxelvert implements CommandExecutor {
         if (args.length == 0 || args[0].equals("files")) {
             Player player = (Player) sender;
             FileBrowserMenu menu = new FileBrowserMenu(user.getInventory()); // TODO how the fuck do I show this shit to players
-            menu.showTo(player);
+            MenuManager.getInstance().startSession(player, menu);
             return true;
         }
         

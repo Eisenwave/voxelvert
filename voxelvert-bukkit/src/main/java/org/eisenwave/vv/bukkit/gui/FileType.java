@@ -51,6 +51,18 @@ public enum FileType {
             .collect(Collectors.joining());
     }
     
+    public boolean isDirectory() {
+        return this == DIRECTORY;
+    }
+    
+    public boolean isVariable() {
+        return this == VARIABLE;
+    }
+    
+    public boolean isFile() {
+        return ordinal() >= 2;
+    }
+    
     @Contract(pure = true)
     public Material getIcon() {
         return material;

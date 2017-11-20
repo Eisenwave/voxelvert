@@ -1,6 +1,5 @@
 package org.eisenwave.vv.bukkit.gui;
 
-import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
 public class FileBrowserEntry implements Comparable<FileBrowserEntry> {
@@ -15,6 +14,11 @@ public class FileBrowserEntry implements Comparable<FileBrowserEntry> {
     
     @NotNull
     public String getName() {
+        return name;
+    }
+    
+    @NotNull
+    public String getPath() {
         return name;
     }
     
