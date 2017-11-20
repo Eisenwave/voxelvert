@@ -29,7 +29,7 @@ public class OLD_FileBrowserMenu extends Menu {
         this.handle = handle;
     
         List<FileBrowserEntry> entries = new ArrayList<>();
-        for (String name : handle.list(false)) {
+        for (String name : handle.list()) {
             entries.add(new FileBrowserEntry(name));
         }
         entries.sort(null);

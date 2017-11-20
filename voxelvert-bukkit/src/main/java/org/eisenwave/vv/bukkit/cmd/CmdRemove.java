@@ -38,11 +38,11 @@ public class CmdRemove implements CommandExecutor {
         String file = args[0];
     
         if (file.startsWith("/")) {
-            user.error(lang.get("cmd.remove.err.path_absolute"));
+            user.error(lang.get("err.path_absolute"));
             return true;
         }
         if (file.startsWith(".")) {
-            user.error(lang.get("cmd.remove.err.path_hidden"));
+            user.error(lang.get("err.path_hidden"));
             return true;
         }
         if (file.startsWith("#")) {

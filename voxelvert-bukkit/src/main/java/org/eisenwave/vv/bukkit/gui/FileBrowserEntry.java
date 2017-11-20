@@ -12,11 +12,21 @@ public class FileBrowserEntry implements Comparable<FileBrowserEntry> {
         this.type = FileType.fromPath(name);
     }
     
+    /**
+     * Returns the name of this entry.
+     *
+     * @return the name
+     */
     @NotNull
     public String getName() {
         return name;
     }
     
+    /**
+     * Returns the full, absolute path of this browser entry.
+     *
+     * @return the path
+     */
     @NotNull
     public String getPath() {
         return name;

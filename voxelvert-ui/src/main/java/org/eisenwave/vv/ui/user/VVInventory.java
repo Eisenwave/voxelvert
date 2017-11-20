@@ -7,7 +7,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -38,31 +37,6 @@ public interface VVInventory {
      */
     default File getFile(String name) {
         return new File(getDirectory(), name);
-    }
-    
-    @Deprecated
-    @NotNull
-    default List<String> list(boolean sort) {
-        File[] files = getDirectory().listFiles();
-        assert files != null;
-        
-        String[] names = new String[files.length];
-        for (int i = 0; i < files.length; i++)
-            names[i] = files[i].getName() + (files[i].isDirectory()? "/" : "");
-        
-        /*
-        if (sort) {
-            Arrays.sort(names, Comparator.comparing(String::toLowerCase));
-            Arrays.sort(names, (x,y) -> {
-                if (x.endsWith("/")) return y.endsWith("/")? 0 : -1;
-                else return y.endsWith("/")? 1 : 0;
-            });
-    
-            
-        }
-        */
-    
-        return Arrays.asList(names);
     }
     
     /**
@@ -129,12 +103,46 @@ public interface VVInventory {
     /**
      * Copies a file from one location to another.
      *
-     * @param from the input name
-     * @param to the output name
+     * @param source the source name
+     * @param target the target name
      * @return whether the object could be copied
      * @throws IOException if an I/O error occurs
      */
-    abstract boolean copy(@NotNull String from, @NotNull String to) throws IOException;
+    abstract boolean copy(@NotNull String source, @NotNull String target, boolean replace) throws IOException;
+    
+    /**
+     * Moves a file from one location to another.
+     *
+     * @param source the source name
+     * @param target the target path
+     * @return whether the object could be copied
+     * @throws IOException if an I/O error occurs
+     */
+    abstract boolean move(@NotNull String source, @NotNull String target, boolean replace) throws IOException;
+    
+    /**
+     * Copies a file from one location to another.
+     *
+     * @param source the source name
+     * @param target the target name
+     * @return whether the object could be copied
+     * @throws IOException if an I/O error occurs
+     */
+    default boolean copy(@NotNull String source, @NotNull String target) throws IOException {
+        return copy(source, target, true);
+    }
+    
+    /**
+     * Moves a file from one location to another.
+     *
+     * @param source the source name
+     * @param target the target name
+     * @return whether the object could be copied
+     * @throws IOException if an I/O error occurs
+     */
+    default boolean move(@NotNull String source, @NotNull String target) throws IOException {
+        return move(source, target, true);
+    }
     
     /**
      * Saves an object with given format and name.

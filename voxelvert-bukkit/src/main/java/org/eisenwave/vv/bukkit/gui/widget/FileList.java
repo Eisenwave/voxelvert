@@ -1,5 +1,6 @@
 package org.eisenwave.vv.bukkit.gui.widget;
 
+import eisenwave.inv.menu.Menu;
 import eisenwave.inv.view.ViewSize;
 import eisenwave.inv.widget.SimpleList;
 import org.eisenwave.vv.bukkit.gui.FileBrowserEntry;
@@ -12,19 +13,8 @@ public class FileList extends SimpleList<FileButton> {
     
     private int selected = -1;
     
-    public FileList(@NotNull FileBrowserMenu menu, @NotNull ViewSize size, @NotNull FileBrowserEntry[] entries) {
+    public FileList(@NotNull FileBrowserMenu menu, @NotNull ViewSize size) {
         super(menu, size);
-        
-        for (int i = 0; i < entries.length; i++) {
-            FileBrowserEntry entry = entries[i];
-            FileButton button = new FileButton(menu, entry, i);
-            addChild(button);
-            
-            button.addCheckListener(event -> {
-                if (event.isChecked())
-                    select(button.getIndex());
-            });
-        }
     }
     
     /**
@@ -42,6 +32,7 @@ public class FileList extends SimpleList<FileButton> {
      *
      * @return the removed button
      */
+    @Deprecated
     public FileButton removeFile(int index) {
         FileButton result = children.remove(index);
         fixIndices();
@@ -49,7 +40,31 @@ public class FileList extends SimpleList<FileButton> {
         return result;
     }
     
+    public void addAll(FileBrowserEntry[] entries) {
+        Menu menu = getMenu();
+        for (int i = 0; i < entries.length; i++) {
+            FileBrowserEntry entry = entries[i];
+            FileButton button = new FileButton(menu, entry, i);
+            addChild(button);
+            
+            button.addCheckListener(event -> {
+                if (event.isChecked())
+                    select(button.getIndex());
+            });
+        }
+    }
+    
+    @Override
+    public void clearChildren() {
+        super.clearChildren();
+        this.selected = -1;
+    }
+    
     // SELECTION
+    
+    public boolean hasSelection() {
+        return selected >= 0;
+    }
     
     public int getSelIndex() {
         return selected;
@@ -92,7 +107,7 @@ public class FileList extends SimpleList<FileButton> {
         else {
             getMenu().setOptionsMode(FileOptionsMode.EMPTY);
         }
-    
+        
         this.selected = index;
     }
     

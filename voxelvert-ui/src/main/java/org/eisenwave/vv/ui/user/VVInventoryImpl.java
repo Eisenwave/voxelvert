@@ -22,6 +22,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.zip.ZipFile;
@@ -287,19 +288,45 @@ public class VVInventoryImpl implements VVInventory {
     }
     
     @Override
-    public boolean copy(@NotNull String source, @NotNull String target) throws IOException {
+    public boolean copy(@NotNull String source, @NotNull String target, boolean replace) throws IOException {
         if (storage.containsKey(source)) {
             storage.put(target, storage.get(source));
             return true;
         }
+        Path
+            sourcePath = new File(dir, source).toPath(),
+            targetPath = new File(dir, target).toPath();
+        if (!Files.exists(sourcePath)) {
+            return false;
+        }
+        if (replace) {
+            Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+        }
         else {
-            Files.copy(
-                new File(dir, source).toPath(),
-                new File(dir, target).toPath(),
-                StandardCopyOption.REPLACE_EXISTING,
-                StandardCopyOption.COPY_ATTRIBUTES);
+            Files.copy(sourcePath, targetPath);
+        }
+        return true;
+    }
+    
+    @Override
+    public boolean move(@NotNull String source, @NotNull String target, boolean replace) throws IOException {
+        if (storage.containsKey(source)) {
+            storage.put(target, storage.remove(source));
             return true;
         }
+        Path
+            sourcePath = new File(dir, source).toPath(),
+            targetPath = new File(dir, target).toPath();
+        if (!Files.exists(sourcePath)) {
+            return false;
+        }
+        if (replace) {
+            Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+        }
+        else {
+            Files.move(sourcePath, targetPath);
+        }
+        return true;
     }
     
     @Override
