@@ -6,12 +6,24 @@ import eisenwave.inv.widget.Button;
 import eisenwave.inv.widget.CompoundGroup;
 import eisenwave.inv.widget.Display;
 import eisenwave.inv.widget.SimpleList;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.eisenwave.vv.bukkit.util.ItemInitUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class PageNavigatorCompound extends CompoundGroup {
+    
+    private final static String
+        PREFIX_ON = ChatColor.YELLOW.toString() + ChatColor.BOLD,
+        PREFIX_OFF = ChatColor.DARK_GRAY.toString() + ChatColor.BOLD;
+    
+    private static final ItemStack
+        PREV_ON = ItemInitUtil.item(Material.SPECTRAL_ARROW, PREFIX_ON + "<<<"),
+        PREV_OFF = ItemInitUtil.item(Material.ARROW, PREFIX_OFF + "<<<"),
+        NEXT_ON = ItemInitUtil.item(Material.SPECTRAL_ARROW, PREFIX_ON + ">>>"),
+        NEXT_OFF = ItemInitUtil.item(Material.ARROW, PREFIX_OFF + ">>>");
     
     private final SimpleList handle;
     private final Button navLeft, navRight;
@@ -42,7 +54,7 @@ public class PageNavigatorCompound extends CompoundGroup {
             if (canNavLeft())
                 navigate(-1);
         });
-    
+        
         navRight.addClickListener((event) -> {
             if (canNavRight())
                 navigate(1);
@@ -67,12 +79,14 @@ public class PageNavigatorCompound extends CompoundGroup {
     // UTIL
     
     private void navigate(int pages) {
-        System.out.println("navigating "+pages);
+        System.out.println("navigating " + pages);
         page += pages;
         handle.scrollPages(pages);
-        navLeft.setItem(canNavLeft()? new ItemStack(Material.SPECTRAL_ARROW) : new ItemStack(Material.ARROW));
-        display.setItem(new ItemStack(Material.MAP, this.page + 1));
-        navRight.setItem(canNavRight()? new ItemStack(Material.SPECTRAL_ARROW) : new ItemStack(Material.ARROW));
+        navLeft.setItem(canNavLeft()? PREV_ON : PREV_OFF);
+        navRight.setItem(canNavRight()? NEXT_ON : NEXT_OFF);
+    
+        String pageName = ChatColor.GRAY + "Page " + (this.page + 1);
+        display.setItem(ItemInitUtil.item(Material.MAP, this.page + 1, (short) 0, pageName));
     }
     
     private boolean canNavLeft() {

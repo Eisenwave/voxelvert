@@ -32,12 +32,12 @@ public class FileBrowserEntry implements Comparable<FileBrowserEntry> {
         return name;
     }
     
-    public String getDisplayName() {
+    public String getDisplayName(boolean colors) {
         String clearName;
         if (name.endsWith("/")) clearName = name.substring(0, name.length() - 1);
         else clearName = name;
         
-        return type.getPrefixNoColors() + clearName;
+        return (colors? type.getPrefix() : type.getPrefixNoColors()) + clearName;
     }
     
     @NotNull

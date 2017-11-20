@@ -13,11 +13,11 @@ import org.eisenwave.vv.bukkit.gui.FileBrowserEntry;
 import org.eisenwave.vv.bukkit.gui.FileOptionsMode;
 import org.eisenwave.vv.bukkit.gui.widget.*;
 import org.eisenwave.vv.bukkit.util.ItemInitUtil;
+import org.eisenwave.vv.object.Language;
 import org.eisenwave.vv.ui.user.VVInventory;
 import org.eisenwave.vv.ui.user.VVInventoryVariable;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +26,9 @@ public class FileBrowserMenu extends Menu {
     //private final static Button BACKGROUND = new Button(Material.STAINED_GLASS_PANE, 1, (short) 15, " ");
     
     private final VVInventory handle;
+    private final Language lang;
     
-    private FileOptionsCompound fileOptions;
+    private FileOptionsWidget fileOptions;
     private FileList fileList;
     
     //private final static int pageSize = 45;
@@ -37,6 +38,7 @@ public class FileBrowserMenu extends Menu {
     public FileBrowserMenu(@NotNull VVInventory handle) {
         super(54, ChatColor.BOLD + "File Browser");
         this.handle = handle;
+        this.lang = handle.getOwner().getVoxelVert().getLanguage();
         
         initWidgets();
     }
@@ -80,7 +82,7 @@ public class FileBrowserMenu extends Menu {
     }
     
     private void initFileOptions() {
-        this.fileOptions = new FileOptionsCompound(this);
+        this.fileOptions = new FileOptionsWidget(this);
         fileOptions.setPosition(ViewSize.MIN_POS, ViewSize.MAX_POS); // bottom-left corner
         getContentPane().addChild(fileOptions);
         //fileOptions.setEnabled(true);
@@ -95,6 +97,10 @@ public class FileBrowserMenu extends Menu {
      */
     public VVInventory getFileSystem() {
         return handle;
+    }
+    
+    public Language getLanguage() {
+        return lang;
     }
     
     /*

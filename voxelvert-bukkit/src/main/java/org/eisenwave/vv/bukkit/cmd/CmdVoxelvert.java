@@ -7,7 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.eisenwave.vv.bukkit.VoxelVertPlugin;
-import org.eisenwave.vv.bukkit.gui.menu.ConversionFormatChooserMenu;
+import org.eisenwave.vv.bukkit.gui.old_menu.ConversionFormatChooserMenu;
 import org.eisenwave.vv.bukkit.gui.menu.FileBrowserMenu;
 import org.eisenwave.vv.bukkit.user.BukkitVoxelVert;
 import org.eisenwave.vv.bukkit.util.CommandUtil;

@@ -18,7 +18,7 @@ import org.eisenwave.vv.bukkit.gui.menu.FileBrowserMenu;
 import org.eisenwave.vv.bukkit.util.ItemInitUtil;
 import org.jetbrains.annotations.NotNull;
 
-public class FileOptionsCompound extends Widget {
+public class FileOptionsWidget extends Widget {
     
     private static final String
         RM_SUCCESS = ChatColor.BLUE+"[VoxelVert] "+ChatColor.RESET+"Deleted the file",
@@ -52,7 +52,7 @@ public class FileOptionsCompound extends Widget {
     
     // INIT
     
-    public FileOptionsCompound(@NotNull FileBrowserMenu menu) {
+    public FileOptionsWidget(@NotNull FileBrowserMenu menu) {
         super(menu, new ViewSize(ViewSize.WRAP_CONTENT, ViewSize.WRAP_CONTENT), null);
         this.mode = FileOptionsMode.EMPTY;
         
@@ -85,6 +85,20 @@ public class FileOptionsCompound extends Widget {
         btnCopy = new Button(getMenu(), null);
         btnCopy.setParent(this);
         btnCopy.setItem(ITEM_COPY);
+        
+        btnCopy.addClickListener(event -> {
+            ChatQuery query = new ChatQuery() {
+                @Override
+                public void onResult(Player player, String result) {
+                    getMenu().performCopy(player, result);
+                }
+        
+                @Override
+                public void onFail(Player player) {}
+            };
+            query.inform(event.getPlayer());
+            MenuManager.getInstance().startQuery(event.getPlayer(), query);
+        });
     }
     
     private void initRename() {
@@ -96,12 +110,7 @@ public class FileOptionsCompound extends Widget {
             ChatQuery query = new ChatQuery() {
                 @Override
                 public void onResult(Player player, String result) {
-                    //if (!result.contains(".")) {
-                    //    player.sendMessage(MV_NEED_SUF);
-                    //    return;
-                    //}
                     getMenu().performRename(player, result);
-                    //player.sendMessage(success? MV_SUCCESS : MV_FAIL);
                 }
     
                 @Override
@@ -194,8 +203,7 @@ public class FileOptionsCompound extends Widget {
             case EMPTY:
                 buffer.fill(backgroundIcon);
                 break;
-            
-            case FILE: {
+            case KNOWN_FILE: {
                 buffer.set(0, 0, btnOpen.draw());
                 buffer.set(1, 0, btnShare.draw());
                 buffer.set(2, 0, btnCopy.draw());
@@ -203,7 +211,14 @@ public class FileOptionsCompound extends Widget {
                 buffer.set(4, 0, btnDelete.draw());
                 break;
             }
-            
+            case FILE: {
+                buffer.set(0, 0, backgroundIcon);
+                buffer.set(1, 0, backgroundIcon);
+                buffer.set(2, 0, btnCopy.draw());
+                buffer.set(3, 0, btnRename.draw());
+                buffer.set(4, 0, btnDelete.draw());
+                break;
+            }
             case DELETE: {
                 buffer.set(0, 0, btnConfirm.draw());
                 buffer.set(1, 0, backgroundIcon);
@@ -212,13 +227,11 @@ public class FileOptionsCompound extends Widget {
                 buffer.set(4, 0, btnDelete.draw());
                 break;
             }
-            
             case VARIABLE: {
                 buffer.set(0, 0, btnOpen.draw());
                 buffer.fill(1, 0, 5, 1, backgroundIcon);
                 break;
             }
-            
             case FOLDER: {
                 buffer.set(0, 0, backgroundIcon);
                 buffer.set(1, 0, backgroundIcon);

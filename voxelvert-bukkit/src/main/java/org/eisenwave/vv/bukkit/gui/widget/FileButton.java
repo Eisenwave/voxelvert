@@ -1,13 +1,18 @@
 package org.eisenwave.vv.bukkit.gui.widget;
 
-import eisenwave.inv.menu.Menu;
 import eisenwave.inv.widget.RadioButton;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.eisenwave.vv.bukkit.gui.FileBrowserEntry;
+import org.eisenwave.vv.bukkit.gui.*;
+import org.eisenwave.vv.bukkit.gui.menu.FileBrowserMenu;
+import org.eisenwave.vv.bukkit.util.CommandUtil;
+import org.eisenwave.vv.bukkit.util.ItemInitUtil;
 import org.jetbrains.annotations.NotNull;
+
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileButton extends RadioButton {
     
@@ -16,20 +21,28 @@ public class FileButton extends RadioButton {
     
     private int index;
     
-    public FileButton(@NotNull Menu menu, @NotNull FileBrowserEntry entry, int index) {
+    public FileButton(@NotNull FileBrowserMenu menu, @NotNull FileBrowserEntry entry, int index) {
         super(menu, null);
         this.entry = entry;
         this.index = index;
+        FileType type = entry.getType();
         
-        ItemStack item = new ItemStack(entry.getType().getIcon());
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.RESET + entry.getDisplayName());
-        item.setItemMeta(meta);
-        this.setUncheckedItem(item);
+        List<String> lore = new ArrayList<>(2);
+        lore.add(ChatColor.GRAY + menu.getLanguage().get(type.getLanguageName()));
+        if (type.isFile()) {
+            BasicFileAttributes attr = menu.getFileSystem().getBasicAttributes(entry.getPath());
+            if (attr != null) {
+                lore.add(ChatColor.DARK_GRAY + CommandUtil.printFileSize(attr.size()));
+            }
+        }
         
-        ItemStack checked = item.clone();
+        ItemStack unchecked = ItemInitUtil.item(type.getIcon(), 1, (short) 0,
+            ChatColor.RESET + entry.getDisplayName(true),
+            lore);
+        this.setUncheckedItem(unchecked);
+        
+        ItemStack checked = unchecked.clone();
         checked.setType(Material.END_CRYSTAL);
-        
         this.setCheckedItem(checked);
     }
     

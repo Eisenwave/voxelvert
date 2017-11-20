@@ -12,35 +12,35 @@ import static org.bukkit.Material.*;
 import static org.bukkit.ChatColor.*;
 
 public enum FileType {
-    DIRECTORY(CHEST, BOLD),
+    DIRECTORY("media.directory", CHEST, BOLD),
     
-    VARIABLE(COMMAND, BOLD, ITALIC),
+    VARIABLE("media.inventory_variable", COMMAND, BOLD, ITALIC),
     
-    FILE(SILVER_SHULKER_BOX, RESET),
+    FILE("media.file", SILVER_SHULKER_BOX, RESET),
     
-    BCT(GREEN_SHULKER_BOX, DARK_GREEN),
+    BCT("media.voxelvert-bct", GREEN_SHULKER_BOX, DARK_GREEN),
     
-    IMAGE(YELLOW_SHULKER_BOX, YELLOW),
+    IMAGE("media.image", YELLOW_SHULKER_BOX, YELLOW),
     
-    MTL(BLUE_SHULKER_BOX, DARK_BLUE),
+    MTL("media.wavefront-mtl", BLUE_SHULKER_BOX, DARK_BLUE),
     
-    QB(MAGENTA_SHULKER_BOX, LIGHT_PURPLE),
+    QB("media.qubicle-binary", MAGENTA_SHULKER_BOX, LIGHT_PURPLE),
     
-    QEF(PURPLE_SHULKER_BOX, DARK_PURPLE),
+    QEF("media.qubicle-exchange", PURPLE_SHULKER_BOX, DARK_PURPLE),
     
-    SCHEMATIC(ORANGE_SHULKER_BOX, GOLD),
+    SCHEMATIC("media.schematic", ORANGE_SHULKER_BOX, GOLD),
     
-    STL(LIME_SHULKER_BOX, GREEN),
+    STL("media.stl", LIME_SHULKER_BOX, GREEN),
     
-    WAVEFRONT(LIGHT_BLUE_SHULKER_BOX, AQUA),
+    WAVEFRONT("media.wavefront", LIGHT_BLUE_SHULKER_BOX, AQUA),
     
-    RESOURCE_PACK(CYAN_SHULKER_BOX, DARK_AQUA);
+    RESOURCE_PACK("media.minecraft-resource_pack", CYAN_SHULKER_BOX, DARK_AQUA);
     
     private final Material material;
-    private final String prefix;
-    private final String prefixNoColors;
+    private final String prefix, prefixNoColors, langName;
     
-    FileType(Material material, ChatColor... colors) {
+    FileType(String langName, Material material, ChatColor... colors) {
+        this.langName = langName;
         this.material = material;
         this.prefix = Arrays.stream(colors)
             .map(ChatColor::toString)
@@ -61,6 +61,10 @@ public enum FileType {
     
     public boolean isFile() {
         return ordinal() >= 2;
+    }
+    
+    public String getLanguageName() {
+        return langName;
     }
     
     @Contract(pure = true)
@@ -87,7 +91,7 @@ public enum FileType {
             String ext = CommandUtil.extensionOf(path);
             if (ext == null) return FILE;
             else switch (ext.toLowerCase()) {
-                case "colors": return BCT;
+                case "bct": return BCT;
                 case "png":
                 case "jpg":
                 case "jpeg":

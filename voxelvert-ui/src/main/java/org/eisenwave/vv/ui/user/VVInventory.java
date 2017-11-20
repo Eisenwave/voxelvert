@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -88,6 +89,9 @@ public interface VVInventory {
     abstract boolean contains(@Nullable Format format, @NotNull String name);
     
     // FILE OPERATIONS
+    
+    @Nullable
+    abstract BasicFileAttributes getBasicAttributes(String path);
     
     /**
      * Loads an object from the inventory depending on the provided format.

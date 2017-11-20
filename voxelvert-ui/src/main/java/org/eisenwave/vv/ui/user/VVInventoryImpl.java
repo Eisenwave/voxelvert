@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 import java.util.zip.ZipFile;
 
@@ -81,6 +82,17 @@ public class VVInventoryImpl implements VVInventory {
             return storage.containsKey(name);
         else
             return new File(dir, name).exists();
+    }
+    
+    @Override
+    public BasicFileAttributes getBasicAttributes(String path) {
+        File file = new File(dir, path);
+        if (!file.exists()) return null;
+        try {
+            return Files.readAttributes(file.toPath(), BasicFileAttributes.class);
+        } catch (IOException e) {
+            return null;
+        }
     }
     
     // OPERATIONS

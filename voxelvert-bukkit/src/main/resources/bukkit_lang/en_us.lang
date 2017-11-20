@@ -60,6 +60,19 @@ err.path_hidden=You are not allowed to use hidden file names!
 user.msg=&9[VoxelVert]&r %s
 user.err=&c[VoxelVert]&r %s
 
+media.directory = Folder
+media.inventory_variable = Inventory Variable
+media.file = File
+media.voxelvert-bct = Block Color Table
+media.image = Image
+media.wavefront-mtl = Material Library
+media.qubicle-binary = Qubicle Binary
+media.qubicle-exchange = Qubicle Exchange Format
+media.schematic = Schematic
+media.stl = STL-File
+media.wavefront = Wavefront Object
+media.minecraft-resource_pack = Resource Pack
+
 ##############################
 # IMPORTED FROM VOXELVERT-UI #
 ##############################

@@ -1,4 +1,4 @@
-package org.eisenwave.vv.bukkit.gui.menu;
+package org.eisenwave.vv.bukkit.gui.old_menu;
 
 import org.eisenwave.vv.bukkit.gui.old_widget.LargeButtonWidget;
 import nl.klikenklaar.util.gui.buttons.Button;
@@ -7,6 +7,7 @@ import nl.klikenklaar.util.gui.menus.Menu;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
+@Deprecated
 public class CancelConfirmMenu extends Menu {
     
     public CancelConfirmMenu(int size, String name, String cancelCmd, String confirmCmd) {

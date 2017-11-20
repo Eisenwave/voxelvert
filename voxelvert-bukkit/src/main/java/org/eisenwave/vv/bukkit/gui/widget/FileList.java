@@ -1,6 +1,5 @@
 package org.eisenwave.vv.bukkit.gui.widget;
 
-import eisenwave.inv.menu.Menu;
 import eisenwave.inv.view.ViewSize;
 import eisenwave.inv.widget.SimpleList;
 import org.eisenwave.vv.bukkit.gui.FileBrowserEntry;
@@ -15,6 +14,12 @@ public class FileList extends SimpleList<FileButton> {
     
     public FileList(@NotNull FileBrowserMenu menu, @NotNull ViewSize size) {
         super(menu, size);
+    }
+    
+    @NotNull
+    @Override
+    public FileBrowserMenu getMenu() {
+        return (FileBrowserMenu) super.getMenu();
     }
     
     /**
@@ -41,7 +46,7 @@ public class FileList extends SimpleList<FileButton> {
     }
     
     public void addAll(FileBrowserEntry[] entries) {
-        Menu menu = getMenu();
+        FileBrowserMenu menu = getMenu();
         for (int i = 0; i < entries.length; i++) {
             FileBrowserEntry entry = entries[i];
             FileButton button = new FileButton(menu, entry, i);
@@ -118,16 +123,13 @@ public class FileList extends SimpleList<FileButton> {
             children.get(i).setIndex(i);
     }
     
-    @NotNull
-    @Override
-    public FileBrowserMenu getMenu() {
-        return (FileBrowserMenu) super.getMenu();
-    }
-    
     private static FileOptionsMode modeOf(FileType type) {
-        if (type.isDirectory()) return FileOptionsMode.FOLDER;
-        if (type.isVariable()) return FileOptionsMode.VARIABLE;
-        if (type.isFile()) return FileOptionsMode.FILE;
+        if (type.isDirectory())
+            return FileOptionsMode.FOLDER;
+        if (type.isVariable())
+            return FileOptionsMode.VARIABLE;
+        if (type.isFile())
+            return type == FileType.FILE? FileOptionsMode.FILE : FileOptionsMode.KNOWN_FILE;
         else return FileOptionsMode.EMPTY;
     }
     

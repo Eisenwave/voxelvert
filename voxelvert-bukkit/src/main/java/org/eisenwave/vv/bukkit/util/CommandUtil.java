@@ -10,6 +10,8 @@ import org.eisenwave.vv.ui.user.VVUser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.text.DecimalFormat;
+
 public final class CommandUtil {
     
     /*
@@ -47,6 +49,23 @@ public final class CommandUtil {
     
     private CommandUtil() {}
     
+    private final static String[] UNITS = new String[] {"Bytes", "KB", "MB", "GB", "TB"};
+    private final static DecimalFormat FILE_SIZE_FORMAT = new DecimalFormat("#,##0.#");
+    
+    @NotNull
+    public static String printFileSize(long size) {
+        if (size <= 0) return "0";
+        long s = size;
+        int u = 0;
+        
+        while (s >= 1024 && u <= UNITS.length) {
+            s >>= 10;
+            u++;
+        }
+        
+        double printSize = size / Math.pow(1024, u);
+        return FILE_SIZE_FORMAT.format(printSize) + " " + UNITS[u];
+    }
     
     @NotNull
     public static String chatColors(String str) {
@@ -64,7 +83,7 @@ public final class CommandUtil {
     @Nullable
     public static String extensionOf(String file) {
         int index = file.lastIndexOf('.');
-        return index < 0? null : file.substring(index+1);
+        return index < 0? null : file.substring(index + 1);
     }
     
 }
