@@ -1,4 +1,4 @@
-package org.eisenwave.vv.bukkit.gui.menu;
+package org.eisenwave.vv.bukkit.gui.old_menu;
 
 import org.eisenwave.vv.bukkit.gui.FileType;
 import org.eisenwave.vv.bukkit.gui.old_widget.LargeButtonWidget;
@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class ConversionOptionsMenu extends Menu {
     
     private final static Button

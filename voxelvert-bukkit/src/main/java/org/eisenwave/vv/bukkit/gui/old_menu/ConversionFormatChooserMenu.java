@@ -1,4 +1,4 @@
-package org.eisenwave.vv.bukkit.gui.menu;
+package org.eisenwave.vv.bukkit.gui.old_menu;
 
 import org.eisenwave.vv.bukkit.gui.FileType;
 import org.eisenwave.vv.bukkit.gui.old_widget.LargeButtonWidget;
@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.eisenwave.vv.ui.fmtvert.Format;
 import org.eisenwave.vv.ui.fmtvert.FormatverterFactory;
 
+@Deprecated
 public class ConversionFormatChooserMenu extends Menu {
     
     private final static Button
