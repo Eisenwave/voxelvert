@@ -1,5 +1,6 @@
 package org.eisenwave.vv.ui.cmd;
 
+import org.eisenwave.vv.ui.fmtvert.Option;
 import org.eisenwave.vv.ui.user.VVUser;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,7 +17,7 @@ public interface VVInitializer {
      *
      * @return all accepted command call options
      */
-    abstract Set<String> getAcceptedOptions();
+    abstract Set<Option> getAcceptedOptions();
     
     /**
      * Executes a platform independent command.

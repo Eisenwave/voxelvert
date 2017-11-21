@@ -69,6 +69,10 @@ public class FileOptionsWidget extends Widget {
         btnOpen = new Button(getMenu(), null);
         btnOpen.setParent(this);
         btnOpen.setItem(ITEM_OPEN);
+        
+        btnOpen.addClickListener(event -> {
+            getMenu().performOpen(event.getPlayer());
+        });
     }
     
     private final static String WIP = ChatColor.BLUE + "[VoxelVert] " + ChatColor.RESET + "This feature is WIP";

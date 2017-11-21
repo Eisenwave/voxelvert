@@ -58,6 +58,8 @@ public class BukkitVoxelVert implements VoxelVert {
             }
         });
         
+        thread.setName("VoxelVert Converter");
+        thread.setDaemon(true);
         thread.start();
         return thread;
     }

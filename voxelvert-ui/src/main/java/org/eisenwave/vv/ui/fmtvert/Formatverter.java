@@ -14,8 +14,8 @@ public abstract class Formatverter extends Progress {
      *
      * @return the names of mandatory parameters
      */
-    public String[] getMandatoryParams() {
-        return new String[0];
+    public Option[] getMandatoryOptions() {
+        return new Option[0];
     }
     
     /**
@@ -23,8 +23,8 @@ public abstract class Formatverter extends Progress {
      *
      * @return the names of optional options
      */
-    public String[] getOptionalParams() {
-        return new String[0];
+    public Option[] getOptionalOptions() {
+        return new Option[0];
     }
     
     @Override

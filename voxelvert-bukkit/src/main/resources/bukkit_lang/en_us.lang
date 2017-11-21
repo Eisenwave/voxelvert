@@ -50,11 +50,13 @@ cmd.copy.exception=An error occurred when copying the file: &6%s
 cmd.copy.failure=Couldn't copy &6%s&r to &6%s&r
 cmd.copy.success=Copied &6%s&r to &6%s&r
 
-cmd.voxelvert.err.no_ext=Input "%s" is not a variable and has no extension!
+cmd.voxelvert.err.bad_extension=Couldn't guess the format of &6%s&r by extension.
+cmd.voxelvert.err.bad_format=The format &6%s&r doesn't exist.
 
 # generic errors
-err.path_absolute=You are not allowed to use absolute paths!
-err.path_hidden=You are not allowed to use hidden file names!
+err.not_a_player=Only players can use this command.
+err.path_absolute=You are not allowed to use absolute paths.
+err.path_hidden=You are not allowed to use hidden file names.
 
 # user message formats
 user.msg=&9[VoxelVert]&r %s

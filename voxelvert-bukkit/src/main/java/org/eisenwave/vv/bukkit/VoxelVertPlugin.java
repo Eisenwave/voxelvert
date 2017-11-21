@@ -110,6 +110,11 @@ public class VoxelVertPlugin extends JavaPlugin {
     // GETTERS
     
     @NotNull
+    public Thread getConverterThread() {
+        return conversionThread;
+    }
+    
+    @NotNull
     public BukkitVoxelVert getVoxelVert() {
         return voxelVert;
     }

@@ -56,11 +56,11 @@ public class ConversionOptionsMenu extends Menu {
         Formatverter fv = FormatverterFactory.getInstance().fromFormats(source, target);
     
         List<ParameterOptionsWidget> widgets = new ArrayList<>();
-        for (String opt : fv.getMandatoryParams()) {
+        for (String opt : fv.getMandatoryOptions()) {
             ParameterOptionsWidget widget = optionsWidgetOf(opt);
             if (widget != null) widgets.add(widget);
         }
-        for (String opt : fv.getOptionalParams()) {
+        for (String opt : fv.getOptionalOptions()) {
             ParameterOptionsWidget widget = optionsWidgetOf(opt);
             if (widget != null) widgets.add(widget);
         }

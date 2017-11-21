@@ -1,5 +1,6 @@
 package org.eisenwave.vv.ui.cmd;
 
+import org.eisenwave.vv.ui.fmtvert.Option;
 import org.intellij.lang.annotations.RegExp;
 import org.jetbrains.annotations.*;
 
@@ -15,9 +16,9 @@ public class CommandCall {
     private final static Pattern REGEX_PARAM = Pattern.compile("^-+");
     
     private final List<String> args = new ArrayList<>();
-    private final Map<String, String> kwargs = new HashMap<>();
+    private final Map<Option, String> kwargs = new HashMap<>();
     
-    private final Set<String> validKwArgs = new HashSet<>();
+    private final Set<Option> validKwArgs = new HashSet<>();
     
     private boolean strictOrder = false;
     private boolean strictParams = false;
@@ -41,8 +42,8 @@ public class CommandCall {
                     this.kwargs.put(key, null);
                 
                 key = arg.substring(matcher.end());
-                if (strictParams && !acceptsKeyword(key))
-                    throw new IllegalArgumentException("invalid keyword argument \""+key+"\"");
+                if (strictParams && !acceptsOption(key))
+                    throw new IllegalArgumentException("invalid keyword argument \"" + key + "\"");
             }
             
             else {
@@ -135,19 +136,19 @@ public class CommandCall {
      * @return all keyword arguments
      */
     @NotNull
-    public Map<String, String> getKwArgs() {
+    public Map<Option, String> getKwArgs() {
         return Collections.unmodifiableMap(kwargs);
     }
     
     /**
      * <p>
-     *     Returns an argument with a given index.
+     * Returns an argument with a given index.
      * </p>
      * <blockquote>
-     *     Example:
-     *     <br><code>call: pig cow</code>
-     *     <br><code>get(0) -> "pig"</code>
-     *     <br><code>get(1) -> "cow"</code>
+     * Example:
+     * <br><code>call: pig cow</code>
+     * <br><code>get(0) -> "pig"</code>
+     * <br><code>get(1) -> "cow"</code>
      * </blockquote>
      *
      * @param index the index
@@ -161,13 +162,13 @@ public class CommandCall {
     
     /**
      * <p>
-     *     Returns an argument with a given index or a default value.
+     * Returns an argument with a given index or a default value.
      * </p>
      * <blockquote>
-     *     Example:
-     *     <br><code>call: pig cow</code>
-     *     <br><code>get(0) -> "pig"</code>
-     *     <br><code>get(1) -> "cow"</code>
+     * Example:
+     * <br><code>call: pig cow</code>
+     * <br><code>get(0) -> "pig"</code>
+     * <br><code>get(1) -> "cow"</code>
      * </blockquote>
      *
      * @param index the index
@@ -203,11 +204,11 @@ public class CommandCall {
     public String getMatch(@RegExp String regex) {
         Pattern pattern = Pattern.compile(regex);
         
-        for (Map.Entry<String, String > entry : kwargs.entrySet()) {
+        for (Map.Entry<String, String> entry : kwargs.entrySet()) {
             if (pattern.matcher(entry.getKey()).find())
                 return entry.getValue();
         }
-    
+        
         throw new IllegalArgumentException(regex);
     }
     
@@ -234,7 +235,7 @@ public class CommandCall {
      * @return whether the keyword is accepted
      * @see #isStrictParams()
      */
-    public boolean acceptsKeyword(String keyword) {
+    public boolean acceptsOption(String keyword) {
         for (String pattern : validKwArgs)
             if (keyword.matches(pattern))
                 return true;
@@ -247,7 +248,7 @@ public class CommandCall {
      * @param keyword the keyword
      * @return whether the command was called with this keyword
      */
-    public boolean hasKeyword(String keyword) {
+    public boolean hasOption(String keyword) {
         return kwargs.containsKey(keyword);
     }
     
@@ -279,12 +280,7 @@ public class CommandCall {
         return this;
     }
     
-    public CommandCall addValidKwArgs(@NotNull String... params) {
-        this.validKwArgs.addAll(Arrays.asList(params));
-        return this;
-    }
-    
-    public CommandCall addValidKwArgs(@NotNull Set<String> params) {
+    public CommandCall addValidKwArgs(@NotNull Set<Option> params) {
         this.validKwArgs.addAll(params);
         return this;
     }
@@ -293,19 +289,20 @@ public class CommandCall {
     
     @Override
     public String toString() {
-        return CommandCall.class.getSimpleName()+
-            "{args="+Arrays.toString(getArgs())+
-            ", kwargs="+toString(kwargs)+"}";
+        return CommandCall.class.getSimpleName() +
+            "{args=" + Arrays.toString(getArgs()) +
+            ", kwargs=" + toString(kwargs) + "}";
     }
     
     @NotNull
-    private static <T> String toString(Map<T, T> map) {
+    private static String toString(Map map) {
         StringBuilder builder = new StringBuilder("{");
         
-        Iterator<Map.Entry<T, T>> iter = map.entrySet().iterator();
+        @SuppressWarnings("unchecked")
+        Iterator<Map.Entry> iter = map.entrySet().iterator();
         boolean hasNext = iter.hasNext();
         while (hasNext) {
-            Map.Entry<T, T> entry = iter.next();
+            Map.Entry entry = iter.next();
             builder.append(entry.getKey()).append(": ").append(entry.getValue());
             if (hasNext = iter.hasNext())
                 builder.append(", ");

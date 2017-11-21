@@ -107,7 +107,8 @@ public class FileList extends SimpleList<FileButton> {
             FileButton next = getFile(index);
             next.setChecked(true);
             FileType type = next.getEntry().getType();
-            getMenu().setOptionsMode(modeOf(type));
+            FileOptionsMode mode = FileOptionsMode.fromType(type);
+            getMenu().setOptionsMode(mode);
         }
         else {
             getMenu().setOptionsMode(FileOptionsMode.EMPTY);
@@ -121,16 +122,6 @@ public class FileList extends SimpleList<FileButton> {
         
         for (int i = 0; i < lim; i++)
             children.get(i).setIndex(i);
-    }
-    
-    private static FileOptionsMode modeOf(FileType type) {
-        if (type.isDirectory())
-            return FileOptionsMode.FOLDER;
-        if (type.isVariable())
-            return FileOptionsMode.VARIABLE;
-        if (type.isFile())
-            return type == FileType.FILE? FileOptionsMode.FILE : FileOptionsMode.KNOWN_FILE;
-        else return FileOptionsMode.EMPTY;
     }
     
     /*

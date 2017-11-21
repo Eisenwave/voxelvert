@@ -2,15 +2,11 @@ package org.eisenwave.vv.ui.cmd;
 
 import net.grian.spatium.cache.CacheMath;
 import org.eisenwave.vv.object.Language;
-import org.eisenwave.vv.ui.fmtvert.Format;
-import org.eisenwave.vv.ui.fmtvert.Formatverter;
-import org.eisenwave.vv.ui.fmtvert.FormatverterFactory;
-import org.eisenwave.vv.ui.fmtvert.ProgressListener;
+import org.eisenwave.vv.ui.fmtvert.*;
 import org.eisenwave.vv.ui.user.VVInventory;
 import org.eisenwave.vv.ui.user.VVInventoryVariable;
 import org.eisenwave.vv.ui.user.VVUser;
 import org.intellij.lang.annotations.RegExp;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -26,20 +22,20 @@ public class FormatverterInitializer implements VVInitializer {
     PARAM_REPLACE = "^(r|replace)$",
     PARAM_VERBOSE = "^(v|verbose)$";
     
-    private final static String[] OPTIONS = {
-        "i", "input",
-        "o", "output",
-        "r", "replace",
-        "v", "verbose"
+    private final static Option[] OPTIONS = {
+        new Option("i", "input"),
+        new Option("o", "output"),
+        new Option("r", "replace"),
+        new Option("v", "verbose")
     };
     
     @Override
-    public Set<String> getAcceptedOptions() {
-        Set<String> result = new HashSet<>();
+    public Set<Option> getAcceptedOptions() {
+        Set<Option> result = new HashSet<>();
     
         for (Formatverter fv : FormatverterFactory.getInstance().getFormatverters()) {
-            result.addAll(Arrays.asList(fv.getMandatoryParams()));
-            result.addAll(Arrays.asList(fv.getOptionalParams()));
+            result.addAll(Arrays.asList(fv.getMandatoryOptions()));
+            result.addAll(Arrays.asList(fv.getOptionalOptions()));
         }
     
         result.addAll(Arrays.asList(OPTIONS));
@@ -122,7 +118,7 @@ public class FormatverterInitializer implements VVInitializer {
             throw new VVInitializerException(lang.get("conv.err.unsupported"), inType, outType);
         }
     
-        for (@RegExp String param : fmtverter.getMandatoryParams()) {
+        for (Option param : fmtverter.getMandatoryOptions()) {
             if (!args.matchKeyword(param)) {
                 throw new VVInitializerException(lang.get("main.err.missing_param"), param);
             }

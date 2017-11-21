@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils;
 import org.eisenwave.vv.object.Language;
 import org.eisenwave.vv.ui.fmtvert.Format;
 import org.eisenwave.vv.ui.fmtvert.FormatverterFactory;
+import org.eisenwave.vv.ui.fmtvert.Option;
 import org.eisenwave.vv.ui.fmtvert.ProgressListener;
 import org.eisenwave.vv.ui.user.VVInventory;
 import org.eisenwave.vv.ui.user.VVUser;
@@ -36,9 +37,9 @@ public class ShellConversionInitializer implements VVInitializer {
     //PARAM_THREADS = "^(T|threads)$",
     PARAM_VERBOSE = "^(v|verbose)$";
     
-    private final static String[] OPTIONS = {
-        "f", "formats",
-        "h", "help"
+    private final static Option[] OPTIONS = {
+        new Option("f", "formats"),
+        new Option("h", "help")
         //"t", "timeout",
         //"T", "threads",
     };
@@ -48,8 +49,8 @@ public class ShellConversionInitializer implements VVInitializer {
     private final VVInitializer handle = new FormatverterInitializer();
     
     @Override
-    public Set<String> getAcceptedOptions() {
-        Set<String> result = new HashSet<>();
+    public Set<Option> getAcceptedOptions() {
+        Set<Option> result = new HashSet<>();
         result.addAll(handle.getAcceptedOptions());
         result.addAll(Arrays.asList(OPTIONS));
         

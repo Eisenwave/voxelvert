@@ -1,19 +1,22 @@
 package org.eisenwave.vv.bukkit.cmd;
 
+import eisenwave.inv.menu.Menu;
 import eisenwave.inv.menu.MenuManager;
-import nl.klikenklaar.util.gui.menus.Menu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.eisenwave.vv.bukkit.VoxelVertPlugin;
+import org.eisenwave.vv.bukkit.gui.menu.ConvertMenu;
 import org.eisenwave.vv.bukkit.gui.old_menu.ConversionFormatChooserMenu;
 import org.eisenwave.vv.bukkit.gui.menu.FileBrowserMenu;
 import org.eisenwave.vv.bukkit.user.BukkitVoxelVert;
 import org.eisenwave.vv.bukkit.util.CommandUtil;
 import org.eisenwave.vv.object.Language;
 import org.eisenwave.vv.ui.fmtvert.Format;
+import org.eisenwave.vv.ui.user.VVInventory;
 import org.eisenwave.vv.ui.user.VVUser;
+import org.jetbrains.annotations.Nullable;
 
 public class CmdVoxelvert implements CommandExecutor {
     
@@ -35,65 +38,83 @@ public class CmdVoxelvert implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         command.setUsage(USAGE);
-        
+    
         BukkitVoxelVert vv = plugin.getVoxelVert();
         VVUser user = CommandUtil.userOf(vv, sender);
         Language lang = vv.getLanguage();
         
-        if (!(sender instanceof Player)) {
-            user.error("Only players can use the VoxelVert command!");
-            return true;
-        }
-        
+        // vv files
         if (args.length == 0 || args[0].equals("files")) {
+            if (!(sender instanceof Player)) {
+                user.error(lang.get("err.not_a_player"));
+                return true;
+            }
             Player player = (Player) sender;
-            FileBrowserMenu menu = new FileBrowserMenu(user.getInventory()); // TODO how the fuck do I show this shit to players
+            
+            FileBrowserMenu menu = new FileBrowserMenu(user.getInventory());
             MenuManager.getInstance().startSession(player, menu);
             return true;
         }
         
+        // vv convert <sourceFile> [format]
         else if (args[0].equals("convert")) {
+            if (!(sender instanceof Player)) {
+                user.error(lang.get("err.not_a_player"));
+                return true;
+            }
+            Player player = (Player) sender;
+            
             if (args.length < 2) return false;
             
-            String in = args[0];
-    
-            if (in.startsWith("/")) {
+            final String source = args[1];
+            if (source.startsWith("/")) {
                 user.error(lang.get("err.path_absolute"));
                 return true;
             }
-            if (in.startsWith(".")) {
+            if (source.startsWith(".")) {
                 user.error(lang.get("err.path_hidden"));
                 return true;
             }
     
-            final Format inFormat;
-            if (user.getInventory().hasVariable(in)) {
-                //noinspection ConstantConditions
-                inFormat = user.getInventory().getVariable(in).getFormat();
-            } else {
-                String ext = CommandUtil.extensionOf(in);
-                if (ext == null) {
-                    user.error(lang.get("cmd.voxelvert.err.no_ext"), in);
+            final Format sourceFormat;
+            if (args.length < 3) {
+                sourceFormat = formatOf(user.getInventory(), source);
+                if (sourceFormat == null) {
+                    user.error("cmd.voxelvert.err.bad_extension");
                     return true;
                 }
-                inFormat = Format.getByExtension(ext);
             }
-            
-            // vv convert file
-            if (args.length < 3) {
-                Menu menu = new ConversionFormatChooserMenu(inFormat, in);
-                // TODO show to player
-            }
-    
-            // vv convert file format
             else {
-            
+                sourceFormat = Format.getById(args[2]);
+                if (sourceFormat == null) {
+                    user.error("cmd.voxelvert.err.bad_format");
+                    return true;
+                }
             }
             
+            Menu menu = new ConvertMenu(source, sourceFormat); //TODO create convert menu
+            MenuManager.getInstance().startSession(player, menu);
+            return true;
+        }
+        
+        else if (args[0].equals("daemon")) {
+            sender.sendMessage(plugin.getConverterThread().getState().toString());
             return true;
         }
         
         else return false;
+    }
+    
+    @Nullable
+    private Format formatOf(VVInventory inventory, String path) {
+        if (inventory.hasVariable(path)) {
+            //noinspection ConstantConditions
+            return inventory.getVariable(path).getFormat();
+        }
+        else {
+            String ext = CommandUtil.extensionOf(path);
+            return ext == null? null : Format.getByExtension(ext);
+        }
     }
     
     /*private void printUser(CommandSender sender, VVUser user) {

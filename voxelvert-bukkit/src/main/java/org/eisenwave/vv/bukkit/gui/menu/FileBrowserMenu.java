@@ -120,6 +120,16 @@ public class FileBrowserMenu extends Menu {
     /**
      * Deletes the currently selected item.
      */
+    public void performOpen(Player player) {
+        if (!fileList.hasSelection()) return;
+        
+        FileBrowserEntry entry = fileList.getSelEntry();
+        player.performCommand("vv convert "+entry.getPath());
+    }
+    
+    /**
+     * Deletes the currently selected item.
+     */
     public void performDelete(Player player) {
         if (!fileList.hasSelection()) return;
         

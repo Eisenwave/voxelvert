@@ -3,83 +3,56 @@ package org.eisenwave.vv.bukkit.gui;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.eisenwave.vv.bukkit.util.CommandUtil;
+import org.eisenwave.vv.ui.fmtvert.Format;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.bukkit.Material.*;
 import static org.bukkit.ChatColor.*;
 
 public enum FileType {
-    DIRECTORY("media.directory", CHEST, BOLD),
+    DIRECTORY(null, "media.directory", CHEST, BOLD),
     
-    VARIABLE("media.inventory_variable", COMMAND, BOLD, ITALIC),
+    VARIABLE(null, "media.inventory_variable", COMMAND, BOLD, ITALIC),
     
-    FILE("media.file", SILVER_SHULKER_BOX, RESET),
+    FILE(null, "media.file", SILVER_SHULKER_BOX, RESET),
     
-    BCT("media.voxelvert-bct", GREEN_SHULKER_BOX, DARK_GREEN),
+    BCT(Format.BLOCK_COLOR_TABLE, "media.voxelvert-bct", GREEN_SHULKER_BOX, DARK_GREEN),
     
-    IMAGE("media.image", YELLOW_SHULKER_BOX, YELLOW),
+    IMAGE(Format.IMAGE, "media.image", YELLOW_SHULKER_BOX, YELLOW),
     
-    MTL("media.wavefront-mtl", BLUE_SHULKER_BOX, DARK_BLUE),
+    MTL(null, "media.wavefront-mtl", CYAN_SHULKER_BOX, DARK_AQUA),
     
-    QB("media.qubicle-binary", MAGENTA_SHULKER_BOX, LIGHT_PURPLE),
+    QB(Format.QB, "media.qubicle-binary", MAGENTA_SHULKER_BOX, DARK_PURPLE),
     
-    QEF("media.qubicle-exchange", PURPLE_SHULKER_BOX, DARK_PURPLE),
+    QEF(Format.QEF, "media.qubicle-exchange", PURPLE_SHULKER_BOX, LIGHT_PURPLE),
     
-    SCHEMATIC("media.schematic", ORANGE_SHULKER_BOX, GOLD),
+    SCHEMATIC(Format.SCHEMATIC, "media.schematic", LIME_SHULKER_BOX, GREEN),
     
-    STL("media.stl", LIME_SHULKER_BOX, GREEN),
+    STL(Format.STL, "media.stl", BLUE_SHULKER_BOX, BLUE),
     
-    WAVEFRONT("media.wavefront", LIGHT_BLUE_SHULKER_BOX, AQUA),
+    WAVEFRONT(Format.WAVEFRONT, "media.wavefront", LIGHT_BLUE_SHULKER_BOX, AQUA),
     
-    RESOURCE_PACK("media.minecraft-resource_pack", CYAN_SHULKER_BOX, DARK_AQUA);
+    RESOURCE_PACK(Format.RESOURCE_PACK, "media.minecraft-resource_pack", BROWN_SHULKER_BOX, GOLD);
     
-    private final Material material;
-    private final String prefix, prefixNoColors, langName;
-    
-    FileType(String langName, Material material, ChatColor... colors) {
-        this.langName = langName;
-        this.material = material;
-        this.prefix = Arrays.stream(colors)
-            .map(ChatColor::toString)
-            .collect(Collectors.joining());
-        this.prefixNoColors = Arrays.stream(colors)
-            .filter(ChatColor::isFormat)
-            .map(ChatColor::toString)
-            .collect(Collectors.joining());
+    private final static Map<Format, FileType> formatMap = new HashMap<>();
+    static {
+        for (FileType val : values()) {
+            Format f = val.getFormat();
+            if (f != null)
+                formatMap.put(f, val);
+        }
     }
     
-    public boolean isDirectory() {
-        return this == DIRECTORY;
-    }
-    
-    public boolean isVariable() {
-        return this == VARIABLE;
-    }
-    
-    public boolean isFile() {
-        return ordinal() >= 2;
-    }
-    
-    public String getLanguageName() {
-        return langName;
-    }
-    
-    @Contract(pure = true)
-    public Material getIcon() {
-        return material;
-    }
-    
-    @Contract(pure = true)
-    public String getPrefix() {
-        return prefix;
-    }
-    
-    @Contract(pure = true)
-    public String getPrefixNoColors() {
-        return prefixNoColors;
+    @Nullable
+    public static FileType fromFormat(@NotNull Format format) {
+        return formatMap.get(format);
     }
     
     public static FileType fromPath(String path) {
@@ -107,6 +80,64 @@ public enum FileType {
                 default: return FILE;
             }
         }
+    }
+    
+    private final Format format;
+    private final Material material;
+    private final String prefix, prefixNoColors, langName;
+    
+    FileType(@Nullable Format format, String langName, Material material, ChatColor... colors) {
+        this.format = format;
+        this.langName = langName;
+        this.material = material;
+        this.prefix = Arrays.stream(colors)
+            .map(ChatColor::toString)
+            .collect(Collectors.joining());
+        this.prefixNoColors = Arrays.stream(colors)
+            .filter(ChatColor::isFormat)
+            .map(ChatColor::toString)
+            .collect(Collectors.joining());
+    }
+    
+    public boolean isDirectory() {
+        return this == DIRECTORY;
+    }
+    
+    public boolean isVariable() {
+        return this == VARIABLE;
+    }
+    
+    public boolean isFile() {
+        return ordinal() >= 2;
+    }
+    
+    public boolean isFormat() {
+        return format != null;
+    }
+    
+    public String getLanguageName() {
+        return langName;
+    }
+    
+    @Nullable
+    @Contract(pure = true)
+    public Format getFormat() {
+        return format;
+    }
+    
+    @Contract(pure = true)
+    public Material getIcon() {
+        return material;
+    }
+    
+    @Contract(pure = true)
+    public String getPrefix() {
+        return prefix;
+    }
+    
+    @Contract(pure = true)
+    public String getPrefixNoColors() {
+        return prefixNoColors;
     }
     
 }

@@ -33,11 +33,19 @@ import static org.eisenwave.vv.ui.fmtvert.Format.*;
 @SuppressWarnings("Duplicates")
 public final class FormatverterFactory {
     
+    private final static Option
+        OPTION_CROP = new Option("C", "crop"),
+        OPTION_DIRECTION = new Option("d", "direction"),
+        OPTION_NO_ANTI_BLEED = new Option("no_anti_bleed"),
+        OPTION_RESOLUTION = new Option("R", "resolution"),
+        OPTION_VERBOSE = new Option("v", "verbose");
+    
     public final static String
         DEFAULT_BCE = "color_extractors/default.json",
         DEFAULT_BCT = "colors/default.bct";
     
     private final static Logger VERBOSE_LOGGER;
+    
     static {
         VERBOSE_LOGGER = Logger.getLogger("vv");
         VERBOSE_LOGGER.setLevel(Level.FINE);
@@ -81,7 +89,7 @@ public final class FormatverterFactory {
         
         map.put(RESOURCE_PACK, BLOCK_COLOR_TABLE, new FV_RP_COLORS());
         map.put(RESOURCE_PACK, RESOURCE_PACK, new CopyFormatverter());
-    
+        
         map.put(SCHEMATIC, IMAGE, new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY, new FV_BA_IMAGE()));
         map.put(SCHEMATIC, MODEL, new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY, new FV_BA_MODEL()));
         map.put(SCHEMATIC, QB, new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY, new FV_BA_QB()));
@@ -138,7 +146,6 @@ public final class FormatverterFactory {
     // FIRST ORDER FORMATVERTERS
     
     
-    
     private static class FV_BA_IMAGE extends Formatverter {
         
         @Override
@@ -147,18 +154,18 @@ public final class FormatverterFactory {
         }
         
         @Override
-        public String[] getMandatoryParams() {
-            return new String[] {"d"};
+        public Option[] getMandatoryOptions() {
+            return new Option[] {OPTION_DIRECTION};
         }
         
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose", "C", "crop"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE, OPTION_CROP};
         }
         
         @SuppressWarnings("Duplicates")
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -209,13 +216,13 @@ public final class FormatverterFactory {
         }
         
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose", "no_anti_bleed"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE, OPTION_NO_ANTI_BLEED};
         }
         
         @SuppressWarnings("Duplicates")
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -250,7 +257,7 @@ public final class FormatverterFactory {
                 user.print(lang.get("to_model.elements"), model.getElementCount());
                 switch (model.getTextureCount()) {
                     
-                    case 0:  user.print(lang.get("to_model.textures.none")); break;
+                    case 0: user.print(lang.get("to_model.textures.none")); break;
                     
                     case 1: {
                         Texture texture = model.getTexture(model.getTextures().iterator().next());
@@ -280,12 +287,12 @@ public final class FormatverterFactory {
         }
         
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -325,12 +332,12 @@ public final class FormatverterFactory {
         }
         
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -366,12 +373,12 @@ public final class FormatverterFactory {
         }
         
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -404,12 +411,12 @@ public final class FormatverterFactory {
         }
         
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -434,12 +441,12 @@ public final class FormatverterFactory {
         }
         
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -474,8 +481,8 @@ public final class FormatverterFactory {
     private static class FV_IMAGE_IMAGE extends Formatverter {
         
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
         
         @Override
@@ -484,7 +491,7 @@ public final class FormatverterFactory {
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Texture img = (Texture) user.getInventory().load(Format.IMAGE, from);
             assert img != null;
             set(1);
@@ -496,24 +503,24 @@ public final class FormatverterFactory {
     }
     
     private static class FV_IMAGE_QEF extends Formatverter {
-    
+        
         @Override
         public int getMaxProgress() {
             return 3;
         }
         
         @Override
-        public String[] getMandatoryParams() {
-            return new String[] {"d"};
-        }
-    
-        @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getMandatoryOptions() {
+            return new Option[] {OPTION_DIRECTION};
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
+        }
+        
+        @Override
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -522,7 +529,7 @@ public final class FormatverterFactory {
             //Logger logger = verbose? user.getLogger() : null;
             
             if (verbose) user.print(lang.get("from_image.face"), from, d, dir);
-    
+            
             Texture img = (Texture) user.getInventory().load(Format.IMAGE, from);
             set(1);
             
@@ -536,24 +543,24 @@ public final class FormatverterFactory {
     }
     
     private static class FV_IMAGE_QB extends Formatverter {
-    
+        
         @Override
         public int getMaxProgress() {
             return 4;
         }
         
         @Override
-        public String[] getMandatoryParams() {
-            return new String[] {"d"};
-        }
-    
-        @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getMandatoryOptions() {
+            return new Option[] {OPTION_DIRECTION};
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
+        }
+        
+        @Override
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -580,24 +587,24 @@ public final class FormatverterFactory {
     }
     
     private static class FV_QEF_IMAGE extends Formatverter {
-    
+        
         @Override
         public int getMaxProgress() {
             return 3;
         }
-    
+        
         @Override
-        public String[] getMandatoryParams() {
-            return new String[] {"d"};
-        }
-    
-        @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose", "C", "crop"};
+        public Option[] getMandatoryOptions() {
+            return new Option[] {OPTION_DIRECTION};
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE, OPTION_CROP};
+        }
+        
+        @Override
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -605,7 +612,7 @@ public final class FormatverterFactory {
             String d = args.get("d");
             Direction dir = parseDirection(d);
             Logger logger = verbose? user.getLogger() : null;
-    
+            
             if (verbose) user.print(lang.get("to_image.render"), from, d, dir);
             
             VoxelArray va = (VoxelArray) user.getInventory().load(Format.QEF, from);
@@ -622,20 +629,20 @@ public final class FormatverterFactory {
     }
     
     private static class FV_QEF_MODEL extends Formatverter {
-    
+        
         @Override
         public int getMaxProgress() {
             return 4;
         }
-    
+        
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose", "no_anti_bleed"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE, OPTION_NO_ANTI_BLEED};
         }
         
         @SuppressWarnings("Duplicates")
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -655,7 +662,7 @@ public final class FormatverterFactory {
                 user.print(lang.get("to_model.elements"), model.getElementCount());
                 switch (model.getTextureCount()) {
                     
-                    case 0:  user.print(lang.get("to_model.textures.none")); break;
+                    case 0: user.print(lang.get("to_model.textures.none")); break;
                     
                     case 1: {
                         Texture texture = model.getTexture(model.getTextures().iterator().next());
@@ -678,27 +685,28 @@ public final class FormatverterFactory {
     }
     
     private static class FV_QEF_QB extends Formatverter {
-    
+        
         @Override
         public int getMaxProgress() {
             return 3;
         }
-    
+        
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
-    
+            
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
             //Logger logger = verbose? user.getLogger() : null;
             
             VoxelArray va = (VoxelArray) user.getInventory().load(Format.QEF, from);
             set(1);
-            
+    
+            assert va != null;
             QBModel qb = new CvVoxelArrayToQB().invoke(va);
             if (verbose) user.print(lang.get("to_qb.matrices"), qb.getMatrices().length);
             set(2);
@@ -710,21 +718,21 @@ public final class FormatverterFactory {
     }
     
     private static class FV_QEF_STL extends Formatverter {
-    
+        
         @Override
         public int getMaxProgress() {
             return 3;
         }
-    
+        
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
-    
+            
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
             //Logger logger = verbose? user.getLogger() : null;
             
@@ -747,22 +755,23 @@ public final class FormatverterFactory {
         public int getMaxProgress() {
             return 3;
         }
-    
+        
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
             //Logger logger = verbose? user.getLogger() : null;
-    
+            
             VoxelArray voxels = (VoxelArray) user.getInventory().load(Format.QEF, from);
             set(1);
-            
+    
+            assert voxels != null;
             OBJModel obj = new CvVoxelArrayToOBJ().invoke(voxels);
             if (verbose) user.print(lang.get("to_wavefront.content"), obj.getVertexCount(), obj.getFaceCount());
             set(2);
@@ -774,24 +783,24 @@ public final class FormatverterFactory {
     }
     
     private static class FV_QB_IMAGE extends Formatverter {
-    
+        
         @Override
         public int getMaxProgress() {
             return 5;
         }
         
         @Override
-        public String[] getMandatoryParams() {
-            return new String[] {"d"};
-        }
-    
-        @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose", "C", "crop"};
+        public Option[] getMandatoryOptions() {
+            return new Option[] {OPTION_DIRECTION};
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE, OPTION_CROP};
+        }
+        
+        @Override
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -801,10 +810,11 @@ public final class FormatverterFactory {
             Logger logger = verbose? user.getLogger() : null;
             
             if (verbose) user.print(lang.get("to_image.render"), from, d, dir);
-    
+            
             QBModel qb = (QBModel) user.getInventory().load(Format.QB, from);
             set(1);
-            
+    
+            assert qb != null;
             VoxelMesh vm = new CvQBToVoxelMesh().invoke(qb);
             set(2);
             
@@ -821,32 +831,32 @@ public final class FormatverterFactory {
     }
     
     private static class FV_QB_MODEL extends Formatverter {
-    
+        
         @Override
         public int getMaxProgress() {
             return 6;
         }
-    
+        
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose", "no_anti_bleed"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE, OPTION_NO_ANTI_BLEED};
         }
         
         @SuppressWarnings("Duplicates")
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
             boolean noAntiBleed = args.containsKey("no_anti_bleed");
             Logger logger = verbose? user.getLogger() : null;
-    
+            
             final VoxelArray voxels;
             {
                 QBModel qb = (QBModel) user.getInventory().load(Format.QB, from);
                 set(1);
                 assert qb != null;
-    
+                
                 VoxelMesh mesh = new CvQBToVoxelMesh().invoke(qb);
                 set(2);
                 
@@ -863,7 +873,7 @@ public final class FormatverterFactory {
                 user.print(lang.get("to_model.elements"), model.getElementCount());
                 switch (model.getTextureCount()) {
                     
-                    case 0:  user.print(lang.get("to_model.textures.none")); break;
+                    case 0: user.print(lang.get("to_model.textures.none")); break;
                     
                     case 1: {
                         Texture texture = model.getTexture(model.getTextures().iterator().next());
@@ -886,25 +896,26 @@ public final class FormatverterFactory {
     }
     
     private static class FV_QB_QEF extends Formatverter {
-    
+        
         @Override
         public int getMaxProgress() {
             return 4;
         }
-    
+        
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             //Language lang = user.getVoxelVert().getLanguage();
             //Logger logger = verbose? user.getLogger() : null;
             
             QBModel model = (QBModel) user.getInventory().load(Format.QB, from);
             set(1);
-            
+    
+            assert model != null;
             VoxelMesh vm = new CvQBToVoxelMesh().invoke(model);
             set(2);
             
@@ -918,27 +929,28 @@ public final class FormatverterFactory {
     }
     
     private static class FV_QB_STL extends Formatverter {
-    
+        
         @Override
         public int getMaxProgress() {
             return 5;
         }
-    
+        
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
-    
+            
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
             //Logger logger = verbose? user.getLogger() : null;
             
             QBModel model = (QBModel) user.getInventory().load(Format.QB, from);
             set(1);
-            
+    
+            assert model != null;
             VoxelMesh vm = new CvQBToVoxelMesh().invoke(model);
             set(2);
             
@@ -961,14 +973,14 @@ public final class FormatverterFactory {
         public int getMaxProgress() {
             return 5;
         }
-    
+        
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -976,7 +988,8 @@ public final class FormatverterFactory {
             
             QBModel model = (QBModel) user.getInventory().load(Format.QB, from);
             set(1);
-            
+    
+            assert model != null;
             VoxelMesh vm = new CvQBToVoxelMesh().invoke(model);
             set(2);
             
@@ -994,19 +1007,19 @@ public final class FormatverterFactory {
     }
     
     private static class FV_RP_COLORS extends Formatverter {
-    
+        
         @Override
         public int getMaxProgress() {
             return 4;
         }
-    
+        
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -1018,7 +1031,7 @@ public final class FormatverterFactory {
                 String grass = extractor.getGrassMap();
                 if (grass != null) user.print(lang.get("from_rp.grass"), grass);
                 else user.print(lang.get("from_rp.no_grass"));
-    
+                
                 String foliage = extractor.getFoliageMap();
                 if (foliage != null) user.print(lang.get("from_rp.foliage"), foliage);
                 else user.print(lang.get("from_rp.no_foliage"));
@@ -1040,13 +1053,13 @@ public final class FormatverterFactory {
     private static class FV_STL_QB extends Formatverter {
         
         @Override
-        public String[] getMandatoryParams() {
-            return new String[] {"R"};
+        public Option[] getMandatoryOptions() {
+            return new Option[] {OPTION_RESOLUTION};
         }
-    
+        
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
         
         @Override
@@ -1056,7 +1069,7 @@ public final class FormatverterFactory {
         
         @SuppressWarnings("Duplicates")
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -1089,13 +1102,13 @@ public final class FormatverterFactory {
     private static class FV_STL_MODEL extends Formatverter {
         
         @Override
-        public String[] getMandatoryParams() {
-            return new String[] {"R"};
+        public Option[] getMandatoryOptions() {
+            return new Option[] {OPTION_RESOLUTION};
         }
-    
+        
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose", "no_anti_bleed"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE, OPTION_NO_ANTI_BLEED};
         }
         
         @Override
@@ -1105,14 +1118,14 @@ public final class FormatverterFactory {
         
         @SuppressWarnings("Duplicates")
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
             boolean noAntiBleed = args.containsKey("no_anti_bleed");
             Logger logger = verbose? user.getLogger() : null;
             int res = Integer.parseInt(args.get("R"));
-    
+            
             if (verbose) user.print(lang.get("from_stl.canvas"), res, res, res);
             
             final VoxelArray voxels;
@@ -1121,38 +1134,38 @@ public final class FormatverterFactory {
                 assert stl != null;
                 if (verbose) user.print(lang.get("from_stl.triangles"), stl.size());
                 set(1);
-    
+                
                 voxels = new CvSTLToVoxelArray(logger).invoke(stl, res);
                 if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
                 set(2);
             }
-    
+            
             VoxelMesh mesh = new CvVoxelArrayToVoxelMesh(logger).invoke(voxels);
             set(3);
             if (verbose) user.print(lang.get("to_mesh.elements"), mesh.size());
-    
+            
             MCModel model = new CvVoxelMeshToMC(logger).invoke(mesh);
             set(4);
             if (verbose) {
                 user.print(lang.get("to_model.elements"), model.getElementCount());
                 switch (model.getTextureCount()) {
-            
-                    case 0:  user.print(lang.get("to_model.textures.none")); break;
-            
+                    
+                    case 0: user.print(lang.get("to_model.textures.none")); break;
+                    
                     case 1: {
                         Texture texture = model.getTexture(model.getTextures().iterator().next());
                         int w = texture.getWidth(), h = texture.getHeight();
                         user.print(lang.get("to_model.textures.single"), w, h);
                         break;
                     }
-            
+                    
                     default: user.print(lang.get("to_model.textures.multiple"), model.getTextureCount()); break;
                 }
             }
             model.setAntiBleed(!noAntiBleed);
             if (noAntiBleed) user.print(lang.get("to_model.no_anti_bleed"));
             set(5);
-    
+            
             user.getInventory().save(Format.MODEL, model, to);
             set(6);
         }
@@ -1162,13 +1175,13 @@ public final class FormatverterFactory {
     private static class FV_STL_QEF extends Formatverter {
         
         @Override
-        public String[] getMandatoryParams() {
-            return new String[] {"R"};
+        public Option[] getMandatoryOptions() {
+            return new Option[] {OPTION_RESOLUTION};
         }
-    
+        
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
         
         @Override
@@ -1178,7 +1191,7 @@ public final class FormatverterFactory {
         
         @SuppressWarnings("Duplicates")
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -1205,13 +1218,13 @@ public final class FormatverterFactory {
     private static class FV_WAVEFRONT_IMAGE extends Formatverter {
         
         @Override
-        public String[] getMandatoryParams() {
-            return new String[] {"R", "d"};
+        public Option[] getMandatoryOptions() {
+            return new Option[] {OPTION_RESOLUTION, OPTION_DIRECTION};
         }
-    
+        
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose", "C", "crop"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE, OPTION_CROP};
         }
         
         @Override
@@ -1220,7 +1233,7 @@ public final class FormatverterFactory {
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -1250,11 +1263,11 @@ public final class FormatverterFactory {
                 if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
                 set(2);
             }
-    
+            
             if (verbose) {
                 user.print(lang.get("to_image.render"), from, d, dir);
             }
-    
+            
             Texture image = new CvVoxelArrayToTexture(logger)
                 .invoke(voxels, dir, true, crop);
             if (verbose) user.print(lang.get("to_image.crop"), image.getWidth(), image.getHeight());
@@ -1270,13 +1283,13 @@ public final class FormatverterFactory {
     private static class FV_WAVEFRONT_MODEL extends Formatverter {
         
         @Override
-        public String[] getMandatoryParams() {
-            return new String[] {"R"};
+        public Option[] getMandatoryOptions() {
+            return new Option[] {OPTION_RESOLUTION};
         }
-    
+        
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose", "no_anti_bleed"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE, OPTION_NO_ANTI_BLEED};
         }
         
         @Override
@@ -1285,7 +1298,7 @@ public final class FormatverterFactory {
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -1313,33 +1326,33 @@ public final class FormatverterFactory {
                 if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
                 set(2);
             }
-    
+            
             VoxelMesh mesh = new CvVoxelArrayToVoxelMesh(logger).invoke(voxels);
             set(3);
             if (verbose) user.print(lang.get("to_mesh.elements"), mesh.size());
-    
+            
             MCModel model = new CvVoxelMeshToMC(logger).invoke(mesh);
             set(4);
             if (verbose) {
                 user.print(lang.get("to_model.elements"), model.getElementCount());
                 switch (model.getTextureCount()) {
-            
-                    case 0:  user.print(lang.get("to_model.textures.none")); break;
-            
+                    
+                    case 0: user.print(lang.get("to_model.textures.none")); break;
+                    
                     case 1: {
                         Texture texture = model.getTexture(model.getTextures().iterator().next());
                         int w = texture.getWidth(), h = texture.getHeight();
                         user.print(lang.get("to_model.textures.single"), w, h);
                         break;
                     }
-            
+                    
                     default: user.print(lang.get("to_model.textures.multiple"), model.getTextureCount()); break;
                 }
             }
             model.setAntiBleed(!noAntiBleed);
             if (noAntiBleed) user.print(lang.get("to_model.no_anti_bleed"));
             set(5);
-    
+            
             user.getInventory().save(Format.MODEL, model, to);
             set(6);
         }
@@ -1350,13 +1363,13 @@ public final class FormatverterFactory {
     private static class FV_WAVEFRONT_QB extends Formatverter {
         
         @Override
-        public String[] getMandatoryParams() {
-            return new String[] {"R"};
+        public Option[] getMandatoryOptions() {
+            return new Option[] {OPTION_RESOLUTION};
         }
-    
+        
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
         
         @Override
@@ -1365,7 +1378,7 @@ public final class FormatverterFactory {
         }
         
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -1373,7 +1386,7 @@ public final class FormatverterFactory {
             int res = Integer.parseInt(args.get("R"));
             
             if (verbose) user.print(lang.get("from_wavefront.canvas"), res, res, res);
-    
+            
             final VoxelArray voxels;
             {
                 OBJModel obj = (OBJModel) user.getInventory().load(Format.WAVEFRONT, from);
@@ -1387,12 +1400,12 @@ public final class FormatverterFactory {
                     }
                 }
                 set(1);
-    
+                
                 voxels = new CvOBJToVoxelArray(logger).invoke(obj, res);
                 if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
                 set(2);
             }
-    
+            
             QBModel model = new CvVoxelArrayToQB().invoke(voxels);
             set(3);
             
@@ -1403,17 +1416,17 @@ public final class FormatverterFactory {
     }
     
     private static class FV_WAVEFRONT_QEF extends Formatverter {
-    
+        
         @Override
-        public String[] getMandatoryParams() {
-            return new String[] {"R"};
+        public Option[] getMandatoryOptions() {
+            return new Option[] {OPTION_RESOLUTION};
         }
-    
+        
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
-    
+        
         @Override
         public int getMaxProgress() {
             return 3;
@@ -1421,7 +1434,7 @@ public final class FormatverterFactory {
         
         @SuppressWarnings("Duplicates")
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -1429,7 +1442,7 @@ public final class FormatverterFactory {
             int res = Integer.parseInt(args.get("R"));
             
             if (verbose) user.print(lang.get("from_wavefront.canvas"), res, res, res);
-    
+            
             OBJModel obj = (OBJModel) user.getInventory().load(Format.WAVEFRONT, from);
             assert obj != null;
             if (verbose) {
@@ -1458,15 +1471,15 @@ public final class FormatverterFactory {
         public int getMaxProgress() {
             return 3;
         }
-    
+        
         @Override
-        public String[] getOptionalParams() {
-            return new String[] {"v", "verbose"};
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
         }
         
         @SuppressWarnings("Duplicates")
         @Override
-        public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey("v") || args.containsKey("verbose");
@@ -1520,7 +1533,7 @@ public final class FormatverterFactory {
     @Nullable
     private static Direction parseDirection(String str) {
         Face f = Face.fromString(str);
-        return f==null? null : f.direction();
+        return f == null? null : f.direction();
     }
     
 }

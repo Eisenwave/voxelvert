@@ -54,13 +54,13 @@ public class InventoryFormatverter extends Formatverter {
     }
     
     @Override
-    public String[] getMandatoryParams() {
-        return handle == null? new String[0] : handle.getMandatoryParams();
+    public Option[] getMandatoryOptions() {
+        return handle == null? new Option[0] : handle.getMandatoryOptions();
     }
     
     @Override
-    public String[] getOptionalParams() {
-        return handle == null? new String[0] : handle.getOptionalParams();
+    public Option[] getOptionalOptions() {
+        return handle == null? new Option[0] : handle.getOptionalOptions();
     }
     
     @SuppressWarnings("Duplicates")
