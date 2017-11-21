@@ -1,37 +1,139 @@
 package org.eisenwave.vv.bukkit.gui.widget;
 
-import eisenwave.inv.menu.Menu;
 import eisenwave.inv.view.*;
-import eisenwave.inv.widget.Widget;
+import eisenwave.inv.widget.*;
+import org.eisenwave.vv.bukkit.gui.menu.ConvertMenu;
+import org.eisenwave.vv.ui.fmtvert.*;
+import net.grian.spatium.enums.Face;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.eisenwave.vv.bukkit.util.ItemInitUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ConvertOptionWidget extends Widget {
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class ConvertOptionWidget extends ViewGroup<View> {
+    
+    private final static ItemStack
+        ITEM_RESOLUTION = ItemInitUtil.item(Material.MOB_SPAWNER, ChatColor.RESET + "Resolution", "&8-R"),
+        ITEM_DIRECTION = ItemInitUtil.item(Material.COMPASS, ChatColor.RESET + "Direction", "&8-d"),
+        ITEM_VERBOSITY = ItemInitUtil.item(Material.JUKEBOX, ChatColor.RESET + "Verbosity", "&8-v"),
+        ITEM_CROP = ItemInitUtil.item(Material.SHEARS, ChatColor.RESET + "Crop", "&8-C"),
+        ITEM_UNKNOWN = ItemInitUtil.item(Material.STRUCTURE_VOID, ChatColor.RESET + "???");
     
     private final ItemStack optionDisplay;
     
-    public ConvertOptionWidget(Menu menu, @NotNull String option) {
-        super(menu, new ViewSize(ViewSize.MATCH_PARENT, 1, false, false), null);
-        this.optionDisplay = displayOf(option);
+    @Nullable
+    private String value;
+    
+    public ConvertOptionWidget(ConvertMenu menu, @NotNull String option) {
+        super(menu, new ViewSize(ViewSize.MATCH_PARENT, 1, false, false));
+        
+        switch (option) {
+            case "R":
+                optionDisplay = ITEM_RESOLUTION;
+                initOptionResolution();
+                break;
+            case "d":
+                optionDisplay = ITEM_DIRECTION;
+                initOptionDirection();
+                break;
+            case "v":
+                optionDisplay = ITEM_VERBOSITY;
+                initFlagOption();
+                break;
+            case "C":
+                optionDisplay = ITEM_CROP;
+                initFlagOption();
+                break;
+            default:
+                optionDisplay = ItemInitUtil.withLoreLines(ITEM_UNKNOWN, ChatColor.DARK_GRAY+"-"+option);
+        }
+    
+        initDisplay();
+    }
+    
+    private void initDisplay() {
+        Display display = new Display(getMenu(), null);
+        display.setItem(optionDisplay);
+        addChild(display);
+    }
+    
+    private void initOptionResolution() {
+        List<String> values = Arrays.stream(new int[] {8, 16, 32, 64, 128})
+            .mapToObj(Integer::toString)
+            .collect(Collectors.toList());
+        
+        initSwitchOption(values);
+    }
+    
+    private void initOptionDirection() {
+        List<String> values = Arrays.stream(Face.values())
+            .map(Object::toString)
+            .map(String::toLowerCase)
+            .collect(Collectors.toList());
+        
+        initSwitchOption(values);
+    }
+    
+    private void initSwitchOption(List<String> values) {
+        ViewSize size = new ViewSize(2, ViewSize.MIN_POS, ViewSize.MATCH_PARENT, 1);
+        RadioList list = new RadioList(getMenu(), size);
+    
+        boolean first = true;
+        for (String str : values) {
+            RadioButton button = new RadioButton(getMenu(), null);
+            list.addChild(button);
+        
+            ItemStack checked = ItemInitUtil.setName(button.getCheckedItem(), ChatColor.GREEN + str);
+            button.setCheckedItem(checked);
+            ItemStack unchecked = ItemInitUtil.setName(button.getUncheckedItem(), ChatColor.DARK_GRAY + str);
+            button.setUncheckedItem(unchecked);
+        
+            button.addCheckListener(event -> {
+                if (event.isChecked())
+                    value = str;
+            });
+        
+            if (first) {
+                button.setChecked(true);
+                first = false;
+            }
+        }
+        addChild(list);
+    }
+    
+    private void initFlagOption() {
+        CheckBox button = new CheckBox(getMenu(), null);
+        button.setPosition(2, 0);
+        addChild(button);
+        
+        button.addCheckListener(event -> value = event.isChecked()? "" : null);
     }
     
     @Override
-    protected void drawContent(IconBuffer buffer) {
-        buffer.set(0, 0, new Icon(this, optionDisplay));
+    public ConvertMenu getMenu() {
+        return (ConvertMenu) super.getMenu();
     }
     
-    // UTIL
-    
+    /**
+     * Returns the picked argument.
+     * <p>
+     * A value of {@code null} represents that the option should be ignored and not given to the
+     * {@link Formatverter}.
+     * <p>
+     * A value of {@code ""} represents that the option should be used without any arguments. An example of this is the
+     * verbosity option {@code -v} which toggles verbosity during conversion.
+     *
+     * @return the argument or null if the option should be ignored
+     */
     @Nullable
-    private static ItemStack displayOf(String option) {
-        switch (option) {
-            case "d": return ItemInitUtil.item(Material.COMPASS, "Direction", "&8-d");
-            case "v": return ItemInitUtil.item(Material.JUKEBOX, "Verbosity", "&8-v");
-            default: return null;
-        }
+    public String getArgument() {
+        return value;
     }
     
 }

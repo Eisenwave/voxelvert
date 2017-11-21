@@ -75,6 +75,14 @@ media.stl = STL-File
 media.wavefront = Wavefront Object
 media.minecraft-resource_pack = Resource Pack
 
+format.image = Image
+format.qb = Qubicle Binary
+format.qef = Qubicle Exchange Format
+format.stl = STL
+format.wavefront = Wavefront Object
+format.resource_pack = Resource Pack
+format.model = Minecraft Model
+
 ##############################
 # IMPORTED FROM VOXELVERT-UI #
 ##############################

@@ -35,7 +35,7 @@ public final class Language {
      */
     @NotNull
     public String get(@NotNull String key) {
-        return vocab.getOrDefault(key, "MISSING TRANSLATION \"" + key + "\"");
+        return vocab.getOrDefault(key, "MISSING(" + key + ")");
     }
     
     /**
