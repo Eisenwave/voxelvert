@@ -16,8 +16,8 @@ import java.util.Map;
 public class CopyFormatverter extends Formatverter {
     
     @Override
-    public String[] getOptionalOptions() {
-        return new String[] {"v", "verbose"};
+    public Option[] getOptionalOptions() {
+        return new Option[] {new Option("v", "verbose")};
     }
     
     @Override

@@ -1,8 +1,7 @@
 package org.eisenwave.vv.ui.cmd;
 
+import org.eisenwave.vv.ui.fmtvert.Option;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class CommandCallTest {
     
@@ -31,7 +30,10 @@ public class CommandCallTest {
     public void parse_strictKwArgs_validInput() throws Exception {
         CommandCall call = new CommandCall();
         call.setStrictKwArgs(true);
-        call.addValidKwArgs("a", "b", "c");
+        call
+            .addKeyword(new Option("a"))
+            .addKeyword(new Option("b"))
+            .addKeyword(new Option("c"));
         
         call.parse("arg0", "arg1", "-a", "x", "-b", "-c", "y");
     }
@@ -40,7 +42,10 @@ public class CommandCallTest {
     public void parse_strictKwArgs_invalidInput() throws Exception {
         CommandCall call = new CommandCall();
         call.setStrictKwArgs(true);
-        call.addValidKwArgs("a", "b", "c");
+        call
+            .addKeyword(new Option("a"))
+            .addKeyword(new Option("b"))
+            .addKeyword(new Option("c"));
         
         try {
             call.parse("-d");

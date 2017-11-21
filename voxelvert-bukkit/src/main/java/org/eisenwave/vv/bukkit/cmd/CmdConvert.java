@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.eisenwave.vv.bukkit.VoxelVertPlugin;
 import org.eisenwave.vv.bukkit.async.VoxelVertQueue;
 import org.eisenwave.vv.bukkit.user.BukkitVoxelVert;
+import org.eisenwave.vv.ui.fmtvert.Option;
 import org.eisenwave.vv.ui.user.VVInventory;
 import org.eisenwave.vv.bukkit.util.CommandUtil;
 import org.eisenwave.vv.object.Language;
@@ -77,13 +78,11 @@ public class CmdConvert implements CommandExecutor, VVInitializer {
             return false;
         }
     
-        CommandCall call;
+        final CommandCall call;
         try {
-            call = new CommandCall()
-                .setStrictOrder(true)
-                .setStrictKwArgs(true)
-                .addValidKwArgs(handle.getAcceptedOptions())
-                .parse(args);
+            call = new CommandCall().setStrictOrder(true).setStrictKwArgs(true);
+            handle.getAcceptedOptions().forEach(call::addKeyword);
+            call.parse(args);
         } catch (IllegalArgumentException ex) {
             user.error(lang.get("cmd.convert.err.parse"), ex.getMessage());
             return true;
@@ -105,7 +104,7 @@ public class CmdConvert implements CommandExecutor, VVInitializer {
     }
     
     @Override
-    public Set<String> getAcceptedOptions() {
+    public Set<Option> getAcceptedOptions() {
         return handle.getAcceptedOptions();
     }
     

@@ -11,12 +11,12 @@ import org.eisenwave.vv.ui.user.VVInventory;
 import org.eisenwave.vv.ui.user.VVUser;
 import org.eisenwave.vv.ui.util.StringProgressBar;
 import org.eisenwave.vv.ui.util.StringTable;
-import org.intellij.lang.annotations.RegExp;
 import org.jetbrains.annotations.*;
 
 import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -29,19 +29,15 @@ import java.util.concurrent.*;
  */
 public class ShellConversionInitializer implements VVInitializer {
     
-    @RegExp
-    public final static String
-    PARAM_FORMATS = "^(f|formats)$",
-    PARAM_HELP    = "^(h|help)$",
-    //PARAM_TIMEOUT = "^(t|timeout)$",
-    //PARAM_THREADS = "^(T|threads)$",
-    PARAM_VERBOSE = "^(v|verbose)$";
+    public final static Option
+    OPTION_FORMATS = new Option("f", "formats"),
+    OPTION_HELP = new Option("h", "help"),
+    OPTION_VERBOSE = FormatverterInitializer.OPTION_VERBOSE;
     
     private final static Option[] OPTIONS = {
-        new Option("f", "formats"),
-        new Option("h", "help")
-        //"t", "timeout",
-        //"T", "threads",
+        OPTION_FORMATS,
+        OPTION_HELP,
+        OPTION_VERBOSE
     };
     
     public final static long TIMEOUT = 5000;
@@ -63,7 +59,7 @@ public class ShellConversionInitializer implements VVInitializer {
         VVInventory inv = user.getInventory();
         //String usage = ChatColor.RED+"Usage: /"+label+" ";
     
-        final boolean verbose = args.matchKeyword(PARAM_VERBOSE);
+        final boolean verbose = args.hasKeyword(FormatverterInitializer.OPTION_VERBOSE.getId());
         
         if (verbose) {
             user.print(lang.get("main.verbose"));
@@ -71,7 +67,7 @@ public class ShellConversionInitializer implements VVInitializer {
             //user.print(lang.get("main.lang_info"), lang.getName(), lang.size());
         }
         
-        if (args.isEmpty() || args.matchKeyword(PARAM_HELP)) {
+        if (args.isEmpty() || args.hasKeyword(OPTION_HELP.getId())) {
             try (InputStream stream = this.getClass().getClassLoader().getResourceAsStream("help.txt")) {
                 //noinspection unchecked
                 for (String s : (List<String>) IOUtils.readLines(stream)) {
@@ -86,7 +82,7 @@ public class ShellConversionInitializer implements VVInitializer {
             return null;
         }
         
-        if (args.matchKeyword(PARAM_FORMATS)) {
+        if (args.hasKeyword(OPTION_FORMATS.getId())) {
             user.print("List of available formats:\n");
             
             StringTable table = new StringTable(16, 3, "    ");
@@ -96,9 +92,10 @@ public class ShellConversionInitializer implements VVInitializer {
             FormatverterFactory factory = FormatverterFactory.getInstance();
             final Format[] inputs;
             {
-                Set<Format> inputSet = factory.getInputFormats();
+                Set<Format> inputSet = new HashSet<>(factory.getInputFormats());
                 if (inputSet.isEmpty()) throw new VVInitializerException("No input formats detected!");
                 
+                inputSet.removeIf(Format::isInternal);
                 inputs = inputSet.toArray(new Format[inputSet.size()]);
                 Arrays.sort(inputs);
             }

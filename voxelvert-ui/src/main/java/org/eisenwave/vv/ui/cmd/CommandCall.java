@@ -1,7 +1,6 @@
 package org.eisenwave.vv.ui.cmd;
 
 import org.eisenwave.vv.ui.fmtvert.Option;
-import org.intellij.lang.annotations.RegExp;
 import org.jetbrains.annotations.*;
 
 import java.util.*;
@@ -16,9 +15,8 @@ public class CommandCall {
     private final static Pattern REGEX_PARAM = Pattern.compile("^-+");
     
     private final List<String> args = new ArrayList<>();
-    private final Map<Option, String> kwargs = new HashMap<>();
-    
-    private final Set<Option> validKwArgs = new HashSet<>();
+    private final Map<String, String> kwargs = new HashMap<>();
+    private final Map<String, Option> options = new HashMap<>();
     
     private boolean strictOrder = false;
     private boolean strictParams = false;
@@ -39,7 +37,7 @@ public class CommandCall {
             if (matcher.find()) {
                 kwargsStart = true;
                 if (key != null)
-                    this.kwargs.put(key, null);
+                    this.put(key, null);
                 
                 key = arg.substring(matcher.end());
                 if (strictParams && !acceptsOption(key))
@@ -51,11 +49,11 @@ public class CommandCall {
                     if (kwargsStart && strictOrder)
                         throw new IllegalArgumentException("index and keyword args used out of order");
                     else
-                        this.args.add(arg);
+                        this.add(arg);
                 }
                 
                 else { // keyword argument
-                    kwargs.put(key, arg);
+                    this.put(key, arg);
                     key = null;
                 }
             }
@@ -63,7 +61,7 @@ public class CommandCall {
         }
         
         if (key != null)
-            kwargs.put(key, null);
+            this.put(key, null);
         
         return this;
     }
@@ -136,7 +134,7 @@ public class CommandCall {
      * @return all keyword arguments
      */
     @NotNull
-    public Map<Option, String> getKwArgs() {
+    public Map<String, String> getKwArgs() {
         return Collections.unmodifiableMap(kwargs);
     }
     
@@ -193,13 +191,14 @@ public class CommandCall {
         return kwargs.get(keyword);
     }
     
-    /**
+    /*
      * Returns the value of a parameter with a keyword matched by the given RegEx pattern.
      *
      * @param regex they regex pattern
      * @return the arguments for that keyword
      * @throws IllegalArgumentException if the call does not have the given keyword
-     */
+     *
+    @Deprecated
     @NotNull
     public String getMatch(@RegExp String regex) {
         Pattern pattern = Pattern.compile(regex);
@@ -211,6 +210,7 @@ public class CommandCall {
         
         throw new IllegalArgumentException(regex);
     }
+    */
     
     /**
      * Returns the value of a parameter with given keyword or a default fallback value.
@@ -236,10 +236,7 @@ public class CommandCall {
      * @see #isStrictParams()
      */
     public boolean acceptsOption(String keyword) {
-        for (String pattern : validKwArgs)
-            if (keyword.matches(pattern))
-                return true;
-        return false;
+        return options.containsKey(keyword);
     }
     
     /**
@@ -248,16 +245,17 @@ public class CommandCall {
      * @param keyword the keyword
      * @return whether the command was called with this keyword
      */
-    public boolean hasOption(String keyword) {
+    public boolean hasKeyword(String keyword) {
         return kwargs.containsKey(keyword);
     }
     
-    /**
+    /*
      * Returns whether the command call includes a keyword that matches the given RegEx pattern.
      *
      * @param keyword the keyword
      * @return whether the command was called with this keyword
-     */
+     *
+    @Deprecated
     public boolean matchKeyword(@RegExp String keyword) {
         Pattern pattern = Pattern.compile(keyword);
         
@@ -267,6 +265,7 @@ public class CommandCall {
         
         return false;
     }
+    */
     
     // MUTATORS
     
@@ -280,9 +279,20 @@ public class CommandCall {
         return this;
     }
     
-    public CommandCall addValidKwArgs(@NotNull Set<Option> params) {
-        this.validKwArgs.addAll(params);
+    public CommandCall addKeyword(@NotNull Option keyword) {
+        this.options.put(keyword.getId(), keyword);
+        for (String alias : keyword.getAliases())
+            this.options.put(alias, keyword);
         return this;
+    }
+    
+    private void add(String arg) {
+        this.args.add(arg);
+    }
+    
+    private void put(String keyword, String value) {
+        Option option = options.get(keyword);
+        kwargs.put(option == null? keyword : option.getId(), value);
     }
     
     // MISC

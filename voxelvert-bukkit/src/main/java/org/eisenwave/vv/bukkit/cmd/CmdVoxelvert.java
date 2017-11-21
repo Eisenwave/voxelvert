@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.eisenwave.vv.bukkit.VoxelVertPlugin;
 import org.eisenwave.vv.bukkit.gui.menu.ConvertMenu;
-import org.eisenwave.vv.bukkit.gui.old_menu.ConversionFormatChooserMenu;
 import org.eisenwave.vv.bukkit.gui.menu.FileBrowserMenu;
 import org.eisenwave.vv.bukkit.user.BukkitVoxelVert;
 import org.eisenwave.vv.bukkit.util.CommandUtil;
@@ -92,7 +91,7 @@ public class CmdVoxelvert implements CommandExecutor {
                 }
             }
             
-            Menu menu = new ConvertMenu(source, sourceFormat); //TODO create convert menu
+            Menu menu = new ConvertMenu(user, source, sourceFormat); //TODO create convert menu
             MenuManager.getInstance().startSession(player, menu);
             return true;
         }

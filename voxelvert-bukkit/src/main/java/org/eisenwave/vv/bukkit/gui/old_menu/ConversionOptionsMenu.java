@@ -32,7 +32,7 @@ public class ConversionOptionsMenu extends Menu {
         
         drawInfoButtons(in, out);
         drawLargeButtons();
-        drawParameterLayout(inFormat, outFormat);
+        //drawParameterLayout(inFormat, outFormat);
         
         if (this.optionsLayout.getPages() > 0) {
             drawPageButtons(this.optionsLayout.getPage());
@@ -52,6 +52,7 @@ public class ConversionOptionsMenu extends Menu {
         new LargeButtonWidget(this, BUTTON_CONFIRM_OFF, 2, 2, 8, 5).draw();
     }
     
+    /*
     private void drawParameterLayout(Format source, Format target) {
         Formatverter fv = FormatverterFactory.getInstance().fromFormats(source, target);
     
@@ -68,6 +69,7 @@ public class ConversionOptionsMenu extends Menu {
         this.optionsLayout = new PagedRowListLayout(this, widgets, 4);
         this.optionsLayout.draw();
     }
+    */
     
     private void drawPageButtons(int page) {
         if (page > 0)

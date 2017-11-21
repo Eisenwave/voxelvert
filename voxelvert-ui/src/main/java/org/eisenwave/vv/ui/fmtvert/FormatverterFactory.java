@@ -168,9 +168,9 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
-            boolean crop = args.containsKey("C") || args.containsKey("crop");
-            String d = args.get("d");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            boolean crop = args.containsKey(OPTION_CROP.getId());
+            String d = args.get(OPTION_DIRECTION.getId());
             Direction dir = parseDirection(d);
             Logger logger = verbose? user.getLogger() : null;
             
@@ -225,8 +225,8 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
-            boolean noAntiBleed = args.containsKey("no_anti_bleed");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            boolean noAntiBleed = args.containsKey(OPTION_NO_ANTI_BLEED.getId());
             Logger logger = verbose? user.getLogger() : null;
             
             VoxelArray voxels;
@@ -295,7 +295,7 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
             
             ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
@@ -340,7 +340,7 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
             
             ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
@@ -381,7 +381,7 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
             
             ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
@@ -419,7 +419,7 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
             
             ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
@@ -449,7 +449,7 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
             
             ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
@@ -523,8 +523,8 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
-            String d = args.get("d");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            String d = args.get(OPTION_DIRECTION.getId());
             Direction dir = parseDirection(d);
             //Logger logger = verbose? user.getLogger() : null;
             
@@ -563,8 +563,8 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
-            String d = args.get("d");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            String d = args.get(OPTION_DIRECTION.getId());
             Direction dir = parseDirection(d);
             //Logger logger = verbose? user.getLogger() : null;
             
@@ -607,9 +607,9 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
-            boolean crop = args.containsKey("C") || args.containsKey("crop");
-            String d = args.get("d");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            boolean crop = args.containsKey(OPTION_CROP.getId());
+            String d = args.get(OPTION_DIRECTION.getId());
             Direction dir = parseDirection(d);
             Logger logger = verbose? user.getLogger() : null;
             
@@ -645,8 +645,8 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
-            boolean noAntiBleed = args.containsKey("no_anti_bleed");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            boolean noAntiBleed = args.containsKey(OPTION_NO_ANTI_BLEED.getId());
             Logger logger = verbose? user.getLogger() : null;
             
             VoxelArray va = (VoxelArray) user.getInventory().load(Format.QEF, from);
@@ -700,12 +700,12 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
             
             VoxelArray va = (VoxelArray) user.getInventory().load(Format.QEF, from);
             set(1);
-    
+            
             assert va != null;
             QBModel qb = new CvVoxelArrayToQB().invoke(va);
             if (verbose) user.print(lang.get("to_qb.matrices"), qb.getMatrices().length);
@@ -733,7 +733,7 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
             
             VoxelArray va = (VoxelArray) user.getInventory().load(Format.QEF, from);
@@ -765,12 +765,12 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
             
             VoxelArray voxels = (VoxelArray) user.getInventory().load(Format.QEF, from);
             set(1);
-    
+            
             assert voxels != null;
             OBJModel obj = new CvVoxelArrayToOBJ().invoke(voxels);
             if (verbose) user.print(lang.get("to_wavefront.content"), obj.getVertexCount(), obj.getFaceCount());
@@ -803,9 +803,9 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
-            boolean crop = args.containsKey("C") || args.containsKey("crop");
-            String d = args.get("d");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            boolean crop = args.containsKey(OPTION_CROP.getId());
+            String d = args.get(OPTION_DIRECTION.getId());
             Direction dir = parseDirection(d);
             Logger logger = verbose? user.getLogger() : null;
             
@@ -813,7 +813,7 @@ public final class FormatverterFactory {
             
             QBModel qb = (QBModel) user.getInventory().load(Format.QB, from);
             set(1);
-    
+            
             assert qb != null;
             VoxelMesh vm = new CvQBToVoxelMesh().invoke(qb);
             set(2);
@@ -847,8 +847,8 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
-            boolean noAntiBleed = args.containsKey("no_anti_bleed");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            boolean noAntiBleed = args.containsKey(OPTION_NO_ANTI_BLEED.getId());
             Logger logger = verbose? user.getLogger() : null;
             
             final VoxelArray voxels;
@@ -914,7 +914,7 @@ public final class FormatverterFactory {
             
             QBModel model = (QBModel) user.getInventory().load(Format.QB, from);
             set(1);
-    
+            
             assert model != null;
             VoxelMesh vm = new CvQBToVoxelMesh().invoke(model);
             set(2);
@@ -944,12 +944,12 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
             
             QBModel model = (QBModel) user.getInventory().load(Format.QB, from);
             set(1);
-    
+            
             assert model != null;
             VoxelMesh vm = new CvQBToVoxelMesh().invoke(model);
             set(2);
@@ -983,12 +983,12 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
             
             QBModel model = (QBModel) user.getInventory().load(Format.QB, from);
             set(1);
-    
+            
             assert model != null;
             VoxelMesh vm = new CvQBToVoxelMesh().invoke(model);
             set(2);
@@ -1022,7 +1022,7 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
             
             BlockColorExtractor extractor = new DeserializerBCE().fromResource(getClass(), DEFAULT_BCE);
@@ -1072,9 +1072,9 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             Logger logger = verbose? user.getLogger() : null;
-            int res = Integer.parseInt(args.get("R"));
+            int res = Integer.parseInt(args.get(OPTION_RESOLUTION.getId()));
             
             if (verbose) user.print(lang.get("from_stl.canvas"), res, res, res);
             
@@ -1121,10 +1121,10 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
-            boolean noAntiBleed = args.containsKey("no_anti_bleed");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            boolean noAntiBleed = args.containsKey(OPTION_NO_ANTI_BLEED.getId());
             Logger logger = verbose? user.getLogger() : null;
-            int res = Integer.parseInt(args.get("R"));
+            int res = Integer.parseInt(args.get(OPTION_RESOLUTION.getId()));
             
             if (verbose) user.print(lang.get("from_stl.canvas"), res, res, res);
             
@@ -1194,9 +1194,9 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             Logger logger = verbose? user.getLogger() : null;
-            int res = Integer.parseInt(args.get("R"));
+            int res = Integer.parseInt(args.get(OPTION_RESOLUTION.getId()));
             
             if (verbose) user.print(lang.get("from_stl.canvas"), res, res, res);
             
@@ -1236,12 +1236,12 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
-            boolean crop = args.containsKey("C") || args.containsKey("crop");
-            String d = args.get("d");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            boolean crop = args.containsKey(OPTION_CROP.getId());
+            String d = args.get(OPTION_DIRECTION.getId());
             Direction dir = parseDirection(d);
             Logger logger = verbose? user.getLogger() : null;
-            int res = Integer.parseInt(args.get("R"));
+            int res = Integer.parseInt(args.get(OPTION_RESOLUTION.getId()));
             
             if (verbose) user.print(lang.get("from_wavefront.canvas"), res, res, res);
             
@@ -1301,10 +1301,10 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
-            boolean noAntiBleed = args.containsKey("no_anti_bleed");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            boolean noAntiBleed = args.containsKey(OPTION_NO_ANTI_BLEED.getId());
             Logger logger = verbose? user.getLogger() : null;
-            int res = Integer.parseInt(args.get("R"));
+            int res = Integer.parseInt(args.get(OPTION_RESOLUTION.getId()));
             
             if (verbose) user.print(lang.get("from_wavefront.canvas"), res, res, res);
             
@@ -1381,9 +1381,9 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             Logger logger = verbose? user.getLogger() : null;
-            int res = Integer.parseInt(args.get("R"));
+            int res = Integer.parseInt(args.get(OPTION_RESOLUTION.getId()));
             
             if (verbose) user.print(lang.get("from_wavefront.canvas"), res, res, res);
             
@@ -1437,9 +1437,9 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             Logger logger = verbose? user.getLogger() : null;
-            int res = Integer.parseInt(args.get("R"));
+            int res = Integer.parseInt(args.get(OPTION_RESOLUTION.getId()));
             
             if (verbose) user.print(lang.get("from_wavefront.canvas"), res, res, res);
             
@@ -1482,7 +1482,7 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
             
-            boolean verbose = args.containsKey("v") || args.containsKey("verbose");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
             
             OBJModel obj = (OBJModel) user.getInventory().load(Format.WAVEFRONT, from);

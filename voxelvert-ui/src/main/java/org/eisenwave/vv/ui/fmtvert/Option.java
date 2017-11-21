@@ -1,6 +1,9 @@
 package org.eisenwave.vv.ui.fmtvert;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Option {
     
@@ -27,6 +30,10 @@ public class Option {
             if (alias.equals(option))
                 return true;
         return false;
+    }
+    
+    public Set<String> getAliases() {
+        return new HashSet<>(Arrays.asList(aliases));
     }
     
     // MISC

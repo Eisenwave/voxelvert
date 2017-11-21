@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,11 @@ public final class ItemInitUtil {
     @NotNull
     public static ItemStack item(Material material, String name) {
         return item(material, 1, (short) 0, name, (List) null);
+    }
+    
+    @NotNull
+    public static ItemStack item(Material material, String name, List<String> lore) {
+        return item(material, 1, (short) 0, name, lore);
     }
     
     @NotNull
@@ -72,6 +78,39 @@ public final class ItemInitUtil {
         
         item.setItemMeta(meta);
         return item;
+    }
+    
+    public static ItemStack setLoreLines(ItemStack stack, String... lore) {
+        ItemMeta meta = stack.getItemMeta();
+        meta.setLore(Arrays.asList(lore));
+        stack.setItemMeta(meta);
+        return stack;
+    }
+    
+    public static ItemStack setLoreLines(ItemStack stack, String lore) {
+        ItemMeta meta = stack.getItemMeta();
+        meta.setLore(Collections.singletonList(lore));
+        stack.setItemMeta(meta);
+        return stack;
+    }
+    
+    public static ItemStack withLoreLines(ItemStack stack, String... lore) {
+        return setLoreLines(stack.clone(), lore);
+    }
+    
+    public static ItemStack withLoreLines(ItemStack stack, String lore) {
+        return setLoreLines(stack.clone(), lore);
+    }
+    
+    public static ItemStack setName(ItemStack stack, String name) {
+        ItemMeta meta = stack.getItemMeta();
+        meta.setDisplayName(name);
+        stack.setItemMeta(meta);
+        return stack;
+    }
+    
+    public static ItemStack withName(ItemStack stack, String name) {
+        return setName(stack.clone(), name);
     }
     
 }

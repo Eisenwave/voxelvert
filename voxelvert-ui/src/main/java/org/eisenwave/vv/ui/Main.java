@@ -23,7 +23,7 @@ public final class Main {
         CommandCall call = new CommandCall();
         call.setStrictOrder(true);
         call.setStrictKwArgs(true);
-        call.addValidKwArgs(cmd.getAcceptedOptions());
+        cmd.getAcceptedOptions().forEach(call::addKeyword);
         call.parse(args);
     
         try {

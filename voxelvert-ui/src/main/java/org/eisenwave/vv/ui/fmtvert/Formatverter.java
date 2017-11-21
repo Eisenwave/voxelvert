@@ -1,5 +1,6 @@
 package org.eisenwave.vv.ui.fmtvert;
 
+import net.grian.spatium.util.PrimArrays;
 import org.eisenwave.vv.ui.user.VVUser;
 
 import java.util.Map;
@@ -25,6 +26,10 @@ public abstract class Formatverter extends Progress {
      */
     public Option[] getOptionalOptions() {
         return new Option[0];
+    }
+    
+    public Option[] getAllOptions() {
+        return PrimArrays.concat(getMandatoryOptions(), getOptionalOptions());
     }
     
     @Override
