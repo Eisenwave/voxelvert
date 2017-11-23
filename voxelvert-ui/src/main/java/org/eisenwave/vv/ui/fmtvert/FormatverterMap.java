@@ -1,30 +1,32 @@
 package org.eisenwave.vv.ui.fmtvert;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class FormatverterMap {
     
-    private final Map<FmtversionKey, Formatverter> converters = new HashMap<>();
+    private final Map<FmtversionKey, Supplier<? extends Formatverter>> converters = new HashMap<>();
     
     public FormatverterMap() {}
     
-    public boolean put(@NotNull Format from, @NotNull Format to, Formatverter classverter) {
+    public boolean put(@NotNull Format from, @NotNull Format to, Supplier<? extends Formatverter> supplier) {
         FmtversionKey key = new FmtversionKey(from, to);
-        return converters.put(key, classverter) == null;
+        return converters.put(key, supplier) == null;
     }
     
+    @Nullable
     public Formatverter get(Format from, Format to) {
         FmtversionKey key = new FmtversionKey(from, to);
-        return converters.get(key);
+        Supplier<? extends Formatverter> supplier = converters.get(key);
+        return supplier == null? null : supplier.get();
     }
     
-    public Formatverter[] getFormatverters() {
-        Collection<Formatverter> result = converters.values();
-        
-        return result.toArray(new Formatverter[result.size()]);
+    public Collection<Formatverter> getFormatverters() {
+        return converters.values().stream().map(Supplier::get).collect(Collectors.toSet());
     }
     
     public Format[] getOutputFormats(Format input) {

@@ -11,19 +11,19 @@ public class FormatverterInjector {
     
     public static void inject(FormatverterFactory factory) {
         factory.put(BLOCKS_FORMAT, IMAGE,
-            new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, IMAGE)));
+            () -> new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, IMAGE)));
         factory.put(BLOCKS_FORMAT, MODEL,
-            new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, MODEL)));
+            () -> new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, MODEL)));
         factory.put(BLOCKS_FORMAT, QB,
-            new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, QB)));
+            () -> new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, QB)));
         factory.put(BLOCKS_FORMAT, QEF,
-            new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, QEF)));
+            () -> new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, QEF)));
         factory.put(BLOCKS_FORMAT, SCHEMATIC,
-            new InventoryFormatverter(BLOCKS_FORMAT, SCHEMATIC));
+            () -> new InventoryFormatverter(BLOCKS_FORMAT, SCHEMATIC));
         factory.put(BLOCKS_FORMAT, STL,
-            new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, STL)));
+            () -> new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, STL)));
         factory.put(BLOCKS_FORMAT, WAVEFRONT,
-            new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, WAVEFRONT)));
+            () -> new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, WAVEFRONT)));
         /*
         factory.put(BLOCKS_FORMAT, Format.IMAGE, new FV_BLOCKS_IMAGE());
         factory.put(BLOCKS_FORMAT, Format.MODEL, new FV_BLOCKS_MODEL());

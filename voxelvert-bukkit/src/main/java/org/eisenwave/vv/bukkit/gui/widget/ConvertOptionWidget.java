@@ -25,6 +25,7 @@ public class ConvertOptionWidget extends ViewGroup<View> {
         ITEM_CROP = ItemInitUtil.item(Material.SHEARS, ChatColor.RESET + "Crop", "&8-C"),
         ITEM_UNKNOWN = ItemInitUtil.item(Material.STRUCTURE_VOID, ChatColor.RESET + "???");
     
+    private final String option;
     private final ItemStack optionDisplay;
     
     @Nullable
@@ -32,6 +33,7 @@ public class ConvertOptionWidget extends ViewGroup<View> {
     
     public ConvertOptionWidget(ConvertMenu menu, @NotNull String option) {
         super(menu, new ViewSize(ViewSize.MATCH_PARENT, 1, false, false));
+        this.option = option;
         
         switch (option) {
             case "R":
@@ -51,7 +53,7 @@ public class ConvertOptionWidget extends ViewGroup<View> {
                 initFlagOption();
                 break;
             default:
-                optionDisplay = ItemInitUtil.withLoreLines(ITEM_UNKNOWN, ChatColor.DARK_GRAY+"-"+option);
+                optionDisplay = ItemInitUtil.withLore(ITEM_UNKNOWN, ChatColor.DARK_GRAY+"-"+option);
         }
     
         initDisplay();
@@ -100,6 +102,7 @@ public class ConvertOptionWidget extends ViewGroup<View> {
             });
         
             if (first) {
+                value = str;
                 button.setChecked(true);
                 first = false;
             }
@@ -118,6 +121,10 @@ public class ConvertOptionWidget extends ViewGroup<View> {
     @Override
     public ConvertMenu getMenu() {
         return (ConvertMenu) super.getMenu();
+    }
+    
+    public String getOption() {
+        return option;
     }
     
     /**

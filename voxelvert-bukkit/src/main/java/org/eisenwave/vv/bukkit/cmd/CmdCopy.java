@@ -55,7 +55,7 @@ public class CmdCopy implements CommandExecutor {
         
         VVInventory inventory = user.getInventory();
         
-        if (!inventory.contains(null, source)) {
+        if (!inventory.contains(source)) {
             user.error(lang.get("cmd.copy.err.missing"), source);
             return true;
         }

@@ -6,7 +6,6 @@ import org.eisenwave.vv.ui.fmtvert.*;
 import org.eisenwave.vv.ui.user.VVInventory;
 import org.eisenwave.vv.ui.user.VVInventoryVariable;
 import org.eisenwave.vv.ui.user.VVUser;
-import org.intellij.lang.annotations.RegExp;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -128,14 +127,14 @@ public class FormatverterInitializer implements VVInitializer {
         
         if (outType.isFile() && inv.getFile(output).exists() && !inv.getFile(output).canWrite())
             throw new VVInitializerException(lang.get("main.err.file_unwritable", output));
-        
-        if (!inv.contains(inType, input))
+    
+        if (!inv.contains(input))
             throw new VVInitializerException("input %s does not exist", input);
         
         {
             final boolean override = args.hasKeyword(OPTION_REPLACE.getId());
-            
-            if (inv.contains(outType, output) && !override) {
+    
+            if (inv.contains(output) && !override) {
                 throw new VVInitializerException(lang.get("main.err.overwrite"));
             }
         }

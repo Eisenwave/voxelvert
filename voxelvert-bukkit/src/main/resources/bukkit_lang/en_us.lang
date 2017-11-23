@@ -82,6 +82,9 @@ format.stl = STL
 format.wavefront = Wavefront Object
 format.resource_pack = Resource Pack
 format.model = Minecraft Model
+format.colors = Block Color Table
+format.schematic = Schematic
+format.copy = (Copy)
 
 ##############################
 # IMPORTED FROM VOXELVERT-UI #

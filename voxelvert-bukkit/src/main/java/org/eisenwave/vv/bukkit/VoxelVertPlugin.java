@@ -19,6 +19,8 @@ import java.io.IOException;
 
 public class VoxelVertPlugin extends JavaPlugin {
     
+    private static VoxelVertPlugin instance;
+    
     private WorldEditPlugin worldEditPlugin;
     private BukkitVoxelVert voxelVert;
     private VoxelVertConfig config;
@@ -27,6 +29,12 @@ public class VoxelVertPlugin extends JavaPlugin {
     private Thread conversionThread;
     
     // ENABLE & DISABLE
+    
+    
+    @Override
+    public void onLoad() {
+        instance = this;
+    }
     
     @Override
     public void onEnable() {
@@ -43,7 +51,7 @@ public class VoxelVertPlugin extends JavaPlugin {
             return;
         }
         
-        this.conversionThread = this.voxelVert.initConversion();
+        this.conversionThread = this.voxelVert.startConversionThread();
         this.saveDefaultConfig();
     
         FormatverterInjector.inject(FormatverterFactory.getInstance());
@@ -108,6 +116,11 @@ public class VoxelVertPlugin extends JavaPlugin {
     }
     
     // GETTERS
+    
+    
+    public static VoxelVertPlugin getInstance() {
+        return instance;
+    }
     
     @NotNull
     public Thread getConverterThread() {

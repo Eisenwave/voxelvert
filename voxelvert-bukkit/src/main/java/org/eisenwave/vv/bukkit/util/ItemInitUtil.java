@@ -80,26 +80,37 @@ public final class ItemInitUtil {
         return item;
     }
     
-    public static ItemStack setLoreLines(ItemStack stack, String... lore) {
+    public static ItemStack setInlineLore(ItemStack stack, String lore) {
+        ItemMeta meta = stack.getItemMeta();
+        meta.setLore(decodeInlineLore(lore));
+        stack.setItemMeta(meta);
+        return stack;
+    }
+    
+    public static ItemStack setLore(ItemStack stack, String... lore) {
         ItemMeta meta = stack.getItemMeta();
         meta.setLore(Arrays.asList(lore));
         stack.setItemMeta(meta);
         return stack;
     }
     
-    public static ItemStack setLoreLines(ItemStack stack, String lore) {
+    public static ItemStack setLore(ItemStack stack, String lore) {
         ItemMeta meta = stack.getItemMeta();
         meta.setLore(Collections.singletonList(lore));
         stack.setItemMeta(meta);
         return stack;
     }
     
-    public static ItemStack withLoreLines(ItemStack stack, String... lore) {
-        return setLoreLines(stack.clone(), lore);
+    public static ItemStack withInlineLore(ItemStack stack, String lore) {
+        return setInlineLore(stack.clone(), lore);
     }
     
-    public static ItemStack withLoreLines(ItemStack stack, String lore) {
-        return setLoreLines(stack.clone(), lore);
+    public static ItemStack withLore(ItemStack stack, String... lore) {
+        return setLore(stack.clone(), lore);
+    }
+    
+    public static ItemStack withLore(ItemStack stack, String lore) {
+        return setLore(stack.clone(), lore);
     }
     
     public static ItemStack setName(ItemStack stack, String name) {
@@ -111,6 +122,18 @@ public final class ItemInitUtil {
     
     public static ItemStack withName(ItemStack stack, String name) {
         return setName(stack.clone(), name);
+    }
+    
+    public static List<String> decodeInlineLore(String lore) {
+        return Arrays.stream(lore.split("\n"))
+            .map(str -> ChatColor.translateAlternateColorCodes('&', str))
+            .collect(Collectors.toList());
+    }
+    
+    public static List<String> decodeLore(String... lore) {
+        return Arrays.stream(lore)
+            .map(str -> ChatColor.translateAlternateColorCodes('&', str))
+            .collect(Collectors.toList());
     }
     
 }

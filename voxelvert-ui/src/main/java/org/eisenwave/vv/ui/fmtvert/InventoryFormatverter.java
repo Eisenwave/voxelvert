@@ -83,4 +83,11 @@ public class InventoryFormatverter extends Formatverter {
         set(getMaxProgress());
     }
     
+    // MISC
+    
+    @Override
+    public Formatverter clone() {
+        return new InventoryFormatverter(sourceFormat, targetFormat, handle);
+    }
+    
 }

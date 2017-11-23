@@ -31,4 +31,9 @@ public class CopyFormatverter extends Formatverter {
         set(1);
     }
     
+    @Override
+    public Formatverter clone() {
+        return new CopyFormatverter();
+    }
+    
 }

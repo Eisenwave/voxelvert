@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipFile;
@@ -61,54 +62,54 @@ public final class FormatverterFactory {
     private final FormatverterMap map = new FormatverterMap();
     
     public FormatverterFactory() {
-        map.put(BLOCK_ARRAY, IMAGE, new FV_BA_IMAGE());
-        map.put(BLOCK_ARRAY, MODEL, new FV_BA_MODEL());
-        map.put(BLOCK_ARRAY, QB, new FV_BA_QB());
-        map.put(BLOCK_ARRAY, QEF, new FV_BA_QEF());
-        map.put(BLOCK_ARRAY, STL, new FV_BA_STL());
-        map.put(BLOCK_ARRAY, SCHEMATIC, new FV_BA_SCHEMATIC());
-        map.put(BLOCK_ARRAY, WAVEFRONT, new FV_BA_WAVEFRONT());
+        put(BLOCK_ARRAY, IMAGE, FV_BA_IMAGE::new);
+        put(BLOCK_ARRAY, MODEL, FV_BA_MODEL::new);
+        put(BLOCK_ARRAY, QB, FV_BA_QB::new);
+        put(BLOCK_ARRAY, QEF, FV_BA_QEF::new);
+        put(BLOCK_ARRAY, STL, FV_BA_STL::new);
+        put(BLOCK_ARRAY, SCHEMATIC, FV_BA_SCHEMATIC::new);
+        put(BLOCK_ARRAY, WAVEFRONT, FV_BA_WAVEFRONT::new);
         
-        map.put(IMAGE, IMAGE, new FV_IMAGE_IMAGE());
-        map.put(IMAGE, QEF, new FV_IMAGE_QEF());
-        map.put(IMAGE, QB, new FV_IMAGE_QB());
+        put(IMAGE, IMAGE, FV_IMAGE_IMAGE::new);
+        put(IMAGE, QEF, FV_IMAGE_QEF::new);
+        put(IMAGE, QB, FV_IMAGE_QB::new);
         
-        map.put(QB, IMAGE, new FV_QB_IMAGE());
-        map.put(QB, MODEL, new FV_QB_MODEL());
-        map.put(QB, QB, new CopyFormatverter());
-        map.put(QB, QEF, new FV_QB_QEF());
-        map.put(QB, STL, new FV_QB_STL());
-        map.put(QB, WAVEFRONT, new FV_QB_WAVEFRONT());
+        put(QB, IMAGE, FV_QB_IMAGE::new);
+        put(QB, MODEL, FV_QB_MODEL::new);
+        put(QB, QB, CopyFormatverter::new);
+        put(QB, QEF, FV_QB_QEF::new);
+        put(QB, STL, FV_QB_STL::new);
+        put(QB, WAVEFRONT, FV_QB_WAVEFRONT::new);
         
-        map.put(QEF, IMAGE, new FV_QEF_IMAGE());
-        map.put(QEF, MODEL, new FV_QEF_MODEL());
-        map.put(QEF, QB, new FV_QEF_QB());
-        map.put(QEF, QEF, new CopyFormatverter());
-        map.put(QEF, STL, new FV_QEF_STL());
-        map.put(QEF, WAVEFRONT, new FV_QEF_WAVEFRONT());
+        put(QEF, IMAGE, FV_QEF_IMAGE::new);
+        put(QEF, MODEL, FV_QEF_MODEL::new);
+        put(QEF, QB, FV_QEF_QB::new);
+        put(QEF, QEF, CopyFormatverter::new);
+        put(QEF, STL, FV_QEF_STL::new);
+        put(QEF, WAVEFRONT, FV_QEF_WAVEFRONT::new);
         
-        map.put(RESOURCE_PACK, BLOCK_COLOR_TABLE, new FV_RP_COLORS());
-        map.put(RESOURCE_PACK, RESOURCE_PACK, new CopyFormatverter());
+        put(RESOURCE_PACK, BLOCK_COLOR_TABLE, FV_RP_COLORS::new);
+        put(RESOURCE_PACK, RESOURCE_PACK, CopyFormatverter::new);
         
-        map.put(SCHEMATIC, IMAGE, new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY, new FV_BA_IMAGE()));
-        map.put(SCHEMATIC, MODEL, new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY, new FV_BA_MODEL()));
-        map.put(SCHEMATIC, QB, new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY, new FV_BA_QB()));
-        map.put(SCHEMATIC, QEF, new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY, new FV_BA_QEF()));
-        map.put(SCHEMATIC, SCHEMATIC, new CopyFormatverter());
-        map.put(SCHEMATIC, STL, new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY, new FV_BA_STL()));
-        map.put(SCHEMATIC, WAVEFRONT, new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY, new FV_BA_STL()));
+        put(SCHEMATIC, IMAGE, () -> new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY, new FV_BA_IMAGE()));
+        put(SCHEMATIC, MODEL, () -> new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY, new FV_BA_MODEL()));
+        put(SCHEMATIC, QB, () -> new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY, new FV_BA_QB()));
+        put(SCHEMATIC, QEF, () -> new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY, new FV_BA_QEF()));
+        put(SCHEMATIC, SCHEMATIC, CopyFormatverter::new);
+        put(SCHEMATIC, STL, () -> new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY, new FV_BA_STL()));
+        put(SCHEMATIC, WAVEFRONT, () -> new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY, new FV_BA_STL()));
         
-        map.put(STL, MODEL, new FV_STL_MODEL());
-        map.put(STL, QEF, new FV_STL_QEF());
-        map.put(STL, QB, new FV_STL_QB());
-        map.put(STL, STL, new CopyFormatverter());
+        put(STL, MODEL, FV_STL_MODEL::new);
+        put(STL, QEF, FV_STL_QEF::new);
+        put(STL, QB, FV_STL_QB::new);
+        put(STL, STL, CopyFormatverter::new);
         
-        map.put(WAVEFRONT, IMAGE, new FV_WAVEFRONT_IMAGE());
-        map.put(WAVEFRONT, MODEL, new FV_WAVEFRONT_MODEL());
-        map.put(WAVEFRONT, QB, new FV_WAVEFRONT_QB());
-        map.put(WAVEFRONT, QEF, new FV_WAVEFRONT_QEF());
-        map.put(WAVEFRONT, STL, new FV_WAVEFRONT_STL());
-        map.put(WAVEFRONT, WAVEFRONT, new CopyFormatverter());
+        put(WAVEFRONT, IMAGE, FV_WAVEFRONT_IMAGE::new);
+        put(WAVEFRONT, MODEL, FV_WAVEFRONT_MODEL::new);
+        put(WAVEFRONT, QB, FV_WAVEFRONT_QB::new);
+        put(WAVEFRONT, QEF, FV_WAVEFRONT_QEF::new);
+        put(WAVEFRONT, STL, FV_WAVEFRONT_STL::new);
+        put(WAVEFRONT, WAVEFRONT, CopyFormatverter::new);
     }
     
     // GETTERS
@@ -125,7 +126,7 @@ public final class FormatverterFactory {
         return map.targetSet();
     }
     
-    public Formatverter[] getFormatverters() {
+    public Collection<Formatverter> getFormatverters() {
         return map.getFormatverters();
     }
     
@@ -139,8 +140,9 @@ public final class FormatverterFactory {
     
     // MUTATORS
     
-    public boolean put(@NotNull Format input, @NotNull Format output, @NotNull Formatverter fmtverter) {
-        return map.put(input, output, fmtverter);
+    public boolean put(@NotNull Format input, @NotNull Format output,
+                       @NotNull Supplier<? extends Formatverter> supplier) {
+        return map.put(input, output, supplier);
     }
     
     // FIRST ORDER FORMATVERTERS

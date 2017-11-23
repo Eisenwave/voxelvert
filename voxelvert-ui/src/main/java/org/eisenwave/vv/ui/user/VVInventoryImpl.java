@@ -69,7 +69,6 @@ public class VVInventoryImpl implements VVInventory {
         return variables.get(id);
     }
     
-    @Override
     public boolean contains(@Nullable Format format, @NotNull String name) {
         if (hasVariable(name)) {
             VVInventoryVariable var = getVariable(name);
@@ -82,6 +81,16 @@ public class VVInventoryImpl implements VVInventory {
             return storage.containsKey(name);
         else
             return new File(dir, name).exists();
+    }
+    
+    @Override
+    public boolean contains(@NotNull String name) {
+        if (hasVariable(name)) {
+            VVInventoryVariable var = getVariable(name);
+            assert var != null;
+            return var.isSet();
+        }
+        return storage.containsKey(name) || new File(dir, name).exists();
     }
     
     @Override

@@ -86,7 +86,7 @@ public interface VVInventory {
      * @param name the name
      * @return whether the inventory contains the object
      */
-    abstract boolean contains(@Nullable Format format, @NotNull String name);
+    abstract boolean contains(@NotNull String name);
     
     // FILE OPERATIONS
     

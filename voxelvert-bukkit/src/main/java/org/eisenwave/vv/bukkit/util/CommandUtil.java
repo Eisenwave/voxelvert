@@ -86,4 +86,12 @@ public final class CommandUtil {
         return index < 0? null : file.substring(index + 1);
     }
     
+    @NotNull
+    public static String[] nameAndExtensionOf(String file) {
+        int index = file.lastIndexOf('.');
+        return index < 0?
+            new String[] {file} :
+            new String[] {file.substring(0, index), file.substring(index+1)};
+    }
+    
 }

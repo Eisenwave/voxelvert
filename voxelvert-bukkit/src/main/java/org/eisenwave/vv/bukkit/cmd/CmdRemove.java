@@ -51,8 +51,8 @@ public class CmdRemove implements CommandExecutor {
         }
         
         VVInventory inventory = user.getInventory();
-        
-        if (!inventory.contains(null, file))
+    
+        if (!inventory.contains(file))
             user.error(lang.get("cmd.remove.err.missing"), file);
         else if (inventory.delete(file))
             user.print(lang.get("cmd.remove.success"), file);

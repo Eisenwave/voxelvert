@@ -55,7 +55,7 @@ public class CmdMove implements CommandExecutor {
         
         VVInventory inventory = user.getInventory();
         
-        if (!inventory.contains(null, source)) {
+        if (!inventory.contains(source)) {
             user.error(lang.get("cmd.move.err.missing"), source);
             return true;
         }
