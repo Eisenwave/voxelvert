@@ -31,7 +31,7 @@ public class CachedBlockScanner implements BlockScanner {
             return new WorldBlockStructure(world, box);
         }
     
-        Bukkit.broadcastMessage(box.toString());
+        //Bukkit.broadcastMessage(box.toString());
         Callable<BlockStructure> callable = () -> {
             BlockStructure worldStruct = new WorldBlockStructure(world, box);
             BlockStructure resultStruct = new ArrayBlockStructure(box.getSizeX(), box.getSizeY(), box.getSizeZ());

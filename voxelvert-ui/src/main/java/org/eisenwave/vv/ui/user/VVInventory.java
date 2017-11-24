@@ -55,7 +55,8 @@ public interface VVInventory {
         result.addAll(getVariableNames());
         
         File[] files = getDirectory().listFiles();
-        assert files != null;
+        if (files == null)
+            throw new IllegalStateException("couldn't list files in user directory: " + getDirectory());
     
         for (File file : files)
             result.add(file.getName() + (file.isDirectory()? "/" : ""));

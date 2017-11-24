@@ -66,7 +66,7 @@ public class FileBrowserMenu extends Menu {
     private void initNavigator() {
         Pane separatorPane = new Pane(this, null);
         separatorPane.setItem(ItemInitUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " "));
-        separatorPane.setPosition(5, 5);
+        separatorPane.setPosition(5, ViewSize.MAX_POS);
         getContentPane().addChild(separatorPane);
         
         if (fileList.getLength() > fileList.getArea()) {
@@ -76,8 +76,7 @@ public class FileBrowserMenu extends Menu {
             separatorPane.setSize(1, 1);
         }
         else {
-            separatorPane.setPosition(5, ViewSize.MAX_POS);
-            separatorPane.setSize(1, ViewSize.MATCH_PARENT);
+            separatorPane.setSize(ViewSize.MATCH_PARENT, 1);
         }
     }
     

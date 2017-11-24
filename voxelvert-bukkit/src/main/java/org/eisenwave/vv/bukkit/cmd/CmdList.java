@@ -5,13 +5,18 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.eisenwave.vv.bukkit.VoxelVertPlugin;
+import org.eisenwave.vv.bukkit.gui.FileBrowserEntry;
 import org.eisenwave.vv.bukkit.gui.FileType;
 import org.eisenwave.vv.bukkit.user.BukkitVoxelVert;
 import org.eisenwave.vv.bukkit.util.CommandUtil;
+import org.eisenwave.vv.ui.user.VVInventory;
+import org.eisenwave.vv.ui.user.VVInventoryVariable;
 import org.eisenwave.vv.ui.user.VVUser;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class CmdList implements CommandExecutor {
     
@@ -34,19 +39,27 @@ public class CmdList implements CommandExecutor {
         
         StringBuilder builder = new StringBuilder("List of files and directories:\n");
         boolean first = true;
-        
-        for (String file : user.getInventory().list()) {
-            if (file.startsWith(".")) {
-                //builder.append(ChatColor.DARK_GRAY);
-                continue;
-            }
+    
+        VVInventory inventory = user.getInventory();
+    
+        List<FileBrowserEntry> entries = inventory.list().stream()
+            .map(FileBrowserEntry::new)
+            .filter(entry -> !entry.isHidden())
+            .filter(entry -> {
+                if (!entry.isVariable()) return true;
+                VVInventoryVariable var = inventory.getVariable(entry.getName());
+                return var != null && var.isSet();
+            })
+            .collect(Collectors.toList());
+    
+        entries.sort(null);
+    
+        for (FileBrowserEntry entry : entries) {
             if (first) first = false;
-            else builder.append('\n');
-            
-            FileType type = FileType.fromPath(file);
-            if (type != null) builder.append(type.getPrefix());
-            
-            builder.append(file).append(ChatColor.RESET);
+            else builder.append("\n");
+            builder
+                .append(ChatColor.RESET)
+                .append(entry.getDisplayName(true));
         }
         
         user.print(builder.toString());

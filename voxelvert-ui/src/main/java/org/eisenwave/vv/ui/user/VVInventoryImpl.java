@@ -40,6 +40,9 @@ public class VVInventoryImpl implements VVInventory {
     public VVInventoryImpl(@NotNull VVUser owner, @NotNull File directory) {
         this.owner = owner;
         this.dir = directory;
+    
+        if (!directory.exists() && !directory.mkdirs())
+            throw new IllegalArgumentException(directory + "doesn't exist and couldn't be created");
     }
     
     @NotNull
@@ -160,21 +163,24 @@ public class VVInventoryImpl implements VVInventory {
                 if (!storage.containsKey(name)) return null;
                 Object obj = storage.get(name);
                 if (obj instanceof BlockStructure) return obj;
-                else throw new IOException("stored object \""+name+"\" must be a "+BlockStructure.class.getSimpleName());
+                else
+                    throw new IOException("stored object \"" + name + "\" must be a " + BlockStructure.class.getSimpleName());
             }
     
             case "voxel_array": {
                 if (!storage.containsKey(name)) return null;
                 Object obj = storage.get(name);
                 if (obj instanceof VoxelArray) return obj;
-                else throw new IOException("stored object \""+name+"\" must be a "+VoxelArray.class.getSimpleName());
+                else
+                    throw new IOException("stored object \"" + name + "\" must be a " + VoxelArray.class.getSimpleName());
             }
     
             case "voxel_mesh": {
                 if (!storage.containsKey(name)) return null;
                 Object obj = storage.get(name);
                 if (obj instanceof VoxelMesh) return obj;
-                else throw new IOException("stored object \""+name+"\" must be a "+VoxelMesh.class.getSimpleName());
+                else
+                    throw new IOException("stored object \"" + name + "\" must be a " + VoxelMesh.class.getSimpleName());
             }
             
             default: return null;
@@ -203,7 +209,7 @@ public class VVInventoryImpl implements VVInventory {
                     new SerializerBCT().toFile((BlockColorTable) object, file);
                     return true;
                 }
-                else throw new IOException("object must be a "+BlockColorTable.class.getSimpleName());
+                else throw new IOException("object must be a " + BlockColorTable.class.getSimpleName());
             }
     
             case "model": {
@@ -212,7 +218,7 @@ public class VVInventoryImpl implements VVInventory {
                     new SerializerMCModelZip().toFile((MCModel) object, file);
                     return true;
                 }
-                else throw new IOException("object must be a "+MCModel.class.getSimpleName());
+                else throw new IOException("object must be a " + MCModel.class.getSimpleName());
             }
             
             case "qef": {
@@ -221,7 +227,7 @@ public class VVInventoryImpl implements VVInventory {
                     new SerializerQEF().toFile((VoxelArray) object, file);
                     return true;
                 }
-                else throw new IOException("object must be a "+VoxelArray.class.getSimpleName());
+                else throw new IOException("object must be a " + VoxelArray.class.getSimpleName());
             }
     
             case "qb": {
@@ -230,7 +236,7 @@ public class VVInventoryImpl implements VVInventory {
                     new SerializerQB().toFile((QBModel) object, file);
                     return true;
                 }
-                else throw new IOException("object must be a "+VoxelArray.class.getSimpleName());
+                else throw new IOException("object must be a " + VoxelArray.class.getSimpleName());
             }
     
             case "schematic": {
@@ -239,7 +245,7 @@ public class VVInventoryImpl implements VVInventory {
                     new SerializerSchematicBlocks().toFile((BlockStructure) object, file);
                     return true;
                 }
-                else throw new IOException("object must be a "+BlockStructure.class.getSimpleName());
+                else throw new IOException("object must be a " + BlockStructure.class.getSimpleName());
             }
             
             case "stl": {
@@ -248,7 +254,7 @@ public class VVInventoryImpl implements VVInventory {
                     new SerializerSTL().toFile((STLModel) object, file);
                     return true;
                 }
-                else throw new IOException("object must be a "+STLModel.class.getSimpleName());
+                else throw new IOException("object must be a " + STLModel.class.getSimpleName());
             }
             
             case "wavefront": {
@@ -273,7 +279,7 @@ public class VVInventoryImpl implements VVInventory {
                     
                     return true;
                 }
-                else throw new IOException("object must be a "+OBJModel.class.getSimpleName());
+                else throw new IOException("object must be a " + OBJModel.class.getSimpleName());
             }
     
             case "image": {
@@ -287,7 +293,7 @@ public class VVInventoryImpl implements VVInventory {
                     writeImageByExtension(Texture.wrapOrCopy((BufferedImage) object), file);
                     return true;
                 }
-                else throw new IOException("object must be a "+Texture.class.getSimpleName());
+                else throw new IOException("object must be a " + Texture.class.getSimpleName());
             }
             
             case "block_array": {
@@ -295,7 +301,7 @@ public class VVInventoryImpl implements VVInventory {
                     storage.put(name, object);
                     return true;
                 }
-                else throw new IOException("object must be a "+BlockStructure.class.getSimpleName());
+                else throw new IOException("object must be a " + BlockStructure.class.getSimpleName());
             }
             
             case "voxel_array": {
@@ -303,7 +309,7 @@ public class VVInventoryImpl implements VVInventory {
                     storage.put(name, object);
                     return true;
                 }
-                else throw new IOException("object must be a "+VoxelArray.class.getSimpleName());
+                else throw new IOException("object must be a " + VoxelArray.class.getSimpleName());
             }
     
             case "voxel_mesh": {
@@ -311,7 +317,7 @@ public class VVInventoryImpl implements VVInventory {
                     storage.put(name, object);
                     return true;
                 }
-                else throw new IOException("object must be a "+VoxelMesh.class.getSimpleName());
+                else throw new IOException("object must be a " + VoxelMesh.class.getSimpleName());
             }
             
             default: return false;
@@ -377,9 +383,9 @@ public class VVInventoryImpl implements VVInventory {
     private static void writeImageByExtension(Texture image, File file) throws IOException {
         String ext = file.getName();
         int index = ext.lastIndexOf('.');
-        if (index < 0) throw new IOException("can't recognize file extension of "+file);
-        
-        ext = ext.substring(index+1);
+        if (index < 0) throw new IOException("can't recognize file extension of " + file);
+    
+        ext = ext.substring(index + 1);
         ImageIO.write(image.getImageWrapper(), ext, file);
     }
     
