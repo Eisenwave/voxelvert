@@ -8,7 +8,7 @@ import net.grian.spatium.enums.Face;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.eisenwave.vv.bukkit.util.ItemInitUtil;
+import eisenwave.inv.util.ItemInitUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 public class ConvertOptionWidget extends ViewGroup<View> {
     
     private final static ItemStack
-        ITEM_RESOLUTION = ItemInitUtil.item(Material.MOB_SPAWNER, ChatColor.RESET + "Resolution", "&8-R"),
-        ITEM_DIRECTION = ItemInitUtil.item(Material.COMPASS, ChatColor.RESET + "Direction", "&8-d"),
-        ITEM_VERBOSITY = ItemInitUtil.item(Material.JUKEBOX, ChatColor.RESET + "Verbosity", "&8-v"),
-        ITEM_CROP = ItemInitUtil.item(Material.SHEARS, ChatColor.RESET + "Crop", "&8-C"),
-        ITEM_UNKNOWN = ItemInitUtil.item(Material.STRUCTURE_VOID, ChatColor.RESET + "???");
+        ITEM_RESOLUTION = ItemInitUtil.create(Material.MOB_SPAWNER, ChatColor.RESET + "Resolution", "&8-R"),
+        ITEM_DIRECTION = ItemInitUtil.create(Material.COMPASS, ChatColor.RESET + "Direction", "&8-d"),
+        ITEM_VERBOSITY = ItemInitUtil.create(Material.JUKEBOX, ChatColor.RESET + "Verbosity", "&8-v"),
+        ITEM_CROP = ItemInitUtil.create(Material.SHEARS, ChatColor.RESET + "Crop", "&8-C"),
+        ITEM_UNKNOWN = ItemInitUtil.create(Material.STRUCTURE_VOID, ChatColor.RESET + "???");
     
     private final String option;
     private final ItemStack optionDisplay;

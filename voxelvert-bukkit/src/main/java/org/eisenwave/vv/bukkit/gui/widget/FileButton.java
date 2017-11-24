@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.eisenwave.vv.bukkit.gui.*;
 import org.eisenwave.vv.bukkit.gui.menu.FileBrowserMenu;
 import org.eisenwave.vv.bukkit.util.CommandUtil;
-import org.eisenwave.vv.bukkit.util.ItemInitUtil;
+import eisenwave.inv.util.ItemInitUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.attribute.BasicFileAttributes;
@@ -36,7 +36,7 @@ public class FileButton extends RadioButton {
             }
         }
         
-        ItemStack unchecked = ItemInitUtil.item(type.getIcon(), 1, (short) 0,
+        ItemStack unchecked = ItemInitUtil.create(type.getIcon(), 1, (short) 0,
             ChatColor.RESET + entry.getDisplayName(true),
             lore);
         this.setUncheckedItem(unchecked);

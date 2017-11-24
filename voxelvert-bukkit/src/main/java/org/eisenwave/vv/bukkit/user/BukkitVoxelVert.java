@@ -33,7 +33,7 @@ public class BukkitVoxelVert implements VoxelVert {
         return queue;
     }
     
-    public Thread initConversion() {
+    public Thread startConversionThread() {
         Thread thread = new Thread(() -> {
             while (true) {
                 
@@ -44,7 +44,8 @@ public class BukkitVoxelVert implements VoxelVert {
                     } catch (Exception ex) {
                         String cls = ex.getClass().getSimpleName();
                         String msg = ex.getMessage();
-                        task.getUser().error("Error: %s: \"%s\"", cls, msg);
+                        task.getUser().error("Convert-Error: %s: \"%s\"", cls, msg);
+                        ex.printStackTrace();
                     }
                 }
                 

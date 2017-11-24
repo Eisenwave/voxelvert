@@ -1,15 +1,10 @@
 package org.eisenwave.vv.ui.cmd;
 
-import org.eisenwave.vv.ui.fmtvert.Format;
-import org.eisenwave.vv.ui.fmtvert.Formatverter;
-import org.eisenwave.vv.ui.fmtvert.Progress;
-import org.eisenwave.vv.ui.fmtvert.ProgressListener;
+import org.eisenwave.vv.ui.fmtvert.*;
 import org.eisenwave.vv.ui.user.VVUser;
 
-import java.util.Collection;
-import java.util.HashSet;
 
-public abstract class VoxelVertTask extends Progress implements Runnable {
+public abstract class VoxelVertTask extends Progress {
     
     protected final VVUser user;
     protected final Format sourceFormat, targetFormat;
@@ -22,6 +17,8 @@ public abstract class VoxelVertTask extends Progress implements Runnable {
         this.targetFormat = targetFormat;
         this.target = target;
     }
+    
+    public abstract void run() throws Exception;
     
     public VVUser getUser() {
         return user;
