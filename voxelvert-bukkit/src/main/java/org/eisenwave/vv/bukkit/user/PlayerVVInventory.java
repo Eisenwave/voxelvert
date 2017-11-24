@@ -19,7 +19,7 @@ public class PlayerVVInventory extends VVInventoryImpl {
         super(owner, directory);
     
         SelectionVariable s = new SelectionVariable();
-        this.variables.put("#sel", s);
+        //this.variables.put("#sel", s);
         this.variables.put("#selection", s);
         
         DefaultResourcePackVariable d = new DefaultResourcePackVariable();

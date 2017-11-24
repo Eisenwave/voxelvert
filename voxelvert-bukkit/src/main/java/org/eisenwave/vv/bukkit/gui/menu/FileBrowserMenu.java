@@ -12,7 +12,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.eisenwave.vv.bukkit.gui.FileBrowserEntry;
 import org.eisenwave.vv.bukkit.gui.FileOptionsMode;
 import org.eisenwave.vv.bukkit.gui.widget.*;
-import org.eisenwave.vv.bukkit.util.ItemInitUtil;
+import eisenwave.inv.util.ItemInitUtil;
 import org.eisenwave.vv.object.Language;
 import org.eisenwave.vv.ui.user.VVInventory;
 import org.eisenwave.vv.ui.user.VVInventoryVariable;
@@ -65,7 +65,7 @@ public class FileBrowserMenu extends Menu {
     
     private void initNavigator() {
         Pane separatorPane = new Pane(this, null);
-        separatorPane.setItem(ItemInitUtil.item(Material.STAINED_GLASS_PANE, 1, (short) 15, " "));
+        separatorPane.setItem(ItemInitUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " "));
         separatorPane.setPosition(5, 5);
         getContentPane().addChild(separatorPane);
         
@@ -192,8 +192,7 @@ public class FileBrowserMenu extends Menu {
             if (entry.isHidden()) continue;
             if (entry.isVariable()) {
                 VVInventoryVariable var = inventory.getVariable(entry.getName());
-                assert var != null;
-                if (!var.isSet()) continue;
+                if (var == null || !var.isSet()) continue;
             }
             entries.add(entry);
         }

@@ -1,55 +1,74 @@
 package org.eisenwave.vv.bukkit.gui.menu;
 
+import eisenwave.inv.event.ClickListener;
 import eisenwave.inv.menu.Menu;
 import eisenwave.inv.menu.MenuManager;
+import eisenwave.inv.menu.MenuResponse;
 import eisenwave.inv.view.ViewGroup;
 import eisenwave.inv.view.ViewSize;
-import eisenwave.inv.widget.ButtonPane;
-import eisenwave.inv.widget.Pane;
-import eisenwave.inv.widget.RadioButton;
-import eisenwave.inv.widget.RadioList;
+import eisenwave.inv.widget.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
+import org.eisenwave.vv.bukkit.VoxelVertPlugin;
+import org.eisenwave.vv.bukkit.async.VoxelVertQueue;
 import org.eisenwave.vv.bukkit.gui.FileType;
 import org.eisenwave.vv.bukkit.gui.widget.ConvertOptionWidget;
-import org.eisenwave.vv.bukkit.util.ItemInitUtil;
+import org.eisenwave.vv.bukkit.user.BukkitVoxelVert;
+import org.eisenwave.vv.bukkit.util.CommandUtil;
+import eisenwave.inv.util.ItemInitUtil;
 import org.eisenwave.vv.object.Language;
+import org.eisenwave.vv.ui.cmd.VoxelVertTask;
 import org.eisenwave.vv.ui.fmtvert.Format;
 import org.eisenwave.vv.ui.fmtvert.Formatverter;
 import org.eisenwave.vv.ui.fmtvert.FormatverterFactory;
+import org.eisenwave.vv.ui.fmtvert.ProgressListener;
+import org.eisenwave.vv.ui.user.VVInventory;
 import org.eisenwave.vv.ui.user.VVUser;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ConvertMenu extends Menu {
     
     private final static ItemStack
-        ITEM_CANCEL = ItemInitUtil.item(Material.WOOL, 1, (short) 14, ChatColor.RED + "Cancel", "&7Back to Inventory"),
-        ITEM_CONFIRM_OFF = ItemInitUtil.item(Material.WOOL, 1, (short) 7, ChatColor.DARK_GRAY + "Confirm", "&7Convert"),
-        ITEM_CONFIRM_ON = ItemInitUtil.item(Material.WOOL, 1, (short) 5, ChatColor.GREEN + "Confirm", "&7Convert"),
-        ITEM_PANE = ItemInitUtil.item(Material.STAINED_GLASS_PANE, 1, (short) 15, " ");
+        ITEM_CANCEL = ItemInitUtil.create(Material.WOOL, 1, (short) 14, ChatColor.RED + "Cancel", "&7Back to Inventory"),
+        ITEM_CONFIRM_OFF = ItemInitUtil.create(Material.WOOL, 1, (short) 7, ChatColor.DARK_GRAY + "Confirm", "&7Convert"),
+        ITEM_CONFIRM_ON = ItemInitUtil.create(Material.WOOL, 1, (short) 5, ChatColor.GREEN + "Confirm", "&7Convert"),
+        ITEM_PROGRESS_ON = ItemInitUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 5, " "),
+        ITEM_PROGRESS_OFF = ItemInitUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " "),
+        ITEM_PROGRESS_FAIL = ItemInitUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 14, ChatColor.RED + "ERROR"),
+        ITEM_PANE = ItemInitUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " ");
     
     // INIT
     
+    private final ClickListener returnToFileBrowser;
+    
     private ViewGroup<ConvertOptionWidget> optionsGroup;
     private ButtonPane confirmButton;
+    private ProgressBar progressBar;
     
-    private boolean ready = false;
+    private State state = State.NO_FORMAT;
     
     private final VVUser user;
-    private final String sourcePath;
+    private String sourcePath, targetPath;
     private Format sourceFormat, targetFormat;
+    
+    private long startTime;
     
     public ConvertMenu(VVUser user, @NotNull String name, @NotNull Format format) {
         super(Menu.MAX_SIZE, ChatColor.BOLD + "Convert: " + ChatColor.RESET + continuedName(name, 16));
         this.user = user;
         this.sourcePath = name;
         this.sourceFormat = format;
+        this.returnToFileBrowser = event -> {
+            Menu menu = new FileBrowserMenu(user.getInventory());
+            MenuManager.getInstance().startSession(event.getPlayer(), menu);
+        };
         
         initFormatPicker(format);
         initCancel();
@@ -59,10 +78,14 @@ public class ConvertMenu extends Menu {
     }
     
     private void initFormatPicker(Format sourceFormat) {
-        RadioList list = new RadioList(this, new ViewSize(ViewSize.MATCH_PARENT, 1));
         Format[] options = FormatverterFactory.getInstance().getOutputFormats(sourceFormat);
+        Arrays.sort(options, (x, y) ->
+            x.equals(sourceFormat)? -1 :
+                y.equals(sourceFormat)? 1 : x.getId().compareTo(y.getId()));
+        
+        RadioList list = new RadioList(this, new ViewSize(ViewSize.MATCH_PARENT, 1));
         Language lang = getUser().getVoxelVert().getLanguage();
-        //boolean first = true;
+        
         for (Format format : options) {
             RadioButton child = new RadioButton(this, null);
             final ItemStack unchecked, checked;
@@ -71,7 +94,8 @@ public class ConvertMenu extends Menu {
                 Material material = type == null? Material.WHITE_SHULKER_BOX : type.getIcon();
                 String prefix = type == null? ChatColor.RESET.toString() : type.getPrefix();
                 String name = lang.get("format." + format.getId());
-                unchecked = ItemInitUtil.item(material, prefix + name);
+                String suffix = format.equals(sourceFormat)? " " + lang.get("format.copy") : "";
+                unchecked = ItemInitUtil.create(material, prefix + name + suffix);
             }
             checked = unchecked.clone();
             checked.setType(Material.END_CRYSTAL);
@@ -83,11 +107,6 @@ public class ConvertMenu extends Menu {
                 if (event.isChecked())
                     this.performFormatPick(event.getPlayer(), format);
             });
-            
-            /* if (first) {
-                child.setChecked(true);
-                first = false;
-            } */
             
             list.addChild(child);
         }
@@ -108,10 +127,7 @@ public class ConvertMenu extends Menu {
         button.setItem(ITEM_CANCEL);
         getContentPane().addChild(button);
         
-        button.addClickListener(event -> {
-            Menu menu = new FileBrowserMenu(user.getInventory());
-            MenuManager.getInstance().startSession(event.getPlayer(), menu);
-        });
+        button.addClickListener(returnToFileBrowser);
     }
     
     private void initConfirm() {
@@ -119,6 +135,8 @@ public class ConvertMenu extends Menu {
         confirmButton = new ButtonPane(this, size, null);
         confirmButton.setItem(ITEM_CONFIRM_OFF);
         getContentPane().addChild(confirmButton);
+        
+        confirmButton.addClickListener(event -> performConvert(event.getPlayer()));
     }
     
     private void initSeparator() {
@@ -133,7 +151,59 @@ public class ConvertMenu extends Menu {
         getContentPane().addChild(optionsGroup);
     }
     
+    private void initProgressBar() {
+        ViewSize size = new ViewSize(ViewSize.MIN_POS, ViewSize.MAX_POS, ViewSize.MATCH_PARENT, 1);
+        progressBar = new ProgressBar(this, size, null);
+        progressBar.setOffItem(ITEM_PROGRESS_OFF);
+        progressBar.setOnItem(ITEM_PROGRESS_ON);
+        
+        getContentPane().addChild(progressBar);
+    }
+    
+    private void initFinishButton() {
+        getContentPane().removeChild(progressBar);
+        
+        ViewSize size = new ViewSize(ViewSize.MIN_POS, ViewSize.MAX_POS, ViewSize.MATCH_PARENT, 1);
+        ButtonPane button = new ButtonPane(this, size, null);
+        
+        String name = ChatColor.GREEN + "Done!";
+        String lore = "&8Result was saved as:\n&7" + targetPath + "\n\n&aClick to return";
+        ItemStack item = ItemInitUtil.setName(ItemInitUtil.withInlineLore(ITEM_CONFIRM_ON, lore), name);
+        button.setItem(item);
+        getContentPane().addChild(button);
+        
+        button.addClickListener(returnToFileBrowser);
+    }
+    
     // ACTIONS
+    
+    private void setDone() {
+        this.state = State.DONE;
+        
+        long duration = System.currentTimeMillis() - startTime;
+        user.print(ChatColor.BOLD + "Done!" + ChatColor.RESET + " (" + duration + " ms)");
+        
+        initFinishButton();
+    }
+    
+    private void setFailed(String error) {
+        this.state = State.FAILED;
+        
+        user.error("Converting failed: " + error);
+        progressBar.setOnItem(ITEM_PROGRESS_FAIL);
+        progressBar.setOffItem(ITEM_PROGRESS_FAIL);
+    }
+    
+    @Override
+    public MenuResponse performClick(Player player, int x, int y, ClickType click) {
+        //System.out.println(player+" "+state+" "+x+" "y+" ");
+        if (state == State.CONVERTING)
+            return MenuResponse.BLOCK;
+        if (state.isFinal() && y != getHeight() - 1)
+            return MenuResponse.BLOCK;
+        else
+            return super.performClick(player, x, y, click);
+    }
     
     public void performFormatPick(Player player, Format targetFormat) {
         optionsGroup.clearChildren();
@@ -152,20 +222,76 @@ public class ConvertMenu extends Menu {
             optionsGroup.addChild(widget);
         }
         
-        if (!this.ready) {
-            this.ready = true;
-            confirmButton.setItem(ITEM_CONFIRM_ON);
-            confirmButton.addClickListener(event -> performConvert(event.getPlayer()));
+        if (state == State.NO_FORMAT) {
+            this.state = State.READY;
         }
+        
         this.targetFormat = targetFormat;
+        setTargetPath();
+        
+        String lore = "&8Result will be saved as:\n&7" + targetPath;
+        confirmButton.setItem(ItemInitUtil.withInlineLore(ITEM_CONFIRM_ON, lore));
+    }
+    
+    private void setTargetPath() {
+        VVInventory inventory = user.getInventory();
+        String name = nameWithoutExtensionOf(sourcePath)
+            .replace(' ', '_')
+            .replace("#", "");
+        String ext = "." + extensionOf(targetFormat);
+        
+        this.targetPath = name + ext;
+        if (inventory.contains(targetPath)) {
+            boolean isNamedCopy = name.endsWith("_copy");
+            if (!isNamedCopy) {
+                targetPath = name + "_copy" + ext;
+            }
+            for (int i = 1; inventory.contains(targetPath); i++) {
+                targetPath = name + (isNamedCopy? "_" : "_copy_") + i + ext;
+            }
+        }
     }
     
     public void performConvert(Player player) {
-        player.sendMessage(sourceFormat + "<" + sourcePath + "> -> " + targetFormat);
+        if (state != State.READY) return;
+        
+        BukkitVoxelVert vv = VoxelVertPlugin.getInstance().getVoxelVert();
+        VoxelVertQueue queue = vv.getQueue();
+        
+        Formatverter fv = FormatverterFactory.getInstance().fromFormats(sourceFormat, targetFormat);
+        Map<String, String> options = getOptions();
+        
+        initProgressBar();
+    
+        ProgressListener listener = (now, max, relative) -> progressBar.setProgress(relative);
+        
+        VoxelVertTask task = new VoxelVertTask(user, sourceFormat, sourcePath, targetFormat, targetPath) {
+            @Override
+            public void run() throws Exception {
+                try {
+                    fv.addListener(listener);
+                    fv.convert(user, sourcePath, targetPath, options);
+                    setDone();
+                } catch (Exception ex) {
+                    setFailed(ex.getMessage());
+                    throw ex;
+                } finally {
+                    fv.removeListener(listener);
+                }
+            }
+            
+            @Override
+            protected int getMaxProgress() {
+                return fv.getMaxProgress();
+            }
+        };
+        
+        state = State.CONVERTING;
+        queue.add(task);
+        startTime = System.currentTimeMillis();
     }
     
     // GETTERS
-    
     
     public VVUser getUser() {
         return user;
@@ -179,10 +305,60 @@ public class ConvertMenu extends Menu {
         return sourceFormat;
     }
     
+    public Map<String, String> getOptions() {
+        Map<String, String> result = new HashMap<>();
+        for (ConvertOptionWidget widget : optionsGroup) {
+            String arg = widget.getArgument();
+            if (arg != null)
+                result.put(widget.getOption(), widget.getArgument());
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Returns the target format or null if none has been selected yet.
+     *
+     * @return the target format
+     */
+    @Nullable
+    public Format getTargetFormat() {
+        return targetFormat;
+    }
+    
+    // CLASSES
+    
+    private static enum State {
+        NO_FORMAT,
+        READY,
+        CONVERTING,
+        DONE,
+        FAILED;
+        
+        public boolean isFinal() {
+            return this == DONE || this == FAILED;
+        }
+    }
+    
     // UTIL
     
+    private static String nameWithoutExtensionOf(String filePath) {
+        return CommandUtil.nameAndExtensionOf(filePath)[0];
+    }
+    
+    private static String extensionOf(Format format) {
+        if (!format.isFile())
+            throw new IllegalArgumentException(format + " is not a file format");
+        
+        if (format.equals(Format.IMAGE)) return "png";
+        String[] extensions = format.getExtensions();
+        return extensions.length == 0? "out" : extensions[0];
+    }
+    
     private static String continuedName(String name, int lim) {
-        return (name.length() > lim)? name.substring(0, lim) + "..." : name;
+        return (name.length() > lim)?
+            name.substring(0, lim) + "..." :
+            name;
     }
     
 }

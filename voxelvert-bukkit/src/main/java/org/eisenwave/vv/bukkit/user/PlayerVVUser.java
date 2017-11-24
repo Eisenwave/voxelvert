@@ -92,7 +92,6 @@ public class PlayerVVUser implements VVUser {
      * @return the blocks in the player selection
      * @see #getBlockSelection()
      */
-    @SuppressWarnings("deprecation")
     @Nullable
     public BlockStructure getBlocks() {
         World world = player.getWorld();

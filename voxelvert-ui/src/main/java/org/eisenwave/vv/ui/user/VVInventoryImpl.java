@@ -2,6 +2,7 @@ package org.eisenwave.vv.ui.user;
 
 import net.grian.torrens.schematic.BlockStructure;
 import net.grian.torrens.schematic.DeserializerSchematicBlocks;
+import net.grian.torrens.schematic.SerializerSchematicBlocks;
 import net.grian.torrens.stl.DeserializerSTL;
 import net.grian.torrens.voxel.*;
 import net.grian.torrens.wavefront.*;
@@ -230,6 +231,15 @@ public class VVInventoryImpl implements VVInventory {
                     return true;
                 }
                 else throw new IOException("object must be a "+VoxelArray.class.getSimpleName());
+            }
+    
+            case "schematic": {
+                if (object instanceof BlockStructure) {
+                    File file = new File(dir, name);
+                    new SerializerSchematicBlocks().toFile((BlockStructure) object, file);
+                    return true;
+                }
+                else throw new IOException("object must be a "+BlockStructure.class.getSimpleName());
             }
             
             case "stl": {

@@ -1,8 +1,10 @@
 package org.eisenwave.vv.bukkit.async;
 
 import net.grian.torrens.object.BoundingBox6i;
+import net.grian.torrens.schematic.BlockKey;
 import net.grian.torrens.schematic.BlockStructure;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
@@ -16,34 +18,44 @@ public class WorldBlockStructure implements BlockStructure {
         this.world = world;
         this.box = box;
         
-        this.offX = -box.getMinX();
-        this.offY = -box.getMinY();
-        this.offZ = -box.getMinZ();
+        this.offX = box.getMinX();
+        this.offY = box.getMinY();
+        this.offZ = box.getMinZ();
+    }
+    
+    private Block getBlockAt(int x, int y, int z) {
+        return world.getBlockAt(x + offX, y + offY, z + offZ);
     }
     
     @Override
     public int getId(int x, int y, int z) {
-        return world.getBlockAt(x + offX, y + offY, z + offZ).getTypeId();
+        return getBlockAt(x, y, z).getTypeId();
     }
     
     @Override
     public byte getData(int x, int y, int z) {
-        return world.getBlockAt(x + offX, y + offY, z + offZ).getData();
+        return getBlockAt(x, y, z).getData();
     }
     
     @Override
     public void setId(int x, int y, int z, int id) {
-        world.getBlockAt(x + offX, y + offY, z + offZ).setTypeId(id);
+        getBlockAt(x, y, z).setTypeId(id);
     }
     
     @Override
     public void setData(int x, int y, int z, byte data) {
-        world.getBlockAt(x + offX, y + offY, z + offZ).setData(data);
+        getBlockAt(x, y, z).setData(data);
     }
     
     @Override
     public void setBlock(int x, int y, int z, int id, byte data) {
-        world.getBlockAt(x + offX, y + offY, z + offZ).setTypeIdAndData(id, data, false);
+        getBlockAt(x, y, z).setTypeIdAndData(id, data, false);
+    }
+    
+    @Override
+    public BlockKey getBlock(int x, int y, int z) {
+        Block block = getBlockAt(x, y, z);
+        return new BlockKey(block.getTypeId(), block.getData());
     }
     
     @Override

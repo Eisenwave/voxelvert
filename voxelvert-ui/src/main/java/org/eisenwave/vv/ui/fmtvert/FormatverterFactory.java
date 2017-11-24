@@ -4,7 +4,7 @@ import net.grian.spatium.enums.Direction;
 import net.grian.spatium.enums.Face;
 import net.grian.torrens.img.Texture;
 import net.grian.torrens.object.Vertex3i;
-import net.grian.torrens.schematic.ArrayBlockStructure;
+import net.grian.torrens.schematic.BlockStructure;
 import net.grian.torrens.voxel.VoxelArray;
 import net.grian.torrens.wavefront.MTLLibrary;
 import net.grian.torrens.wavefront.OBJModel;
@@ -178,7 +178,7 @@ public final class FormatverterFactory {
             
             VoxelArray voxels;
             {
-                ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
+                BlockStructure blocks = (BlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
                 set(1);
                 
                 BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
@@ -186,7 +186,7 @@ public final class FormatverterFactory {
                 
                 assert blocks != null;
                 if (verbose) {
-                    user.print(lang.get("from_block_array.blocks"), blocks.size());
+                    user.print(lang.get("from_block_array.blocks"), blocks.getBlockCount());
                     user.print(lang.get("from_colors.colors"), colors.size());
                 }
                 
@@ -233,7 +233,7 @@ public final class FormatverterFactory {
             
             VoxelArray voxels;
             {
-                ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
+                BlockStructure blocks = (BlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
                 set(1);
                 
                 BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
@@ -241,7 +241,7 @@ public final class FormatverterFactory {
                 
                 assert blocks != null;
                 if (verbose) {
-                    user.print(lang.get("from_block_array.blocks"), blocks.size());
+                    user.print(lang.get("from_block_array.blocks"), blocks.getBlockCount());
                     user.print(lang.get("from_colors.colors"), colors.size());
                 }
                 
@@ -299,8 +299,8 @@ public final class FormatverterFactory {
             
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
-            
-            ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
+    
+            BlockStructure blocks = (BlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
             set(1);
             
             BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
@@ -308,7 +308,7 @@ public final class FormatverterFactory {
             
             assert blocks != null;
             if (verbose) {
-                user.print(lang.get("from_block_array.blocks"), blocks.size());
+                user.print(lang.get("from_block_array.blocks"), blocks.getBlockCount());
                 user.print(lang.get("from_colors.colors"), colors.size());
             }
             
@@ -344,8 +344,8 @@ public final class FormatverterFactory {
             
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
-            
-            ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
+    
+            BlockStructure blocks = (BlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
             set(1);
             
             BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
@@ -353,7 +353,7 @@ public final class FormatverterFactory {
             
             assert blocks != null;
             if (verbose) {
-                user.print(lang.get("from_block_array.blocks"), blocks.size());
+                user.print(lang.get("from_block_array.blocks"), blocks.getBlockCount());
                 user.print(lang.get("from_colors.colors"), colors.size());
             }
             
@@ -385,10 +385,10 @@ public final class FormatverterFactory {
             
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
-            
-            ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
+    
+            BlockStructure blocks = (BlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
             assert blocks != null;
-            if (verbose) user.print(lang.get("from_block_array.blocks"), blocks.size());
+            if (verbose) user.print(lang.get("from_block_array.blocks"), blocks.getBlockCount());
             set(1);
             
             VoxelArray voxels = new CvBlocksToVoxelArray().invoke(blocks, null, 0);
@@ -424,9 +424,9 @@ public final class FormatverterFactory {
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
             
-            ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
+            BlockStructure blocks = (BlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
             assert blocks != null;
-            if (verbose) user.print(lang.get("from_block_array.blocks"), blocks.size());
+            if (verbose) user.print(lang.get("from_block_array.blocks"), blocks.getBlockCount());
             set(1);
             
             user.getInventory().save(Format.SCHEMATIC, blocks, to);
@@ -453,8 +453,8 @@ public final class FormatverterFactory {
             
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
-            
-            ArrayBlockStructure blocks = (ArrayBlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
+    
+            BlockStructure blocks = (BlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
             set(1);
             
             BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
@@ -462,7 +462,7 @@ public final class FormatverterFactory {
             
             assert blocks != null;
             if (verbose) {
-                user.print(lang.get("from_block_array.blocks"), blocks.size());
+                user.print(lang.get("from_block_array.blocks"), blocks.getBlockCount());
                 user.print(lang.get("from_colors.colors"), colors.size());
             }
             
