@@ -1,5 +1,5 @@
 name: VoxelVert
-main: org.eisenwave.vv.bukkit.VoxelVertPlugin
+main: eisenwave.vv.bukkit.VoxelVertPlugin
 version: 0.1
 author: Eisenwave
 depend: [WorldEdit]
@@ -28,7 +28,6 @@ commands:
     permission: vv.cmd.voxelvert
     aliases: [vv]
     description: configuration/stats command
-
   voxelvert-remove:
     permission: vv.cmd.voxelvert-remove
     aliases: [vv-rm]

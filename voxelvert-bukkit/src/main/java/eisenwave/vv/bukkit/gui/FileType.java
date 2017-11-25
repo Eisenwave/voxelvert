@@ -23,7 +23,7 @@ public enum FileType {
     
     FILE(null, "media.file", SILVER_SHULKER_BOX, RESET),
     
-    BCT(Format.BLOCK_COLOR_TABLE, "media.voxelvert-bct", GREEN_SHULKER_BOX, DARK_GREEN),
+    BCT(null, "media.voxelvert-bct", GREEN_SHULKER_BOX, DARK_GREEN),
     
     IMAGE(Format.IMAGE, "media.image", YELLOW_SHULKER_BOX, YELLOW),
     
