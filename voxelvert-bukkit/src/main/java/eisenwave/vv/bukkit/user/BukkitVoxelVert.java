@@ -37,6 +37,7 @@ public class BukkitVoxelVert implements VoxelVert {
     
     // GETTERS
     
+    @NotNull
     public VoxelVertQueue getQueue() {
         return queue;
     }
