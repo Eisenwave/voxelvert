@@ -14,6 +14,7 @@ import java.util.List;
  *     fit into the layout page anymore.
  * </p>
  */
+@Deprecated
 public class PagedRowListLayout extends Widget {
     
     private final Widget[] widgets;

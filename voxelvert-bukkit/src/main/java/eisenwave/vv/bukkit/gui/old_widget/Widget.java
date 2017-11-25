@@ -9,6 +9,7 @@ import org.bukkit.Material;
 /**
  * A GUI-Widget.
  */
+@Deprecated
 public abstract class Widget {
     
     private final Menu menu;

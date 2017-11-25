@@ -3,6 +3,7 @@ package eisenwave.vv.bukkit.gui.old_widget;
 import eisenwave.inv.event.ClickListener;
 import org.bukkit.entity.Player;
 
+@Deprecated
 public interface Selectable {
     
     /**

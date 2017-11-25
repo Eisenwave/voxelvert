@@ -4,6 +4,7 @@ import nl.klikenklaar.util.gui.buttons.Button;
 import nl.klikenklaar.util.gui.menus.Menu;
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated
 public class ButtonWidget extends Widget {
     
     private final Button button;

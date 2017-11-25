@@ -5,6 +5,7 @@ import eisenwave.inv.view.View;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated
 public class SelectEvent extends ViewEvent {
     
     private final boolean previous, checked;

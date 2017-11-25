@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+@Deprecated
 public class ParameterOptionsWidget extends Widget {
     
     private final Set<ActionListener> listeners = new HashSet<>();

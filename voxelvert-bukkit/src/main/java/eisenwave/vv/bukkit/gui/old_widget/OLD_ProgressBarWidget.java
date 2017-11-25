@@ -4,6 +4,7 @@ import nl.klikenklaar.util.gui.buttons.Button;
 import nl.klikenklaar.util.gui.menus.Menu;
 import org.bukkit.Material;
 
+@Deprecated
 public class OLD_ProgressBarWidget extends Widget {
     
     private final static Button BUTTON_OFF = new Button(Material.CONCRETE, 1, (short) 7, null);

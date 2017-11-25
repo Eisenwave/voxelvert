@@ -5,6 +5,7 @@ import nl.klikenklaar.util.gui.menus.Menu;
 
 import java.util.List;
 
+@Deprecated
 public class PagedButtonListWidget extends Widget {
     
     private final Button[] buttons;
