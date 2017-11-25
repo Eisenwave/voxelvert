@@ -40,4 +40,10 @@ public abstract class VoxelVertTask extends Progress {
         return target;
     }
     
+    @Override
+    public String toString() {
+        return "{" + user.getName() + ": " +
+            String.format("%s<%s> -> %s<%s>", sourceFormat, source, targetFormat, target) + "}";
+    }
+    
 }
