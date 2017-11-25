@@ -60,19 +60,19 @@ public class FileBrowserEntry implements Comparable<FileBrowserEntry> {
     @Override
     public int compareTo(@NotNull FileBrowserEntry entry) {
         int result;
-    
+        
         if (this.isVariable())
             result = entry.isVariable()? 0 : -1;
         else
             result = entry.isVariable()? 1 : 0;
         
         if (result != 0) return result;
-    
+        
         if (this.isDirectory())
             result = entry.isDirectory()? 0 : -1;
         else
             result = entry.isDirectory()? 1 : 0;
-    
+        
         if (result != 0) return result;
         
         return this.name.toLowerCase().compareTo(entry.name.toLowerCase());

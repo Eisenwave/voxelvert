@@ -21,11 +21,11 @@ import org.jetbrains.annotations.NotNull;
 public class FileOptionsWidget extends Widget {
     
     private static final String
-        RM_SUCCESS = ChatColor.BLUE+"[VoxelVert] "+ChatColor.RESET+"Deleted the file",
-        RM_FAIL = ChatColor.RED+"[VoxelVert] "+ChatColor.RESET+"Couldn't delete the file",
-        MV_SUCCESS = ChatColor.BLUE+"[VoxelVert] "+ChatColor.RESET+"Renamed the file",
-        MV_FAIL = ChatColor.RED+"[VoxelVert] "+ChatColor.RESET+"Couldn't rename the file",
-        MV_NEED_SUF = ChatColor.BLUE+"[VoxelVert] "+ChatColor.RESET+"You must provide a file suffix";
+        RM_SUCCESS = ChatColor.BLUE + "[VoxelVert] " + ChatColor.RESET + "Deleted the file",
+        RM_FAIL = ChatColor.RED + "[VoxelVert] " + ChatColor.RESET + "Couldn't delete the file",
+        MV_SUCCESS = ChatColor.BLUE + "[VoxelVert] " + ChatColor.RESET + "Renamed the file",
+        MV_FAIL = ChatColor.RED + "[VoxelVert] " + ChatColor.RESET + "Couldn't rename the file",
+        MV_NEED_SUF = ChatColor.BLUE + "[VoxelVert] " + ChatColor.RESET + "You must provide a file suffix";
     
     private final static ItemStack
         ITEM_BACKGROUND = ItemInitUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " "),
@@ -96,7 +96,7 @@ public class FileOptionsWidget extends Widget {
                 public void onResult(Player player, String result) {
                     getMenu().performCopy(player, result);
                 }
-        
+                
                 @Override
                 public void onFail(Player player) {}
             };
@@ -116,7 +116,7 @@ public class FileOptionsWidget extends Widget {
                 public void onResult(Player player, String result) {
                     getMenu().performRename(player, result);
                 }
-    
+                
                 @Override
                 public void onFail(Player player) {}
             };
@@ -137,7 +137,7 @@ public class FileOptionsWidget extends Widget {
         btnConfirm = new Button(getMenu(), null);
         btnConfirm.setParent(this);
         btnConfirm.setItem(ITEM_CONFIRM);
-    
+        
         btnConfirm.addClickListener(event -> {
             //Player player = event.getPlayer();
             getMenu().performDelete(event.getPlayer());
@@ -149,7 +149,7 @@ public class FileOptionsWidget extends Widget {
         btnCancel = new Button(getMenu(), null);
         btnCancel.setParent(this);
         btnCancel.setItem(ITEM_CANCEL);
-    
+        
         btnCancel.addClickListener(event -> this.setMode(prevMode));
     }
     

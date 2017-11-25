@@ -79,12 +79,12 @@ public class PageNavigatorCompound extends CompoundGroup {
     // UTIL
     
     private void navigate(int pages) {
-        System.out.println("navigating " + pages);
+        //System.out.println("navigating " + pages);
         page += pages;
         handle.scrollPages(pages);
         navLeft.setItem(canNavLeft()? PREV_ON : PREV_OFF);
         navRight.setItem(canNavRight()? NEXT_ON : NEXT_OFF);
-    
+        
         String pageName = ChatColor.GRAY + "Page " + (this.page + 1);
         display.setItem(ItemInitUtil.create(Material.MAP, this.page + 1, (short) 0, pageName));
     }

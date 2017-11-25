@@ -53,9 +53,9 @@ public class ConvertOptionWidget extends ViewGroup<View> {
                 initFlagOption();
                 break;
             default:
-                optionDisplay = ItemInitUtil.withLore(ITEM_UNKNOWN, ChatColor.DARK_GRAY+"-"+option);
+                optionDisplay = ItemInitUtil.withLore(ITEM_UNKNOWN, ChatColor.DARK_GRAY + "-" + option);
         }
-    
+        
         initDisplay();
     }
     
@@ -85,22 +85,22 @@ public class ConvertOptionWidget extends ViewGroup<View> {
     private void initSwitchOption(List<String> values) {
         ViewSize size = new ViewSize(2, ViewSize.MIN_POS, ViewSize.MATCH_PARENT, 1);
         RadioList list = new RadioList(getMenu(), size);
-    
+        
         boolean first = true;
         for (String str : values) {
             RadioButton button = new RadioButton(getMenu(), null);
             list.addChild(button);
-        
+            
             ItemStack checked = ItemInitUtil.setName(button.getCheckedItem(), ChatColor.GREEN + str);
             button.setCheckedItem(checked);
             ItemStack unchecked = ItemInitUtil.setName(button.getUncheckedItem(), ChatColor.DARK_GRAY + str);
             button.setUncheckedItem(unchecked);
-        
+            
             button.addCheckListener(event -> {
                 if (event.isChecked())
                     value = str;
             });
-        
+            
             if (first) {
                 value = str;
                 button.setChecked(true);

@@ -42,6 +42,7 @@ public enum FileType {
     RESOURCE_PACK(Format.RESOURCE_PACK, "media.minecraft-resource_pack", BROWN_SHULKER_BOX, GOLD);
     
     private final static Map<Format, FileType> formatMap = new HashMap<>();
+    
     static {
         for (FileType val : values()) {
             Format f = val.getFormat();
