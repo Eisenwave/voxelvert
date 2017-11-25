@@ -7,7 +7,7 @@ import net.grian.torrens.img.SerializerPNG;
 import net.grian.torrens.img.Texture;
 import net.grian.torrens.util.ColorMath;
 import net.grian.spatium.util.TestUtil;
-import org.eisenwave.vv.VVTest;
+import eisenwave.vv.VVTest;
 import org.junit.Test;
 
 import java.awt.*;

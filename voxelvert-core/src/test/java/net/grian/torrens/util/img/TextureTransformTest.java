@@ -11,7 +11,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static org.eisenwave.vv.VVTest.DIR_IMAGE_SCALE;
+import static eisenwave.vv.VVTest.DIR_IMAGE_SCALE;
 
 public class TextureTransformTest {
     
