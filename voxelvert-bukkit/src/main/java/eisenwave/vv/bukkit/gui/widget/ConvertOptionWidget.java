@@ -8,7 +8,7 @@ import net.grian.spatium.enums.Face;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import eisenwave.inv.util.ItemInitUtil;
+import eisenwave.inv.util.ItemUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 public class ConvertOptionWidget extends ViewGroup<View> {
     
     private final static ItemStack
-        ITEM_RESOLUTION = ItemInitUtil.create(Material.MOB_SPAWNER, ChatColor.RESET + "Resolution", "&8-R"),
-        ITEM_DIRECTION = ItemInitUtil.create(Material.COMPASS, ChatColor.RESET + "Direction", "&8-d"),
-        ITEM_VERBOSITY = ItemInitUtil.create(Material.JUKEBOX, ChatColor.RESET + "Verbosity", "&8-v"),
-        ITEM_CROP = ItemInitUtil.create(Material.SHEARS, ChatColor.RESET + "Crop", "&8-C"),
-        ITEM_UNKNOWN = ItemInitUtil.create(Material.STRUCTURE_VOID, ChatColor.RESET + "???");
+        ITEM_RESOLUTION = ItemUtil.create(Material.MOB_SPAWNER, ChatColor.RESET + "Resolution", "&8-R"),
+        ITEM_DIRECTION = ItemUtil.create(Material.COMPASS, ChatColor.RESET + "Direction", "&8-d"),
+        ITEM_VERBOSITY = ItemUtil.create(Material.JUKEBOX, ChatColor.RESET + "Verbosity", "&8-v"),
+        ITEM_CROP = ItemUtil.create(Material.SHEARS, ChatColor.RESET + "Crop", "&8-C"),
+        ITEM_UNKNOWN = ItemUtil.create(Material.STRUCTURE_VOID, ChatColor.RESET + "???");
     
     private final String option;
     private final ItemStack optionDisplay;
@@ -53,7 +53,7 @@ public class ConvertOptionWidget extends ViewGroup<View> {
                 initFlagOption();
                 break;
             default:
-                optionDisplay = ItemInitUtil.withLore(ITEM_UNKNOWN, ChatColor.DARK_GRAY + "-" + option);
+                optionDisplay = ItemUtil.withLore(ITEM_UNKNOWN, ChatColor.DARK_GRAY + "-" + option);
         }
         
         initDisplay();
@@ -90,10 +90,10 @@ public class ConvertOptionWidget extends ViewGroup<View> {
         for (String str : values) {
             RadioButton button = new RadioButton(getMenu(), null);
             list.addChild(button);
-            
-            ItemStack checked = ItemInitUtil.setName(button.getCheckedItem(), ChatColor.GREEN + str);
+    
+            ItemStack checked = ItemUtil.setName(button.getCheckedItem(), ChatColor.GREEN + str);
             button.setCheckedItem(checked);
-            ItemStack unchecked = ItemInitUtil.setName(button.getUncheckedItem(), ChatColor.DARK_GRAY + str);
+            ItemStack unchecked = ItemUtil.setName(button.getUncheckedItem(), ChatColor.DARK_GRAY + str);
             button.setUncheckedItem(unchecked);
             
             button.addCheckListener(event -> {
