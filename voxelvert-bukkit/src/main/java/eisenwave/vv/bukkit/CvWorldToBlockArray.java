@@ -1,7 +1,7 @@
 package eisenwave.vv.bukkit;
 
-import net.grian.torrens.object.BoundingBox6i;
-import net.grian.torrens.schematic.ArrayBlockStructure;
+import eisenwave.torrens.object.BoundingBox6i;
+import eisenwave.torrens.schematic.ArrayBlockStructure;
 import eisenwave.vv.clsvert.Classverter;
 import eisenwave.vv.object.BlockSet;
 import eisenwave.vv.util.Arguments;

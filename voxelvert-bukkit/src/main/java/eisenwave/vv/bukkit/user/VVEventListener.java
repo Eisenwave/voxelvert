@@ -1,6 +1,6 @@
 package eisenwave.vv.bukkit.user;
 
-import net.grian.torrens.object.Vertex3i;
+import eisenwave.torrens.object.Vertex3i;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;

@@ -1,7 +1,7 @@
 package eisenwave.vv.object;
 
 import net.grian.spatium.enums.Direction;
-import net.grian.torrens.object.BoundingBox6f;
+import eisenwave.torrens.object.BoundingBox6f;
 
 /**
  * A Minecraft model element.

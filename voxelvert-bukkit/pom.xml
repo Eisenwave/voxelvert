@@ -6,7 +6,7 @@
 
     <parent>
         <artifactId>voxelvert</artifactId>
-        <groupId>org.eisenwave.vv</groupId>
+        <groupId>eisenwave.vv</groupId>
         <version>0.1</version>
     </parent>
 
@@ -28,7 +28,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.eisenwave.vv</groupId>
+            <groupId>eisenwave.vv</groupId>
             <artifactId>voxelvert-ui</artifactId>
             <version>0.1</version>
             <scope>compile</scope>
@@ -41,21 +41,9 @@
         </dependency>
 
         <dependency>
-            <groupId>net.grian</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.11-R1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-core</artifactId>
             <version>6.1.4-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>nl.klikenklaar</groupId>
-            <artifactId>BulkEdit</artifactId>
-            <version>1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -79,28 +67,9 @@
             <url>http://maven.sk89q.com/artifactory/repo/</url>
         </repository>
         <repository>
-            <id>nexus</id>
-            <url>http://grian.net:8081/repository/grian/</url>
-        </repository>
-        <!--repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository-->
-        <repository>
             <id>oss-sonatype-snapshots</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
     </repositories>
-
-    <distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <url>http://grian.net:8081/repository/grian/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus</id>
-            <url>http://grian.net:8081/repository/grian/</url>
-        </snapshotRepository>
-    </distributionManagement>
 
 </project>

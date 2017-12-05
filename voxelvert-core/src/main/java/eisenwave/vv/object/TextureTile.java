@@ -1,6 +1,6 @@
 package eisenwave.vv.object;
 
-import net.grian.torrens.img.BaseTexture;
+import eisenwave.torrens.img.BaseTexture;
 
 public class TextureTile implements BaseTexture {
     

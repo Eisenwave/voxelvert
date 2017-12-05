@@ -1,9 +1,9 @@
 package eisenwave.vv.io;
 
 import eisenwave.vv.VVTest;
-import net.grian.torrens.voxel.DeserializerQB;
-import net.grian.torrens.voxel.SerializerQB;
-import net.grian.torrens.voxel.QBModel;
+import eisenwave.torrens.voxel.DeserializerQB;
+import eisenwave.torrens.voxel.SerializerQB;
+import eisenwave.torrens.voxel.QBModel;
 import org.junit.Test;
 
 import java.io.File;

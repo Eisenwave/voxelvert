@@ -1,6 +1,6 @@
 package eisenwave.vv.object;
 
-import net.grian.torrens.img.Texture;
+import eisenwave.torrens.img.Texture;
 
 import java.util.*;
 

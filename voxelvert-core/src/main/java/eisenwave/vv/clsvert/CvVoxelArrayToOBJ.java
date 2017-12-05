@@ -1,15 +1,13 @@
 package eisenwave.vv.clsvert;
 
+import eisenwave.torrens.wavefront.*;
 import net.grian.spatium.util.*;
 import net.grian.spatium.array.IntArray3;
 import net.grian.spatium.enums.Direction;
 import net.grian.spatium.util.Incrementer2;
-import net.grian.torrens.img.Texture;
-import net.grian.torrens.object.Vertex2f;
-import net.grian.torrens.object.Vertex3f;
-import net.grian.torrens.object.Vertex3i;
-import net.grian.torrens.voxel.VoxelArray;
-import net.grian.torrens.wavefront.*;
+import eisenwave.torrens.img.Texture;
+import eisenwave.torrens.object.*;
+import eisenwave.torrens.voxel.VoxelArray;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

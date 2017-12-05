@@ -2,8 +2,8 @@ package eisenwave.vv.bukkit.user;
 
 import com.sk89q.worldedit.bukkit.selections.Selection;
 import eisenwave.vv.object.Language;
-import net.grian.torrens.object.BoundingBox6i;
-import net.grian.torrens.schematic.BlockStructure;
+import eisenwave.torrens.object.BoundingBox6i;
+import eisenwave.torrens.schematic.BlockStructure;
 import org.bukkit.Location;
 import org.bukkit.World;
 import eisenwave.vv.bukkit.util.CommandUtil;

@@ -1,8 +1,8 @@
 package eisenwave.vv.clsvert;
 
-import net.grian.torrens.object.BoundingBox6i;
-import net.grian.torrens.voxel.VoxelArray;
-import net.grian.torrens.voxel.VoxelMesh;
+import eisenwave.torrens.object.BoundingBox6i;
+import eisenwave.torrens.voxel.VoxelArray;
+import eisenwave.torrens.voxel.VoxelMesh;
 import org.jetbrains.annotations.NotNull;
 
 public class CvVoxelMeshToVoxelArray implements Classverter<VoxelMesh, VoxelArray> {

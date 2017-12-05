@@ -1,10 +1,10 @@
 package eisenwave.vv.clsvert;
 
 import eisenwave.vv.VVTest;
-import net.grian.torrens.voxel.VoxelArray;
-import net.grian.torrens.wavefront.DeserializerOBJ;
-import net.grian.torrens.voxel.SerializerQEF;
-import net.grian.torrens.wavefront.OBJModel;
+import eisenwave.torrens.voxel.VoxelArray;
+import eisenwave.torrens.wavefront.DeserializerOBJ;
+import eisenwave.torrens.voxel.SerializerQEF;
+import eisenwave.torrens.wavefront.OBJModel;
 import org.junit.Test;
 
 import java.io.File;

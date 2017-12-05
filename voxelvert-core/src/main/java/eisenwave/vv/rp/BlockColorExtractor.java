@@ -1,10 +1,10 @@
 package eisenwave.vv.rp;
 
 import net.grian.spatium.util.PrimMath;
-import net.grian.torrens.img.Texture;
-import net.grian.torrens.object.Rectangle4i;
-import net.grian.torrens.schematic.BlockKey;
-import net.grian.torrens.util.ColorMath;
+import eisenwave.torrens.img.Texture;
+import eisenwave.torrens.object.Rectangle4i;
+import eisenwave.torrens.schematic.BlockKey;
+import eisenwave.torrens.util.ColorMath;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

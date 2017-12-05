@@ -1,9 +1,9 @@
 package eisenwave.vv.object;
 
-import net.grian.torrens.object.BoundingBox6i;
-import net.grian.torrens.object.Vertex3i;
-import net.grian.torrens.voxel.VoxelArray;
-import net.grian.torrens.voxel.VoxelMesh;
+import eisenwave.torrens.object.BoundingBox6i;
+import eisenwave.torrens.object.Vertex3i;
+import eisenwave.torrens.voxel.VoxelArray;
+import eisenwave.torrens.voxel.VoxelMesh;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

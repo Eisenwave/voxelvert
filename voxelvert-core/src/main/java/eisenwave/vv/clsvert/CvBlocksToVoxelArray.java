@@ -1,10 +1,10 @@
 package eisenwave.vv.clsvert;
 
 import eisenwave.vv.rp.BlockColor;
-import net.grian.torrens.schematic.BlockStructure;
-import net.grian.torrens.util.ColorMath;
-import net.grian.torrens.schematic.BlockKey;
-import net.grian.torrens.voxel.VoxelArray;
+import eisenwave.torrens.schematic.BlockStructure;
+import eisenwave.torrens.util.ColorMath;
+import eisenwave.torrens.schematic.BlockKey;
+import eisenwave.torrens.voxel.VoxelArray;
 import eisenwave.vv.util.Arguments;
 import eisenwave.vv.rp.BlockColorTable;
 import org.jetbrains.annotations.NotNull;

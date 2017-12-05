@@ -1,8 +1,8 @@
 package eisenwave.vv.clsvert;
 
-import net.grian.torrens.voxel.QBMatrix;
-import net.grian.torrens.voxel.QBModel;
-import net.grian.torrens.voxel.VoxelArray;
+import eisenwave.torrens.voxel.QBMatrix;
+import eisenwave.torrens.voxel.QBModel;
+import eisenwave.torrens.voxel.VoxelArray;
 import org.jetbrains.annotations.NotNull;
 
 public class CvVoxelArrayToQB implements Classverter<VoxelArray, QBModel> {

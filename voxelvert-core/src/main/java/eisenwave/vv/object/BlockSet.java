@@ -1,7 +1,7 @@
 package eisenwave.vv.object;
 
-import net.grian.torrens.object.BoundingBox6i;
-import net.grian.torrens.object.Vertex3i;
+import eisenwave.torrens.object.BoundingBox6i;
+import eisenwave.torrens.object.Vertex3i;
 
 import java.util.HashSet;
 

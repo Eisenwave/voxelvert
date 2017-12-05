@@ -1,9 +1,9 @@
 package eisenwave.vv.io;
 
-import net.grian.torrens.voxel.DeserializerQEF;
-import net.grian.torrens.stl.SerializerSTL;
-import net.grian.torrens.stl.STLModel;
-import net.grian.torrens.voxel.VoxelArray;
+import eisenwave.torrens.voxel.DeserializerQEF;
+import eisenwave.torrens.stl.SerializerSTL;
+import eisenwave.torrens.stl.STLModel;
+import eisenwave.torrens.voxel.VoxelArray;
 import eisenwave.vv.VVTest;
 import eisenwave.vv.clsvert.CvVoxelArrayToSTL;
 import org.junit.Test;

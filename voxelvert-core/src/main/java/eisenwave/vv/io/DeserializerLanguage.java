@@ -1,6 +1,6 @@
 package eisenwave.vv.io;
 
-import net.grian.torrens.io.TextDeserializer;
+import eisenwave.torrens.io.TextDeserializer;
 import eisenwave.vv.object.Language;
 import org.jetbrains.annotations.NotNull;
 

@@ -32,7 +32,7 @@ public class MainTest {
     @Test
     public void model() throws Exception {
         System.setProperty("user.dir", TEST_DIR);
-        String[] args = {"debug.qef", "debug_model.zip", "-o", "model", "-r", "-T", "1", "-v"};
+        String[] args = {"debug.qef", "debug_model.zip", "-o", "model", "-r", "-v"};
         
         Main.main(args);
     }
@@ -45,7 +45,8 @@ public class MainTest {
         Main.main(args);
     }
     
-    @Test
+    
+    //@Test
     public void main() throws Exception {
         System.setProperty("user.dir", TEST_DIR);
         //String[] args = {"grian_small.png", "debug_from_img.qb", "-d", "e", "-r", "--verbose"};

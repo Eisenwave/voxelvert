@@ -4,9 +4,9 @@ import net.grian.spatium.util.PrimMath;
 import net.grian.spatium.util.Spatium;
 import net.grian.spatium.array.BooleanArray3;
 import net.grian.spatium.function.*;
-import net.grian.torrens.object.Vertex3i;
-import net.grian.torrens.util.ColorMath;
-import net.grian.torrens.voxel.VoxelArray;
+import eisenwave.torrens.object.Vertex3i;
+import eisenwave.torrens.util.ColorMath;
+import eisenwave.torrens.voxel.VoxelArray;
 
 import java.util.function.Consumer;
 

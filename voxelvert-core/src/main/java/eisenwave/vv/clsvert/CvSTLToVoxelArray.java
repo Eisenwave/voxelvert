@@ -1,12 +1,12 @@
 package eisenwave.vv.clsvert;
 
 import net.grian.spatium.util.PrimMath;
-import net.grian.torrens.object.BoundingBox6f;
-import net.grian.torrens.object.Vertex3f;
-import net.grian.torrens.stl.STLModel;
-import net.grian.torrens.stl.STLTriangle;
-import net.grian.torrens.util.ColorMath;
-import net.grian.torrens.voxel.VoxelArray;
+import eisenwave.torrens.object.BoundingBox6f;
+import eisenwave.torrens.object.Vertex3f;
+import eisenwave.torrens.stl.STLModel;
+import eisenwave.torrens.stl.STLTriangle;
+import eisenwave.torrens.util.ColorMath;
+import eisenwave.torrens.voxel.VoxelArray;
 import eisenwave.vv.util.Arguments;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

@@ -1,46 +1,49 @@
 name: VoxelVert
 main: eisenwave.vv.bukkit.VoxelVertPlugin
-version: 0.1
+version: R1.0
 author: Eisenwave
 depend: [WorldEdit]
 softdepend: [BulktEdit]
 
 permissions:
-  vv.cmd.convert:
+  vv.command.convert:
+    description: use command /convert
     default: op
-  vv.cmd.voxelvert:
+  vv.command.voxelvert:
+    description: use command /voxelvert
     default: op
-  vv.cmd.voxelvert-list:
+  vv.command.voxelvert-list:
+    description: use command /voxelvert-list
     default: op
-  vv.cmd.voxelvert-remove:
+  vv.command.voxelvert-remove:
+    description: use command /voxelvert-remove
     default: op
-  vv.cmd.voxelvert-move:
-    default: op
-  vv.cmd.vvadmin:
+  vv.command.voxelvert-move:
+    description: use command /voxelvert-move
     default: op
 
 commands:
   convert:
-    permission: vv.cmd.convert
+    permission: vv.command.convert
     aliases: [c]
     description: convert files
   voxelvert:
-    permission: vv.cmd.voxelvert
+    permission: vv.command.voxelvert
     aliases: [vv]
     description: configuration/stats command
   voxelvert-remove:
-    permission: vv.cmd.voxelvert-remove
+    permission: vv.command.voxelvert-remove
     aliases: [vv-rm]
     description: remove a file
   voxelvert-move:
-    permission: vv.cmd.voxelvert-move
+    permission: vv.command.voxelvert-move
     aliases: [vv-mv]
     description: move a file
   voxelvert-copy:
-    permission: vv.cmd.voxelvert-copy
+    permission: vv.command.voxelvert-copy
     aliases: [vv-cp]
     description: copy a file
   voxelvert-list:
-    permission: vv.cmd.voxelvert-list
+    permission: vv.command.voxelvert-list
     aliases: [vv-ls]
     description: list files

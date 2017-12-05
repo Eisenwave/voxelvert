@@ -2,7 +2,7 @@ package eisenwave.vv.bukkit.user;
 
 import eisenwave.vv.ui.fmtvert.Format;
 import eisenwave.vv.ui.user.VVInventoryImpl;
-import net.grian.torrens.schematic.BlockStructure;
+import eisenwave.torrens.schematic.BlockStructure;
 import eisenwave.vv.ui.user.VVInventoryVariable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

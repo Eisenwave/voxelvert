@@ -1,11 +1,8 @@
 package net.grian.torrens.util.img;
 
 import net.grian.spatium.function.Int2Predicate;
-import net.grian.torrens.img.DeserializerImage;
-import net.grian.torrens.img.PixelCanvas;
-import net.grian.torrens.img.SerializerPNG;
-import net.grian.torrens.img.Texture;
-import net.grian.torrens.util.ColorMath;
+import eisenwave.torrens.img.*;
+import eisenwave.torrens.util.ColorMath;
 import net.grian.spatium.util.TestUtil;
 import eisenwave.vv.VVTest;
 import org.junit.Test;

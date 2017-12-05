@@ -1,10 +1,10 @@
 package eisenwave.vv.clsvert;
 
 import eisenwave.vv.VVTest;
-import net.grian.torrens.util.ColorMath;
-import net.grian.torrens.stl.STLModel;
-import net.grian.torrens.stl.SerializerSTL;
-import net.grian.torrens.voxel.VoxelArray;
+import eisenwave.torrens.util.ColorMath;
+import eisenwave.torrens.stl.STLModel;
+import eisenwave.torrens.stl.SerializerSTL;
+import eisenwave.torrens.voxel.VoxelArray;
 import org.junit.Test;
 
 import java.io.File;

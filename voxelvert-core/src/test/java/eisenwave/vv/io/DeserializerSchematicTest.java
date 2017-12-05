@@ -1,6 +1,6 @@
 package eisenwave.vv.io;
 
-import net.grian.torrens.schematic.BlockKey;
+import eisenwave.torrens.schematic.BlockKey;
 
 public class DeserializerSchematicTest {
 

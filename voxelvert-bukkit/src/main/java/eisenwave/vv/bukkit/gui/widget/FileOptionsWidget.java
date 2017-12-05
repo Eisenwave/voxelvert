@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import eisenwave.vv.bukkit.gui.FileOptionsMode;
-import eisenwave.inv.util.ItemInitUtil;
+import eisenwave.inv.util.ItemUtil;
 import org.jetbrains.annotations.NotNull;
 
 public class FileOptionsWidget extends Widget {
@@ -28,16 +28,16 @@ public class FileOptionsWidget extends Widget {
         MV_NEED_SUF = ChatColor.BLUE + "[VoxelVert] " + ChatColor.RESET + "You must provide a file suffix";
     
     private final static ItemStack
-        ITEM_BACKGROUND = ItemInitUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " "),
-        ITEM_OPEN = ItemInitUtil.create(Material.DIAMOND_PICKAXE, ChatColor.AQUA + "Open", "&7Open with VoxelVert"),
-        ITEM_SHARE = ItemInitUtil.create(Material.ENDER_PEARL, ChatColor.AQUA + "Share", "&7Share with friends"),
-        ITEM_COPY = ItemInitUtil.create(Material.MINECART, ChatColor.YELLOW + "Copy", "&7Copy this file"),
-        ITEM_RENAME = ItemInitUtil.create(Material.NAME_TAG, ChatColor.YELLOW + "Rename", "&7Rename this file"),
-        ITEM_DELETE = ItemInitUtil.create(Material.LAVA_BUCKET, ChatColor.RED + "Delete",
+        ITEM_BACKGROUND = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " "),
+        ITEM_OPEN = ItemUtil.create(Material.DIAMOND_PICKAXE, ChatColor.AQUA + "Open", "&7Open with VoxelVert"),
+        ITEM_SHARE = ItemUtil.create(Material.ENDER_PEARL, ChatColor.AQUA + "Share", "&7Share with friends"),
+        ITEM_COPY = ItemUtil.create(Material.MINECART, ChatColor.YELLOW + "Copy", "&7Copy this file"),
+        ITEM_RENAME = ItemUtil.create(Material.NAME_TAG, ChatColor.YELLOW + "Rename", "&7Rename this file"),
+        ITEM_DELETE = ItemUtil.create(Material.LAVA_BUCKET, ChatColor.RED + "Delete",
             "&7Delete this file\n\n&cWARNING:\n&7You may not be able\n&7to undo this action"),
-        ITEM_CONFIRM = ItemInitUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 5, ChatColor.GREEN + "Confirm",
+        ITEM_CONFIRM = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 5, ChatColor.GREEN + "Confirm",
             "&7Delete this file"),
-        ITEM_CANCEL = ItemInitUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 14, ChatColor.RED + "Cancel",
+        ITEM_CANCEL = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 14, ChatColor.RED + "Cancel",
             "&7&nDo not\n&7delete this file");
     
     static {

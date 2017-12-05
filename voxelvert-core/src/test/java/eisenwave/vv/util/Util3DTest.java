@@ -1,7 +1,7 @@
 package eisenwave.vv.util;
 
 import net.grian.spatium.enums.Direction;
-import net.grian.torrens.object.Vertex3f;
+import eisenwave.torrens.object.Vertex3f;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -1,7 +1,7 @@
 package eisenwave.vv.clsvert;
 
-import net.grian.torrens.object.BoundingBox6i;
-import net.grian.torrens.voxel.BitArray3;
+import eisenwave.torrens.object.BoundingBox6i;
+import eisenwave.torrens.voxel.BitArray3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -1,6 +1,6 @@
 package eisenwave.vv.rp;
 
-import net.grian.torrens.schematic.BlockKey;
+import eisenwave.torrens.schematic.BlockKey;
 
 import java.util.*;
 

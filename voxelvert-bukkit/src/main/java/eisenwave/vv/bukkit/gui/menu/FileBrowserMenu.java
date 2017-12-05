@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import eisenwave.vv.bukkit.gui.FileBrowserEntry;
 import eisenwave.vv.bukkit.gui.FileOptionsMode;
-import eisenwave.inv.util.ItemInitUtil;
+import eisenwave.inv.util.ItemUtil;
 import eisenwave.vv.object.Language;
 import eisenwave.vv.ui.user.VVInventory;
 import eisenwave.vv.ui.user.VVInventoryVariable;
@@ -67,7 +67,7 @@ public class FileBrowserMenu extends Menu {
     
     private void initNavigator() {
         Pane separatorPane = new Pane(this, null);
-        separatorPane.setItem(ItemInitUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " "));
+        separatorPane.setItem(ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " "));
         separatorPane.setPosition(5, ViewSize.MAX_POS);
         getContentPane().addChild(separatorPane);
         

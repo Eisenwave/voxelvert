@@ -1,0 +1,174 @@
+TITLE:        VoxelVert Reloaded | Ingame 3D-Converter, File Browser and more
+VERSION:      R1.0
+DESCRIPTION:  Browse and edit files in game and onvert between more than 13 3D-formats.
+PRICE:        10 EUR
+PAYPAL:       janschultke.f@gmail.com
+CONTRIBUTORS: Grian Network, Arcaniax
+
+
+
+[IMG]https://i.imgur.com/KnImJll.png[/IMG]
+
+[IMG]https://i.imgur.com/AVmDFOC.png[/IMG]
+VoxelVert Reloaded is a complete revamp of plugin VoxelVert. Multiple months of work went into this project and I can proudly say that this is the most significant and finest plugin I have ever developed.
+
+This plugin was designed with builders, model creators and developers in mind and provides features for all these groups:
+[LIST]
+[*][B]Builders[/B] can store schematics as files and organize them in a file browser (and will be able to share them with each other).
+[*][B]Model creators[/B] can collaborate on models by building them as Minecraft blocks in game. The wide range of supported 3D-formats allows quick integration into software such as Cubik Studio.
+[*][B]Developers[/B] can access the server's files using the in-game file browser. Many features for developers such as a text file viewer are planned.
+[/LIST]
+
+VoxelVert allows you to edit and browse files on your server ingame. It also allows you to convert between more than 13 different file formats:
+[LIST]
+[*]Minecraft Blocks
+[*]Minecraft Models (json)
+[*]Schematic Files (schematic)
+[*]Images (jpeg, png, bmp, gif, ico)
+[*]Qubicle Exchange Format (qef)
+[*]Qubicle Binary (qb)
+[*]Standard Tessellation Language (stl)
+[*]Wavefront Model (obj)
+[/LIST]
+
+[IMG]https://i.imgur.com/op4hfi3.png[/IMG]
+[B]#1: How to convert a file with the VoxelVert file browser[/B]
+[SPOILER]
+[IMG]https://i.imgur.com/wwndGcg.png[/IMG]
+1. We open our file browser using /vv and look for our file.
+
+[IMG]https://i.imgur.com/6CmF0h6.png[/IMG]
+2. We select our file by clicking on it and click on the "Open" button in the bottom-left corner.
+
+[IMG]https://i.imgur.com/A1QhSpz.png[/IMG]
+3. We select the format to which we want to convert. This will reveal a few options for converting which we can configure. We can also press the red button in the bottom-left corner to return to the file browser.
+
+[IMG]https://i.imgur.com/NYU35Qq.png[/IMG]
+4. We Select the options we like and press on the green "Confirm" button. In this example we selected the "up" direction (compass), we enabled verbosity (jukebox) and didn't enable image cropping (shears).
+
+Once we click on the "Confirm" button, we won't be able to change the options anymore. Also, the bottom row will be replaced with a progress bar.
+
+[IMG]https://i.imgur.com/vp6GV7x.png[/IMG]
+5. VoxelVert is now finished converting our file. At this point we can click on the button bar below to return.
+
+Note that VoxelVert picks a new, unique output file name for us. However, we can change this name to whatever we like later.
+[/SPOILER]
+
+
+[IMG]https://i.imgur.com/Nw4idw8.png[/IMG]
+VoxelVert also comes with a standalone command line tool! This command line tool is a seperate .jar file which does not need Spigot to run. To run the command line tool, you will need nothing but Java 1.8.
+
+Being able to run VoxelVert's conversions without an active Spigot server was an often requested feature in its previous version. Now this is possible.
+
+[IMG]https://i.imgur.com/TlfMbvA.png[/IMG]
+In this example, the user is converting the file "something.schematic" in their "schem" folder. The selected options are:
+[LIST]
+[*][B]-v[/B] to enable verbosity
+[*][B]-r[/B] to enable file replacement
+[*][B]-d up[/B] to render the schematic from its upside
+[/LIST]
+For a full documentation of all the options, take a look at the [B]/c[/B] command below, or run the jar without arguments. This will show you a help page.
+
+[IMG]https://i.imgur.com/t5iaNHe.png[/IMG]
+[LIST]
+[*]sharing files with other players on the server
+[*]text file viewer for the file browser
+[*]automatic localization
+[*]German translation
+[*]more detailed permissions for each file format
+[*]file count and storage space limits for non-operator players
+[*]smart protection against converting too complex files (such as billion-block schematics)
+[*][B]developer mode[/B] for the file browser which allows you to view any directory on the server and comes with more developer-oriented features
+[/LIST]
+At least one of features on this list will be added to VoxelVert each week. Prepare for a rapidly improving plugin. ;)
+
+[IMG]https://i.imgur.com/Gpft7Cw.png[/IMG]
+[B][FONT=Courier New]/voxelvert-list[/FONT][/B]
+[SPOILER]
+[B]Alias: [/B][FONT=Courier New]/vv-ls[/FONT]
+[B]Permission:[/B] [FONT=Courier New]vv.command.voxelvert-list[/FONT]
+
+Lists files in your file browser directory.
+[/SPOILER]
+
+[FONT=Courier New][B]/voxelvert-remove <file>[/B][/FONT]
+[SPOILER]
+[B]Alias: [/B][FONT=Courier New]/vv-rm[/FONT]
+[B]Permission:[/B] [FONT=Courier New]vv.command.voxelvert-remove[/FONT]
+
+Removes a file from your directory. Be careful, as you can't undo this action.
+[/SPOILER]
+
+[B][FONT=Courier New]/voxelvert-copy <source file> <target file>[/FONT][/B]
+[SPOILER]
+[B]Alias: [/B][FONT=Courier New]/vv-cp[/FONT]
+[B]Permission:[/B] [FONT=Courier New]vv.command.voxelvert-copy[/FONT]
+
+Copies a source file to to a target file. Be careful, as this could replace existing files.
+[/SPOILER]
+
+[B][FONT=Courier New]/voxelvert-move <source file> <target file>[/FONT][/B]
+[SPOILER]
+[B]Alias: [/B][FONT=Courier New]/vv-mv[/FONT]
+[B]Permission:[/B] [FONT=Courier New]vv.command.voxelvert-move[/FONT]
+
+Moves a source file to a target file. This can also be used for renaming files.
+[/SPOILER]
+
+[B][FONT=Courier New]/voxelvert OR /voxelvert files[/FONT][/B]
+[SPOILER]
+[B]Alias: [/B][FONT=Courier New]/vv[/FONT]
+[B]Permission:[/B] [FONT=Courier New]vv.command.voxelvert[/FONT]
+
+Opens the VoxelVert file browser GUI.
+[/SPOILER]
+
+[B][FONT=Courier New]/voxelvert convert <file> [format][/FONT][/B]
+[SPOILER]
+[B]Alias: [/B][FONT=Courier New]/vv[/FONT]
+[B]Permission:[/B] [FONT=Courier New]vv.command.voxelvert[/FONT]
+
+Opens a conversion GUI for the provided file path. VoxelVert will try to determine the type of the file using its extension. If it succeeds, you doN't need to provide the name of the format.
+
+For instance, if you provide a file named "my_file.schematic", VoxelVert won't ask you for the format because it can tell by the the "schematic" extension.
+[/SPOILER]
+
+[B][FONT=Courier New]/convert <input file> <output file> [options][/FONT][/B]
+[SPOILER]
+[B]Alias: [/B][FONT=Courier New]/c[/FONT]
+[B]Permission:[/B] [FONT=Courier New]vv.command.convert[/FONT]
+
+Converts an input file to the output file with options, if necessary. The options vary depending on what format you are converting from and to. However, these options can always be used:
+[B]
+-i <input format>: [/B]Specifies the input format if it can't be derived from the file extension
+[B]-o <output format>: [/B]Specifies the input format if it can't be derived from the file extension
+[B]-v <verbose>: [/B]request extra information about the conversion
+
+[B]Examples:[/B]
+[FONT=Courier New]/c house.schematic house.obj -v[/FONT]
+Converts the "house.schematic" file into an OBJ-Model named "house.obj" with extra debug messages.
+
+[FONT=Courier New]/c house house_up.png -i schematic -d up[/FONT]
+Converts the file named "house" with the format "schematic" into an bird eye's view image with the name "house.png".
+[/SPOILER]
+
+
+[IMG]https://i.imgur.com/nuWR57M.png[/IMG]
+Here you can see the default configuration file of the plugin
+[CODE=yaml]# the language file to be used
+# file paths are relative to ${plugin_dir}/lang
+language: en_us.lang
+
+# verbosity settings for regulating when VoxelVert prints debug information
+verbosity:
+  enable: true
+  disable: true
+  runtime: true[/CODE]
+
+
+[IMG]https://i.imgur.com/79wcqhV.png[/IMG]
+[B]Q: How do I convert stuff with VoxelVert?[/B]
+A: Take a look at the Screenshots section. There you can see a detailed walkthrough for how to do it in the file browser. Alternatively, check out the documentation of /convert.
+
+[B]Q: If people convert really large files with VoxelVert, isn't my server going to lag?[/B]
+A: Probably not. Many weeks of work went into optimizing and testing VoxelVert. Also, all conversions are happening on a separate converter thread. This means that VoxelVert won't interfere with placing blocks and other important stuff.

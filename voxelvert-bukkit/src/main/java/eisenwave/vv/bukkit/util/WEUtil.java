@@ -3,7 +3,7 @@ package eisenwave.vv.bukkit.util;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.bukkit.selections.Selection;
 import com.sk89q.worldedit.regions.Region;
-import net.grian.torrens.object.Vertex3i;
+import eisenwave.torrens.object.Vertex3i;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import eisenwave.vv.object.BlockSet;

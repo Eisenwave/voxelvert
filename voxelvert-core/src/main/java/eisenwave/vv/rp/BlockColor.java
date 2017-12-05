@@ -1,6 +1,6 @@
 package eisenwave.vv.rp;
 
-import net.grian.torrens.util.RGBValue;
+import eisenwave.torrens.util.RGBValue;
 
 public class BlockColor implements RGBValue {
     

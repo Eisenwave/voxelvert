@@ -1,7 +1,7 @@
 package eisenwave.vv.ui.cmd;
 
 import eisenwave.vv.ui.fmtvert.Format;
-import net.grian.torrens.util.ANSI;
+import eisenwave.torrens.util.ANSI;
 import org.apache.commons.io.IOUtils;
 import eisenwave.vv.object.Language;
 import eisenwave.vv.ui.fmtvert.FormatverterFactory;

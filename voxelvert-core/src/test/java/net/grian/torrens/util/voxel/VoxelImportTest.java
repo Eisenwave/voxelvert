@@ -1,9 +1,6 @@
 package net.grian.torrens.util.voxel;
 
-import net.grian.torrens.voxel.DeserializerQB;
-import net.grian.torrens.voxel.DeserializerQEF;
-import net.grian.torrens.voxel.QBModel;
-import net.grian.torrens.voxel.*;
+import eisenwave.torrens.voxel.*;
 import eisenwave.vv.VVTest;
 import org.junit.Test;
 

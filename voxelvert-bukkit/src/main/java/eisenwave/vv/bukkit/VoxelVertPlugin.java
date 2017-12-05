@@ -94,8 +94,6 @@ public class VoxelVertPlugin extends JavaPlugin {
     }
     
     private boolean initVoxelVert(boolean verbose) {
-        //BlockScanner scanner = Bukkit.getPluginManager().isPluginEnabled("BulkEdit")?
-        //    new BulkEditBlockScanner() : new CachedBlockScanner(this);
         BlockScanner scanner = new CachedBlockScanner(this);
         
         if (verbose) getLogger().info("Using block scanner: " + scanner.getClass().getSimpleName());

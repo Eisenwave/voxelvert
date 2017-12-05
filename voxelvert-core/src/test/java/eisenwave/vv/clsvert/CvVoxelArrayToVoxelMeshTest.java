@@ -3,14 +3,9 @@ package eisenwave.vv.clsvert;
 import eisenwave.vv.VVTest;
 import eisenwave.vv.util.ConvertUtil;
 import net.grian.spatium.util.*;
-import net.grian.torrens.util.ANSI;
-import net.grian.torrens.util.ColorMath;
-import net.grian.torrens.voxel.DeserializerQB;
-import net.grian.torrens.voxel.DeserializerQEF;
-import net.grian.torrens.voxel.SerializerQB;
-import net.grian.torrens.voxel.QBModel;
-import net.grian.torrens.voxel.VoxelArray;
-import net.grian.torrens.voxel.VoxelMesh;
+import eisenwave.torrens.util.ANSI;
+import eisenwave.torrens.util.ColorMath;
+import eisenwave.torrens.voxel.*;
 import org.junit.Test;
 
 import java.io.File;

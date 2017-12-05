@@ -2,7 +2,7 @@ package eisenwave.vv.bukkit.cmd;
 
 import eisenwave.vv.ui.cmd.*;
 import eisenwave.vv.ui.fmtvert.Option;
-import net.grian.torrens.io.TextDeserializerPlain;
+import eisenwave.torrens.io.TextDeserializerPlain;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

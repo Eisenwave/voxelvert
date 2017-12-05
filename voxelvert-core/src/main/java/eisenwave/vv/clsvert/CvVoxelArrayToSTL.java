@@ -1,10 +1,10 @@
 package eisenwave.vv.clsvert;
 
 import net.grian.spatium.enums.Direction;
-import net.grian.torrens.stl.STLModel;
-import net.grian.torrens.object.Vertex3f;
-import net.grian.torrens.stl.STLTriangle;
-import net.grian.torrens.voxel.VoxelArray;
+import eisenwave.torrens.stl.STLModel;
+import eisenwave.torrens.object.Vertex3f;
+import eisenwave.torrens.stl.STLTriangle;
+import eisenwave.torrens.voxel.VoxelArray;
 import eisenwave.vv.util.Util3D;
 import org.jetbrains.annotations.NotNull;
 

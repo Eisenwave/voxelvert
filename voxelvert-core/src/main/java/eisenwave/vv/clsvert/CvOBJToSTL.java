@@ -1,12 +1,12 @@
 package eisenwave.vv.clsvert;
 
-import net.grian.torrens.object.BoundingBox6f;
-import net.grian.torrens.object.Vertex3f;
-import net.grian.torrens.stl.STLModel;
-import net.grian.torrens.stl.STLTriangle;
-import net.grian.torrens.wavefront.OBJFace;
-import net.grian.torrens.wavefront.OBJModel;
-import net.grian.torrens.wavefront.OBJTriplet;
+import eisenwave.torrens.object.BoundingBox6f;
+import eisenwave.torrens.object.Vertex3f;
+import eisenwave.torrens.stl.STLModel;
+import eisenwave.torrens.stl.STLTriangle;
+import eisenwave.torrens.wavefront.OBJFace;
+import eisenwave.torrens.wavefront.OBJModel;
+import eisenwave.torrens.wavefront.OBJTriplet;
 import org.jetbrains.annotations.NotNull;
 
 public class CvOBJToSTL implements Classverter<OBJModel, STLModel> {

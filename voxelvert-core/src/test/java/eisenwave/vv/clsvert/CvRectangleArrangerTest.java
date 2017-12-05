@@ -2,10 +2,10 @@ package eisenwave.vv.clsvert;
 
 import eisenwave.vv.object.BaseRectangle;
 import net.grian.spatium.util.*;
-import net.grian.torrens.util.ANSI;
-import net.grian.torrens.util.ColorMath;
+import eisenwave.torrens.util.ANSI;
+import eisenwave.torrens.util.ColorMath;
 import net.grian.spatium.util.TestUtil;
-import net.grian.torrens.img.Texture;
+import eisenwave.torrens.img.Texture;
 import eisenwave.vv.VVTest;
 import eisenwave.vv.object.RectangleArrangement;
 import org.junit.Test;

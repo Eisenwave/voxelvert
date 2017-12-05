@@ -2,10 +2,8 @@ package eisenwave.vv.object;
 
 import eisenwave.vv.VVTest;
 import net.grian.spatium.util.*;
-import net.grian.torrens.util.ColorMath;
-import net.grian.torrens.voxel.DeserializerQEF;
-import net.grian.torrens.voxel.SerializerQEF;
-import net.grian.torrens.voxel.VoxelArray;
+import eisenwave.torrens.util.ColorMath;
+import eisenwave.torrens.voxel.*;
 import org.junit.Test;
 
 import java.io.File;

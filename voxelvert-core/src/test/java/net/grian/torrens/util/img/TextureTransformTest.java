@@ -1,11 +1,11 @@
 package net.grian.torrens.util.img;
 
 import net.grian.spatium.util.TestUtil;
-import net.grian.torrens.img.DeserializerImage;
-import net.grian.torrens.img.SerializerPNG;
-import net.grian.torrens.img.Texture;
-import net.grian.torrens.img.scale.ScaleBox;
-import net.grian.torrens.img.scale.ScaleNearestNeighbour;
+import eisenwave.torrens.img.DeserializerImage;
+import eisenwave.torrens.img.SerializerPNG;
+import eisenwave.torrens.img.Texture;
+import eisenwave.torrens.img.scale.ScaleBox;
+import eisenwave.torrens.img.scale.ScaleNearestNeighbour;
 import org.junit.Test;
 
 import java.io.File;

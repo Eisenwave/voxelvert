@@ -61,6 +61,7 @@ public class DebugCommandSender implements CommandSender {
             sendMessage(msg);
     }
     
+    /*
     @Override
     public void sendLocalizedMessage(String s, Object... objects) {
         sendMessage(s);
@@ -70,6 +71,7 @@ public class DebugCommandSender implements CommandSender {
     public void sendPrefixedLocalizedMessage(String s, String s1, Object... objects) {
         sendMessage(s);
     }
+    */
     
     @Override
     public Server getServer() {
@@ -144,4 +146,8 @@ public class DebugCommandSender implements CommandSender {
         this.op = value;
     }
     
+    @Override
+    public Spigot spigot() {
+        return null;
+    }
 }

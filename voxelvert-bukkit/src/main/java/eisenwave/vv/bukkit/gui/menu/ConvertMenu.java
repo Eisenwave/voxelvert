@@ -20,7 +20,7 @@ import eisenwave.vv.bukkit.gui.FileType;
 import eisenwave.vv.bukkit.gui.widget.ConvertOptionWidget;
 import eisenwave.vv.bukkit.user.BukkitVoxelVert;
 import eisenwave.vv.bukkit.util.CommandUtil;
-import eisenwave.inv.util.ItemInitUtil;
+import eisenwave.inv.util.ItemUtil;
 import eisenwave.vv.object.Language;
 import eisenwave.vv.ui.cmd.VoxelVertTask;
 import eisenwave.vv.ui.fmtvert.FormatverterFactory;
@@ -36,13 +36,13 @@ import java.util.stream.Collectors;
 public class ConvertMenu extends Menu {
     
     private final static ItemStack
-        ITEM_CANCEL = ItemInitUtil.create(Material.WOOL, 1, (short) 14, ChatColor.RED + "Cancel", "&7Back to Inventory"),
-        ITEM_CONFIRM_OFF = ItemInitUtil.create(Material.WOOL, 1, (short) 7, ChatColor.DARK_GRAY + "Confirm", "&7Convert"),
-        ITEM_CONFIRM_ON = ItemInitUtil.create(Material.WOOL, 1, (short) 5, ChatColor.GREEN + "Confirm", "&7Convert"),
-        ITEM_PROGRESS_ON = ItemInitUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 5, " "),
-        ITEM_PROGRESS_OFF = ItemInitUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " "),
-        ITEM_PROGRESS_FAIL = ItemInitUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 14, ChatColor.RED + "ERROR"),
-        ITEM_PANE = ItemInitUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " ");
+        ITEM_CANCEL = ItemUtil.create(Material.WOOL, 1, (short) 14, ChatColor.RED + "Cancel", "&7Back to Inventory"),
+        ITEM_CONFIRM_OFF = ItemUtil.create(Material.WOOL, 1, (short) 7, ChatColor.DARK_GRAY + "Confirm", "&7Convert"),
+        ITEM_CONFIRM_ON = ItemUtil.create(Material.WOOL, 1, (short) 5, ChatColor.GREEN + "Confirm", "&7Convert"),
+        ITEM_PROGRESS_ON = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 5, " "),
+        ITEM_PROGRESS_OFF = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " "),
+        ITEM_PROGRESS_FAIL = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 14, ChatColor.RED + "ERROR"),
+        ITEM_PANE = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " ");
     
     // INIT
     
@@ -95,7 +95,7 @@ public class ConvertMenu extends Menu {
                 String prefix = type == null? ChatColor.RESET.toString() : type.getPrefix();
                 String name = lang.get("format." + format.getId());
                 String suffix = format.equals(sourceFormat)? " " + lang.get("format.copy") : "";
-                unchecked = ItemInitUtil.create(material, prefix + name + suffix);
+                unchecked = ItemUtil.create(material, prefix + name + suffix);
             }
             checked = unchecked.clone();
             checked.setType(Material.END_CRYSTAL);
@@ -168,7 +168,7 @@ public class ConvertMenu extends Menu {
         
         String name = ChatColor.GREEN + "Done!";
         String lore = "&8Result was saved as:\n&7" + targetPath + "\n\n&aClick to return";
-        ItemStack item = ItemInitUtil.setName(ItemInitUtil.withInlineLore(ITEM_CONFIRM_ON, lore), name);
+        ItemStack item = ItemUtil.setName(ItemUtil.withInlineLore(ITEM_CONFIRM_ON, lore), name);
         button.setItem(item);
         getContentPane().addChild(button);
         
@@ -230,7 +230,7 @@ public class ConvertMenu extends Menu {
         setTargetPath();
         
         String lore = "&8Result will be saved as:\n&7" + targetPath;
-        confirmButton.setItem(ItemInitUtil.withInlineLore(ITEM_CONFIRM_ON, lore));
+        confirmButton.setItem(ItemUtil.withInlineLore(ITEM_CONFIRM_ON, lore));
     }
     
     private void setTargetPath() {

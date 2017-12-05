@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>voxelvert</artifactId>
-        <groupId>org.eisenwave.vv</groupId>
+        <groupId>eisenwave.vv</groupId>
         <version>0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -13,22 +13,41 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.grian.torrens</groupId>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>15.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>eisenwave.torrens</groupId>
+            <artifactId>torrens-core</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>eisenwave.torrens</groupId>
             <artifactId>torrens-schematic</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>net.grian.torrens</groupId>
+            <groupId>eisenwave.torrens</groupId>
             <artifactId>torrens-3d</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>eisenwave.torrens</groupId>
+            <artifactId>torrens-image</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.7</version>
         </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

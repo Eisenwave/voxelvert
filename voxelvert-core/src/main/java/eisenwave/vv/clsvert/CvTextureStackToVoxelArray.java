@@ -1,7 +1,7 @@
 package eisenwave.vv.clsvert;
 
-import net.grian.torrens.img.Texture;
-import net.grian.torrens.voxel.VoxelArray;
+import eisenwave.torrens.img.Texture;
+import eisenwave.torrens.voxel.VoxelArray;
 import eisenwave.vv.util.Arguments;
 import org.jetbrains.annotations.NotNull;
 

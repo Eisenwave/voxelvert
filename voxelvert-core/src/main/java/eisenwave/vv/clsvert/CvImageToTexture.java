@@ -1,6 +1,6 @@
 package eisenwave.vv.clsvert;
 
-import net.grian.torrens.img.Texture;
+import eisenwave.torrens.img.Texture;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.image.BufferedImage;
