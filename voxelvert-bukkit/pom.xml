@@ -7,11 +7,10 @@
     <parent>
         <artifactId>voxelvert</artifactId>
         <groupId>eisenwave.vv</groupId>
-        <version>0.1</version>
+        <version>1.2</version>
     </parent>
 
     <artifactId>voxelvert-bukkit</artifactId>
-    <version>1.0-SNAPSHOT</version>
 
     <build>
         <plugins>
@@ -30,7 +29,7 @@
         <dependency>
             <groupId>eisenwave.vv</groupId>
             <artifactId>voxelvert-ui</artifactId>
-            <version>0.1</version>
+            <version>${parent.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

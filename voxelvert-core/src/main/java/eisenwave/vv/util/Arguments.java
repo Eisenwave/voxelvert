@@ -22,17 +22,18 @@ public final class Arguments {
         requireMax(args, max, "no more than %s arguments allowed");
     }
     
-    public static void requireType(Object arg, Class<?> type, String name, String format) {
+    public static <T> T requireType(Object arg, Class<T> type, String name, String format) {
         if (!type.isAssignableFrom(arg.getClass()))
             throw new IllegalArgumentException(String.format(format, name, type.getSimpleName()));
+        return type.cast(arg);
     }
     
-    public static void requireType(Object arg, Class<?> type, String name) {
-        requireType(arg, type, name, "%s must be a %s");
+    public static <T> T requireType(Object arg, Class<T> type, String name) {
+        return requireType(arg, type, name, "%s must be a %s");
     }
     
-    public static void requireType(Object arg, Class<?> type) {
-        requireType(arg, type, arg.getClass().getSimpleName());
+    public static <T> T requireType(Object arg, Class<T> type) {
+        return requireType(arg, type, arg.getClass().getSimpleName());
     }
     
     public static void requireRange(float arg, float min, float max, String name, String format) {

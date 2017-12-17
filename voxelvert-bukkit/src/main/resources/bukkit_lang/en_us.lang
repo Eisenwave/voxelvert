@@ -147,16 +147,23 @@ from_colors.colors = Color Map contains %d colors
 from_image.face = Placing %s on %s (%s) side
 
 from_rp.colors = Extracting %d colors from %s ...
+from_rp.grass = Using grass color map "%s"
+from_rp.foliage = Using foliage color map "%s"
+from_rp.no_grass = Using no grass color map
+from_rp.no_foliage = Using no foliage color map
 
 from_schematic.blocks = Schematic contains %d blocks
 
 from_stl.canvas = Voxelizing STL-Model in %dx%dx%d array
 from_stl.triangles = STL-Model has %d triangles
 
+from_voxels.voxels = Converting %d voxels
+
 from_wavefront.canvas = Voxelizing Wavefront-Model in %dx%dx%d array
 from_wavefront.content = Wavefront-model has %d vertices and %d faces
 from_wavefront.mtllib = Wavefront-model has mtllib "%s" with %d materials
 
+to_blocks.blocks = Converted to block structure with %d blocks
 to_image.crop = Cropped image to %dx%d
 to_image.render = Rendering "%s" from the "%s" face (%s)
 
@@ -175,3 +182,4 @@ to_stl.triangles = Converted to STL-Model with %d triangles
 to_voxels.voxels = Converted to %d voxels
 
 to_wavefront.content = Converted to Wavefront-model with %d vertices and %d faces
+

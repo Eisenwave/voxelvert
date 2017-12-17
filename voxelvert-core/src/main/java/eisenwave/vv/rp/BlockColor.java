@@ -4,6 +4,8 @@ import eisenwave.torrens.util.RGBValue;
 
 public class BlockColor implements RGBValue {
     
+    public final static short MAX_VOLUME = 4096;
+    
     public final static int
         TINT_NONE = 0,
         TINT_GRASS = 1,
@@ -57,6 +59,16 @@ public class BlockColor implements RGBValue {
      */
     public short getVoxelVolume() {
         return volume;
+    }
+    
+    /**
+     * Returns whether this block is a whole block, meaning that it's not a layer of snow, a slab or another block
+     * which does not fill the complete volume of a block.
+     *
+     * @return whether the block is whole
+     */
+    public boolean isWhole() {
+        return this.volume == MAX_VOLUME;
     }
     
     /**

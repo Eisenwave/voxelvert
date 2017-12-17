@@ -1,82 +1,85 @@
-conv.err=An unknown error occurred when converting: "%s"
-conv.err.interrupt=Conversion has been interrupted!
-conv.err.timeout=Timeout of %d ms has been reached and conversion cancelled!
-conv.err.unsupported=Converting from "%s" to "%s" is not supported!
+conv.err = An unknown error occurred when converting: "%s"
+conv.err.interrupt = Conversion has been interrupted!
+conv.err.timeout = Timeout of %d ms has been reached and conversion cancelled!
+conv.err.unsupported = Converting from "%s" to "%s" is not supported!
 
-conv.ongoing=Converting from %s<"%s"> to %s<"%s"> ...
+conv.ongoing = Converting from %s<"%s"> to %s<"%s"> ...
 
-conv.thread.single=Running conversion on the command thread
-conv.thread.pool=Running conversion in pool of %d threads
+conv.thread.single = Running conversion on the command thread
+conv.thread.pool = Running conversion in pool of %d threads
 
-main.err=An Error occurred when running VoxelVert.
-main.err.file_unreadable=Can't read from file "%s" (Does it exist? Do you have permission?)
-main.err.file_unwritable=Can't write to file "%s" (Does its directory exist? Do you have permission?)
-main.err.help=Loading the help failed. (%s)
-main.err.missing_ext_i=Input must have an extension
-main.err.missing_ext_o=Output must have an extension
-main.err.missing_in_out=Must provide input and output names
-main.err.missing_param=Missing mandatory parameter "%s" for conversion! (Use "--help" for more info)
-main.err.overwrite=File already exists, use option "-r" to replace!
-main.err.unknown_ext_i=Unknown input extension "%s"
-main.err.unknown_ext_o=Unknown output extension "%s"
-main.err.unknown_format_i=Unknown input format "%s"
-main.err.unknown_format_o=Unknown output format "%s"
-main.err.var_in_format_conflict=Can't specify input format as "%s" when using a variable!
-main.err.var_out_format_conflict=Can't specify output format as "%s" when using a variable!
-main.err.var_in_unset=Variable "%s" has no value
+main.err = An Error occurred when running VoxelVert.
+main.err.file_unreadable = Can't read from file "%s" (Does it exist? Do you have permission?)
+main.err.file_unwritable = Can't write to file "%s" (Does its directory exist? Do you have permission?)
+main.err.help = Loading the help failed. (%s)
+main.err.missing_ext_i = Input must have an extension
+main.err.missing_ext_o = Output must have an extension
+main.err.missing_in_out = Must provide input and output names
+main.err.missing_param = Missing mandatory parameter "%s" for conversion! (Use "--help" for more info)
+main.err.overwrite = File already exists, use option "-r" to replace!
+main.err.unknown_ext_i = Unknown input extension "%s"
+main.err.unknown_ext_o = Unknown output extension "%s"
+main.err.unknown_format_i = Unknown input format "%s"
+main.err.unknown_format_o = Unknown output format "%s"
+main.err.var_in_format_conflict = Can't specify input format as "%s" when using a variable!
+main.err.var_out_format_conflict = Can't specify output format as "%s" when using a variable!
+main.err.var_in_unset = Variable "%s" has no value
 
-main.parse.timeout=Using timeout of %d ms
-main.parse.timeout.num=Timeout "%s" is not a number
-main.parse.timeout.positive=Timeout "%s" must be positive
+main.parse.timeout = Using timeout of %d ms
+main.parse.timeout.num = Timeout "%s" is not a number
+main.parse.timeout.positive = Timeout "%s" must be positive
 
-main.parse.threads=Using %d threads
-main.parse.threads.num=Thread count "%s" is not a number
-main.parse.threads.min=Thread count "%s" must be >= 1
+main.parse.threads = Using %d threads
+main.parse.threads.num = Thread count "%s" is not a number
+main.parse.threads.min = Thread count "%s" must be >= 1
 
-main.done=Finished after %d ms (%.2f s)
+main.done = Finished after %d ms (%.2f s)
 
-main.lang_info=Using language "%s" (%s entries)
+main.lang_info = Using language "%s" (%s entries)
 
-main.verbose=Enabled verbose mode
+main.verbose = Enabled verbose mode
 
-main.wd=Current directory: "%s"
+main.wd = Current directory: "%s"
 
-from_block_array.blocks=Structure contains %d blocks
+from_block_array.blocks = Structure contains %d blocks
 
-from_colors.colors=Color Map contains %d colors
+from_colors.colors = Color Map contains %d colors
 
-from_image.face=Placing %s on %s (%s) side
+from_image.face = Placing %s on %s (%s) side
 
-from_rp.colors=Extracting %d colors from %s ...
+from_rp.colors = Extracting %d colors from %s ...
 from_rp.grass = Using grass color map "%s"
 from_rp.foliage = Using foliage color map "%s"
 from_rp.no_grass = Using no grass color map
 from_rp.no_foliage = Using no foliage color map
 
-from_schematic.blocks=Schematic contains %d blocks
+from_schematic.blocks = Schematic contains %d blocks
 
-from_stl.canvas=Voxelizing STL-Model in %dx%dx%d array
-from_stl.triangles=STL-Model has %d triangles
+from_stl.canvas = Voxelizing STL-Model in %dx%dx%d array
+from_stl.triangles = STL-Model has %d triangles
 
-from_wavefront.canvas=Voxelizing Wavefront-Model in %dx%dx%d array
-from_wavefront.content=Wavefront-model has %d vertices and %d faces
-from_wavefront.mtllib=Wavefront-model has mtllib "%s" with %d materials
+from_voxels.voxels = Converting %d voxels
 
-to_image.crop=Cropped image to %dx%d
-to_image.render=Rendering "%s" from the "%s" face (%s)
+from_wavefront.canvas = Voxelizing Wavefront-Model in %dx%dx%d array
+from_wavefront.content = Wavefront-model has %d vertices and %d faces
+from_wavefront.mtllib = Wavefront-model has mtllib "%s" with %d materials
 
-to_mesh.elements=Merged Voxel Array to Voxel Mesh with %d elements
+to_blocks.blocks = Converted to block structure with %d blocks
+to_image.crop = Cropped image to %dx%d
+to_image.render = Rendering "%s" from the "%s" face (%s)
 
-to_model.elements=Converted to MC Model with %d elements
-to_model.no_anti_bleed=Disabled UV bleeding prevention for this model
-to_model.textures.none=Model contains no textures
-to_model.textures.single=Model contains one texture of %dx%d pixels
-to_model.textures.multiple=Model contains %d textures
+to_mesh.elements = Merged Voxel Array to Voxel Mesh with %d elements
 
-to_qb.matrices=Converted to QB model with %d matrices
+to_model.elements = Converted to MC Model with %d elements
+to_model.no_anti_bleed = Disabled UV bleeding prevention for this model
+to_model.textures.none = Model contains no textures
+to_model.textures.single = Model contains one texture of %dx%d pixels
+to_model.textures.multiple = Model contains %d textures
 
-to_stl.triangles=Converted to STL-Model with %d triangles
+to_qb.matrices = Converted to QB model with %d matrices
 
-to_voxels.voxels=Converted to %d voxels
+to_stl.triangles = Converted to STL-Model with %d triangles
 
-to_wavefront.content=Converted to Wavefront-model with %d vertices and %d faces
+to_voxels.voxels = Converted to %d voxels
+
+to_wavefront.content = Converted to Wavefront-model with %d vertices and %d faces

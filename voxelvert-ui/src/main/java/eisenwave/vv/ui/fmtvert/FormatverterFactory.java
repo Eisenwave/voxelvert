@@ -22,7 +22,6 @@ import eisenwave.torrens.stl.STLModel;
 import eisenwave.torrens.voxel.VoxelMesh;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -77,6 +76,7 @@ public final class FormatverterFactory {
         put(Format.QB, Format.MODEL, FV_QB_MODEL::new);
         put(Format.QB, Format.QB, CopyFormatverter::new);
         put(Format.QB, Format.QEF, FV_QB_QEF::new);
+        put(Format.QB, Format.SCHEMATIC, FV_QB_SCHEMATIC::new);
         put(Format.QB, Format.STL, FV_QB_STL::new);
         put(Format.QB, Format.WAVEFRONT, FV_QB_WAVEFRONT::new);
         
@@ -84,6 +84,7 @@ public final class FormatverterFactory {
         put(Format.QEF, Format.MODEL, FV_QEF_MODEL::new);
         put(Format.QEF, Format.QB, FV_QEF_QB::new);
         put(Format.QEF, Format.QEF, CopyFormatverter::new);
+        put(Format.QEF, Format.SCHEMATIC, FV_QEF_SCHEMATIC::new);
         put(Format.QEF, Format.STL, FV_QEF_STL::new);
         put(Format.QEF, Format.WAVEFRONT, FV_QEF_WAVEFRONT::new);
         
@@ -717,6 +718,41 @@ public final class FormatverterFactory {
         
     }
     
+    private static class FV_QEF_SCHEMATIC extends Formatverter {
+        
+        @Override
+        public int getMaxProgress() {
+            return 4;
+        }
+        
+        @Override
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
+        }
+        
+        @Override
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
+            Language lang = user.getVoxelVert().getLanguage();
+            
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            //Logger logger = verbose? user.getLogger() : null;
+            
+            BlockColorTable bct = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
+            set(1);
+            
+            VoxelArray va = (VoxelArray) user.getInventory().load(Format.QEF, from);
+            set(2);
+            
+            BlockStructure blocks = new CvVoxelArrayToBlocks().invoke(va, bct);
+            if (verbose) user.printLocalized("to_blocks.blocks", blocks.getBlockCount());
+            set(3);
+            
+            user.getInventory().save(Format.SCHEMATIC, blocks, to);
+            set(4);
+        }
+        
+    }
+    
     private static class FV_QEF_STL extends Formatverter {
         
         @Override
@@ -737,6 +773,8 @@ public final class FormatverterFactory {
             //Logger logger = verbose? user.getLogger() : null;
             
             VoxelArray va = (VoxelArray) user.getInventory().load(Format.QEF, from);
+            assert va != null;
+            if (verbose) user.printLocalized("from_voxels.voxels", va.size());
             set(1);
             
             STLModel stl = new CvVoxelArrayToSTL().invoke(va);
@@ -924,6 +962,52 @@ public final class FormatverterFactory {
             
             user.getInventory().save(Format.QEF, va, to);
             set(4);
+        }
+        
+    }
+    
+    private static class FV_QB_SCHEMATIC extends Formatverter {
+        
+        @Override
+        public int getMaxProgress() {
+            return 6;
+        }
+        
+        @Override
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
+        }
+        
+        @Override
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
+            Language lang = user.getVoxelVert().getLanguage();
+            
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            //Logger logger = verbose? user.getLogger() : null;
+            
+            VoxelArray va;
+            {
+                QBModel model = (QBModel) user.getInventory().load(Format.QB, from);
+                set(1);
+                
+                assert model != null;
+                VoxelMesh vm = new CvQBToVoxelMesh().invoke(model);
+                set(2);
+                
+                va = new CvVoxelMeshToVoxelArray().invoke(vm);
+                set(3);
+            }
+            if (verbose) user.printLocalized("from_voxels.voxels", va.size());
+            
+            BlockColorTable bct = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
+            set(4);
+            
+            BlockStructure blocks = new CvVoxelArrayToBlocks().invoke(va, bct);
+            if (verbose) user.printLocalized("to_blocks.blocks", blocks.getBlockCount());
+            set(5);
+            
+            user.getInventory().save(Format.SCHEMATIC, blocks, to);
+            set(6);
         }
         
     }
