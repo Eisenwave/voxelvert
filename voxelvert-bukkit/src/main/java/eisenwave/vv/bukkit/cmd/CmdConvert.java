@@ -3,25 +3,21 @@ package eisenwave.vv.bukkit.cmd;
 import eisenwave.vv.ui.cmd.*;
 import eisenwave.vv.ui.fmtvert.Option;
 import eisenwave.torrens.io.TextDeserializerPlain;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import eisenwave.vv.bukkit.VoxelVertPlugin;
 import eisenwave.vv.bukkit.async.VoxelVertQueue;
-import eisenwave.vv.bukkit.user.BukkitVoxelVert;
 import eisenwave.vv.ui.user.VVInventory;
 import eisenwave.vv.bukkit.util.CommandUtil;
 import eisenwave.vv.object.Language;
 import eisenwave.vv.ui.user.VVUser;
+import org.bukkit.command.CommandSender;
 import org.intellij.lang.annotations.RegExp;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.Set;
 
-public class CmdConvert implements CommandExecutor, VVInitializer {
+public class CmdConvert extends VoxelVertCommand implements VVInitializer {
     
     /*
     private final static String[] OPTIONS = {
@@ -36,29 +32,25 @@ public class CmdConvert implements CommandExecutor, VVInitializer {
     @RegExp
     private final static String MOSTLY_ALPHANUMERIC = "[a-zA-Z0-9._/#]+";
     
-    private final static String
-        USAGE = CommandUtil.chatColors("&cUsage: /convert <input> <output> [options] OR /convert help");
-    
-    
-    
-    private final VoxelVertPlugin plugin;
     private final FormatverterInitializer handle = new FormatverterInitializer();
     
     public CmdConvert(@NotNull VoxelVertPlugin plugin) {
-        Objects.requireNonNull(plugin, "plugin");
-        
-        this.plugin = plugin;
-        
-        //this.sysVars.put("#selection", Format.BLOCK_ARRAY);
+        super(plugin);
     }
     
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        command.setUsage(USAGE);
-        BukkitVoxelVert vv = plugin.getVoxelVert();
-        Language lang = vv.getLanguage();
-        VoxelVertQueue queue = vv.getQueue();
-        VVUser user = CommandUtil.userOf(vv, sender);
+    public String getName() {
+        return "convert";
+    }
+    
+    @Override
+    public String getUsage() {
+        return "<input> <output> [options] OR /convert help";
+    }
+    
+    @Override
+    public boolean onCommand(CommandSender sender, VVUser user, String[] args) {
+        VoxelVertQueue queue = voxelVert.getQueue();
         //VVInventory inv = user.getInventory();
         
         if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
@@ -68,7 +60,7 @@ public class CmdConvert implements CommandExecutor, VVInitializer {
                     sender.sendMessage(CommandUtil.chatColors(line));
                 
             } catch (IOException e) {
-                user.print(lang.get("cmd.convert.err.no_help"), e.getClass().getSimpleName());
+                user.printLocalized("cmd.convert.err.no_help", e.getClass().getSimpleName());
                 return true;
             }
             
@@ -77,14 +69,14 @@ public class CmdConvert implements CommandExecutor, VVInitializer {
         else if (args.length < 2) {
             return false;
         }
-    
+        
         final CommandCall call;
         try {
             call = new CommandCall().setStrictOrder(true).setStrictKwArgs(true);
             handle.getAcceptedOptions().forEach(call::addKeyword);
             call.parse(args);
         } catch (IllegalArgumentException ex) {
-            user.error(lang.get("cmd.convert.err.parse"), ex.getMessage());
+            user.errorLocalized("cmd.convert.err.parse", ex.getMessage());
             return true;
         }
         
@@ -92,13 +84,13 @@ public class CmdConvert implements CommandExecutor, VVInitializer {
         try {
             task = execute(user, call);
         } catch (VVInitializerException e) {
-            user.error(lang.get("cmd.convert.err.init"), e.getMessage());
+            user.errorLocalized("cmd.convert.err.init", e.getMessage());
             return true;
         }
-    
+        
         if (!queue.isEmpty())
-            user.print(lang.get("cmd.convert.queue.full"), queue.size());
-    
+            user.printLocalized("cmd.convert.queue.full", queue.size());
+        
         queue.add(task);
         return true;
     }
@@ -122,10 +114,10 @@ public class CmdConvert implements CommandExecutor, VVInitializer {
         if (!out.matches(MOSTLY_ALPHANUMERIC))
             throw new VVInitializerException(lang.get("cmd.convert.err.out_alphanumeric"));
         if (in.startsWith("/") || out.startsWith("/"))
-            throw new VVInitializerException(lang.get("err.path_absolute"));
+            throw new VVInitializerException(lang.get("error.path_absolute"));
         if (in.startsWith(".") || out.startsWith("."))
-            throw new VVInitializerException(lang.get("err.path_hidden"));
-    
+            throw new VVInitializerException(lang.get("error.path_hidden"));
+        
         File dir = inv.getDirectory();
         if (!dir.exists() && !dir.mkdirs())
             throw new VVInitializerException(lang.get("cmd.convert.err.dir"), dir);

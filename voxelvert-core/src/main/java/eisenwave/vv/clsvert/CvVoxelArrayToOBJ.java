@@ -1,10 +1,11 @@
 package eisenwave.vv.clsvert;
 
+import eisenwave.spatium.util.Flags;
+import eisenwave.spatium.util.PrimMath;
 import eisenwave.torrens.wavefront.*;
-import net.grian.spatium.util.*;
-import net.grian.spatium.array.IntArray3;
-import net.grian.spatium.enums.Direction;
-import net.grian.spatium.util.Incrementer2;
+import eisenwave.spatium.array.IntArray3;
+import eisenwave.spatium.enums.Direction;
+import eisenwave.spatium.util.Incrementer2;
 import eisenwave.torrens.img.Texture;
 import eisenwave.torrens.object.*;
 import eisenwave.torrens.voxel.VoxelArray;

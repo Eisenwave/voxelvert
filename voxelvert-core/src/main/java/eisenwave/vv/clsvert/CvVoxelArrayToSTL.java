@@ -1,6 +1,6 @@
 package eisenwave.vv.clsvert;
 
-import net.grian.spatium.enums.Direction;
+import eisenwave.spatium.enums.Direction;
 import eisenwave.torrens.stl.STLModel;
 import eisenwave.torrens.object.Vertex3f;
 import eisenwave.torrens.stl.STLTriangle;

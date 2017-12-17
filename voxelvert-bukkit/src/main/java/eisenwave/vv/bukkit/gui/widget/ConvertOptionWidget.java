@@ -4,7 +4,7 @@ import eisenwave.inv.view.*;
 import eisenwave.inv.widget.*;
 import eisenwave.vv.bukkit.gui.menu.ConvertMenu;
 import eisenwave.vv.ui.fmtvert.Formatverter;
-import net.grian.spatium.enums.Face;
+import eisenwave.spatium.enums.Face;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

@@ -2,7 +2,7 @@ package eisenwave.vv.io;
 
 import eisenwave.vv.VVTest;
 import eisenwave.vv.util.ConvertUtil;
-import net.grian.spatium.enums.Direction;
+import eisenwave.spatium.enums.Direction;
 import eisenwave.torrens.util.ColorMath;
 import eisenwave.torrens.voxel.*;
 import eisenwave.torrens.img.Texture;

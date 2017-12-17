@@ -3,7 +3,7 @@ package eisenwave.vv.clsvert;
 import eisenwave.vv.VVTest;
 import eisenwave.vv.io.SerializerMCModelGeometry;
 import eisenwave.vv.util.ConvertUtil;
-import net.grian.spatium.enums.Direction;
+import eisenwave.spatium.enums.Direction;
 import eisenwave.torrens.object.BoundingBox6i;
 import eisenwave.torrens.voxel.DeserializerQB;
 import eisenwave.torrens.voxel.DeserializerQEF;

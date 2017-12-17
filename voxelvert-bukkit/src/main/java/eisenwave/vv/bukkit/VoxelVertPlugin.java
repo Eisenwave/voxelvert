@@ -1,8 +1,7 @@
 package eisenwave.vv.bukkit;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import eisenwave.vv.bukkit.async.BlockScanner;
-import eisenwave.vv.bukkit.async.CachedBlockScanner;
+import eisenwave.vv.bukkit.async.*;
 import eisenwave.vv.bukkit.cmd.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class VoxelVertPlugin extends JavaPlugin {
     
@@ -29,7 +29,6 @@ public class VoxelVertPlugin extends JavaPlugin {
     
     // ENABLE & DISABLE
     
-    
     @Override
     public void onLoad() {
         instance = this;
@@ -40,17 +39,17 @@ public class VoxelVertPlugin extends JavaPlugin {
         config = new VoxelVertConfig(getResource("config.yml"));
         boolean verbose = config.hasVerbosityOnEnable();
         String langName = config.getLanguage();
-        
-        if (!initCommands()
-            || !initWorldEdit(verbose)
+    
+        if (!initWorldEdit(verbose)
             || !initLanguage(langName, verbose)
-            || !initVoxelVert(verbose)) {
+            || !initVoxelVert(verbose)
+            || !initCommands()) {
             getLogger().severe("FAILED TO ENABLE PLUGIN");
             setEnabled(false);
             return;
         }
-        
-        this.conversionThread = this.voxelVert.startConversionThread();
+    
+        startConverterThread();
         this.saveDefaultConfig();
     
         FormatverterInjector.inject(FormatverterFactory.getInstance());
@@ -95,6 +94,7 @@ public class VoxelVertPlugin extends JavaPlugin {
     
     private boolean initVoxelVert(boolean verbose) {
         BlockScanner scanner = new CachedBlockScanner(this);
+        //BlockScanner scanner = new SimpleBlockScanner();
         
         if (verbose) getLogger().info("Using block scanner: " + scanner.getClass().getSimpleName());
         
@@ -103,12 +103,16 @@ public class VoxelVertPlugin extends JavaPlugin {
     }
     
     private boolean initCommands() {
-        getCommand("convert").setExecutor(new CmdConvert(this));
-        getCommand("voxelvert").setExecutor(new CmdVoxelvert(this));
-        getCommand("voxelvert-list").setExecutor(new CmdList(this));
-        getCommand("voxelvert-remove").setExecutor(new CmdRemove(this));
-        getCommand("voxelvert-move").setExecutor(new CmdMove(this));
-        getCommand("voxelvert-copy").setExecutor(new CmdCopy(this));
+        VoxelVertCommand[] commands = {
+            new CmdConvert(this),
+            new CmdVoxelvert(this),
+            new CmdList(this),
+            new CmdRemove(this),
+            new CmdMove(this),
+            new CmdCopy(this)
+        };
+    
+        Arrays.stream(commands).forEach(cmd -> getCommand(cmd.getName()).setExecutor(cmd));
         return true;
     }
     
@@ -122,6 +126,12 @@ public class VoxelVertPlugin extends JavaPlugin {
     @NotNull
     public Thread getConverterThread() {
         return conversionThread;
+    }
+    
+    public void startConverterThread() {
+        if (conversionThread != null && conversionThread.isAlive())
+            conversionThread.interrupt();
+        this.conversionThread = this.voxelVert.startConversionThread();
     }
     
     @NotNull

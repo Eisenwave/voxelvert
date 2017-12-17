@@ -1,7 +1,7 @@
 package eisenwave.vv.clsvert;
 
-import net.grian.spatium.enums.Axis;
-import net.grian.spatium.enums.Direction;
+import eisenwave.spatium.enums.Axis;
+import eisenwave.spatium.enums.Direction;
 import eisenwave.torrens.img.Texture;
 import eisenwave.torrens.voxel.VoxelArray;
 import eisenwave.vv.util.Arguments;

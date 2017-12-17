@@ -22,45 +22,52 @@
 # &k obfuscated
 
 # the error and message formats for commands
-cmd.convert.err.dir=User directory doesn't exist & failed to create: "%s"
-cmd.convert.err.init=Init-Error: %s
-cmd.convert.err.parse=Cmd-Parse-Error: %s
-cmd.convert.err.no_help=&c[VoxelVert]&r Failed to load plugin help (%s)
-cmd.convert.err.in_empty=Input must not be empty!
-cmd.convert.err.out_empty=Output must not be empty!
-cmd.convert.err.out_alphanumeric=Output must be alphanumeric + (. _ / #)
+cmd.convert.err.dir = User directory doesn't exist & failed to create: "%s"
+cmd.convert.err.init = Init-Error: %s
+cmd.convert.err.parse = Cmd-Parse-Error: %s
+cmd.convert.err.no_help = Failed to load plugin help (%s)
+cmd.convert.err.in_empty = Input must not be empty!
+cmd.convert.err.out_empty = Output must not be empty!
+cmd.convert.err.out_alphanumeric = Output must be alphanumeric + (. _ / #)
 
 #cmd.convert.queue.empty=The queue is empty, your task is being handled right away :)
-cmd.convert.queue.full=There is %d other tasks in the queue, please be patient ...
+cmd.convert.queue.full = There is %d other tasks in the queue, please be patient ...
 
-cmd.remove.err.missing=Can't remove &6%s&r, no such file exists
-cmd.remove.err.var=Can't remove variables!
-cmd.remove.failure=Couldn't remove &6%s&r
-cmd.remove.success=Removed &6%s&r
+cmd.remove.err.missing = Can't remove &6%s&r, no such file exists
+cmd.remove.err.var = Can't remove variables!
+cmd.remove.failure = Couldn't remove &6%s&r
+cmd.remove.success = Removed &6%s&r
 
-cmd.move.err.missing=Can't move &6%s&r, no such file exists
-cmd.move.err.var=Can't move variables!
-cmd.move.exception=An error occurred when moving the file: &6%s
-cmd.move.failure=Couldn't move &6%s&r to &6%s&r
-cmd.move.success=Moved &6%s&r to &6%s&r
+cmd.move.err.missing = Can't move &6%s&r, no such file exists
+cmd.move.err.var = Can't move variables!
+cmd.move.exception = An error occurred when moving the file: &6%s
+cmd.move.failure = Couldn't move &6%s&r to &6%s&r
+cmd.move.success = Moved &6%s&r to &6%s&r
 
-cmd.copy.err.missing=Can't copy &6%s&r, no such file exists
-cmd.copy.err.var=Can't copy variables!
-cmd.copy.exception=An error occurred when copying the file: &6%s
-cmd.copy.failure=Couldn't copy &6%s&r to &6%s&r
-cmd.copy.success=Copied &6%s&r to &6%s&r
+cmd.copy.err.missing = Can't copy &6%s&r, no such file exists
+cmd.copy.err.var = Can't copy variables!
+cmd.copy.exception = An error occurred when copying the file: &6%s
+cmd.copy.failure = Couldn't copy &6%s&r to &6%s&r
+cmd.copy.success = Copied &6%s&r to &6%s&r
 
-cmd.voxelvert.err.bad_extension=Couldn't guess the format of &6%s&r by extension.
-cmd.voxelvert.err.bad_format=The format &6%s&r doesn't exist.
+cmd.voxelvert.err.bad_extension = Couldn't guess the format of &6%s&r by extension.
+cmd.voxelvert.err.bad_format = The format &6%s&r doesn't exist.
+cmd.voxelvert.status = Status of VoxelVert:
+cmd.voxelvert.reload = Reloading VoxelVert ...
+cmd.voxelvert.reloaded = &lDone!
+cmd.voxelvert.version = Your VoxelVert version is &6%s
 
 # generic errors
-err.not_a_player=Only players can use this command.
-err.path_absolute=You are not allowed to use absolute paths.
-err.path_hidden=You are not allowed to use hidden file names.
+error.not_a_player = Only players can use this command.
+error.path_absolute = You are not allowed to use absolute paths.
+error.path_hidden = You are not allowed to use hidden file names.
+error.permission = You need the permission &c%s&r to do this.
 
-# user message formats
-user.msg=&9[VoxelVert]&r %s
-user.err=&c[VoxelVert]&r %s
+# message formats for voxelvert users
+user.msg = &9[VoxelVert]&r %s
+user.err = &c[VoxelVert]&r %s
+user.use = &cUsage: /%s
+user.keyval = &9  %s: &r%s
 
 media.directory = Folder
 media.inventory_variable = Inventory Variable
@@ -90,81 +97,81 @@ format.copy = (Copy)
 # IMPORTED FROM VOXELVERT-UI #
 ##############################
 
-conv.err=An unknown error occurred when converting: "%s"
-conv.err.interrupt=Conversion has been interrupted!
-conv.err.timeout=Timeout of %d ms has been reached and conversion cancelled!
-conv.err.unsupported=Converting from "%s" to "%s" is not supported!
+conv.err = An unknown error occurred when converting: "%s"
+conv.err.interrupt = Conversion has been interrupted!
+conv.err.timeout = Timeout of %d ms has been reached and conversion cancelled!
+conv.err.unsupported = Converting from "%s" to "%s" is not supported!
 
-conv.ongoing=Converting from %s<"%s"> to %s<"%s"> ...
+conv.ongoing = Converting from %s<"%s"> to %s<"%s"> ...
 
-conv.thread.single=Running conversion on the command thread
-conv.thread.pool=Running conversion in pool of %d threads
+conv.thread.single = Running conversion on the command thread
+conv.thread.pool = Running conversion in pool of %d threads
 
-main.err=An Error occurred when running VoxelVert.
-main.err.file_unreadable=Can't read from file "%s" (Does it exist? Do you have permission?)
-main.err.file_unwritable=Can't write to file "%s" (Does its directory exist? Do you have permission?)
-main.err.help=Loading the help failed. (%s)
-main.err.missing_ext_i=Input must have an extension
-main.err.missing_ext_o=Output must have an extension
-main.err.missing_in_out=Must provide input and output names
-main.err.missing_param=Missing mandatory parameter "%s" for conversion! (Use "--help" for more info)
-main.err.overwrite=File already exists, use option "-r" to replace!
-main.err.unknown_ext_i=Unknown input extension "%s"
-main.err.unknown_ext_o=Unknown output extension "%s"
-main.err.unknown_format_i=Unknown input format "%s"
-main.err.unknown_format_o=Unknown output format "%s"
-main.err.var_in_format_conflict=Can't specify input format as "%s" when using a variable!
-main.err.var_out_format_conflict=Can't specify output format as "%s" when using a variable!
-main.err.var_in_unset=Variable "%s" has no value
+main.err = An Error occurred when running VoxelVert.
+main.err.file_unreadable = Can't read from file "%s" (Does it exist? Do you have permission?)
+main.err.file_unwritable = Can't write to file "%s" (Does its directory exist? Do you have permission?)
+main.err.help = Loading the help failed. (%s)
+main.err.missing_ext_i = Input must have an extension
+main.err.missing_ext_o = Output must have an extension
+main.err.missing_in_out = Must provide input and output names
+main.err.missing_param = Missing mandatory parameter "%s" for conversion! (Use "--help" for more info)
+main.err.overwrite = File already exists, use option "-r" to replace!
+main.err.unknown_ext_i = Unknown input extension "%s"
+main.err.unknown_ext_o = Unknown output extension "%s"
+main.err.unknown_format_i = Unknown input format "%s"
+main.err.unknown_format_o = Unknown output format "%s"
+main.err.var_in_format_conflict = Can't specify input format as "%s" when using a variable!
+main.err.var_out_format_conflict = Can't specify output format as "%s" when using a variable!
+main.err.var_in_unset = Variable "%s" has no value
 
-main.parse.timeout=Using timeout of %d ms
-main.parse.timeout.num=Timeout "%s" is not a number
-main.parse.timeout.positive=Timeout "%s" must be positive
+main.parse.timeout = Using timeout of %d ms
+main.parse.timeout.num = Timeout "%s" is not a number
+main.parse.timeout.positive = Timeout "%s" must be positive
 
-main.parse.threads=Using %d threads
-main.parse.threads.num=Thread count "%s" is not a number
-main.parse.threads.min=Thread count "%s" must be >= 1
+main.parse.threads = Using %d threads
+main.parse.threads.num = Thread count "%s" is not a number
+main.parse.threads.min = Thread count "%s" must be >= 1
 
-main.done=Finished after %d ms (%.2f s)
+main.done = Finished after %d ms (%.2f s)
 
-main.lang_info=Using language "%s" (%s entries)
+main.lang_info = Using language "%s" (%s entries)
 
-main.verbose=Enabled verbose mode
+main.verbose = Enabled verbose mode
 
-main.wd=Current directory: "%s"
+main.wd = Current directory: "%s"
 
-from_block_array.blocks=Structure contains %d blocks
+from_block_array.blocks = Structure contains %d blocks
 
-from_colors.colors=Color Map contains %d colors
+from_colors.colors = Color Map contains %d colors
 
-from_image.face=Placing %s on %s (%s) side
+from_image.face = Placing %s on %s (%s) side
 
-from_rp.colors=Extracting %d colors from %s ...
+from_rp.colors = Extracting %d colors from %s ...
 
-from_schematic.blocks=Schematic contains %d blocks
+from_schematic.blocks = Schematic contains %d blocks
 
-from_stl.canvas=Voxelizing STL-Model in %dx%dx%d array
-from_stl.triangles=STL-Model has %d triangles
+from_stl.canvas = Voxelizing STL-Model in %dx%dx%d array
+from_stl.triangles = STL-Model has %d triangles
 
-from_wavefront.canvas=Voxelizing Wavefront-Model in %dx%dx%d array
-from_wavefront.content=Wavefront-model has %d vertices and %d faces
-from_wavefront.mtllib=Wavefront-model has mtllib "%s" with %d materials
+from_wavefront.canvas = Voxelizing Wavefront-Model in %dx%dx%d array
+from_wavefront.content = Wavefront-model has %d vertices and %d faces
+from_wavefront.mtllib = Wavefront-model has mtllib "%s" with %d materials
 
-to_image.crop=Cropped image to %dx%d
-to_image.render=Rendering "%s" from the "%s" face (%s)
+to_image.crop = Cropped image to %dx%d
+to_image.render = Rendering "%s" from the "%s" face (%s)
 
-to_mesh.elements=Merged Voxel Array to Voxel Mesh with %d elements
+to_mesh.elements = Merged Voxel Array to Voxel Mesh with %d elements
 
-to_model.elements=Converted to MC Model with %d elements
-to_model.no_anti_bleed=Disabled UV bleeding prevention for this model
-to_model.textures.none=Model contains no textures
-to_model.textures.single=Model contains one texture of %dx%d pixels
-to_model.textures.multiple=Model contains %d textures
+to_model.elements = Converted to MC Model with %d elements
+to_model.no_anti_bleed = Disabled UV bleeding prevention for this model
+to_model.textures.none = Model contains no textures
+to_model.textures.single = Model contains one texture of %dx%d pixels
+to_model.textures.multiple = Model contains %d textures
 
-to_qb.matrices=Converted to QB model with %d matrices
+to_qb.matrices = Converted to QB model with %d matrices
 
-to_stl.triangles=Converted to STL-Model with %d triangles
+to_stl.triangles = Converted to STL-Model with %d triangles
 
-to_voxels.voxels=Converted to %d voxels
+to_voxels.voxels = Converted to %d voxels
 
-to_wavefront.content=Converted to Wavefront-model with %d vertices and %d faces
+to_wavefront.content = Converted to Wavefront-model with %d vertices and %d faces

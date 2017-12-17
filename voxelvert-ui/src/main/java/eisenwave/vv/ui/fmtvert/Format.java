@@ -1,6 +1,6 @@
 package eisenwave.vv.ui.fmtvert;
 
-import net.grian.spatium.util.PrimArrays;
+import eisenwave.spatium.util.PrimArrays;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

@@ -1,9 +1,12 @@
 package eisenwave.vv.object;
 
-import net.grian.spatium.util.PrimMath;
-import net.grian.spatium.util.Spatium;
-import net.grian.spatium.array.BooleanArray3;
-import net.grian.spatium.function.*;
+import eisenwave.spatium.function.Float3IntFunction;
+import eisenwave.spatium.function.Int3Consumer;
+import eisenwave.spatium.function.Int3IntFunction;
+import eisenwave.spatium.function.Int3Predicate;
+import eisenwave.spatium.util.PrimMath;
+import eisenwave.spatium.util.Spatium;
+import eisenwave.spatium.array.BooleanArray3;
 import eisenwave.torrens.object.Vertex3i;
 import eisenwave.torrens.util.ColorMath;
 import eisenwave.torrens.voxel.VoxelArray;

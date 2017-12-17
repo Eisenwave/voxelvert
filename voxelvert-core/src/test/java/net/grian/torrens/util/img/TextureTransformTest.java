@@ -1,6 +1,6 @@
 package net.grian.torrens.util.img;
 
-import net.grian.spatium.util.TestUtil;
+import eisenwave.spatium.util.TestUtil;
 import eisenwave.torrens.img.DeserializerImage;
 import eisenwave.torrens.img.SerializerPNG;
 import eisenwave.torrens.img.Texture;

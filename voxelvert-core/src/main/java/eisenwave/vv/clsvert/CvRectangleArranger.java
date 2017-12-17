@@ -2,7 +2,7 @@ package eisenwave.vv.clsvert;
 
 import eisenwave.vv.object.BaseRectangle;
 import eisenwave.vv.object.RectangleArrangement;
-import net.grian.spatium.util.FastMath;
+import eisenwave.spatium.util.FastMath;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

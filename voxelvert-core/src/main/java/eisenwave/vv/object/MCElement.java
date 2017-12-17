@@ -1,6 +1,6 @@
 package eisenwave.vv.object;
 
-import net.grian.spatium.enums.Direction;
+import eisenwave.spatium.enums.Direction;
 import eisenwave.torrens.object.BoundingBox6f;
 
 /**

@@ -2,6 +2,8 @@ package eisenwave.vv.bukkit.async;
 
 import eisenwave.vv.bukkit.VoxelVertPlugin;
 import eisenwave.vv.ui.cmd.VoxelVertTask;
+import eisenwave.vv.ui.error.FormatverterException;
+import org.bukkit.ChatColor;
 
 import java.util.logging.Logger;
 
@@ -32,10 +34,12 @@ public class VVConverterThread extends Thread {
                     if (verbose) logger.info("Now running queued task: " + task);
                     task.run();
                     if (verbose) logger.info("Finished running task: " + task);
+                } catch (FormatverterException ex) {
+                    task.getUser().error(ex.getMessage());
                 } catch (Exception ex) {
                     String cls = ex.getClass().getSimpleName();
                     String msg = ex.getMessage();
-                    task.getUser().error("Convert-Error: %s: \"%s\"", cls, msg);
+                    task.getUser().error(ChatColor.RED + "%s: \"%s\"", cls, msg);
                     ex.printStackTrace();
                 }
             }
@@ -44,7 +48,7 @@ public class VVConverterThread extends Thread {
                 if (verbose) logger.info("Queue is empty, converter thread is now sleeping.");
                 synchronized (queue) {queue.wait();}
             } catch (InterruptedException e) {
-                logger.severe("converter thread has been interrupted");
+                logger.warning("converter thread has been interrupted");
                 break;
             }
             

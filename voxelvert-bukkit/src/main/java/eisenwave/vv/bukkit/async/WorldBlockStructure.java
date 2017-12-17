@@ -29,7 +29,7 @@ public class WorldBlockStructure implements BlockStructure {
     
     @Override
     public int getId(int x, int y, int z) {
-        return getBlockAt(x, y, z).getTypeId();
+        return world.getBlockTypeIdAt(x + offX, y + offY, z + offZ);
     }
     
     @Override

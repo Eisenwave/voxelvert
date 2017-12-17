@@ -1,63 +1,58 @@
 package eisenwave.vv.bukkit.cmd;
 
 import eisenwave.vv.bukkit.VoxelVertPlugin;
-import eisenwave.vv.bukkit.user.BukkitVoxelVert;
-import eisenwave.vv.object.Language;
 import eisenwave.vv.ui.user.VVInventory;
 import eisenwave.vv.ui.user.VVUser;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import eisenwave.vv.bukkit.util.CommandUtil;
+import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
-public class CmdRemove implements CommandExecutor {
+public class CmdRemove extends VoxelVertCommand {
     
     private final static String
         USAGE = CommandUtil.chatColors("&cUsage: /vv-rm <file>");
     
-    private final VoxelVertPlugin plugin;
-    
     public CmdRemove(@NotNull VoxelVertPlugin plugin) {
-        Objects.requireNonNull(plugin, "plugin");
-        
-        this.plugin = plugin;
+        super(plugin);
     }
     
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        command.setUsage(USAGE);
-        Language lang = plugin.getLanguage();
-        BukkitVoxelVert vv = plugin.getVoxelVert();
-        VVUser user = CommandUtil.userOf(vv, sender);
-        
+    public String getName() {
+        return "voxelvert-remove";
+    }
+    
+    @Override
+    public String getUsage() {
+        return "<file>";
+    }
+    
+    @Override
+    public boolean onCommand(CommandSender sender, VVUser user, String[] args) {
         if (args.length < 1) return false;
         
         String file = args[0];
-    
+        
         if (file.startsWith("/")) {
-            user.error(lang.get("err.path_absolute"));
+            user.errorLocalized("error.path_absolute");
             return true;
         }
         if (file.startsWith(".")) {
-            user.error(lang.get("err.path_hidden"));
+            user.errorLocalized("error.path_hidden");
             return true;
         }
         if (file.startsWith("#")) {
-            user.error(lang.get("cmd.remove.err.var"));
+            user.errorLocalized("cmd.remove.err.var");
             return true;
         }
         
         VVInventory inventory = user.getInventory();
-    
+        
         if (!inventory.contains(file))
-            user.error(lang.get("cmd.remove.err.missing"), file);
+            user.errorLocalized("cmd.remove.err.missing", file);
         else if (inventory.delete(file))
-            user.print(lang.get("cmd.remove.success"), file);
+            user.printLocalized("cmd.remove.success", file);
         else
-            user.error(lang.get("cmd.remove.err"), file);
+            user.errorLocalized("cmd.remove.err", file);
         
         return true;
     }

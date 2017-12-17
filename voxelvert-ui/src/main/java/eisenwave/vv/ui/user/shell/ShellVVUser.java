@@ -1,8 +1,8 @@
 package eisenwave.vv.ui.user.shell;
 
+import eisenwave.spatium.util.Strings;
 import eisenwave.vv.ui.user.VVInventory;
 import eisenwave.vv.ui.user.VVInventoryImpl;
-import net.grian.spatium.util.*;
 import eisenwave.vv.ui.VoxelVert;
 import eisenwave.vv.ui.cmd.ClsvertLogger;
 import eisenwave.vv.ui.user.VVUser;
@@ -69,6 +69,11 @@ public class ShellVVUser implements VVUser {
     @Override
     public void error(@NotNull String err) {
         System.err.println(err);
+    }
+    
+    @Override
+    public void printRaw(String raw) {
+        print(raw);
     }
     
     @Override

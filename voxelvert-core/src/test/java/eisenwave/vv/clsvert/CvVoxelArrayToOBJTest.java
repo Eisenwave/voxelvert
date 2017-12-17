@@ -6,7 +6,7 @@ import eisenwave.vv.util.ConvertUtil;
 import eisenwave.torrens.object.Vertex3f;
 import eisenwave.torrens.util.ANSI;
 import eisenwave.torrens.util.ColorMath;
-import net.grian.spatium.util.TestUtil;
+import eisenwave.spatium.util.TestUtil;
 import eisenwave.torrens.img.Texture;
 import eisenwave.torrens.voxel.DeserializerQEF;
 import eisenwave.torrens.voxel.VoxelArray;

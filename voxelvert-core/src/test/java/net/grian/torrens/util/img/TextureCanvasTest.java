@@ -1,9 +1,9 @@
 package net.grian.torrens.util.img;
 
-import net.grian.spatium.function.Int2Predicate;
+import eisenwave.spatium.function.Int2Predicate;
 import eisenwave.torrens.img.*;
 import eisenwave.torrens.util.ColorMath;
-import net.grian.spatium.util.TestUtil;
+import eisenwave.spatium.util.TestUtil;
 import eisenwave.vv.VVTest;
 import org.junit.Test;
 

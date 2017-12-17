@@ -1,6 +1,6 @@
 package eisenwave.vv.rp;
 
-import net.grian.spatium.util.PrimMath;
+import eisenwave.spatium.util.PrimMath;
 import eisenwave.torrens.img.Texture;
 import eisenwave.torrens.object.Rectangle4i;
 import eisenwave.torrens.schematic.BlockKey;

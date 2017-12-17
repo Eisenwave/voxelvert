@@ -2,8 +2,8 @@ package eisenwave.vv.ui.fmtvert;
 
 import eisenwave.vv.clsvert.*;
 import eisenwave.vv.object.Language;
-import net.grian.spatium.enums.Direction;
-import net.grian.spatium.enums.Face;
+import eisenwave.spatium.enums.Direction;
+import eisenwave.spatium.enums.Face;
 import eisenwave.torrens.img.Texture;
 import eisenwave.torrens.object.Vertex3i;
 import eisenwave.torrens.schematic.BlockStructure;
@@ -15,6 +15,7 @@ import eisenwave.vv.rp.BlockColorTable;
 import eisenwave.vv.io.DeserializerBCT;
 import eisenwave.vv.io.DeserializerBCE;
 import eisenwave.vv.rp.BlockColorExtractor;
+import eisenwave.vv.ui.error.FormatverterArgumentException;
 import eisenwave.vv.ui.user.VVUser;
 import eisenwave.torrens.voxel.QBModel;
 import eisenwave.torrens.stl.STLModel;
@@ -196,9 +197,8 @@ public final class FormatverterFactory {
                 user.print(lang.get("to_voxels.voxels"), voxels.size());
                 user.print(lang.get("to_image.render"), from, d, dir);
             }
-            
-            Texture image = new CvVoxelArrayToTexture(logger)
-                .invoke(voxels, dir, true, crop);
+    
+            Texture image = new CvVoxelArrayToTexture(logger).invoke(voxels, dir, true, crop);
             if (verbose) user.print(lang.get("to_image.crop"), image.getWidth(), image.getHeight());
             set(4);
             
@@ -1074,7 +1074,7 @@ public final class FormatverterFactory {
             
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             Logger logger = verbose? user.getLogger() : null;
-            int res = Integer.parseInt(args.get(OPTION_RESOLUTION.getId()));
+            int res = parseInt(OPTION_RESOLUTION, args.get(OPTION_RESOLUTION.getId()), IntegerType.NATURAL);
             
             if (verbose) user.print(lang.get("from_stl.canvas"), res, res, res);
             
@@ -1124,7 +1124,7 @@ public final class FormatverterFactory {
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             boolean noAntiBleed = args.containsKey(OPTION_NO_ANTI_BLEED.getId());
             Logger logger = verbose? user.getLogger() : null;
-            int res = Integer.parseInt(args.get(OPTION_RESOLUTION.getId()));
+            int res = parseInt(OPTION_RESOLUTION, args.get(OPTION_RESOLUTION.getId()), IntegerType.NATURAL);
             
             if (verbose) user.print(lang.get("from_stl.canvas"), res, res, res);
             
@@ -1196,7 +1196,7 @@ public final class FormatverterFactory {
             
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             Logger logger = verbose? user.getLogger() : null;
-            int res = Integer.parseInt(args.get(OPTION_RESOLUTION.getId()));
+            int res = parseInt(OPTION_RESOLUTION, args.get(OPTION_RESOLUTION.getId()), IntegerType.NATURAL);
             
             if (verbose) user.print(lang.get("from_stl.canvas"), res, res, res);
             
@@ -1241,7 +1241,7 @@ public final class FormatverterFactory {
             String d = args.get(OPTION_DIRECTION.getId());
             Direction dir = parseDirection(d);
             Logger logger = verbose? user.getLogger() : null;
-            int res = Integer.parseInt(args.get(OPTION_RESOLUTION.getId()));
+            int res = parseInt(OPTION_RESOLUTION, args.get(OPTION_RESOLUTION.getId()), IntegerType.NATURAL);
             
             if (verbose) user.print(lang.get("from_wavefront.canvas"), res, res, res);
             
@@ -1304,7 +1304,7 @@ public final class FormatverterFactory {
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             boolean noAntiBleed = args.containsKey(OPTION_NO_ANTI_BLEED.getId());
             Logger logger = verbose? user.getLogger() : null;
-            int res = Integer.parseInt(args.get(OPTION_RESOLUTION.getId()));
+            int res = parseInt(OPTION_RESOLUTION, args.get(OPTION_RESOLUTION.getId()), IntegerType.NATURAL);
             
             if (verbose) user.print(lang.get("from_wavefront.canvas"), res, res, res);
             
@@ -1383,7 +1383,7 @@ public final class FormatverterFactory {
             
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             Logger logger = verbose? user.getLogger() : null;
-            int res = Integer.parseInt(args.get(OPTION_RESOLUTION.getId()));
+            int res = parseInt(OPTION_RESOLUTION, args.get(OPTION_RESOLUTION.getId()), IntegerType.NATURAL);
             
             if (verbose) user.print(lang.get("from_wavefront.canvas"), res, res, res);
             
@@ -1439,7 +1439,7 @@ public final class FormatverterFactory {
             
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             Logger logger = verbose? user.getLogger() : null;
-            int res = Integer.parseInt(args.get(OPTION_RESOLUTION.getId()));
+            int res = parseInt(OPTION_RESOLUTION, args.get(OPTION_RESOLUTION.getId()), IntegerType.NATURAL);
             
             if (verbose) user.print(lang.get("from_wavefront.canvas"), res, res, res);
             
@@ -1512,28 +1512,53 @@ public final class FormatverterFactory {
     private static Vertex3i parseResolution(String str) {
         if (str.contains("x")) {
             String[] split = str.split("x", 3);
-            if (split.length != 3) throw new IllegalArgumentException("resolution %s is not of format <X>x<Y>x<Z>");
+            if (split.length != 3)
+                throw new FormatverterArgumentException(OPTION_RESOLUTION,
+                    "resolution %s is not of format <X>x<Y>x<Z>");
             int[] result = new int[3];
             
             for (int i = 0; i < 3; i++) {
                 result[i] = Integer.parseInt(split[i]);
-                if (result[i] < 1) throw new IllegalArgumentException("resolution must be >= 1 on all axes");
+                if (result[i] < 1)
+                    throw new FormatverterArgumentException(OPTION_RESOLUTION, "resolution must be >= 1 on all axes");
             }
             
             return new Vertex3i(result[0], result[1], result[2]);
         }
         else {
             int result = Integer.parseInt(str);
-            if (result < 1) throw new IllegalArgumentException("resolution must be >= 1");
+            if (result < 1) throw new FormatverterArgumentException(OPTION_RESOLUTION, "resolution must be >= 1");
             
             return new Vertex3i(result, result, result);
         }
     }
     
-    @Nullable
-    private static Direction parseDirection(String str) {
-        Face f = Face.fromString(str);
-        return f == null? null : f.direction();
+    @NotNull
+    private static int parseInt(Option opt, String str, IntegerType type) throws FormatverterArgumentException {
+        try {
+            int result = Integer.parseInt(str);
+            switch (type) {
+                case NATURAL:
+                    if (result < 1) throw new FormatverterArgumentException(opt, result + "must be at least 1");
+                    break;
+                case POSITIVE:
+                    if (result < 0) throw new FormatverterArgumentException(opt, result + "must be positive");
+                    break;
+            }
+            return result;
+        } catch (NumberFormatException ex) {
+            throw new FormatverterArgumentException(opt, str + " is not a valid integer");
+        }
     }
+    
+    @NotNull
+    private static Direction parseDirection(String str) throws FormatverterArgumentException {
+        Face f = Face.fromString(str);
+        if (f == null)
+            throw new FormatverterArgumentException(OPTION_DIRECTION, "unknown direction: " + str);
+        return f.direction();
+    }
+    
+    private static enum IntegerType {NATURAL, POSITIVE, ANY}
     
 }

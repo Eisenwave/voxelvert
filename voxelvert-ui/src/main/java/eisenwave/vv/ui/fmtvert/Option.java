@@ -38,6 +38,11 @@ public class Option {
     // MISC
     
     @Override
+    public String toString() {
+        return id;
+    }
+    
+    @Override
     public boolean equals(Object obj) {
         return obj instanceof Option && equals((Option) obj);
     }

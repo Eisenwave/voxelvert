@@ -1,6 +1,6 @@
 package eisenwave.vv.util;
 
-import net.grian.spatium.enums.Direction;
+import eisenwave.spatium.enums.Direction;
 import eisenwave.torrens.object.Vertex3f;
 import org.junit.Test;
 

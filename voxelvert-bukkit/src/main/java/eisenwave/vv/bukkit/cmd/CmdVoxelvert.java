@@ -5,19 +5,15 @@ import eisenwave.inv.menu.MenuManager;
 import eisenwave.vv.bukkit.gui.menu.ConvertMenu;
 import eisenwave.vv.bukkit.gui.menu.FileBrowserMenu;
 import eisenwave.vv.ui.fmtvert.Format;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import eisenwave.vv.bukkit.VoxelVertPlugin;
-import eisenwave.vv.bukkit.user.BukkitVoxelVert;
 import eisenwave.vv.bukkit.util.CommandUtil;
-import eisenwave.vv.object.Language;
 import eisenwave.vv.ui.user.VVInventory;
 import eisenwave.vv.ui.user.VVUser;
 import org.jetbrains.annotations.Nullable;
 
-public class CmdVoxelvert implements CommandExecutor {
+public class CmdVoxelvert extends VoxelVertCommand {
     
     /*
     @Override
@@ -26,26 +22,27 @@ public class CmdVoxelvert implements CommandExecutor {
     }
     */
     
-    private final static String USAGE = "&cUsage: /vv files OR /vv convert <file> [format]";
-    
-    private final VoxelVertPlugin plugin;
-    
     public CmdVoxelvert(VoxelVertPlugin plugin) {
-        this.plugin = plugin;
+        super(plugin);
     }
     
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        command.setUsage(USAGE);
+    public String getName() {
+        return "voxelvert";
+    }
     
-        BukkitVoxelVert vv = plugin.getVoxelVert();
-        VVUser user = CommandUtil.userOf(vv, sender);
-        Language lang = vv.getLanguage();
+    @Override
+    public String getUsage() {
+        return "(convert|files|reload|status)";
+    }
+    
+    @Override
+    public boolean onCommand(CommandSender sender, VVUser user, String[] args) {
         
         // vv files
         if (args.length == 0 || args[0].equals("files")) {
             if (!(sender instanceof Player)) {
-                user.error(lang.get("err.not_a_player"));
+                user.errorLocalized("error.not_a_player");
                 return true;
             }
             Player player = (Player) sender;
@@ -58,7 +55,7 @@ public class CmdVoxelvert implements CommandExecutor {
         // vv convert <sourceFile> [format]
         else if (args[0].equals("convert")) {
             if (!(sender instanceof Player)) {
-                user.error(lang.get("err.not_a_player"));
+                user.errorLocalized("error.not_a_player");
                 return true;
             }
             Player player = (Player) sender;
@@ -67,11 +64,11 @@ public class CmdVoxelvert implements CommandExecutor {
             
             final String source = args[1];
             if (source.startsWith("/")) {
-                user.error(lang.get("err.path_absolute"));
+                user.errorLocalized("error.path_absolute");
                 return true;
             }
             if (source.startsWith(".")) {
-                user.error(lang.get("err.path_hidden"));
+                user.errorLocalized("error.path_hidden");
                 return true;
             }
     
@@ -79,14 +76,14 @@ public class CmdVoxelvert implements CommandExecutor {
             if (args.length < 3) {
                 sourceFormat = formatOf(user.getInventory(), source);
                 if (sourceFormat == null) {
-                    user.error("cmd.voxelvert.err.bad_extension");
+                    user.errorLocalized("cmd.voxelvert.err.bad_extension");
                     return true;
                 }
             }
             else {
                 sourceFormat = Format.getById(args[2]);
                 if (sourceFormat == null) {
-                    user.error("cmd.voxelvert.err.bad_format");
+                    user.errorLocalized("cmd.voxelvert.err.bad_format");
                     return true;
                 }
             }
@@ -95,9 +92,63 @@ public class CmdVoxelvert implements CommandExecutor {
             MenuManager.getInstance().startSession(player, menu);
             return true;
         }
-        
-        else if (args[0].equals("daemon")) {
-            sender.sendMessage(plugin.getConverterThread().getState().toString());
+
+        else if (args[0].equals("status")) {
+            if (!requirePermission(sender, user, "vv.admin.status")) return true;
+    
+            String format = user.getLanguage().get("user.keyval");
+    
+            user.printLocalized("cmd.voxelvert.status");
+            sender.sendMessage(CommandUtil.chatColors(String.format(
+                format, "Language",
+                plugin.getLanguage().getName()
+            )));
+            sender.sendMessage(CommandUtil.chatColors(String.format(
+                format, "Converter-Status",
+                plugin.getConverterThread().getState().toString()
+            )));
+            return true;
+        }
+
+        else if (args[0].equals("reload")) {
+            if (!requirePermission(sender, user, "vv.admin.reload")) return true;
+    
+            user.printLocalized("cmd.voxelvert.reload");
+            plugin.onDisable();
+            plugin.onEnable();
+            user.printLocalized("cmd.voxelvert.reloaded");
+            return true;
+        }
+
+        else if (args[0].equals("version")) {
+            if (!requirePermission(sender, user, "vv.admin.version")) return true;
+    
+            user.printLocalized("cmd.voxelvert.version", plugin.getDescription().getVersion());
+            return true;
+        }
+
+        else if (args[0].equals("converter")) {
+            if (!requirePermission(sender, user, "vv.admin.converter")) return true;
+            if (args.length < 2) return false;
+    
+            Thread thread = plugin.getConverterThread();
+    
+            switch (args[1]) {
+                case "state":
+                    user.print(thread.getState().toString());
+                    break;
+                case "priority":
+                    user.print(Integer.toString(thread.getPriority()));
+                    break;
+                case "name":
+                    user.print(thread.getName());
+                    break;
+                case "restart":
+                    voxelVert.startConversionThread();
+                    user.print("restarted");
+                    break;
+                default: return false;
+            }
             return true;
         }
         

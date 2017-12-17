@@ -2,10 +2,10 @@ package eisenwave.vv.clsvert;
 
 import eisenwave.vv.object.BaseRectangle;
 import eisenwave.vv.object.RectangleArrangement;
-import net.grian.spatium.array.BooleanArray3;
-import net.grian.spatium.enums.Direction;
-import net.grian.spatium.util.FastMath;
-import net.grian.spatium.util.PrimMath;
+import eisenwave.spatium.array.BooleanArray3;
+import eisenwave.spatium.enums.Direction;
+import eisenwave.spatium.util.FastMath;
+import eisenwave.spatium.util.PrimMath;
 import eisenwave.torrens.img.BaseTexture;
 import eisenwave.torrens.img.Texture;
 import eisenwave.torrens.object.BoundingBox6f;

@@ -1,8 +1,8 @@
 package eisenwave.vv.clsvert;
 
+import eisenwave.spatium.util.PrimMath;
 import eisenwave.vv.VVTest;
 import eisenwave.vv.util.ConvertUtil;
-import net.grian.spatium.util.*;
 import eisenwave.torrens.util.ANSI;
 import eisenwave.torrens.util.ColorMath;
 import eisenwave.torrens.voxel.*;

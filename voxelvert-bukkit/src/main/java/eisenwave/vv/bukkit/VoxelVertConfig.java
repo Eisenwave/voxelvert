@@ -14,10 +14,7 @@ public class VoxelVertConfig {
     
     private final String lang;
     
-    private final boolean
-    vEnable,
-    vDisable,
-    vRuntime;
+    private final boolean vEnable, vDisable, vRuntime;
     
     public VoxelVertConfig(Reader reader) {
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(reader);

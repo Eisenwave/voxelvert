@@ -1,5 +1,6 @@
 package eisenwave.vv.ui.user;
 
+import eisenwave.vv.object.Language;
 import eisenwave.vv.ui.VoxelVert;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -42,7 +43,18 @@ public interface VVUser {
      * @return whether this user can print updates
      * @see #update(String)
      */
-    public boolean acceptsUpdates();
+    abstract boolean acceptsUpdates();
+    
+    default Language getLanguage() {
+        return getVoxelVert().getLanguage();
+    }
+    
+    /**
+     * Sends a raw message to the user.
+     *
+     * @param raw the raw message
+     */
+    abstract void printRaw(String raw);
     
     /**
      * Sends a message to the user.
@@ -50,6 +62,13 @@ public interface VVUser {
      * @param msg the message
      */
     abstract void print(String msg);
+    
+    /**
+     * Sends an error message to the user.
+     *
+     * @param err the error message
+     */
+    abstract void error(String err);
     
     /**
      * Sends a formatted message to the user.
@@ -62,11 +81,22 @@ public interface VVUser {
     }
     
     /**
-     * Sends an error message to the user.
+     * Sends a localized message to the user.
      *
-     * @param err the error message
+     * @param key the translation key
      */
-    abstract void error(String err);
+    default void printLocalized(String key) {
+        print(getLanguage().get(key));
+    }
+    
+    /**
+     * Sends a localized, formatted message to the user.
+     *
+     * @param key the translation key
+     */
+    default void printLocalized(String key, Object... args) {
+        print(getLanguage().get(key, args));
+    }
     
     /**
      * Sends a formatted error message to the user.
@@ -76,6 +106,24 @@ public interface VVUser {
      */
     default void error(String format, Object... args) {
         error(String.format(format, args));
+    }
+    
+    /**
+     * Sends a localized error to the user.
+     *
+     * @param key the translation key
+     */
+    default void errorLocalized(String key) {
+        error(getLanguage().get(key));
+    }
+    
+    /**
+     * Sends a localized, formatted error to the user.
+     *
+     * @param key the translation key
+     */
+    default void errorLocalized(String key, Object... args) {
+        error(getLanguage().get(key, args));
     }
     
     /**

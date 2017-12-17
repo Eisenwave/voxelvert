@@ -1,6 +1,6 @@
 package eisenwave.vv;
 
-import net.grian.spatium.util.*;
+import eisenwave.spatium.util.PrimMath;
 import eisenwave.torrens.util.ANSI;
 
 import java.time.Instant;

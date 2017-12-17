@@ -1,6 +1,7 @@
 package eisenwave.vv.ui.fmtvert;
 
-import net.grian.spatium.util.PrimArrays;
+import eisenwave.spatium.util.PrimArrays;
+import eisenwave.vv.ui.error.FormatverterException;
 import eisenwave.vv.ui.user.VVUser;
 
 import java.util.Map;
@@ -45,7 +46,8 @@ public abstract class Formatverter extends Progress {
      * @param to the name of the object to which to convert
      * @param args the additional arguments for the conversion
      */
-    public abstract void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception;
+    public abstract void convert(VVUser user, String from, String to, Map<String, String> args)
+        throws Exception;
     
     /*
     @Override

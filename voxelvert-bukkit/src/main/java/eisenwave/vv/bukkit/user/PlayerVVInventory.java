@@ -73,6 +73,13 @@ public class PlayerVVInventory extends VVInventoryImpl {
     }
     
     private static class DefaultResourcePackVariable implements VVInventoryVariable<ZipFile> {
+    
+        @Nullable
+        private final URL url;
+    
+        public DefaultResourcePackVariable() {
+            this.url = getClass().getClassLoader().getResource("resourcepacks/default.zip");
+        }
         
         @Override
         public Format getFormat() {
@@ -82,13 +89,17 @@ public class PlayerVVInventory extends VVInventoryImpl {
         @Nullable
         @Override
         public ZipFile get() {
-            URL uri = getClass().getClassLoader().getResource("resourcepacks/default.zip");
-            assert uri != null;
+            if (url == null) throw new IllegalStateException();
             try {
-                return new ZipFile(new File(uri.getFile()));
+                return new ZipFile(new File(url.getFile()));
             } catch (IOException e) {
                 return null;
             }
+        }
+    
+        @Override
+        public boolean isSet() {
+            return url != null;
         }
         
     }

@@ -1,7 +1,7 @@
 package eisenwave.vv.clsvert;
 
-import net.grian.spatium.enums.Axis;
-import net.grian.spatium.enums.Direction;
+import eisenwave.spatium.enums.Axis;
+import eisenwave.spatium.enums.Direction;
 import eisenwave.torrens.util.ColorMath;
 import eisenwave.torrens.img.Texture;
 import eisenwave.torrens.voxel.VoxelArray;
@@ -44,7 +44,7 @@ public class CvVoxelArrayToTexture implements Classverter<VoxelArray, Texture> {
         return invoke(from, (Direction) args[0], (boolean) args[1], (boolean) args[2]);
     }
     
-    public Texture invoke(VoxelArray array, Direction dir, boolean deep, boolean contentCrop) {
+    public Texture invoke(@NotNull VoxelArray array, @NotNull Direction dir, boolean deep, boolean contentCrop) {
         if (contentCrop) {
             if (logger != null) logger.info("resolution before cropping: " + array.getDimensions());
             array = cropToContent(array);

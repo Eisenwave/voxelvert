@@ -1,7 +1,7 @@
 package eisenwave.vv.ui.cmd;
 
 import eisenwave.vv.ui.fmtvert.*;
-import net.grian.spatium.cache.CacheMath;
+import eisenwave.spatium.cache.CacheMath;
 import eisenwave.vv.object.Language;
 import eisenwave.vv.ui.user.VVInventory;
 import eisenwave.vv.ui.user.VVInventoryVariable;
@@ -150,7 +150,7 @@ public class FormatverterInitializer implements VVInitializer {
             }
             
             @Override
-            public void run() {
+            public void run() throws Exception {
                 Language lang = this.user.getVoxelVert().getLanguage();
                 
                 user.print(lang.get("conv.ongoing"), sourceFormat, source, targetFormat, target);
@@ -163,17 +163,11 @@ public class FormatverterInitializer implements VVInitializer {
                     long millis = System.currentTimeMillis() - now;
                     double secs = millis / CacheMath.THOUSAND;
                     user.print(lang.get("main.done"), millis, secs);
-                    
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    this.user.error(ex.getClass().getSimpleName() + " \"" + ex.getMessage() + "\"");
-                    
                 } finally {
                     // remove listener from formatverter
                     fmtverter.removeListener(listener);
                 }
             }
-            
         };
     }
     

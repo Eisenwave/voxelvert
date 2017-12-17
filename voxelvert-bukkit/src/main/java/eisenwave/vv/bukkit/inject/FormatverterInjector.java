@@ -2,6 +2,8 @@ package eisenwave.vv.bukkit.inject;
 
 import eisenwave.vv.ui.fmtvert.*;
 
+import static eisenwave.vv.ui.fmtvert.Format.*;
+
 @SuppressWarnings("Duplicates")
 public class FormatverterInjector {
     
@@ -9,19 +11,19 @@ public class FormatverterInjector {
     
     public static void inject(FormatverterFactory factory) {
         factory.put(BLOCKS_FORMAT, Format.IMAGE,
-            () -> new InventoryFormatverter(BLOCKS_FORMAT, Format.BLOCK_ARRAY, factory.fromFormats(Format.BLOCK_ARRAY, Format.IMAGE)));
+            () -> new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, IMAGE)));
         factory.put(BLOCKS_FORMAT, Format.MODEL,
-            () -> new InventoryFormatverter(BLOCKS_FORMAT, Format.BLOCK_ARRAY, factory.fromFormats(Format.BLOCK_ARRAY, Format.MODEL)));
+            () -> new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, MODEL)));
         factory.put(BLOCKS_FORMAT, Format.QB,
-            () -> new InventoryFormatverter(BLOCKS_FORMAT, Format.BLOCK_ARRAY, factory.fromFormats(Format.BLOCK_ARRAY, Format.QB)));
+            () -> new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, QB)));
         factory.put(BLOCKS_FORMAT, Format.QEF,
-            () -> new InventoryFormatverter(BLOCKS_FORMAT, Format.BLOCK_ARRAY, factory.fromFormats(Format.BLOCK_ARRAY, Format.QEF)));
+            () -> new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, QEF)));
         factory.put(BLOCKS_FORMAT, Format.SCHEMATIC,
-            () -> new InventoryFormatverter(BLOCKS_FORMAT, Format.SCHEMATIC));
+            () -> new InventoryFormatverter(BLOCKS_FORMAT, SCHEMATIC));
         factory.put(BLOCKS_FORMAT, Format.STL,
-            () -> new InventoryFormatverter(BLOCKS_FORMAT, Format.BLOCK_ARRAY, factory.fromFormats(Format.BLOCK_ARRAY, Format.STL)));
+            () -> new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, STL)));
         factory.put(BLOCKS_FORMAT, Format.WAVEFRONT,
-            () -> new InventoryFormatverter(BLOCKS_FORMAT, Format.BLOCK_ARRAY, factory.fromFormats(Format.BLOCK_ARRAY, Format.WAVEFRONT)));
+            () -> new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY, factory.fromFormats(BLOCK_ARRAY, WAVEFRONT)));
         /*
         factory.put(BLOCKS_FORMAT, Format.IMAGE, new FV_BLOCKS_IMAGE());
         factory.put(BLOCKS_FORMAT, Format.MODEL, new FV_BLOCKS_MODEL());

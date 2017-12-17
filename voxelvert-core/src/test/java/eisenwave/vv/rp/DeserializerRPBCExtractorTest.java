@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 
 public class DeserializerRPBCExtractorTest {
     
+    /*
     private final static String
         DEFAULT_EXTRACTOR = "color_extractors/default.json",
         DEFAULT_RP = "resourcepacks/default.zip";
@@ -30,5 +31,6 @@ public class DeserializerRPBCExtractorTest {
         BlockColorTable colors = extractor.extract(zip);
         assertNotNull(colors);
     }
+    */
     
 }

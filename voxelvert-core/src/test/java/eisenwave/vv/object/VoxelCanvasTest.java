@@ -1,7 +1,7 @@
 package eisenwave.vv.object;
 
+import eisenwave.spatium.util.Flags;
 import eisenwave.vv.VVTest;
-import net.grian.spatium.util.*;
 import eisenwave.torrens.util.ColorMath;
 import eisenwave.torrens.voxel.*;
 import org.junit.Test;

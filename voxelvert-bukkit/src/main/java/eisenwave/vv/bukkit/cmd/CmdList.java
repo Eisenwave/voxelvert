@@ -1,46 +1,40 @@
 package eisenwave.vv.bukkit.cmd;
 
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import eisenwave.vv.bukkit.VoxelVertPlugin;
 import eisenwave.vv.bukkit.gui.FileBrowserEntry;
-import eisenwave.vv.bukkit.user.BukkitVoxelVert;
-import eisenwave.vv.bukkit.util.CommandUtil;
 import eisenwave.vv.ui.user.VVInventory;
 import eisenwave.vv.ui.user.VVInventoryVariable;
 import eisenwave.vv.ui.user.VVUser;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class CmdList implements CommandExecutor {
-    
-    private final static String
-        USAGE = CommandUtil.chatColors("&cUsage: /vv-ls");
-    
-    private final VoxelVertPlugin plugin;
+public class CmdList extends VoxelVertCommand {
     
     public CmdList(@NotNull VoxelVertPlugin plugin) {
-        Objects.requireNonNull(plugin, "plugin");
-        
-        this.plugin = plugin;
+        super(plugin);
     }
     
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        command.setUsage(USAGE);
-        BukkitVoxelVert vv = plugin.getVoxelVert();
-        VVUser user = CommandUtil.userOf(vv, sender);
-        
+    public String getName() {
+        return "voxelvert-list";
+    }
+    
+    @Override
+    public String getUsage() {
+        return "";
+    }
+    
+    @Override
+    public boolean onCommand(CommandSender sender, VVUser user, String[] args) {
         StringBuilder builder = new StringBuilder("List of files and directories:\n");
         boolean first = true;
-    
+        
         VVInventory inventory = user.getInventory();
-    
+        
         List<FileBrowserEntry> entries = inventory.list().stream()
             .map(FileBrowserEntry::new)
             .filter(entry -> !entry.isHidden())
@@ -50,9 +44,9 @@ public class CmdList implements CommandExecutor {
                 return var != null && var.isSet();
             })
             .collect(Collectors.toList());
-    
+        
         entries.sort(null);
-    
+        
         for (FileBrowserEntry entry : entries) {
             if (first) first = false;
             else builder.append("\n");
@@ -64,8 +58,6 @@ public class CmdList implements CommandExecutor {
         user.print(builder.toString());
         return true;
     }
-    
-    
     
     
 }

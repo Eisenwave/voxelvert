@@ -60,6 +60,11 @@ public class ConsoleVVUser implements VVUser {
     }
     
     @Override
+    public void printRaw(String raw) {
+        sender.sendMessage(raw);
+    }
+    
+    @Override
     public boolean acceptsUpdates() {
         return false;
     }

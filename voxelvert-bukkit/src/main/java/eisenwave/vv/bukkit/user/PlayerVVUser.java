@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 public class PlayerVVUser implements VVUser {
     
     private final BukkitVoxelVert vv;
+    private final Language lang;
     private final Player player;
     private final PlayerVVInventory inv;
     
@@ -33,12 +34,17 @@ public class PlayerVVUser implements VVUser {
         File dir = new File(userDir, player.getUniqueId().toString());
         this.inv = new PlayerVVInventory(this, dir);
     
-        Language lang = vv.getLanguage();
+        this.lang = vv.getLanguage();
         this.msgFormat = lang.get("user.msg");
         this.errFormat = lang.get("user.err");
     }
     
     // IMPLEMENTED METHODS
+    
+    @Override
+    public Language getLanguage() {
+        return lang;
+    }
     
     @NotNull
     @Override
@@ -64,6 +70,11 @@ public class PlayerVVUser implements VVUser {
     @Override
     public void error(String err) {
         player.sendMessage( CommandUtil.chatColors(String.format(errFormat, err)) );
+    }
+    
+    @Override
+    public void printRaw(String raw) {
+        player.sendMessage(raw);
     }
     
     @Override

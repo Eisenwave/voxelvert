@@ -1,10 +1,10 @@
 package eisenwave.vv.clsvert;
 
+import eisenwave.spatium.util.PrimMath;
 import eisenwave.vv.object.BaseRectangle;
-import net.grian.spatium.util.*;
 import eisenwave.torrens.util.ANSI;
 import eisenwave.torrens.util.ColorMath;
-import net.grian.spatium.util.TestUtil;
+import eisenwave.spatium.util.TestUtil;
 import eisenwave.torrens.img.Texture;
 import eisenwave.vv.VVTest;
 import eisenwave.vv.object.RectangleArrangement;

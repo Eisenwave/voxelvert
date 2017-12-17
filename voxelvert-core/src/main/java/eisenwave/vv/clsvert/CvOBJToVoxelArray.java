@@ -1,7 +1,7 @@
 package eisenwave.vv.clsvert;
 
 import eisenwave.torrens.wavefront.*;
-import net.grian.spatium.util.PrimMath;
+import eisenwave.spatium.util.PrimMath;
 import eisenwave.torrens.object.*;
 import eisenwave.torrens.util.ColorMath;
 import eisenwave.torrens.img.Texture;
