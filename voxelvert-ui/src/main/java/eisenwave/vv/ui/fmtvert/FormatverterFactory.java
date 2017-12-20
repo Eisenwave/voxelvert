@@ -23,6 +23,7 @@ import eisenwave.torrens.voxel.VoxelMesh;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.logging.Level;
@@ -102,6 +103,7 @@ public final class FormatverterFactory {
         put(Format.STL, Format.MODEL, FV_STL_MODEL::new);
         put(Format.STL, Format.QEF, FV_STL_QEF::new);
         put(Format.STL, Format.QB, FV_STL_QB::new);
+        put(Format.STL, Format.SCHEMATIC, FV_STL_SCHEMATIC::new);
         put(Format.STL, Format.STL, CopyFormatverter::new);
         
         put(Format.WAVEFRONT, Format.IMAGE, FV_WAVEFRONT_IMAGE::new);
@@ -180,8 +182,8 @@ public final class FormatverterFactory {
             {
                 BlockStructure blocks = (BlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
                 set(1);
-                
-                BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
+    
+                BlockColorTable colors = defaultBCT();
                 set(2);
                 
                 assert blocks != null;
@@ -234,8 +236,8 @@ public final class FormatverterFactory {
             {
                 BlockStructure blocks = (BlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
                 set(1);
-                
-                BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
+    
+                BlockColorTable colors = defaultBCT();
                 set(2);
                 
                 assert blocks != null;
@@ -301,8 +303,8 @@ public final class FormatverterFactory {
     
             BlockStructure blocks = (BlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
             set(1);
-            
-            BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
+    
+            BlockColorTable colors = defaultBCT();
             set(2);
             
             assert blocks != null;
@@ -346,8 +348,8 @@ public final class FormatverterFactory {
     
             BlockStructure blocks = (BlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
             set(1);
-            
-            BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
+    
+            BlockColorTable colors = defaultBCT();
             set(2);
             
             assert blocks != null;
@@ -455,8 +457,8 @@ public final class FormatverterFactory {
     
             BlockStructure blocks = (BlockStructure) user.getInventory().load(Format.BLOCK_ARRAY, from);
             set(1);
-            
-            BlockColorTable colors = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
+    
+            BlockColorTable colors = defaultBCT();
             set(2);
             
             assert blocks != null;
@@ -736,8 +738,8 @@ public final class FormatverterFactory {
             
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
-            
-            BlockColorTable bct = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
+    
+            BlockColorTable bct = defaultBCT();
             set(1);
             
             VoxelArray va = (VoxelArray) user.getInventory().load(Format.QEF, from);
@@ -998,8 +1000,8 @@ public final class FormatverterFactory {
                 set(3);
             }
             if (verbose) user.printLocalized("from_voxels.voxels", va.size());
-            
-            BlockColorTable bct = new DeserializerBCT().fromResource(getClass(), DEFAULT_BCT);
+    
+            BlockColorTable bct = defaultBCT();
             set(4);
             
             BlockStructure blocks = new CvVoxelArrayToBlocks().invoke(va, bct);
@@ -1179,6 +1181,61 @@ public final class FormatverterFactory {
             
             user.getInventory().save(Format.QB, model, to);
             set(4);
+        }
+        
+    }
+    
+    private static class FV_STL_SCHEMATIC extends Formatverter {
+        
+        @Override
+        public Option[] getMandatoryOptions() {
+            return new Option[] {OPTION_RESOLUTION};
+        }
+        
+        @Override
+        public Option[] getOptionalOptions() {
+            return new Option[] {OPTION_VERBOSE};
+        }
+        
+        @Override
+        public int getMaxProgress() {
+            return 5;
+        }
+        
+        @SuppressWarnings("Duplicates")
+        @Override
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
+            Language lang = user.getVoxelVert().getLanguage();
+            
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            Logger logger = verbose? user.getLogger() : null;
+            int res = parseInt(OPTION_RESOLUTION, args.get(OPTION_RESOLUTION.getId()), IntegerType.NATURAL);
+            
+            if (verbose) user.print(lang.get("from_stl.canvas"), res, res, res);
+            
+            final VoxelArray voxels;
+            {
+                STLModel stl = (STLModel) user.getInventory().load(Format.STL, from);
+                assert stl != null;
+                if (verbose) user.print(lang.get("from_stl.triangles"), stl.size());
+                set(1);
+                
+                voxels = new CvSTLToVoxelArray(logger).invoke(stl, res);
+                if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
+                set(2);
+            }
+            
+            if (verbose) user.printLocalized("from_voxels.voxels", voxels.size());
+            
+            BlockColorTable bct = defaultBCT();
+            set(3);
+            
+            BlockStructure blocks = new CvVoxelArrayToBlocks().invoke(voxels, bct);
+            if (verbose) user.printLocalized("to_blocks.blocks", blocks.getBlockCount());
+            set(4);
+            
+            user.getInventory().save(Format.SCHEMATIC, blocks, to);
+            set(5);
         }
         
     }
@@ -1584,6 +1641,14 @@ public final class FormatverterFactory {
     }
     
     // UTIL
+    
+    private static BlockColorTable defBCT = null;
+    
+    @NotNull
+    private static BlockColorTable defaultBCT() throws IOException {
+        return defBCT != null? defBCT :
+            (defBCT = new DeserializerBCT().fromResource(FormatverterFactory.class, DEFAULT_BCT));
+    }
     
     /**
      * Parses a resolution of format <code>{x-coordinate}[x{y-coordinate}x{z-coordinate}]</code>

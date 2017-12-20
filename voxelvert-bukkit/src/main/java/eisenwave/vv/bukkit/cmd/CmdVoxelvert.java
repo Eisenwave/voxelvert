@@ -33,7 +33,7 @@ public class CmdVoxelvert extends VoxelVertCommand {
     
     @Override
     public String getUsage() {
-        return "(convert|files|reload|status)";
+        return "(convert|converter|files|reload|status|version)";
     }
     
     @Override

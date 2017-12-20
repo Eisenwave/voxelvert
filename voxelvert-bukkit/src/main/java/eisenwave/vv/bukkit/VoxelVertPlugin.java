@@ -68,7 +68,7 @@ public class VoxelVertPlugin extends JavaPlugin {
             File langDir = new File(getDataFolder(), "lang");
             File langFile = new File(langDir, name);
             this.lang = new DeserializerLanguage(name).fromFile(langFile);
-            if (verbose) getLogger().info(String.format("[VoxelVert] using language \"%s\"", lang));
+            if (verbose) getLogger().info(String.format("using language \"%s\"", lang));
         } catch (IOException ex) {
             getLogger().warning(String.format("Failed to load language \"%s\", using default language", name));
         }

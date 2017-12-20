@@ -5,7 +5,7 @@
     <parent>
         <artifactId>voxelvert</artifactId>
         <groupId>eisenwave.vv</groupId>
-        <version>1.2</version>
+        <version>1.2.1</version>
     </parent>
 
     <artifactId>voxelvert-ui</artifactId>
@@ -27,6 +27,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>eisenwave.vv</groupId>
+            <artifactId>voxelvert-core</artifactId>
+            <version>${parent.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>15.0</version>
@@ -39,27 +45,24 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>eisenwave.vv</groupId>
-            <artifactId>voxelvert-core</artifactId>
-            <version>${parent.version}</version>
+            <groupId>eisenwave.spatium</groupId>
+            <artifactId>spatium-util</artifactId>
+            <version>0.1</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-io</artifactId>
             <version>1.3.2</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>eisenwave.spatium</groupId>
-            <artifactId>spatium-util</artifactId>
-            <version>0.1</version>
         </dependency>
     </dependencies>
 
