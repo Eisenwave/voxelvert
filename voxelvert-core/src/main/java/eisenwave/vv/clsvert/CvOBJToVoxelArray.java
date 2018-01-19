@@ -47,12 +47,9 @@ public class CvOBJToVoxelArray implements Classverter<OBJModel, VoxelArray> {
     
     @Override
     public VoxelArray invoke(@NotNull OBJModel from, @NotNull Object... args) {
-        Arguments.requireMin(args, 3);
-        Arguments.requireType(args, Number.class);
-        Arguments.requireType(args, Number.class);
-        Arguments.requireType(args, Number.class);
-        
-        return invoke(from, ((Number) args[0]).intValue());
+        Arguments.requireMin(args, 1);
+    
+        return invoke(from, Arguments.requireType(args[0], Number.class).intValue());
     }
     
     public VoxelArray invoke(OBJModel model, int res) {

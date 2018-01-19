@@ -1,6 +1,6 @@
 name: VoxelVert
 main: eisenwave.vv.bukkit.VoxelVertPlugin
-version: R1.0.1
+version: R1.2.3
 author: Eisenwave
 depend: [WorldEdit]
 softdepend: [BulktEdit]
@@ -21,11 +21,17 @@ permissions:
   vv.command.voxelvert-move:
     description: use command /voxelvert-move
     default: op
+  vv.admin.converter:
+    description: command options related to converter thread
+    default: op
   vv.admin.reload:
     description: reload the plugin
     default: op
   vv.admin.status:
     description: get the status of the plugin
+    default: op
+  vv.admin.version:
+    description: get the version of the plugin
     default: op
 
 commands:

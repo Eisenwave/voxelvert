@@ -2,7 +2,6 @@ package eisenwave.vv.ui.fmtvert;
 
 import eisenwave.vv.ui.user.VVUser;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
@@ -22,21 +21,6 @@ public class InventoryFormatverter extends Formatverter {
     
     @NotNull
     private final Format sourceFormat, targetFormat;
-    @Nullable
-    private final Formatverter handle;
-    
-    /**
-     * Constructs a new inventory formatverter.
-     *
-     * @param source the source format
-     * @param intermediary an intermediary format, used by the handle formatverter
-     * @param handle a formatverter which converts from the intermediary format into some target format
-     */
-    public InventoryFormatverter(@NotNull Format source, @NotNull Format intermediary, @Nullable Formatverter handle) {
-        this.sourceFormat = source;
-        this.targetFormat = intermediary;
-        this.handle = handle;
-    }
     
     /**
      * Constructs a new inventory formatverter.
@@ -45,22 +29,23 @@ public class InventoryFormatverter extends Formatverter {
      * @param target the target format
      */
     public InventoryFormatverter(@NotNull Format source, @NotNull Format target) {
-        this(source, target, null);
+        this.sourceFormat = source;
+        this.targetFormat = target;
     }
     
     @Override
     public int getMaxProgress() {
-        return handle == null? 1 : handle.getMaxProgress();
+        return 1;
     }
     
     @Override
     public Option[] getMandatoryOptions() {
-        return handle == null? new Option[0] : handle.getMandatoryOptions();
+        return new Option[0];
     }
     
     @Override
     public Option[] getOptionalOptions() {
-        return handle == null? new Option[0] : handle.getOptionalOptions();
+        return new Option[0];
     }
     
     @SuppressWarnings("Duplicates")
@@ -68,26 +53,23 @@ public class InventoryFormatverter extends Formatverter {
     public void convert(VVUser user, String from, String to, Map<String,String> args) throws Exception {
         Object temp = user.getInventory().load(sourceFormat, from);
         assert temp != null;
-        
-        if (handle == null) {
-            user.getInventory().save(targetFormat, temp, to);
-            set(getMaxProgress());
-            return;
-        }
-        
+    
+        user.getInventory().save(targetFormat, temp, to);
+        set(getMaxProgress());
+        /*
         user.getInventory().save(targetFormat, temp, "%temp");
-        
         handle.addListener((now, max, rel) -> set(now));
         handle.convert(user, "%temp", to, args);
         user.getInventory().delete("%temp");
         set(getMaxProgress());
+        */
     }
     
     // MISC
     
     @Override
     public Formatverter clone() {
-        return new InventoryFormatverter(sourceFormat, targetFormat, handle);
+        return new InventoryFormatverter(sourceFormat, targetFormat);
     }
     
 }
