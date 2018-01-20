@@ -17,7 +17,7 @@ public class TextureTransformTest {
     
     public final static String NAME = "test";
     
-    @Test
+    //@Test
     public void scale() throws Exception {
         File file = new File(DIR_IMAGE_SCALE, NAME+".png");
         Texture texture = Texture.wrapOrCopy( new DeserializerImage().fromFile(file) );
