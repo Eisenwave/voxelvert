@@ -1,8 +1,10 @@
 package eisenwave.vv.ui.fmtvert;
 
 import eisenwave.vv.ui.user.VVUser;
+import eisenwave.vv.ui.util.Sets;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -16,8 +18,8 @@ import java.util.Map;
 public class CopyFormatverter extends Formatverter {
     
     @Override
-    public Option[] getOptionalOptions() {
-        return new Option[] {new Option("v", "verbose")};
+    public Set<Option> getOptionalOptions() {
+        return Sets.ofArray(new Option("v", "verbose"));
     }
     
     @Override

@@ -1,10 +1,14 @@
 package eisenwave.vv.ui.fmtvert;
 
 import eisenwave.spatium.util.PrimArrays;
-import eisenwave.vv.ui.error.FormatverterException;
 import eisenwave.vv.ui.user.VVUser;
+import eisenwave.vv.ui.error.*;
+import eisenwave.vv.ui.util.Sets;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A converter between two formats which can be invoked by a user.
@@ -16,8 +20,9 @@ public abstract class Formatverter extends Progress {
      *
      * @return the names of mandatory parameters
      */
-    public Option[] getMandatoryOptions() {
-        return new Option[0];
+    @NotNull
+    public Set<Option> getMandatoryOptions() {
+        return Collections.emptySet();
     }
     
     /**
@@ -25,12 +30,14 @@ public abstract class Formatverter extends Progress {
      *
      * @return the names of optional options
      */
-    public Option[] getOptionalOptions() {
-        return new Option[0];
+    @NotNull
+    public Set<Option> getOptionalOptions() {
+        return Collections.emptySet();
     }
     
-    public Option[] getAllOptions() {
-        return PrimArrays.concat(getMandatoryOptions(), getOptionalOptions());
+    @NotNull
+    public Set<Option> getAllOptions() {
+        return Sets.union(getMandatoryOptions(), getOptionalOptions());
     }
     
     @Override
@@ -45,23 +52,10 @@ public abstract class Formatverter extends Progress {
      * @param from the name of the object which to convert from
      * @param to the name of the object to which to convert
      * @param args the additional arguments for the conversion
+     * @throws FormatverterArgumentException if a mandatory argument is missing or there is some other issue
+     * @throws FormatverterException if a known error occurs in the formatverter
+     * @throws Exception if an unknown error such as an I/O error occurs in the formatverter
      */
-    public abstract void convert(VVUser user, String from, String to, Map<String, String> args)
-        throws Exception;
-    
-    /*
-    @Override
-    default float getProgress() {
-        return (float) getRawProgress() / getMaxProgress();
-    }
-    
-    default int getMaxProgress() {
-        return 1;
-    }
-    
-    default int getRawProgress() {
-        return 0;
-    }
-    */
+    public abstract void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception;
     
 }

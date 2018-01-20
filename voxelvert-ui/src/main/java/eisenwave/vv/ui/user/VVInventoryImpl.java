@@ -2,6 +2,7 @@ package eisenwave.vv.ui.user;
 
 import eisenwave.torrens.voxel.*;
 import eisenwave.torrens.wavefront.*;
+import eisenwave.vv.io.DeserializerBCT;
 import eisenwave.vv.io.SerializerBCT;
 import eisenwave.vv.ui.fmtvert.Format;
 import eisenwave.torrens.schematic.BlockStructure;
@@ -120,6 +121,11 @@ public class VVInventoryImpl implements VVInventory {
         }
         
         switch (format.getId()) {
+    
+            case "colors": {
+                File file = new File(dir, name);
+                return file.exists()? new DeserializerBCT().fromFile(file) : null;
+            }
             
             case "qef": {
                 File file = new File(dir, name);

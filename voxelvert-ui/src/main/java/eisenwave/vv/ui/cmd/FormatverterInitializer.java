@@ -30,11 +30,9 @@ public class FormatverterInitializer implements VVInitializer {
     @Override
     public Set<Option> getAcceptedOptions() {
         Set<Option> result = new HashSet<>();
-        
-        for (Formatverter fv : FormatverterFactory.getInstance().getFormatverters()) {
-            result.addAll(Arrays.asList(fv.getMandatoryOptions()));
-            result.addAll(Arrays.asList(fv.getOptionalOptions()));
-        }
+    
+        for (Formatverter fv : FormatverterFactory.getInstance().getFormatverters())
+            result.addAll(fv.getAllOptions());
         
         result.addAll(Arrays.asList(OPTIONS));
         
@@ -45,7 +43,7 @@ public class FormatverterInitializer implements VVInitializer {
     public VoxelVertTask execute(VVUser user, CommandCall args) throws VVInitializerException {
         final VVInventory inv = user.getInventory();
         final Language lang = user.getVoxelVert().getLanguage();
-        final boolean verbose = args.hasKeyword(OPTION_VERBOSE.getId());
+        //final boolean verbose = args.hasKeyword(OPTION_VERBOSE.getId());
         
         if (args.getArgCount() < 2) {
             throw new VVInitializerException(lang.get("main.err.missing_in_out"));

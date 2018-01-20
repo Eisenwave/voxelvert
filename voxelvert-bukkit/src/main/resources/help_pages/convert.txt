@@ -2,16 +2,16 @@
 &9&lUsage: &r&l/c <input file> <output file> [options]
 &9Example:&r /c tree.qef tree.zip -o model -v
 &9Options:
-  &9-c <colors>:&r specify colors file to use
+  &9-c <colors>:&r path to color table for block->voxel
   &9-C:&r crop away transparent image borders
   &9-d:&r dir. of rendering/placing images
-  &9--full_blocks:&r only convert full blocks
+  &9-F:&r only convert full blocks
   &9-i <input>:&r specify input format
-  &9--no_alpha:&r make all voxels opaque
+  &9-a:&r make all voxels opaque
   &9-o <output>:&r specify output format
   &9-r:&r replace existing files
-  &9-show_missing:&r replace missing colors with visible debug color
-  &9--no_anti_bleed:&r no UV bleed prevention in models
-  &9--tint:&r block tint as hex color
+  &9-m:&r replace missing colors with visible debug color
+  &9-b:&r no UV bleed prevention in models
+  &9-T <tint>:&r block tint as hex color
   &9-v:&r enable verbose mode
 &7Open chat to view full documentation

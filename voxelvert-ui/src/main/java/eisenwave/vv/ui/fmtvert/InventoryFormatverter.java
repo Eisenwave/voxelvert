@@ -3,7 +3,10 @@ package eisenwave.vv.ui.fmtvert;
 import eisenwave.vv.ui.user.VVUser;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -39,13 +42,13 @@ public class InventoryFormatverter extends Formatverter {
     }
     
     @Override
-    public Option[] getMandatoryOptions() {
-        return new Option[0];
+    public Set<Option> getMandatoryOptions() {
+        return Collections.emptySet();
     }
     
     @Override
-    public Option[] getOptionalOptions() {
-        return new Option[0];
+    public Set<Option> getOptionalOptions() {
+        return Collections.emptySet();
     }
     
     @SuppressWarnings("Duplicates")
