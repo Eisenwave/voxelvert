@@ -1,6 +1,5 @@
 package eisenwave.vv.ui.fmtvert;
 
-import eisenwave.spatium.util.PrimArrays;
 import eisenwave.vv.ui.user.VVUser;
 import eisenwave.vv.ui.error.*;
 import eisenwave.vv.ui.util.Sets;

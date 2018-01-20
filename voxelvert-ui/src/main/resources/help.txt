@@ -16,7 +16,7 @@ Conversion Of Blocks/Schematics:
 -T, --tint <color>      The tint color in hexadecimal (else default color is used)
 
 Conversion Of Images:
--c, --crop              Crop away transparent borders of the image when rendering
+-C, --crop              Crop away transparent borders of the image when rendering
 -d, --direction <dir>   Define direction of placement or rendering when converting from/to images
 
 Conversion of Minecraft Models:

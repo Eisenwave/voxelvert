@@ -70,8 +70,9 @@ public class CompoundFormatverter extends Formatverter {
             intermediary.removeListener(l);
             offset += intermediary.getMaxProgress();
         }
-        
-        user.getInventory().delete("%temp");
+    
+        if (!to.equals("%temp"))
+            user.getInventory().delete("%temp");
     }
     
     @SuppressWarnings("unchecked")
