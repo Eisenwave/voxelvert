@@ -7,8 +7,7 @@ import eisenwave.inv.menu.MenuResponse;
 import eisenwave.inv.view.ViewGroup;
 import eisenwave.inv.view.ViewSize;
 import eisenwave.inv.widget.*;
-import eisenwave.vv.ui.fmtvert.Format;
-import eisenwave.vv.ui.fmtvert.Formatverter;
+import eisenwave.vv.ui.fmtvert.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -23,8 +22,6 @@ import eisenwave.vv.bukkit.util.CommandUtil;
 import eisenwave.inv.util.ItemUtil;
 import eisenwave.vv.object.Language;
 import eisenwave.vv.ui.cmd.VoxelVertTask;
-import eisenwave.vv.ui.fmtvert.FormatverterFactory;
-import eisenwave.vv.ui.fmtvert.ProgressListener;
 import eisenwave.vv.ui.user.VVInventory;
 import eisenwave.vv.ui.user.VVUser;
 import org.jetbrains.annotations.NotNull;
@@ -209,9 +206,13 @@ public class ConvertMenu extends Menu {
         optionsGroup.clearChildren();
         
         Formatverter fv = FormatverterFactory.getInstance().fromFormats(sourceFormat, targetFormat);
-        List<ConvertOptionWidget> widgets = Arrays
-            .stream(fv.getAllOptions())
-            .map(option -> new ConvertOptionWidget(ConvertMenu.this, option.getId()))
+        assert fv != null;
+        List<ConvertOptionWidget> widgets = fv.getAllOptions()
+            .stream()
+            .map(Option::getId)
+            .filter(ConvertOptionWidget::isKnownOption)
+            .sorted()
+            .map(optionId -> new ConvertOptionWidget(ConvertMenu.this, optionId))
             .collect(Collectors.toList());
         int size = widgets.size();
         
@@ -259,6 +260,7 @@ public class ConvertMenu extends Menu {
         VoxelVertQueue queue = vv.getQueue();
         
         Formatverter fv = FormatverterFactory.getInstance().fromFormats(sourceFormat, targetFormat);
+        assert fv != null;
         Map<String, String> options = getOptions();
         
         initProgressBar();

@@ -5,18 +5,22 @@ import eisenwave.inv.widget.*;
 import eisenwave.vv.bukkit.gui.menu.ConvertMenu;
 import eisenwave.vv.ui.fmtvert.Formatverter;
 import eisenwave.spatium.enums.Face;
+import eisenwave.vv.ui.fmtvert.Option;
+import eisenwave.vv.ui.util.Sets;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import eisenwave.inv.util.ItemUtil;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ConvertOptionWidget extends ViewGroup<View> {
+    
+    private final static Set<String> KNOWN = Sets.ofArray("R", "d", "v", "C");
     
     private final static ItemStack
         ITEM_RESOLUTION = ItemUtil.create(Material.MOB_SPAWNER, ChatColor.RESET + "Resolution", "&8-R"),
@@ -24,6 +28,11 @@ public class ConvertOptionWidget extends ViewGroup<View> {
         ITEM_VERBOSITY = ItemUtil.create(Material.JUKEBOX, ChatColor.RESET + "Verbosity", "&8-v"),
         ITEM_CROP = ItemUtil.create(Material.SHEARS, ChatColor.RESET + "Crop", "&8-C"),
         ITEM_UNKNOWN = ItemUtil.create(Material.STRUCTURE_VOID, ChatColor.RESET + "???");
+    
+    @Contract(pure = true)
+    public static boolean isKnownOption(String option) {
+        return KNOWN.contains(option);
+    }
     
     private final String option;
     private final ItemStack optionDisplay;
