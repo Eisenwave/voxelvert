@@ -64,55 +64,54 @@ public final class FormatverterFactory {
     private final FormatverterMap map = new FormatverterMap();
     
     public FormatverterFactory() {
+        final Supplier<Formatverter>
+            fv_va_qef = () -> new InventoryFormatverter(VOXEL_ARRAY, QEF),
+            //fv_schematic_ba = () -> new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY),
+            fv_qef_va = () -> new InventoryFormatverter(QEF, VOXEL_ARRAY),
+            fv_schematic_va = () -> new CompoundFormatverter(
+                new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY),
+                new FV_BA_VA());
+        
         put(BLOCK_ARRAY, IMAGE, () -> new CompoundFormatverter(new FV_BA_VA(), new FV_VA_IMAGE()));
         put(BLOCK_ARRAY, MODEL, () -> new CompoundFormatverter(new FV_BA_VA(), new FV_VA_MODEL()));
         put(BLOCK_ARRAY, QB, () -> new CompoundFormatverter(new FV_BA_VA(), new FV_VA_QB()));
-        put(BLOCK_ARRAY, QEF,
-            () -> new CompoundFormatverter(new FV_BA_VA(), new InventoryFormatverter(VOXEL_ARRAY, QEF)));
+        put(BLOCK_ARRAY, QEF, () -> new CompoundFormatverter(new FV_BA_VA(), fv_va_qef.get()));
         put(BLOCK_ARRAY, SCHEMATIC, FV_BA_SCHEMATIC::new);
         put(BLOCK_ARRAY, WAVEFRONT, () -> new CompoundFormatverter(new FV_BA_VA(), new FV_VA_WAVEFRONT()));
     
         put(IMAGE, IMAGE, FV_IMAGE_IMAGE::new);
-        put(IMAGE, QEF, () -> new CompoundFormatverter(new FV_IMAGE_VA(), new FV_VA_QEF()));
+        put(IMAGE, QEF, () -> new CompoundFormatverter(new FV_IMAGE_VA(), fv_va_qef.get()));
         put(IMAGE, QB, () -> new CompoundFormatverter(new FV_IMAGE_VA(), new FV_VA_QB()));
     
         put(QB, IMAGE, () -> new CompoundFormatverter(new FV_QB_VA(), new FV_VA_IMAGE()));
         put(QB, MODEL, () -> new CompoundFormatverter(new FV_QB_VA(), new FV_VA_MODEL()));
         put(QB, QB, CopyFormatverter::new);
-        put(QB, QEF, () -> new CompoundFormatverter(new FV_QB_VA(), new FV_VA_QEF()));
+        put(QB, QEF, () -> new CompoundFormatverter(new FV_QB_VA(), fv_va_qef.get()));
         put(QB, SCHEMATIC, () -> new CompoundFormatverter(new FV_QB_VA(), new FV_VA_SCHEMATIC()));
         put(QB, STL, () -> new CompoundFormatverter(new FV_QB_VA(), new FV_VA_STL()));
         put(QB, WAVEFRONT, () -> new CompoundFormatverter(new FV_QB_VA(), new FV_VA_WAVEFRONT()));
     
-        put(QEF, IMAGE, () -> new CompoundFormatverter(new InventoryFormatverter(QEF, VOXEL_ARRAY), new FV_VA_IMAGE()));
-        put(QEF, MODEL, () -> new CompoundFormatverter(new InventoryFormatverter(QEF, VOXEL_ARRAY), new FV_VA_MODEL()));
-        put(QEF, QB, () -> new CompoundFormatverter(new InventoryFormatverter(QEF, VOXEL_ARRAY), new FV_VA_QB()));
+        put(QEF, IMAGE, () -> new CompoundFormatverter(fv_qef_va.get(), new FV_VA_IMAGE()));
+        put(QEF, MODEL, () -> new CompoundFormatverter(fv_qef_va.get(), new FV_VA_MODEL()));
+        put(QEF, QB, () -> new CompoundFormatverter(fv_qef_va.get(), new FV_VA_QB()));
         put(QEF, QEF, CopyFormatverter::new);
-        put(QEF, SCHEMATIC,
-            () -> new CompoundFormatverter(new InventoryFormatverter(QEF, VOXEL_ARRAY), new FV_VA_SCHEMATIC()));
-        put(QEF, STL, () -> new CompoundFormatverter(new InventoryFormatverter(QEF, VOXEL_ARRAY), new FV_VA_STL()));
-        put(QEF, WAVEFRONT, () -> new CompoundFormatverter(
-            new InventoryFormatverter(QEF, VOXEL_ARRAY), new FV_VA_WAVEFRONT()));
+        put(QEF, SCHEMATIC, () -> new CompoundFormatverter(fv_qef_va.get(), new FV_VA_SCHEMATIC()));
+        put(QEF, STL, () -> new CompoundFormatverter(fv_qef_va.get(), new FV_VA_STL()));
+        put(QEF, WAVEFRONT, () -> new CompoundFormatverter(fv_qef_va.get(), new FV_VA_WAVEFRONT()));
     
         put(RESOURCE_PACK, BLOCK_COLOR_TABLE, FV_RP_COLORS::new);
         put(RESOURCE_PACK, RESOURCE_PACK, CopyFormatverter::new);
     
-        put(SCHEMATIC, IMAGE, () -> new CompoundFormatverter(
-            new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY), new FV_BA_VA(), new FV_VA_IMAGE()));
-        put(SCHEMATIC, MODEL, () -> new CompoundFormatverter(
-            new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY), new FV_BA_VA(), new FV_VA_MODEL()));
-        put(SCHEMATIC, QB, () -> new CompoundFormatverter(
-            new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY), new FV_BA_VA(), new FV_VA_QB()));
-        put(SCHEMATIC, QEF, () -> new CompoundFormatverter(
-            new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY), new FV_BA_VA(), new FV_VA_QEF()));
+        put(SCHEMATIC, IMAGE, () -> new CompoundFormatverter(fv_schematic_va.get(), new FV_VA_IMAGE()));
+        put(SCHEMATIC, MODEL, () -> new CompoundFormatverter(fv_schematic_va.get(), new FV_VA_MODEL()));
+        put(SCHEMATIC, QB, () -> new CompoundFormatverter(fv_schematic_va.get(), new FV_VA_QB()));
+        put(SCHEMATIC, QEF, () -> new CompoundFormatverter(fv_schematic_va.get(), fv_va_qef.get()));
         put(SCHEMATIC, SCHEMATIC, CopyFormatverter::new);
-        put(SCHEMATIC, STL, () -> new CompoundFormatverter(
-            new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY), new FV_BA_VA(), new FV_VA_STL()));
-        put(SCHEMATIC, WAVEFRONT, () -> new CompoundFormatverter(
-            new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY), new FV_BA_VA(), new FV_VA_WAVEFRONT()));
+        put(SCHEMATIC, STL, () -> new CompoundFormatverter(fv_schematic_va.get(), new FV_VA_STL()));
+        put(SCHEMATIC, WAVEFRONT, () -> new CompoundFormatverter(fv_schematic_va.get(), new FV_VA_WAVEFRONT()));
     
         put(STL, MODEL, () -> new CompoundFormatverter(new FV_STL_VA(), new FV_VA_MODEL()));
-        put(STL, QEF, () -> new CompoundFormatverter(new FV_STL_VA(), new FV_VA_QEF()));
+        put(STL, QEF, () -> new CompoundFormatverter(new FV_STL_VA(), fv_va_qef.get()));
         put(STL, QB, () -> new CompoundFormatverter(new FV_STL_VA(), new FV_VA_QB()));
         put(STL, SCHEMATIC, () -> new CompoundFormatverter(new FV_STL_VA(), new FV_VA_SCHEMATIC()));
         put(STL, STL, CopyFormatverter::new);
@@ -120,7 +119,7 @@ public final class FormatverterFactory {
         put(WAVEFRONT, IMAGE, () -> new CompoundFormatverter(new FV_WAVEFRONT_VA(), new FV_VA_IMAGE()));
         put(WAVEFRONT, MODEL, () -> new CompoundFormatverter(new FV_WAVEFRONT_VA(), new FV_VA_MODEL()));
         put(WAVEFRONT, QB, () -> new CompoundFormatverter(new FV_WAVEFRONT_VA(), new FV_VA_QB()));
-        put(WAVEFRONT, QEF, () -> new CompoundFormatverter(new FV_WAVEFRONT_VA(), new FV_VA_QEF()));
+        put(WAVEFRONT, QEF, () -> new CompoundFormatverter(new FV_WAVEFRONT_VA(), fv_va_qef.get()));
         put(WAVEFRONT, STL, FV_WAVEFRONT_STL::new);
         put(WAVEFRONT, WAVEFRONT, CopyFormatverter::new);
     }
@@ -616,36 +615,6 @@ public final class FormatverterFactory {
     
             user.getInventory().save(QB, qb, to);
             set(3);
-        }
-        
-    }
-    
-    private static class FV_VA_QEF extends Formatverter {
-        
-        @Override
-        public int getMaxProgress() {
-            return 2;
-        }
-        
-        @Override
-        public Set<Option> getOptionalOptions() {
-            return Sets.ofArray(OPTION_VERBOSE);
-        }
-        
-        @Override
-        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
-            Language lang = user.getVoxelVert().getLanguage();
-            
-            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
-            //Logger logger = verbose? user.getLogger() : null;
-    
-            VoxelArray voxels = (VoxelArray) user.getInventory().load(VOXEL_ARRAY, from);
-            assert voxels != null;
-            if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
-            set(1);
-    
-            user.getInventory().save(QEF, voxels, to);
-            set(2);
         }
         
     }

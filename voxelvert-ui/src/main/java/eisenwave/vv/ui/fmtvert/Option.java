@@ -1,22 +1,25 @@
 package eisenwave.vv.ui.fmtvert;
 
+import eisenwave.vv.ui.util.Sets;
+
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Option {
     
     private final String id;
-    private final String[] aliases;
+    private final Set<String> aliases;
     
     public Option(String id, String... aliases) {
         this.id = id;
-        this.aliases = Arrays.copyOf(aliases, aliases.length);
+        this.aliases = Sets.ofArray(aliases);
     }
     
     public Option(String id) {
         this.id = id;
-        this.aliases = new String[0];
+        this.aliases = Collections.emptySet();
     }
     
     public String getId() {
@@ -24,15 +27,12 @@ public class Option {
     }
     
     public boolean matches(String option) {
-        if (id.equals(option)) return true;
-        for (String alias : aliases)
-            if (alias.equals(option))
-                return true;
-        return false;
+        return id.equals(option)
+            || aliases.contains(option);
     }
     
     public Set<String> getAliases() {
-        return new HashSet<>(Arrays.asList(aliases));
+        return Collections.unmodifiableSet(aliases);
     }
     
     // MISC
