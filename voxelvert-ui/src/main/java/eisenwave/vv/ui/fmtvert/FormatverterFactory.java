@@ -120,6 +120,7 @@ public final class FormatverterFactory {
         put(WAVEFRONT, MODEL, () -> new CompoundFormatverter(new FV_WAVEFRONT_VA(), new FV_VA_MODEL()));
         put(WAVEFRONT, QB, () -> new CompoundFormatverter(new FV_WAVEFRONT_VA(), new FV_VA_QB()));
         put(WAVEFRONT, QEF, () -> new CompoundFormatverter(new FV_WAVEFRONT_VA(), fv_va_qef.get()));
+        put(WAVEFRONT, SCHEMATIC, () -> new CompoundFormatverter(new FV_WAVEFRONT_VA(), new FV_VA_SCHEMATIC()));
         put(WAVEFRONT, STL, FV_WAVEFRONT_STL::new);
         put(WAVEFRONT, WAVEFRONT, CopyFormatverter::new);
     }

@@ -1,11 +1,14 @@
 package eisenwave.vv.bukkit.gui.widget;
 
+import eisenwave.inv.menu.Menu;
 import eisenwave.inv.view.*;
 import eisenwave.inv.widget.*;
+import eisenwave.vv.bukkit.gui.FileBrowserEntry;
+import eisenwave.vv.bukkit.gui.FileType;
 import eisenwave.vv.bukkit.gui.menu.ConvertMenu;
 import eisenwave.vv.ui.fmtvert.Formatverter;
 import eisenwave.spatium.enums.Face;
-import eisenwave.vv.ui.fmtvert.Option;
+import eisenwave.vv.ui.user.VVUser;
 import eisenwave.vv.ui.util.Sets;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -20,13 +23,14 @@ import java.util.stream.Collectors;
 
 public class ConvertOptionWidget extends ViewGroup<View> {
     
-    private final static Set<String> KNOWN = Sets.ofArray("R", "d", "v", "C");
+    private final static Set<String> KNOWN = Sets.ofArray("R", "d", "v", "C"/*, "c"*/);
     
     private final static ItemStack
         ITEM_RESOLUTION = ItemUtil.create(Material.MOB_SPAWNER, ChatColor.RESET + "Resolution", "&8-R"),
         ITEM_DIRECTION = ItemUtil.create(Material.COMPASS, ChatColor.RESET + "Direction", "&8-d"),
         ITEM_VERBOSITY = ItemUtil.create(Material.JUKEBOX, ChatColor.RESET + "Verbosity", "&8-v"),
         ITEM_CROP = ItemUtil.create(Material.SHEARS, ChatColor.RESET + "Crop", "&8-C"),
+        ITEM_COLORS = ItemUtil.create(Material.INK_SACK, 1, (short) 1, ChatColor.RESET + "Colors", "&8-c"),
         ITEM_UNKNOWN = ItemUtil.create(Material.STRUCTURE_VOID, ChatColor.RESET + "???");
     
     @Contract(pure = true)
@@ -36,12 +40,14 @@ public class ConvertOptionWidget extends ViewGroup<View> {
     
     private final String option;
     private final ItemStack optionDisplay;
+    private final VVUser user;
     
     @Nullable
     private String value;
     
-    public ConvertOptionWidget(ConvertMenu menu, @NotNull String option) {
+    public ConvertOptionWidget(ConvertMenu menu, VVUser user, @NotNull String option) {
         super(menu, new ViewSize(ViewSize.MATCH_PARENT, 1, false, false));
+        this.user = user;
         this.option = option;
         
         switch (option) {
@@ -52,6 +58,10 @@ public class ConvertOptionWidget extends ViewGroup<View> {
             case "d":
                 optionDisplay = ITEM_DIRECTION;
                 initOptionDirection();
+                break;
+            case "c":
+                optionDisplay = ITEM_COLORS;
+                initOptionColors();
                 break;
             case "v":
                 optionDisplay = ITEM_VERBOSITY;
@@ -89,6 +99,58 @@ public class ConvertOptionWidget extends ViewGroup<View> {
             .collect(Collectors.toList());
         
         initSwitchOption(values);
+    }
+    
+    private void initOptionColors() {
+        Menu menu = getMenu();
+        ViewSize size = new ViewSize(2, ViewSize.MIN_POS, ViewSize.MATCH_PARENT, 1);
+        InlineList<RadioButton> list = new InlineList<>(menu, size, null);
+        
+        // get all usable BCT files from the inventory
+        List<FileBrowserEntry> entries = user.getInventory().list().stream()
+            .map(FileBrowserEntry::new)
+            .filter(entry -> !entry.isHidden() && entry.getType() == FileType.BCT)
+            .sorted()
+            .collect(Collectors.toList());
+        
+        // convert all BCT files into radio buttons and add them to the InlineList
+        boolean first = true;
+        int index = 1;
+        for (FileBrowserEntry entry : entries) {
+            RadioButton button = new RadioButton(menu, null);
+            ItemStack checked = ItemUtil.setName(button.getCheckedItem(),
+                ChatColor.GREEN + entry.getDisplayName(false));
+            ItemStack unchecked = ItemUtil.setName(button.getUncheckedItem(),
+                ChatColor.DARK_GRAY + entry.getDisplayName(false));
+            
+            checked.setAmount(index);
+            unchecked.setAmount(index);
+            button.setCheckedItem(checked);
+            button.setUncheckedItem(unchecked);
+            button.addCheckListener(event -> value = entry.getPath());
+            
+            list.addChild(button);
+            
+            if (first) {
+                value = entry.getPath();
+                button.setChecked(true);
+                first = false;
+            }
+            index++;
+        }
+        
+        // "hacky" toggle group for all buttons
+        for (RadioButton radioButton : list) {
+            radioButton.addCheckListener(event -> {
+                list.forEach(otherButton -> {
+                    if (radioButton != otherButton)
+                        otherButton.setChecked(false);
+                });
+                list.invalidate();
+            });
+        }
+        
+        addChild(list);
     }
     
     private void initSwitchOption(List<String> values) {

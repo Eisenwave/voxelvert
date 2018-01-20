@@ -8,6 +8,7 @@ import eisenwave.inv.view.ViewGroup;
 import eisenwave.inv.view.ViewSize;
 import eisenwave.inv.widget.*;
 import eisenwave.vv.ui.fmtvert.*;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -212,7 +213,7 @@ public class ConvertMenu extends Menu {
             .map(Option::getId)
             .filter(ConvertOptionWidget::isKnownOption)
             .sorted()
-            .map(optionId -> new ConvertOptionWidget(ConvertMenu.this, optionId))
+            .map(optionId -> new ConvertOptionWidget(ConvertMenu.this, user, optionId))
             .collect(Collectors.toList());
         int size = widgets.size();
         
@@ -311,6 +312,7 @@ public class ConvertMenu extends Menu {
         Map<String, String> result = new HashMap<>();
         for (ConvertOptionWidget widget : optionsGroup) {
             String arg = widget.getArgument();
+            //Bukkit.broadcastMessage(widget.getOption()+" = "+arg);
             if (arg != null)
                 result.put(widget.getOption(), widget.getArgument());
         }

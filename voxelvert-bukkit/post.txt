@@ -8,6 +8,7 @@ CONTRIBUTORS: Grian Network, Arcaniax
 
 
 [IMG]https://i.imgur.com/KnImJll.png[/IMG]
+[B]External Dependencies:[/B] WorldEdit
 
 [IMG]https://i.imgur.com/AVmDFOC.png[/IMG]
 VoxelVert Reloaded is a complete revamp of plugin VoxelVert. Multiple months of work went into this project and I can proudly say that this is the most significant and finest plugin I have ever developed.
@@ -133,6 +134,26 @@ Opens a conversion GUI for the provided file path. VoxelVert will try to determi
 For instance, if you provide a file named "my_file.schematic", VoxelVert won't ask you for the format because it can tell by the the "schematic" extension.
 [/SPOILER]
 
+[B][FONT=Courier New]/voxelvert converter (name|priority|restart|state)[/FONT][/B]
+[SPOILER]
+Displays information about the converter thread, including its name, its state, its priority. The restart option interrupts the thread and starts it up again, which is useful in situations where it got stuck on an extremely long conversion.
+[/SPOILER]
+
+[B][FONT=Courier New]/voxelvert reload[/FONT][/B]
+[SPOILER]
+Reloads the plugin.
+[/SPOILER]
+
+[B][FONT=Courier New]/voxelvert status[/FONT][/B]
+[SPOILER]
+Displays some information about the status of the plugin, such as the language used by it and the status of the converter thread.
+[/SPOILER]
+
+[B][FONT=Courier New]/voxelvert version[/FONT][/B]
+[SPOILER]
+Displays the current VoxelVert version.
+[/SPOILER]
+
 [B][FONT=Courier New]/convert <input file> <output file> [options][/FONT][/B]
 [SPOILER]
 [B]Alias: [/B][FONT=Courier New]/c[/FONT]
@@ -153,6 +174,20 @@ Converts the file named "house" with the format "schematic" into an bird eye's v
 [/SPOILER]
 
 
+[IMG]https://i.imgur.com/7UJEsJ9.png[/IMG]
+[LIST=1]
+[*]Extract the Zip-Archive using 7Zip, WinRar, or other tools.
+[*]Drag the plugins EisenInventories.jar* and VoxelVert.jar into your plugins/ folder.
+[*]Start up your server. This will also generate the default configuration and language files which you can then edit.
+[/LIST]
+[SIZE=3]* EisenInventories is an API which VoxelVert uses for its chest menus. It's not released as seperate plugin yet but will be in the future.[/SIZE]
+
+[SPOILER="Command Line Tool Installation"]
+To use the VoxelVert command line tool, open your system console in the directory in which you extracted your jar-files and run the command:
+j[FONT=Courier New]ava -jar VoxelVertConsole.jar <program arguments>[/FONT]
+[/SPOILER]
+
+
 [IMG]https://i.imgur.com/nuWR57M.png[/IMG]
 Here you can see the default configuration file of the plugin
 [CODE=yaml]# the language file to be used
@@ -168,7 +203,25 @@ verbosity:
 
 [IMG]https://i.imgur.com/79wcqhV.png[/IMG]
 [B]Q: How do I convert stuff with VoxelVert?[/B]
-A: Take a look at the Screenshots section. There you can see a detailed walkthrough for how to do it in the file browser. Alternatively, check out the documentation of /convert.
+[SPOILER="Answer"]Take a look at the Screenshots section. There you can see a detailed walkthrough on how to do it in the file browser. Alternatively, check out the documentation of /convert.
+[/SPOILER]
 
 [B]Q: If people convert really large files with VoxelVert, isn't my server going to lag?[/B]
-A: Probably not. Many weeks of work went into optimizing and testing VoxelVert. Also, all conversions are happening on a separate converter thread. This means that VoxelVert won't interfere with placing blocks and other important stuff.
+[SPOILER="Answer"]
+Probably not. Many weeks of work went into optimizing and testing VoxelVert. Also, all conversions are happening on a separate converter thread. This means that VoxelVert won't interfere with placing blocks and other important stuff.
+[/SPOILER]
+
+[B]Q: Can I convert my blocks with custom resource packs?[/B]
+[SPOILER="Answer"]
+Yes, although this function is only available in the /convert command right now. You must first convert a resource pack into a database of colors:
+[B]/c <texture_pack>.zip <block_color_table>.bct[/B]
+This is necessary so that VoxelVert doesn't need to convert your resource pack into a block color lookup table each time you want to convert blocks.
+
+Next, convert a schematic or your selection into voxels with the -c option.
+[B]/c #selection <my_voxel_model>.qef -c <block_color_table>.bct[/B]
+
+Full example:[CODE]1. convert resource pack into block color table:
+/c bdcraft.zip bdcraft.bct
+2. convert world edit selection into QEF file using our block color table:
+/c #selection my_build.qef -c bdcraft.bct[/CODE]
+[/SPOILER]
