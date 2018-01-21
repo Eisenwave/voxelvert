@@ -66,7 +66,6 @@ public final class FormatverterFactory {
     public FormatverterFactory() {
         final Supplier<Formatverter>
             fv_va_qef = () -> new InventoryFormatverter(VOXEL_ARRAY, QEF),
-            //fv_schematic_ba = () -> new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY),
             fv_qef_va = () -> new InventoryFormatverter(QEF, VOXEL_ARRAY),
             fv_schematic_va = () -> new CompoundFormatverter(
                 new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY),
@@ -82,6 +81,7 @@ public final class FormatverterFactory {
         put(IMAGE, IMAGE, FV_IMAGE_IMAGE::new);
         put(IMAGE, QEF, () -> new CompoundFormatverter(new FV_IMAGE_VA(), fv_va_qef.get()));
         put(IMAGE, QB, () -> new CompoundFormatverter(new FV_IMAGE_VA(), new FV_VA_QB()));
+        put(IMAGE, SCHEMATIC, () -> new CompoundFormatverter(new FV_IMAGE_VA(), new FV_VA_SCHEMATIC()));
     
         put(QB, IMAGE, () -> new CompoundFormatverter(new FV_QB_VA(), new FV_VA_IMAGE()));
         put(QB, MODEL, () -> new CompoundFormatverter(new FV_QB_VA(), new FV_VA_MODEL()));
