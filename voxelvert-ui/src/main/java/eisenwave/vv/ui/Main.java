@@ -35,7 +35,6 @@ public final class Main {
         } finally {
             user.update(null);
         }
-        System.out.println();
     }
     
 }
