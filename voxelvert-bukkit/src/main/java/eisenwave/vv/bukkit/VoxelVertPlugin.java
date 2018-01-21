@@ -118,7 +118,6 @@ public class VoxelVertPlugin extends JavaPlugin {
     
     // GETTERS
     
-    
     public static VoxelVertPlugin getInstance() {
         return instance;
     }

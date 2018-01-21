@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class ConvertOptionWidget extends ViewGroup<View> {
     
-    private final static Set<String> KNOWN = Sets.ofArray("R", "d", "v", "C"/*, "c"*/);
+    private final static Set<String> KNOWN = Sets.ofArray("R", "d", "v", "C", "c");
     
     private final static ItemStack
         ITEM_RESOLUTION = ItemUtil.create(Material.MOB_SPAWNER, ChatColor.RESET + "Resolution", "&8-R"),
