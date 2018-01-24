@@ -214,6 +214,7 @@ public class ConvertMenu extends Menu {
             .filter(ConvertOptionWidget::isKnownOption)
             .sorted()
             .map(optionId -> new ConvertOptionWidget(ConvertMenu.this, user, optionId))
+            .filter(ConvertOptionWidget::isInitialized)
             .collect(Collectors.toList());
         int size = widgets.size();
         

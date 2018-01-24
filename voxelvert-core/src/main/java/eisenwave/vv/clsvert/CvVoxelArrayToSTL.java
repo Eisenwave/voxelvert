@@ -60,32 +60,38 @@ public class CvVoxelArrayToSTL implements Classverter<VoxelArray, STLModel> {
                 new Vertex3f(x, y, z + 1),
                 new Vertex3f(x, y + 1, z + 1),
                 new Vertex3f(x, y + 1, z),
-                new Vertex3f(x, y, z)};
+                new Vertex3f(x, y, z)
+            };
             case NEGATIVE_Y: return new Vertex3f[] {
                 new Vertex3f(x, y, z),
                 new Vertex3f(x + 1, y, z),
                 new Vertex3f(x + 1, y, z + 1),
-                new Vertex3f(x, y, z + 1)};
+                new Vertex3f(x, y, z + 1)
+            };
             case NEGATIVE_Z: return new Vertex3f[] {
                 new Vertex3f(x, y, z),
                 new Vertex3f(x, y + 1, z),
                 new Vertex3f(x + 1, y + 1, z),
-                new Vertex3f(x + 1, y, z),};
+                new Vertex3f(x + 1, y, z)
+            };
             case POSITIVE_X: return new Vertex3f[] {
                 new Vertex3f(x + 1, y, z),
                 new Vertex3f(x + 1, y + 1, z),
                 new Vertex3f(x + 1, y + 1, z + 1),
-                new Vertex3f(x + 1, y, z + 1)};
+                new Vertex3f(x + 1, y, z + 1)
+            };
             case POSITIVE_Y: return new Vertex3f[] {
                 new Vertex3f(x, y + 1, z + 1),
                 new Vertex3f(x + 1, y + 1, z + 1),
                 new Vertex3f(x + 1, y + 1, z),
-                new Vertex3f(x, y + 1, z)};
+                new Vertex3f(x, y + 1, z)
+            };
             case POSITIVE_Z: return new Vertex3f[] {
                 new Vertex3f(x, y, z + 1),
                 new Vertex3f(x + 1, y, z + 1),
                 new Vertex3f(x + 1, y + 1, z + 1),
-                new Vertex3f(x, y + 1, z + 1),};
+                new Vertex3f(x, y + 1, z + 1)
+            };
             default: throw new IllegalArgumentException("unknown direction: " + dir);
         }
     }

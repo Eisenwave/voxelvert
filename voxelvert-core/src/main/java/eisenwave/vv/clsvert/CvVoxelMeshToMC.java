@@ -65,8 +65,6 @@ public class CvVoxelMeshToMC implements Classverter<VoxelMesh, MCModel> {
         // convert mesh voxels into boxes and paste model with resulting mc-elements
         Collection<BlockyBox> boxes = toBlockyBoxes(meshBounds, mesh, model);
         //if (logger != null) logger.fine(String.format("generated %d boxes", boxes.size()));
-        //System.out.println(Arrays.toString(model.getElements().toArray(new MCElement[model.getElements().size()])));
-        //System.out.println(boxes.size()+" blocky boxes");
         
         // convert mesh to boolean^3 array for easier occlusion tests
         BooleanArray3 opaque = createOpaqueArray(meshBounds, boxes);

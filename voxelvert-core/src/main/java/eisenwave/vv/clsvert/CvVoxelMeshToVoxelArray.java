@@ -34,9 +34,9 @@ public class CvVoxelMeshToVoxelArray implements Classverter<VoxelMesh, VoxelArra
         for (VoxelMesh.Element element : mesh) {
             VoxelArray array = element.getArray();
             final int
-                xmin = element.getMinX() - bxmin,
-                ymin = element.getMinY() - bymin,
-                zmin = element.getMinZ() - bzmin,
+                minX = element.getMinX() - bxmin,
+                minY = element.getMinY() - bymin,
+                minZ = element.getMinZ() - bzmin,
                 limX = array.getSizeX(),
                 limY = array.getSizeY(),
                 limZ = array.getSizeZ();
@@ -44,7 +44,7 @@ public class CvVoxelMeshToVoxelArray implements Classverter<VoxelMesh, VoxelArra
             for (int x = 0; x < limX; x++)
                 for (int y = 0; y < limY; y++)
                     for (int z = 0; z < limZ; z++)
-                        result.setRGB(xmin + x, ymin + y, zmin + z, array.getRGB(x, y, z));
+                        result.setRGB(minX + x, minY + y, minZ + z, array.getRGB(x, y, z));
         }
         
         return result;

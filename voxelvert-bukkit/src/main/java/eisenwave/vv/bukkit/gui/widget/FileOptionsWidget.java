@@ -20,25 +20,36 @@ import org.jetbrains.annotations.NotNull;
 
 public class FileOptionsWidget extends Widget {
     
+    /*
     private static final String
         RM_SUCCESS = ChatColor.BLUE + "[VoxelVert] " + ChatColor.RESET + "Deleted the file",
         RM_FAIL = ChatColor.RED + "[VoxelVert] " + ChatColor.RESET + "Couldn't delete the file",
         MV_SUCCESS = ChatColor.BLUE + "[VoxelVert] " + ChatColor.RESET + "Renamed the file",
         MV_FAIL = ChatColor.RED + "[VoxelVert] " + ChatColor.RESET + "Couldn't rename the file",
-        MV_NEED_SUF = ChatColor.BLUE + "[VoxelVert] " + ChatColor.RESET + "You must provide a file suffix";
+        MV_NEED_SUF = ChatColor.BLUE + "[VoxelVert] " + ChatColor.RESET + "You must provide a file suffix",
+        WIP = ChatColor.BLUE + "[VoxelVert] " + ChatColor.RESET + "This feature is WIP";
+    */
     
     private final static ItemStack
         ITEM_BACKGROUND = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " "),
         ITEM_OPEN = ItemUtil.create(Material.DIAMOND_PICKAXE, ChatColor.AQUA + "Open", "&7Open with VoxelVert"),
         ITEM_SHARE = ItemUtil.create(Material.ENDER_PEARL, ChatColor.AQUA + "Share", "&7Share with friends"),
-        ITEM_COPY = ItemUtil.create(Material.MINECART, ChatColor.YELLOW + "Copy", "&7Copy this file"),
+        ITEM_SHARE_WITH_PLAYER = ItemUtil.create(Material.SKULL_ITEM, 1, (short) 3,
+            ChatColor.GREEN + "Player", "&7Share with\n&7a player"),
+        ITEM_SHARE_WITH_WE = ItemUtil.hideAttributes(ItemUtil.create(Material.WOOD_AXE,
+            ChatColor.GREEN + "WorldEdit", "&7Share with WorldEdit\n&8(schematic only)")),
+        ITEM_SHARE_DOWNLOAD = ItemUtil.create(Material.STORAGE_MINECART,
+            ChatColor.GREEN + "Download", "&7Download file\n&8(over http)"),
+        ITEM_COPY = ItemUtil.create(Material.NAME_TAG, ChatColor.YELLOW + "Copy", "&7Copy this file"),
         ITEM_RENAME = ItemUtil.create(Material.NAME_TAG, ChatColor.YELLOW + "Rename", "&7Rename this file"),
         ITEM_DELETE = ItemUtil.create(Material.LAVA_BUCKET, ChatColor.RED + "Delete",
             "&7Delete this file\n\n&cWARNING:\n&7You may not be able\n&7to undo this action"),
         ITEM_CONFIRM = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 5, ChatColor.GREEN + "Confirm",
             "&7Delete this file"),
-        ITEM_CANCEL = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 14, ChatColor.RED + "Cancel",
-            "&7&nDo not\n&7delete this file");
+        ITEM_CANCEL_DELETE = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 14, ChatColor.RED + "Cancel",
+            "&7&nDo not\n&7delete this file"),
+        ITEM_CANCEL_SHARE = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 14, ChatColor.RED + "Cancel",
+            "&7&nDo not\n&7share this file");
     
     static {
         ItemMeta meta = ITEM_OPEN.getItemMeta();
@@ -48,7 +59,10 @@ public class FileOptionsWidget extends Widget {
     
     private FileOptionsMode prevMode, mode;
     
-    private Button btnOpen, btnShare, btnCopy, btnDelete, btnRename, btnConfirm, btnCancel;
+    private Button
+        btnOpen, btnShare, btnCopy, btnDelete, btnRename,
+        btnShareWithPlayer, btnShareWithWE, btnShareDownload, btnCancelShare,
+        btnConfirmDelete, btnCancelDelete;
     
     // INIT
     
@@ -58,31 +72,49 @@ public class FileOptionsWidget extends Widget {
         
         initOpen();
         initShare();
+        initShareMode();
         initCopy();
         initRename();
         initDelete();
-        initConfirm();
-        initCancel();
+        initDeleteMode();
     }
     
     private void initOpen() {
         btnOpen = new Button(getMenu(), null);
         btnOpen.setParent(this);
         btnOpen.setItem(ITEM_OPEN);
-        
-        btnOpen.addClickListener(event -> {
-            getMenu().performOpen(event.getPlayer());
-        });
-    }
     
-    private final static String WIP = ChatColor.BLUE + "[VoxelVert] " + ChatColor.RESET + "This feature is WIP";
+        btnOpen.addClickListener(event -> getMenu().performOpen(event.getPlayer()));
+    }
     
     private void initShare() {
         btnShare = new Button(getMenu(), null);
         btnShare.setParent(this);
         btnShare.setItem(ITEM_SHARE);
+    
+        btnShare.addClickListener(event -> this.setMode(FileOptionsMode.SHARE_FILE));
+    }
+    
+    private void initShareMode() {
+        btnShareWithPlayer = new Button(getMenu(), null);
+        btnShareWithPlayer.setParent(this);
+        btnShareWithPlayer.setItem(ITEM_SHARE_WITH_PLAYER);
+        btnShareWithPlayer.addClickListener(event -> getMenu().performShare("player", event.getPlayer()));
         
-        btnShare.addClickListener(event -> event.getPlayer().sendMessage(WIP));
+        btnShareWithWE = new Button(getMenu(), null);
+        btnShareWithWE.setParent(this);
+        btnShareWithWE.setItem(ITEM_SHARE_WITH_WE);
+        btnShareWithWE.addClickListener(event -> getMenu().performShare("worldedit", event.getPlayer()));
+        
+        btnShareDownload = new Button(getMenu(), null);
+        btnShareDownload.setParent(this);
+        btnShareDownload.setItem(ITEM_SHARE_DOWNLOAD);
+        btnShareDownload.addClickListener(event -> getMenu().performShare("download", event.getPlayer()));
+        
+        btnCancelShare = new Button(getMenu(), null);
+        btnCancelShare.setParent(this);
+        btnCancelShare.setItem(ITEM_CANCEL_SHARE);
+        btnCancelShare.addClickListener(event -> this.setMode(prevMode));
     }
     
     private void initCopy() {
@@ -133,24 +165,22 @@ public class FileOptionsWidget extends Widget {
         btnDelete.addClickListener(event -> this.setMode(FileOptionsMode.DELETE));
     }
     
-    private void initConfirm() {
-        btnConfirm = new Button(getMenu(), null);
-        btnConfirm.setParent(this);
-        btnConfirm.setItem(ITEM_CONFIRM);
+    private void initDeleteMode() {
+        btnConfirmDelete = new Button(getMenu(), null);
+        btnConfirmDelete.setParent(this);
+        btnConfirmDelete.setItem(ITEM_CONFIRM);
         
-        btnConfirm.addClickListener(event -> {
+        btnConfirmDelete.addClickListener(event -> {
             //Player player = event.getPlayer();
             getMenu().performDelete(event.getPlayer());
             //event.getPlayer().sendMessage(success? RM_SUCCESS : RM_FAIL);
         });
-    }
-    
-    private void initCancel() {
-        btnCancel = new Button(getMenu(), null);
-        btnCancel.setParent(this);
-        btnCancel.setItem(ITEM_CANCEL);
         
-        btnCancel.addClickListener(event -> this.setMode(prevMode));
+        btnCancelDelete = new Button(getMenu(), null);
+        btnCancelDelete.setParent(this);
+        btnCancelDelete.setItem(ITEM_CANCEL_DELETE);
+        
+        btnCancelDelete.addClickListener(event -> this.setMode(prevMode));
     }
     
     // GETTERS
@@ -224,11 +254,19 @@ public class FileOptionsWidget extends Widget {
                 break;
             }
             case DELETE: {
-                buffer.set(0, 0, btnConfirm.draw());
+                buffer.set(0, 0, btnConfirmDelete.draw());
                 buffer.set(1, 0, backgroundIcon);
                 buffer.set(2, 0, backgroundIcon);
-                buffer.set(3, 0, btnCancel.draw());
+                buffer.set(3, 0, btnCancelDelete.draw());
                 buffer.set(4, 0, btnDelete.draw());
+                break;
+            }
+            case SHARE_FILE: {
+                buffer.set(0, 0, btnShareWithPlayer.draw());
+                buffer.set(1, 0, btnShareWithWE.draw());
+                buffer.set(2, 0, btnShareDownload.draw());
+                buffer.set(3, 0, backgroundIcon);
+                buffer.set(4, 0, btnCancelShare.draw());
                 break;
             }
             case VARIABLE: {

@@ -7,3 +7,33 @@ verbosity:
   enable: true
   disable: true
   runtime: true
+
+# settings for the HTTP-server which allows for downloading files from the inventory directly
+http:
+  # enables or disables the HTTP-server (true|false)
+  #
+  # default = true
+  enable: true
+
+  # specifies the port on which the HTTP-server runs
+  #
+  # default = 26000
+  port: 26000
+
+  # http host with placeholders
+  # you can replace $localhost with the domain name of your server, if you have one
+  # you can omit $port if you are hosting on port 80, as this is the default HTTP port
+  # NOTE: you might need to run VoxelVert with administrator permissions to bind to port 1024 and below on Linux)
+  # NOTE: you must replace $localhost with your domain to allow Minecraft clients to open links by clicking in-game
+  #   EXAMPLE: "my-server.net:$port"
+  #
+  # $localhost = your public IP-address
+  # $port = the port on which your HTTP-server runs
+  # default = "$localhost:$port"
+  host: "$localhost:$port"
+
+  # download path for file downloads
+  #
+  # default = "/vv/download"
+  download_path: "/vv/download"
+

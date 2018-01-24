@@ -1,11 +1,9 @@
 package eisenwave.vv.bukkit;
 
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.net.InetSocketAddress;
 
 /**
  * Read-only wrapper for VoxelVert plugin config
@@ -16,18 +14,23 @@ public class VoxelVertConfig {
     
     private final boolean vEnable, vDisable, vRuntime;
     
-    public VoxelVertConfig(Reader reader) {
-        YamlConfiguration yml = YamlConfiguration.loadConfiguration(reader);
+    private final InetSocketAddress httpPort;
+    private final String httpHost, httpDownloadPath;
+    private final boolean httpEnable;
+    
+    public VoxelVertConfig(FileConfiguration yml) {
+        //YamlConfiguration yml = YamlConfiguration.loadConfiguration(reader);
         
         this.lang = (String) yml.get("language", "en_us.lang");
         this.vEnable = yml.getBoolean("verbosity.enable", false);
         this.vDisable = yml.getBoolean("verbosity.disable", false);
         this.vRuntime = yml.getBoolean("verbosity.runtime", false);
+        
+        this.httpEnable = yml.getBoolean("http.enable", false);
+        this.httpPort = new InetSocketAddress(yml.getInt("http.port", 26000));
+        this.httpHost = yml.getString("http.host", "$localhost:$port");
+        this.httpDownloadPath = yml.getString("http.download_path", "/vv/download");
         //this.syntaxHighlighting = yml.getBoolean("syntax_highlighting", true);
-    }
-    
-    public VoxelVertConfig(InputStream stream) {
-        this(new InputStreamReader(stream));
     }
     
     // GETTERS
@@ -68,6 +71,22 @@ public class VoxelVertConfig {
      */
     public boolean hasVerbosityOnRuntime() {
         return vRuntime;
+    }
+    
+    public boolean isHttpEnabled() {
+        return httpEnable;
+    }
+    
+    public InetSocketAddress getHttpAddress() {
+        return httpPort;
+    }
+    
+    public String getHttpHost() {
+        return httpHost;
+    }
+    
+    public String getHttpDownloadPath() {
+        return httpDownloadPath;
     }
     
 }

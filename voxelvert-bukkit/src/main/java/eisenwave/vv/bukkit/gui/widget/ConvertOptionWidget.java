@@ -42,6 +42,8 @@ public class ConvertOptionWidget extends ViewGroup<View> {
     private final ItemStack optionDisplay;
     private final VVUser user;
     
+    private boolean initSuccess = false;
+    
     @Nullable
     private String value;
     
@@ -102,16 +104,21 @@ public class ConvertOptionWidget extends ViewGroup<View> {
     }
     
     private void initOptionColors() {
-        Menu menu = getMenu();
-        ViewSize size = new ViewSize(2, ViewSize.MIN_POS, ViewSize.MATCH_PARENT, 1);
-        InlineList<RadioButton> list = new InlineList<>(menu, size, null);
-        
         // get all usable BCT files from the inventory
         List<FileBrowserEntry> entries = user.getInventory().list().stream()
             .map(FileBrowserEntry::new)
             .filter(entry -> !entry.isHidden() && entry.getType() == FileType.BCT)
             .sorted()
             .collect(Collectors.toList());
+    
+        if (entries.isEmpty()) {
+            initSuccess = false;
+            return;
+        }
+    
+        Menu menu = getMenu();
+        ViewSize size = new ViewSize(2, ViewSize.MIN_POS, ViewSize.MATCH_PARENT, 1);
+        InlineList<RadioButton> list = new InlineList<>(menu, size, null);
         
         // convert all BCT files into radio buttons and add them to the InlineList
         boolean first = true;
@@ -151,9 +158,16 @@ public class ConvertOptionWidget extends ViewGroup<View> {
         }
         
         addChild(list);
+        initSuccess = true;
     }
     
     private void initSwitchOption(List<String> values) {
+        if (values.isEmpty()) {
+            //VoxelVertPlugin.getInstance().getLogger().warning("failed to initialize ");
+            initSuccess = false;
+            return;
+        }
+        
         ViewSize size = new ViewSize(2, ViewSize.MIN_POS, ViewSize.MATCH_PARENT, 1);
         RadioList list = new RadioList(getMenu(), size);
         
@@ -179,6 +193,7 @@ public class ConvertOptionWidget extends ViewGroup<View> {
             }
         }
         addChild(list);
+        initSuccess = true;
     }
     
     private void initFlagOption() {
@@ -187,11 +202,25 @@ public class ConvertOptionWidget extends ViewGroup<View> {
         addChild(button);
         
         button.addCheckListener(event -> value = event.isChecked()? "" : null);
+        initSuccess = true;
     }
     
     @Override
     public ConvertMenu getMenu() {
         return (ConvertMenu) super.getMenu();
+    }
+    
+    /**
+     * Returns whether the widget could be successfully initialized. This is not the case if the {@code -c} option
+     * couldn't find any texture packs to use or if some other option doesn't have any values.
+     * <p>
+     * If the result of this method is not {@code false}, the widget should not be displayed as it would hold corrupt
+     * data or not function in some other way.
+     *
+     * @return whether this widget could be initialized successfully
+     */
+    public boolean isInitialized() {
+        return initSuccess;
     }
     
     public String getOption() {

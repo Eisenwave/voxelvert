@@ -1,7 +1,9 @@
 package eisenwave.vv.io;
 
 import eisenwave.vv.VVTest;
-import eisenwave.vv.util.ConvertUtil;
+import eisenwave.vv.clsvert.CvQBToVoxelMesh;
+import eisenwave.vv.clsvert.CvVoxelArrayToTexture;
+import eisenwave.vv.clsvert.CvVoxelMeshToVoxelArray;
 import eisenwave.spatium.enums.Direction;
 import eisenwave.torrens.util.ColorMath;
 import eisenwave.torrens.voxel.*;
@@ -31,12 +33,12 @@ public class DeserializerQBTest {
             if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create " + out);
             new SerializerQB().toFile(model, out);
         }
-        
-        VoxelMesh mesh = ConvertUtil.convert(model, VoxelMesh.class);
+    
+        VoxelMesh mesh = new CvQBToVoxelMesh().invoke(model);
         assertNotNull(mesh);
-
-        VoxelArray array = ConvertUtil.convert(mesh, VoxelArray.class);
-        Texture texture = ConvertUtil.convert(array, Texture.class, Direction.NEGATIVE_Z, true, true);
+    
+        VoxelArray array = new CvVoxelMeshToVoxelArray().invoke(mesh);
+        Texture texture = new CvVoxelArrayToTexture().invoke(array, Direction.NEGATIVE_Z, true, true);
         {
             File out = new File(VVTest.DIR_FILES, "DeserializerQBTest.png");
             if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create " + out);
@@ -50,8 +52,8 @@ public class DeserializerQBTest {
         logger.setLevel(Level.FINE);
         
         QBModel model = new DeserializerQB(logger).fromResource(getClass(), "sniper.qb");
-        VoxelMesh mesh = ConvertUtil.convert(model, VoxelMesh.class);
-        VoxelArray array = ConvertUtil.convert(mesh, VoxelArray.class);
+        VoxelMesh mesh = new CvQBToVoxelMesh().invoke(model);
+        VoxelArray array = new CvVoxelMeshToVoxelArray().invoke(mesh);
         
         int rgb = array.getRGB(52, 41, 29);
         assertEquals(new Color(43, 43, 43), new Color(rgb));

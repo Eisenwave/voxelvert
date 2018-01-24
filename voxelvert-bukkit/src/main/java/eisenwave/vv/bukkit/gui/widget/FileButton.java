@@ -18,7 +18,6 @@ import java.util.List;
 public class FileButton extends RadioButton {
     
     private final FileBrowserEntry entry;
-    private boolean highlight = false;
     
     private int index;
     

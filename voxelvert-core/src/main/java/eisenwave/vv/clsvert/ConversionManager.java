@@ -30,16 +30,6 @@ public final class ConversionManager {
         else
             throw new IllegalStateException("missing: " + fromClass.getSimpleName() + " -> " + toClass.getSimpleName());
     }
-
-    /*
-    @SuppressWarnings("unchecked")
-    public <A, B> B convert(A from, ConvPath<A, B> path) {
-        Object obj = from;
-        for (ConvPath.Step<?,?> step : path)
-            obj = convert(obj, step.getFrom(), step.getTo(), step.getArgs());
-        return (B) obj;
-    }
-    */
     
     private static class ConversionKey<A, B> {
         

@@ -6,7 +6,8 @@ public enum FileOptionsMode {
     KNOWN_FILE,
     FILE,
     FOLDER,
-    DELETE;
+    DELETE,
+    SHARE_FILE;
     
     public static FileOptionsMode fromType(FileType type) {
         if (type.isDirectory())

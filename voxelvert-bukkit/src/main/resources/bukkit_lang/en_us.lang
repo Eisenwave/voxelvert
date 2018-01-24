@@ -50,6 +50,14 @@ cmd.copy.exception = An error occurred when copying the file: &6%s
 cmd.copy.failure = Couldn't copy &6%s&r to &6%s&r
 cmd.copy.success = Copied &6%s&r to &6%s&r
 
+cmd.share.err.missing = Can't share &6%s&r because it doesn't exist
+cmd.share.err.var = You can't share variables, only files
+cmd.share.err.we_no_schematic = Can't share &6%s&r with WorldEdit because it's not a schematic
+cmd.share.err.not_a_file = Can't share &6%s&r because it's not a file
+cmd.share.err.no_download_server = Can't download because VoxelVert's download server is not running.
+cmd.share.download = &n%s
+cmd.share.wip = Sharing files is WIP
+
 cmd.voxelvert.err.bad_extension = Couldn't guess the format of &6%s&r by extension.
 cmd.voxelvert.err.bad_format = The format &6%s&r doesn't exist.
 cmd.voxelvert.status = Status of VoxelVert:

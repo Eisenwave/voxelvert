@@ -5,7 +5,7 @@
     <parent>
         <artifactId>voxelvert</artifactId>
         <groupId>eisenwave.vv</groupId>
-        <version>1.3.3</version>
+        <version>1.4</version>
     </parent>
 
     <artifactId>voxelvert-ui</artifactId>

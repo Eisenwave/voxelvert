@@ -59,6 +59,7 @@ public class CvVoxelArrayToTexture implements Classverter<VoxelArray, Texture> {
     
     @FunctionalInterface
     private static interface CoordinateRemapper {
+    
         int[] remap(int x, int y, int z);
     }
     
@@ -91,12 +92,11 @@ public class CvVoxelArrayToTexture implements Classverter<VoxelArray, Texture> {
                     texture.set(u, v, rgb);
                 }
         }
-        else {
-            for (int u = 0; u < width; u++)
-                for (int v = 0; v < height; v++) {
-                    int[] xyz = remapper.remap(u, v, 0);
-                    texture.set(u, v, array.getRGB(xyz[0], xyz[1], xyz[2]));
-                }
+        else for (int u = 0; u < width; u++) {
+            for (int v = 0; v < height; v++) {
+                int[] xyz = remapper.remap(u, v, 0);
+                texture.set(u, v, array.getRGB(xyz[0], xyz[1], xyz[2]));
+            }
         }
         
         return texture;

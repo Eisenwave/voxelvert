@@ -51,7 +51,7 @@ public class CvBlocksToVoxelArray implements Classverter<BlockStructure, VoxelAr
             ignore_alpha = (flags & IGNORE_ALPHA) != 0,
             use_occupation = (flags & USE_OCCUPATION) != 0,
             show_missing = (flags & SHOW_MISSING) != 0;
-            //default_tint = true /*(flags & DEFAULT_TINT) != 0 || !blocks.hasBiomes()
+        //default_tint = true /*(flags & DEFAULT_TINT) != 0 || !blocks.hasBiomes()
         final int
             limX = blocks.getSizeX(), limY = blocks.getSizeY(), limZ = blocks.getSizeZ();
         

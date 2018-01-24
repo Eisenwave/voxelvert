@@ -27,7 +27,7 @@ public class CvOBJToVoxelArray implements Classverter<OBJModel, VoxelArray> {
     @Nullable
     private final Logger logger;
     
-    public CvOBJToVoxelArray(@org.jetbrains.annotations.Nullable Logger logger) {
+    public CvOBJToVoxelArray(@Nullable Logger logger) {
         this.logger = logger;
     }
     

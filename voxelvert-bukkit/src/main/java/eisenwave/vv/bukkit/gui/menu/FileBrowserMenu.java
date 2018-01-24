@@ -120,44 +120,65 @@ public class FileBrowserMenu extends Menu {
     
     /**
      * Deletes the currently selected item.
+     *
+     * @param player the player who performs this action
      */
     public void performOpen(Player player) {
         if (!fileList.hasSelection()) return;
         
         FileBrowserEntry entry = fileList.getSelEntry();
-        player.performCommand("vv convert "+entry.getPath());
+        player.performCommand("vv convert " + entry.getPath());
+    }
+    
+    /**
+     * Shares the currently selected item.
+     *
+     * @param recipient the recipient to share the item with
+     * @param player the player who performs this action
+     */
+    public void performShare(String recipient, Player player) {
+        if (!fileList.hasSelection()) return;
+        
+        String path = fileList.getSelEntry().getPath();
+        player.performCommand("vv-share " + recipient + " " + path);
     }
     
     /**
      * Deletes the currently selected item.
+     *
+     * @param player the player who performs this action
      */
     public void performDelete(Player player) {
         if (!fileList.hasSelection()) return;
         
         String path = fileList.getSelEntry().getPath();
-        player.performCommand("vv-rm "+path);
+        player.performCommand("vv-rm " + path);
         refreshFileList();
     }
     
     /**
      * Renames the currently selected item.
+     *
+     * @param player the player who performs this action
      */
     public void performRename(Player player, String target) {
         if (!fileList.hasSelection()) return;
         
         String source = fileList.getSelEntry().getPath();
-        player.performCommand("vv-mv "+source+" "+target);
+        player.performCommand("vv-mv " + source + " " + target);
         refreshFileList();
     }
     
     /**
      * Renames the currently selected item.
+     *
+     * @param player the player who performs this action
      */
     public void performCopy(Player player, String target) {
         if (!fileList.hasSelection()) return;
         
         String source = fileList.getSelEntry().getPath();
-        player.performCommand("vv-cp "+source+" "+target);
+        player.performCommand("vv-cp " + source + " " + target);
         refreshFileList();
     }
     

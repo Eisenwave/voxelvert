@@ -29,8 +29,8 @@ public class BukkitVoxelVert implements VoxelVert {
     
     // ACTIONS
     
-    public Thread startConversionThread() {
-        Thread thread = new VVConverterThread(plugin, queue);
+    public VVConverterThread startConversionThread() {
+        VVConverterThread thread = new VVConverterThread(plugin, queue);
         thread.start();
         return thread;
     }

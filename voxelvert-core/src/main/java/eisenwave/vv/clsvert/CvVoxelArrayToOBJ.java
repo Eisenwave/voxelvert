@@ -16,7 +16,7 @@ import java.util.List;
 
 public class CvVoxelArrayToOBJ implements Classverter<VoxelArray, OBJModel> {
     
-    /** Pseudo 3D-array containing all vertices of a cube. */
+    /** Pseudo-3D array containing all vertices of a cube. */
     private final static Vertex3i[] CUBE_VERTICES = new Vertex3i[8];
     
     static {
@@ -94,10 +94,8 @@ public class CvVoxelArrayToOBJ implements Classverter<VoxelArray, OBJModel> {
     /**
      * <p>
      * Returns the relative face of a cube of a certain direction.
-     * </p>
      * <p>
      * The result is an {@code int[]} of length 4. Each element is an index in {@link #CUBE_VERTICES}.
-     * </p>
      *
      * @param dir the direction of the face
      * @return 4 indexes of {@link #CUBE_VERTICES}
@@ -109,21 +107,18 @@ public class CvVoxelArrayToOBJ implements Classverter<VoxelArray, OBJModel> {
     /**
      * <p>
      * Lookup table for what vertices have to be placed for each possible visibility map of a voxel.
-     * </p>
      * <p>
      * The index of the array is equivalent to a visibility map, which is obtainable by setting the bits of the
      * index to whether a {@link Direction} is visible with:
      * <blockquote>
      * <code>bit index = {@link Direction#ordinal()}</code>
      * </blockquote>
-     * </p>
      * <p>
      * The byte in the array is a bit field as well with each bit representing whether a cube vertex is required
      * or not with:
      * <blockquote>
      * <code>bit index = index of {@link #CUBE_VERTICES}</code>
      * </blockquote>
-     * </p>
      */
     private final static byte[] VERTEX_TABLE = new byte[1 << 6];
     

@@ -3,6 +3,8 @@ package eisenwave.vv.bukkit;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import eisenwave.vv.bukkit.async.*;
 import eisenwave.vv.bukkit.cmd.*;
+import eisenwave.vv.bukkit.http.DownloadManager;
+import eisenwave.vv.bukkit.http.VVHttpThread;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import eisenwave.vv.bukkit.inject.FormatverterInjector;
@@ -24,8 +26,10 @@ public class VoxelVertPlugin extends JavaPlugin {
     private BukkitVoxelVert voxelVert;
     private VoxelVertConfig config;
     private Language lang;
+    private DownloadManager downloadManager;
     
-    private Thread conversionThread;
+    private VVConverterThread conversionThread;
+    private VVHttpThread httpThread;
     
     // ENABLE & DISABLE
     
@@ -36,7 +40,7 @@ public class VoxelVertPlugin extends JavaPlugin {
     
     @Override
     public void onEnable() {
-        config = new VoxelVertConfig(getResource("config.yml"));
+        config = new VoxelVertConfig(getConfig());
         boolean verbose = config.hasVerbosityOnEnable();
         String langName = config.getLanguage();
     
@@ -50,6 +54,10 @@ public class VoxelVertPlugin extends JavaPlugin {
         }
     
         startConverterThread();
+        if (config.isHttpEnabled()) {
+            startHttpServer();
+        }
+        
         this.saveDefaultConfig();
     
         FormatverterInjector.inject(FormatverterFactory.getInstance());
@@ -59,6 +67,7 @@ public class VoxelVertPlugin extends JavaPlugin {
     public void onDisable() {
         boolean verbose = config.hasVerbosityOnDisable();
         this.conversionThread.interrupt();
+        this.httpThread.interrupt();
         
         if (verbose) getLogger().info("goodbye");
     }
@@ -109,7 +118,8 @@ public class VoxelVertPlugin extends JavaPlugin {
             new CmdList(this),
             new CmdRemove(this),
             new CmdMove(this),
-            new CmdCopy(this)
+            new CmdCopy(this),
+            new CmdShare(this)
         };
     
         Arrays.stream(commands).forEach(cmd -> getCommand(cmd.getName()).setExecutor(cmd));
@@ -123,6 +133,15 @@ public class VoxelVertPlugin extends JavaPlugin {
     }
     
     @NotNull
+    public DownloadManager getDownloadManager() {
+        return downloadManager;
+    }
+    
+    public void setDownloadManager(@NotNull DownloadManager manager) {
+        this.downloadManager = manager;
+    }
+    
+    @NotNull
     public Thread getConverterThread() {
         return conversionThread;
     }
@@ -131,6 +150,17 @@ public class VoxelVertPlugin extends JavaPlugin {
         if (conversionThread != null && conversionThread.isAlive())
             conversionThread.interrupt();
         this.conversionThread = this.voxelVert.startConversionThread();
+    }
+    
+    public void startHttpServer() {
+        if (httpThread != null && httpThread.isAlive())
+            httpThread.interrupt();
+        this.httpThread = new VVHttpThread(this);
+        this.httpThread.start();
+    }
+    
+    public boolean isHttpServerStarted() {
+        return httpThread != null && httpThread.hasStartupSuccess();
     }
     
     @NotNull
