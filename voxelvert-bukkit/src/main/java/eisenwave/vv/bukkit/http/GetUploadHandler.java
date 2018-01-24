@@ -1,23 +1,22 @@
 package eisenwave.vv.bukkit.http;
 
-import com.google.common.net.MediaType;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import eisenwave.torrens.io.DeserializerByteArray;
 import eisenwave.vv.bukkit.VoxelVertPlugin;
 import eisenwave.vv.bukkit.util.HttpUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Files;
 import java.util.Map;
 
-public class GetDownloadHandler implements HttpHandler {
+public class GetUploadHandler implements HttpHandler {
     
     private final VoxelVertPlugin plugin;
     
-    public GetDownloadHandler(@NotNull VoxelVertPlugin plugin) {
+    public GetUploadHandler(@NotNull VoxelVertPlugin plugin) {
         this.plugin = plugin;
     }
     
@@ -35,20 +34,16 @@ public class GetDownloadHandler implements HttpHandler {
         }
         
         String id = query.get("id");
-        FileTransferManager.DownloadEntry entry = plugin.getFileTransferManager().removeDownload(id);
+        FileTransferManager.UploadEntry entry = plugin.getFileTransferManager().getUpload(id);
         if (entry == null) {
             exchange.sendResponseHeaders(410, -1); // Gone
             return;
         }
         
-        MediaType type = entry.getMediaType();
-        String disposition = type.is(MediaType.ANY_IMAGE_TYPE)? "inline" : "attachment";
-        
-        byte[] response = Files.readAllBytes(entry.getFile().toPath());
+        byte[] response = new DeserializerByteArray().fromResource(getClass(), "html/upload.html");
         
         Headers responseHeaders = exchange.getResponseHeaders();
-        responseHeaders.add("Content-Type", type.toString());
-        responseHeaders.add("Content-Disposition", disposition + "; filename=\"" + entry.getFile().getName() + "\"");
+        responseHeaders.add("Content-Type", "text/html");
         exchange.sendResponseHeaders(200, response.length);
         
         try (OutputStream bodyStream = exchange.getResponseBody()) {

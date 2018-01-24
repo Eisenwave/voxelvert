@@ -1,0 +1,37 @@
+<html>
+<head>
+    <style>
+        body {
+            background: #eeeeee;
+        }
+
+        .panel {
+            display: inline-block;
+            background: #ffffff;
+            min-height: 100px;
+            box-shadow: 0 0 5px 5px #C9C9C9;
+            -webkit-box-shadow: 2px 2px 5px 5px #C9C9C9;
+            -moz-box-shadow: 2px 2px 5px 5px #C9C9C9;
+            margin: 10px;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .btn {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<div style="text-align: center;">
+    <div class="panel">
+        <h1 style="font-family: monospace">VoxelVert Upload</h1>
+        <form action="/vv/uploadFile" method="POST">
+            <input class="btn" type="file" name="file" required="required">
+            <br/><br/>
+            <button class="btn" type="submit">Upload</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -34,6 +34,11 @@ http:
 
   # download path for file downloads
   #
-  # default = "/vv/download"
-  download_path: "/vv/download"
+  # default = "/vv/dl"
+  download_path: "/vv/dl"
+
+  # upload path for file uploads
+  #
+  # default = /vv/up
+  upload_path: "/vv/up"
 

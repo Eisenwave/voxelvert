@@ -3,7 +3,7 @@ package eisenwave.vv.bukkit;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import eisenwave.vv.bukkit.async.*;
 import eisenwave.vv.bukkit.cmd.*;
-import eisenwave.vv.bukkit.http.DownloadManager;
+import eisenwave.vv.bukkit.http.FileTransferManager;
 import eisenwave.vv.bukkit.http.VVHttpThread;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,7 +26,7 @@ public class VoxelVertPlugin extends JavaPlugin {
     private BukkitVoxelVert voxelVert;
     private VoxelVertConfig config;
     private Language lang;
-    private DownloadManager downloadManager;
+    private FileTransferManager downloadManager;
     
     private VVConverterThread conversionThread;
     private VVHttpThread httpThread;
@@ -133,30 +133,13 @@ public class VoxelVertPlugin extends JavaPlugin {
     }
     
     @NotNull
-    public DownloadManager getDownloadManager() {
+    public FileTransferManager getFileTransferManager() {
         return downloadManager;
-    }
-    
-    public void setDownloadManager(@NotNull DownloadManager manager) {
-        this.downloadManager = manager;
     }
     
     @NotNull
     public Thread getConverterThread() {
         return conversionThread;
-    }
-    
-    public void startConverterThread() {
-        if (conversionThread != null && conversionThread.isAlive())
-            conversionThread.interrupt();
-        this.conversionThread = this.voxelVert.startConversionThread();
-    }
-    
-    public void startHttpServer() {
-        if (httpThread != null && httpThread.isAlive())
-            httpThread.interrupt();
-        this.httpThread = new VVHttpThread(this);
-        this.httpThread.start();
     }
     
     public boolean isHttpServerStarted() {
@@ -181,6 +164,27 @@ public class VoxelVertPlugin extends JavaPlugin {
     @NotNull
     public Language getLanguage() {
         return lang;
+    }
+    
+    // SETTERS
+    
+    public void setFileTransferManager(@NotNull FileTransferManager manager) {
+        this.downloadManager = manager;
+    }
+    
+    // THREAD STARTERS
+    
+    public void startConverterThread() {
+        if (conversionThread != null && conversionThread.isAlive())
+            conversionThread.interrupt();
+        this.conversionThread = this.voxelVert.startConversionThread();
+    }
+    
+    public void startHttpServer() {
+        if (httpThread != null && httpThread.isAlive())
+            httpThread.interrupt();
+        this.httpThread = new VVHttpThread(this);
+        this.httpThread.start();
     }
     
 }

@@ -11,6 +11,11 @@ public class GetRootHandler implements HttpHandler {
     
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        if (!exchange.getRequestMethod().equals("GET")) {
+            exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+            return;
+        }
+        
         @SuppressWarnings("StringBufferReplaceableByString")
         StringBuilder responseBuilder = new StringBuilder();
         responseBuilder.append("VoxelVert server started\n");

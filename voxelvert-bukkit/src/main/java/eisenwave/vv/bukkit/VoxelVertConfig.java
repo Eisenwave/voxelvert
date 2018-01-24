@@ -15,7 +15,7 @@ public class VoxelVertConfig {
     private final boolean vEnable, vDisable, vRuntime;
     
     private final InetSocketAddress httpPort;
-    private final String httpHost, httpDownloadPath;
+    private final String httpHost, httpDownloadPath, httpUploadPath;
     private final boolean httpEnable;
     
     public VoxelVertConfig(FileConfiguration yml) {
@@ -29,7 +29,8 @@ public class VoxelVertConfig {
         this.httpEnable = yml.getBoolean("http.enable", false);
         this.httpPort = new InetSocketAddress(yml.getInt("http.port", 26000));
         this.httpHost = yml.getString("http.host", "$localhost:$port");
-        this.httpDownloadPath = yml.getString("http.download_path", "/vv/download");
+        this.httpDownloadPath = yml.getString("http.download_path", "/vv/dl");
+        this.httpUploadPath = yml.getString("http.upload_path", "/vv/up");
         //this.syntaxHighlighting = yml.getBoolean("syntax_highlighting", true);
     }
     
@@ -87,6 +88,10 @@ public class VoxelVertConfig {
     
     public String getHttpDownloadPath() {
         return httpDownloadPath;
+    }
+    
+    public String getHttpUploadPath() {
+        return httpUploadPath;
     }
     
 }
