@@ -29,14 +29,18 @@ public class BlockColorTable extends LinkedHashMap<BlockKey, BlockColor> {
     }
     
     @Nullable
-    public BlockKey get(int rgb) {
+    public BlockKey get(int rgb, boolean safetyFilter) {
         Stream<Map.Entry<BlockKey, BlockColor>> stream = entrySet().stream();
         
         // filters
-        stream = stream.filter(entry -> {
+        if (safetyFilter) stream = stream.filter(entry -> {
             //if (entry.getKey().getId() == 78) System.out.println(entry.getKey()+" "+entry.getValue().isWhole());
             //System.out.println(entry.getKey()+" "+entry.getValue().isWhole());
-            return entry.getValue().isWhole();
+            BlockColor value = entry.getValue();
+            return value.isWhole()
+                && !value.isPhysicsAffected()
+                && !value.isTransparent()
+                && !value.isVolatile();
         });
         if (ColorMath.isSolid(rgb))
             stream = stream.filter(entry -> entry.getValue().isSolid());

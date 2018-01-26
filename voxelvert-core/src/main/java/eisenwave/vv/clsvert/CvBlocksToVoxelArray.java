@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class CvBlocksToVoxelArray implements Classverter<BlockStructure, VoxelArray> {
     
-    public final static BlockColor DEFAULT_COLOR = new BlockColor(0xFFFFFFFF);
+    public final static BlockColor DEFAULT_COLOR = new BlockColor(0xFFFFFFFF, 0);
     
     /** do not place voxel for non-full blocks */
     public final static int

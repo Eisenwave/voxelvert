@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 public class CvVoxelMeshToMCTest {
     
     @Test
-    public void getSurface() throws Exception {
+    public void getSurface() {
         final BoundingBox6i
             box = new BoundingBox6i(1, 2, 3, 2, 8, 18),
             surfaceNX = CvVoxelMeshToMC.getSurface(box, Direction.NEGATIVE_X),

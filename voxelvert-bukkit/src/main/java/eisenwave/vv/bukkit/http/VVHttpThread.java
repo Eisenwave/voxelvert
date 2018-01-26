@@ -13,6 +13,7 @@ public class VVHttpThread extends Thread {
     
     private final VoxelVertPlugin plugin;
     
+    private HttpServer server;
     private String httpHost;
     private boolean startupSuccess = false;
     
@@ -27,7 +28,6 @@ public class VVHttpThread extends Thread {
         VoxelVertConfig config = plugin.getVVConfig();
         Logger logger = plugin.getLogger();
         
-        HttpServer server;
         try {
             server = HttpServer.create(config.getHttpAddress(), 0);
         } catch (BindException e) {
@@ -42,30 +42,46 @@ public class VVHttpThread extends Thread {
             return;
         }
         
-        final String path;
         try {
             String configHost = config.getHttpHost().replace("$port", Integer.toString(server.getAddress().getPort()));
             if (configHost.contains("$localhost")) {
                 configHost = configHost.replace("$localhost", HttpUtil.getPublicIP());
             }
             httpHost = configHost;
-            path = config.getHttpDownloadPath();
         } catch (IOException e) {
             e.printStackTrace();
             return;
         }
+    
+        String
+            downloadPath = config.getHttpDownloadPath(),
+            uploadPath = config.getHttpUploadPath();
         
         server.createContext("/", new GetRootHandler());
-        server.createContext(path, new GetDownloadHandler(plugin));
+        server.createContext(downloadPath, new GetDownloadHandler(plugin));
+        server.createContext(uploadPath, new GetUploadHandler(plugin));
+        server.createContext("/vv/uploadFile", new PostUploadHandler(plugin));
         server.start();
         startupSuccess = true;
-        plugin.setDownloadManager(new DownloadManager(plugin, httpHost));
+        plugin.setFileTransferManager(new FileTransferManager(plugin, httpHost));
         
         logger.info("HTTP server was started");
         if (config.hasVerbosityOnEnable()) {
             logger.info("http_host = " + httpHost);
-            logger.info("http_download_path = " + path);
+            logger.info("http_download_path = " + downloadPath);
+            logger.info("http_upload_path = " + uploadPath);
+            logger.info("http_upload_file_path = " + "/vv/uploadFile");
         }
+    }
+    
+    @Override
+    public void interrupt() {
+        if (server != null) {
+            plugin.getLogger().info("HTTP server was stopped");
+            server.stop(0);
+            return;
+        }
+        super.interrupt();
     }
     
     public boolean hasStartupSuccess() {

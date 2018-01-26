@@ -36,7 +36,7 @@ public class CvVoxelArrayToBlocks implements Classverter<VoxelArray, BlockStruct
         for (VoxelArray.Voxel voxel : from) {
             int rgb = voxel.getRGB();
             if (rgb != lastRGB) {
-                lastKey = colorTable.get(rgb);
+                lastKey = colorTable.get(rgb, true);
                 lastRGB = rgb;
             }
             //if (lastKey == null) lastKey = new BlockKey(152);

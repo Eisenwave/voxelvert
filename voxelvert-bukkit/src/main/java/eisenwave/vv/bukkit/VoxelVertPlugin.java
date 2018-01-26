@@ -67,7 +67,8 @@ public class VoxelVertPlugin extends JavaPlugin {
     public void onDisable() {
         boolean verbose = config.hasVerbosityOnDisable();
         this.conversionThread.interrupt();
-        this.httpThread.interrupt();
+        if (httpThread != null)
+            this.httpThread.interrupt();
         
         if (verbose) getLogger().info("goodbye");
     }

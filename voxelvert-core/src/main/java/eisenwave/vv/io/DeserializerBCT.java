@@ -19,29 +19,31 @@ public class DeserializerBCT implements Deserializer<BlockColorTable> {
     public BlockColorTable fromStream(InputStream stream) throws IOException {
         DataInputStream dataStream = new DataInputStream(stream);
         verifyHeader(dataStream);
-        int count = dataStream.readInt();
+    
+        int version = dataStream.readInt();
+        if (version != 1 && version != 2)
+            throw new FileVersionException("version " + version + " is not supported");
+    
+        final int count = dataStream.readInt();
+        final boolean hasFlags = version == 2;
         
         BlockColorTable result = new BlockColorTable();
         for (int i = 0; i < count; i++) {
             int id = dataStream.readUnsignedByte();
             byte data = dataStream.readByte();
             int argb = dataStream.readInt();
+            short flags = hasFlags? dataStream.readShort() : 0;
             short volume = dataStream.readShort();
-            
-            result.put(new BlockKey(id, data), new BlockColor(argb, volume));
+    
+            result.put(new BlockKey(id, data), new BlockColor(argb, flags, volume));
         }
         
         return result;
     }
     
     private static void verifyHeader(DataInputStream stream) throws IOException {
-        if (stream.readByte() != 'B'
-            || stream.readByte() != 'C'
-            || stream.readByte() != 'T')
+        if (stream.readByte() != 'B' || stream.readByte() != 'C' || stream.readByte() != 'T')
             throw new FileFormatException("file is not a block colors table, bct's must start with ASCII \"BCT\"");
-        int version = stream.readInt();
-        if (version != 1)
-            throw new FileVersionException("version " + version + " is not supported");
     }
     
     /*

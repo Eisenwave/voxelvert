@@ -67,6 +67,7 @@ public class CvVoxelArrayToOBJTest {
             String diffuse = material.getDiffuseMap();
             Texture map = materials.getMap(diffuse);
     
+            assert diffuse != null;
             File out3 = new File(VVTest.DIR_FILES, diffuse);
             if (!out3.exists() && !out3.createNewFile()) throw new IOException("failed to create: "+out3);
             

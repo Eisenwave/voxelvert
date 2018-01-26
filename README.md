@@ -23,12 +23,13 @@ table = header, {entry};
 header = "B", "C", "T", version, entryCount; (*ASCII characters*)
 entry = id, data, color, volume;
 
-version = uint32;
+version = uint32 (* '2' if flags are present, '1' if not *);
 entryCount = uint32;
 
 id = uint8;
 data = ? uint8 in range 0 - 15 ?
 color = uint8, uint8, uint8, uint8; (* bytes represent alpha, red, green, blue channels *)
+flags ? 16-bit bitfield ?
 volume = ? uint16 in range 0 - 4096 ?
 ````
 On Linux, you can inspect the data of a BCT file without the header using `xxd -b -s 11 -c 8 my_color_table.bct`

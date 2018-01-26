@@ -232,6 +232,23 @@ public class DeserializerBCE implements TextDeserializer<BlockColorExtractor> {
             }
             else throw new FileSyntaxException("'tint' must be an int or string");
         }
+    
+        final int flags;
+        flags:
+        {
+            JsonElement element = json.get("flags");
+            if (element == null) {
+                flags = 0;
+                break flags;
+            }
+            else if (!element.isJsonPrimitive())
+                throw new FileSyntaxException("'flags' must be primitive");
+        
+            JsonPrimitive primitive = (JsonPrimitive) element;
+            if (!primitive.isString())
+                throw new FileSyntaxException("'flags' must be a string");
+            flags = BlockColorMeta.parseFlags(primitive.getAsString());
+        }
         
         final short voxels;
         {
@@ -243,8 +260,8 @@ public class DeserializerBCE implements TextDeserializer<BlockColorExtractor> {
             else
                 voxels = deserializeShort(elementVoxels.getAsJsonPrimitive(), "voxels");
         }
-        
-        return new BlockColorMeta(voxels, tint, tintRGB);
+    
+        return new BlockColorMeta(flags, voxels, tint, tintRGB);
     }
     
     @NotNull

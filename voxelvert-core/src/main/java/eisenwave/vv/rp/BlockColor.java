@@ -4,35 +4,78 @@ import eisenwave.torrens.util.RGBValue;
 
 public class BlockColor implements RGBValue {
     
+    public final static int
+        FLAG_VOLATILE = 0b1,
+        FLAG_TRANSPARENT = 0b10,
+        FLAG_PHYSICS = 0b100;
+    
     public final static short MAX_VOLUME = 4096;
     
+    /*
     public final static int
         TINT_NONE = 0,
         TINT_GRASS = 1,
         TINT_FOLIAGE = 2;
+    */
     
     private final int rgb;
+    private final int flags;
     private final short volume;
     private final float perVol;
     
-    public BlockColor(int rgb, float volume) {
+    private BlockColor(int rgb, int flags, float volume) {
         if (volume < 0 || volume > 1)
             throw new IllegalArgumentException("volume must be in range(0,1) (" + volume + ")");
         this.rgb = rgb;
+        this.flags = flags;
         this.volume = (short) (volume * 4096);
         this.perVol = (float) Math.cbrt(volume);
     }
     
-    public BlockColor(int rgb, short volume) {
+    public BlockColor(int rgb, int flags, short volume) {
         this.rgb = rgb;
+        this.flags = flags;
         this.volume = volume;
         this.perVol = (float) Math.cbrt(volume / 4096F);
     }
     
-    public BlockColor(int rgb) {
+    public BlockColor(int rgb, int flags) {
         this.rgb = rgb;
+        this.flags = flags;
         this.volume = 4096;
         this.perVol = 1F;
+    }
+    
+    public int getFlags() {
+        return flags;
+    }
+    
+    /**
+     * Returns whether this black is volatile. If so, the block may be destroyed if not placed correctly, such
+     * as a sapling or a pressure plate disappearing if they're not placed on a full block.
+     *
+     * @return whether this block is volatile
+     */
+    public boolean isVolatile() {
+        return (flags & FLAG_VOLATILE) != 0;
+    }
+    
+    /**
+     * Returns whether this block is transparent.
+     *
+     * @return whether this block is transparent.
+     */
+    public boolean isTransparent() {
+        return (flags & FLAG_TRANSPARENT) != 0;
+    }
+    
+    /**
+     * Returns whether this black is physics-affected.
+     *
+     * @return whether this block is physics-affected
+     */
+    public boolean isPhysicsAffected() {
+        return (flags & FLAG_PHYSICS) != 0;
     }
     
     @Override

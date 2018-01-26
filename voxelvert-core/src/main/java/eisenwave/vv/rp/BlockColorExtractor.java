@@ -99,7 +99,7 @@ public class BlockColorExtractor {
                 System.out.print(block.getId()+":"+block.getData()+" "+tint);
                 System.out.println("  ->    "+new Color(rgb));
             } */
-            result.put(block, new BlockColor(rgb, meta.getVoxels()));
+            result.put(block, new BlockColor(rgb, meta.getFlags(), meta.getVoxels()));
         }
         
         return result;
@@ -227,7 +227,7 @@ public class BlockColorExtractor {
         }
         
         @Override
-        public int extract(ZipFile zip) throws IOException {
+        public int extract(ZipFile zip) {
             return rgb;
         }
     }

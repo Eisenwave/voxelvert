@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class SerializerBCT implements Serializer<BlockColorTable> {
     
-    public final static int VERSION = 1;
+    public final static int VERSION = 2;
     
     @Override
     public void toStream(BlockColorTable map, OutputStream stream) throws IOException {
@@ -29,6 +29,7 @@ public class SerializerBCT implements Serializer<BlockColorTable> {
             dataStream.writeByte(block.getId());
             dataStream.writeByte(block.getData());
             dataStream.writeInt(color.getRGB());
+            dataStream.writeShort(color.getFlags());
             dataStream.writeShort(color.getVoxelVolume());
         }
     }

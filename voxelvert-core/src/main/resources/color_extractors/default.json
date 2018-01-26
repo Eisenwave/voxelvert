@@ -4,7 +4,7 @@
         "grass": "colormap/grass.png"
     },
     "blocks": [
-        {"id": 0, "data": 0, "type": "rgb", "rgb": "0x00FFFFFF", "voxels": 0},
+        {"id": 0, "data": 0, "type": "rgb", "rgb": "0x00FFFFFF", "flags": "v", "voxels": 0},
         {"id": 1, "data": 0, "type": "texture", "texture": "blocks/stone.png"},
         {"id": 1, "data": 1, "type": "texture", "texture": "blocks/stone_granite.png"},
         {"id": 1, "data": 2, "type": "texture", "texture": "blocks/stone_granite_smooth.png"},
@@ -23,20 +23,20 @@
         {"id": 5, "data": 3, "type": "texture", "texture": "blocks/planks_jungle.png"},
         {"id": 5, "data": 4, "type": "texture", "texture": "blocks/planks_acacia.png"},
         {"id": 5, "data": 5, "type": "texture", "texture": "blocks/planks_big_oak.png"},
-        {"id": 6, "data": 0, "type": "texture", "texture": "blocks/sapling_oak.png", "voxels": 2197},
-        {"id": 6, "data": 1, "type": "texture", "texture": "blocks/sapling_spruce.png", "voxels": 2197},
-        {"id": 6, "data": 2, "type": "texture", "texture": "blocks/sapling_birch.png", "voxels": 2197},
-        {"id": 6, "data": 3, "type": "texture", "texture": "blocks/sapling_jungle.png", "voxels": 2197},
-        {"id": 6, "data": 4, "type": "texture", "texture": "blocks/sapling_acacia.png", "voxels": 2197},
-        {"id": 6, "data": 5, "type": "texture", "texture": "blocks/sapling_oak.png", "voxels": 2197},
+        {"id": 6, "data": 0, "type": "texture", "texture": "blocks/sapling_oak.png", "flags": "v", "voxels": 2197},
+        {"id": 6, "data": 1, "type": "texture", "texture": "blocks/sapling_spruce.png", "flags": "v", "voxels": 2197},
+        {"id": 6, "data": 2, "type": "texture", "texture": "blocks/sapling_birch.png", "flags": "v", "voxels": 2197},
+        {"id": 6, "data": 3, "type": "texture", "texture": "blocks/sapling_jungle.png", "flags": "v", "voxels": 2197},
+        {"id": 6, "data": 4, "type": "texture", "texture": "blocks/sapling_acacia.png", "flags": "v", "voxels": 2197},
+        {"id": 6, "data": 5, "type": "texture", "texture": "blocks/sapling_oak.png", "flags": "v", "voxels": 2197},
         {"id": 7, "data": 0, "type": "texture", "texture": "blocks/bedrock.png"},
-        {"id": 9, "data": 0, "type": "texture", "texture": "blocks/water_still.png", "voxels": 3584},
-        {"id": 8, "data": 0, "type": "texture", "texture": "blocks/water_flow.png", "voxels": 3584},
-        {"id": 10, "data": 0, "type": "texture", "texture": "blocks/lava_flow.png", "voxels": 3584},
-        {"id": 11, "data": 0, "type": "texture", "texture": "blocks/lava_still.png", "voxels": 3584},
-        {"id": 12, "data": 0, "type": "texture", "texture": "blocks/sand.png"},
-        {"id": 12, "data": 1, "type": "texture", "texture": "blocks/red_sand.png"},
-        {"id": 13, "data": 0, "type": "texture", "texture": "blocks/gravel.png"},
+        {"id": 9, "data": 0, "type": "texture", "texture": "blocks/water_still.png", "flags": "vtp", "voxels": 3584},
+        {"id": 8, "data": 0, "type": "texture", "texture": "blocks/water_flow.png", "flags": "vtp", "voxels": 3584},
+        {"id": 10, "data": 0, "type": "texture", "texture": "blocks/lava_flow.png", "flags": "vtp", "voxels": 3584},
+        {"id": 11, "data": 0, "type": "texture", "texture": "blocks/lava_still.png", "flags": "vtp", "voxels": 3584},
+        {"id": 12, "data": 0, "type": "texture", "texture": "blocks/sand.png", "flags": "p"},
+        {"id": 12, "data": 1, "type": "texture", "texture": "blocks/red_sand.png", "flags": "p"},
+        {"id": 13, "data": 0, "type": "texture", "texture": "blocks/gravel.png", "flags": "p"},
         {"id": 14, "data": 0, "type": "texture", "texture": "blocks/gold_ore.png"},
         {"id": 15, "data": 0, "type": "texture", "texture": "blocks/iron_ore.png"},
         {"id": 16, "data": 0, "type": "texture", "texture": "blocks/coal_ore.png"},
@@ -56,25 +56,37 @@
         {"id": 17, "data": 13, "type": "texture", "texture": "blocks/log_spruce.png"},
         {"id": 17, "data": 14, "type": "texture", "texture": "blocks/log_birch.png"},
         {"id": 17, "data": 15, "type": "texture", "texture": "blocks/log_jungle.png"},
-        {"id": 18, "data": 0, "type": "texture", "texture": "blocks/leaves_oak.png", "tint": "foliage"},
-        {"id": 18, "data": 1, "type": "texture", "texture": "blocks/leaves_spruce.png", "tint": 747097},
-        {"id": 18, "data": 2, "type": "texture", "texture": "blocks/leaves_birch.png", "tint": 9286496},
-        {"id": 18, "data": 3, "type": "texture", "texture": "blocks/leaves_jungle.png", "tint": "foliage"},
-        {"id": 18, "data": 4, "type": "texture", "texture": "blocks/leaves_oak.png", "tint": "foliage"},
-        {"id": 18, "data": 5, "type": "texture", "texture": "blocks/leaves_spruce.png", "tint": 747097},
-        {"id": 18, "data": 6, "type": "texture", "texture": "blocks/leaves_birch.png", "tint": 9286496},
-        {"id": 18, "data": 7, "type": "texture", "texture": "blocks/leaves_jungle.png", "tint": "foliage"},
-        {"id": 18, "data": 8, "type": "texture", "texture": "blocks/leaves_oak.png", "tint": "foliage"},
-        {"id": 18, "data": 9, "type": "texture", "texture": "blocks/leaves_spruce.png", "tint": 747097},
-        {"id": 18, "data": 10, "type": "texture", "texture": "blocks/leaves_birch.png", "tint": 9286496},
-        {"id": 18, "data": 11, "type": "texture", "texture": "blocks/leaves_jungle.png", "tint": "foliage"},
-        {"id": 18, "data": 12, "type": "texture", "texture": "blocks/leaves_oak.png", "tint": "foliage"},
-        {"id": 18, "data": 13, "type": "texture", "texture": "blocks/leaves_spruce.png", "tint": 747097},
-        {"id": 18, "data": 14, "type": "texture", "texture": "blocks/leaves_birch.png", "tint": 9286496},
-        {"id": 18, "data": 15, "type": "texture", "texture": "blocks/leaves_jungle.png", "tint": "foliage"},
+        {"id": 18, "data": 0, "type": "texture", "texture": "blocks/leaves_oak.png", "flags": "vt", "tint": "foliage"},
+        {"id": 18, "data": 1, "type": "texture", "texture": "blocks/leaves_spruce.png", "flags": "vt", "tint": 747097},
+        {"id": 18, "data": 2, "type": "texture", "texture": "blocks/leaves_birch.png", "flags": "vt", "tint": 9286496},
+        {
+            "id": 18, "data": 3, "type": "texture", "texture": "blocks/leaves_jungle.png", "flags": "vt",
+            "tint": "foliage"
+        },
+        {"id": 18, "data": 4, "type": "texture", "texture": "blocks/leaves_oak.png", "flags": "vt", "tint": "foliage"},
+        {"id": 18, "data": 5, "type": "texture", "texture": "blocks/leaves_spruce.png", "flags": "vt", "tint": 747097},
+        {"id": 18, "data": 6, "type": "texture", "texture": "blocks/leaves_birch.png", "flags": "vt", "tint": 9286496},
+        {
+            "id": 18, "data": 7, "type": "texture", "texture": "blocks/leaves_jungle.png", "flags": "vt",
+            "tint": "foliage"
+        },
+        {"id": 18, "data": 8, "type": "texture", "texture": "blocks/leaves_oak.png", "flags": "vt", "tint": "foliage"},
+        {"id": 18, "data": 9, "type": "texture", "texture": "blocks/leaves_spruce.png", "flags": "vt", "tint": 747097},
+        {"id": 18, "data": 10, "type": "texture", "texture": "blocks/leaves_birch.png", "flags": "vt", "tint": 9286496},
+        {
+            "id": 18, "data": 11, "type": "texture", "texture": "blocks/leaves_jungle.png", "flags": "vt",
+            "tint": "foliage"
+        },
+        {"id": 18, "data": 12, "type": "texture", "texture": "blocks/leaves_oak.png", "flags": "vt", "tint": "foliage"},
+        {"id": 18, "data": 13, "type": "texture", "texture": "blocks/leaves_spruce.png", "flags": "vt", "tint": 747097},
+        {"id": 18, "data": 14, "type": "texture", "texture": "blocks/leaves_birch.png", "flags": "vt", "tint": 9286496},
+        {
+            "id": 18, "data": 15, "type": "texture", "texture": "blocks/leaves_jungle.png", "flags": "vt",
+            "tint": "foliage"
+        },
         {"id": 19, "data": 0, "type": "texture", "texture": "blocks/sponge.png"},
         {"id": 19, "data": 1, "type": "texture", "texture": "blocks/sponge_wet.png"},
-        {"id": 20, "data": 0, "type": "texture", "texture": "blocks/glass.png", "voxels": 0},
+        {"id": 20, "data": 0, "type": "texture", "texture": "blocks/glass.png", "flags": "t", "voxels": 0},
         {"id": 21, "data": 0, "type": "texture", "texture": "blocks/lapis_ore.png"},
         {"id": 22, "data": 0, "type": "texture", "texture": "blocks/lapis_block.png"},
         {"id": 23, "data": 0, "type": "texture", "texture": "blocks/dispenser_front_horizontal.png"},
@@ -83,14 +95,23 @@
         {"id": 24, "data": 2, "type": "texture", "texture": "blocks/sandstone_smooth.png"},
         {"id": 25, "data": 0, "type": "texture", "texture": "blocks/noteblock.png"},
         {"id": 26, "data": 0, "type": "texture", "texture": "blocks/bed_head_top.png"},
-        {"id": 27, "data": 0, "type": "texture", "texture": "blocks/rail_powered.png", "voxels": 612},
-        {"id": 28, "data": 0, "type": "texture", "texture": "blocks/rail_detector_powered.png", "voxels": 612},
+        {"id": 27, "data": 0, "type": "texture", "texture": "blocks/rail_powered.png", "flags": "vt", "voxels": 612},
+        {
+            "id": 28, "data": 0, "type": "texture", "texture": "blocks/rail_detector_powered.png", "flags": "vt",
+            "voxels": 612
+        },
         {"id": 29, "data": 0, "type": "texture", "texture": "blocks/piston_side.png"},
-        {"id": 30, "data": 0, "type": "texture", "texture": "blocks/web.png"},
-        {"id": 31, "data": 0, "type": "texture", "texture": "blocks/deadbush.png", "voxels": 1024},
-        {"id": 31, "data": 1, "type": "texture", "texture": "blocks/tallgrass.png", "voxels": 1024, "tint": "grass"},
-        {"id": 31, "data": 2, "type": "texture", "texture": "blocks/fern.png", "voxels": 1024, "tint": "grass"},
-        {"id": 32, "data": 0, "type": "texture", "texture": "blocks/deadbush.png", "voxels": 1024},
+        {"id": 30, "data": 0, "type": "texture", "texture": "blocks/web.png", "flags": "vt"},
+        {"id": 31, "data": 0, "type": "texture", "texture": "blocks/deadbush.png", "flags": "vt", "voxels": 1024},
+        {
+            "id": 31, "data": 1, "type": "texture", "texture": "blocks/tallgrass.png", "flags": "vt", "voxels": 1024,
+            "tint": "grass"
+        },
+        {
+            "id": 31, "data": 2, "type": "texture", "texture": "blocks/fern.png", "flags": "vt", "voxels": 1024,
+            "tint": "grass"
+        },
+        {"id": 32, "data": 0, "type": "texture", "texture": "blocks/deadbush.png", "flags": "vt", "voxels": 1024},
         {"id": 33, "data": 0, "type": "texture", "texture": "blocks/piston_side.png"},
         {"id": 34, "data": 0, "type": "texture", "texture": "blocks/piston_top_normal.png", "voxels": 1216},
         {"id": 35, "data": 0, "type": "texture", "texture": "blocks/wool_colored_white.png"},
@@ -109,19 +130,19 @@
         {"id": 35, "data": 13, "type": "texture", "texture": "blocks/wool_colored_green.png"},
         {"id": 35, "data": 14, "type": "texture", "texture": "blocks/wool_colored_red.png"},
         {"id": 35, "data": 15, "type": "texture", "texture": "blocks/wool_colored_black.png"},
-        {"id": 36, "data": 0, "type": "rgb", "rgb": "0x00FFFFFF"},
-        {"id": 37, "data": 0, "type": "texture", "texture": "blocks/flower_dandelion.png"},
-        {"id": 38, "data": 0, "type": "texture", "texture": "blocks/flower_rose.png"},
-        {"id": 38, "data": 1, "type": "texture", "texture": "blocks/flower_blue_orchid.png"},
-        {"id": 38, "data": 2, "type": "texture", "texture": "blocks/flower_allium.png"},
-        {"id": 38, "data": 3, "type": "texture", "texture": "blocks/flower_houstonia.png"},
-        {"id": 38, "data": 4, "type": "texture", "texture": "blocks/flower_tulip_red.png"},
-        {"id": 38, "data": 5, "type": "texture", "texture": "blocks/flower_tulip_orange.png"},
-        {"id": 38, "data": 6, "type": "texture", "texture": "blocks/flower_tulip_white.png"},
-        {"id": 38, "data": 7, "type": "texture", "texture": "blocks/flower_tulip_pink.png"},
-        {"id": 38, "data": 8, "type": "texture", "texture": "blocks/flower_oxeye_daisy.png"},
-        {"id": 39, "data": 0, "type": "texture", "texture": "blocks/mushroom_brown.png"},
-        {"id": 40, "data": 0, "type": "texture", "texture": "blocks/mushroom_red.png"},
+        {"id": 36, "data": 0, "type": "rgb", "rgb": "0x00FFFFFF", "flags": "vt"},
+        {"id": 37, "data": 0, "type": "texture", "texture": "blocks/flower_dandelion.png", "flags": "vt"},
+        {"id": 38, "data": 0, "type": "texture", "texture": "blocks/flower_rose.png", "flags": "vt"},
+        {"id": 38, "data": 1, "type": "texture", "texture": "blocks/flower_blue_orchid.png", "flags": "vt"},
+        {"id": 38, "data": 2, "type": "texture", "texture": "blocks/flower_allium.png", "flags": "vt"},
+        {"id": 38, "data": 3, "type": "texture", "texture": "blocks/flower_houstonia.png", "flags": "vt"},
+        {"id": 38, "data": 4, "type": "texture", "texture": "blocks/flower_tulip_red.png", "flags": "vt"},
+        {"id": 38, "data": 5, "type": "texture", "texture": "blocks/flower_tulip_orange.png", "flags": "vt"},
+        {"id": 38, "data": 6, "type": "texture", "texture": "blocks/flower_tulip_white.png", "flags": "vt"},
+        {"id": 38, "data": 7, "type": "texture", "texture": "blocks/flower_tulip_pink.png", "flags": "vt"},
+        {"id": 38, "data": 8, "type": "texture", "texture": "blocks/flower_oxeye_daisy.png", "flags": "vt"},
+        {"id": 39, "data": 0, "type": "texture", "texture": "blocks/mushroom_brown.png", "flags": "vt"},
+        {"id": 40, "data": 0, "type": "texture", "texture": "blocks/mushroom_red.png", "flags": "vt"},
         {"id": 41, "data": 0, "type": "texture", "texture": "blocks/gold_block.png"},
         {"id": 42, "data": 0, "type": "texture", "texture": "blocks/iron_block.png"},
         {"id": 43, "data": 0, "type": "texture", "texture": "blocks/stone_slab_side.png"},
@@ -157,96 +178,95 @@
         {"id": 44, "data": 14, "type": "texture", "texture": "blocks/nether_brick.png", "voxels": 2048},
         {"id": 44, "data": 15, "type": "texture", "texture": "blocks/quartz_block_top.png", "voxels": 2048},
         {"id": 45, "data": 0, "type": "texture", "texture": "blocks/brick.png"},
-        {"id": 46, "data": 0, "type": "texture", "texture": "blocks/tnt_side.png"},
+        {"id": 46, "data": 0, "type": "texture", "texture": "blocks/tnt_side.png", "flags": "v"},
         {"id": 47, "data": 0, "type": "texture", "texture": "blocks/bookshelf.png"},
         {"id": 48, "data": 0, "type": "texture", "texture": "blocks/cobblestone_mossy.png"},
         {"id": 49, "data": 0, "type": "texture", "texture": "blocks/obsidian.png"},
-        {"id": 50, "data": 0, "type": "texture", "texture": "blocks/torch_on.png"},
-        {"id": 51, "data": 0, "type": "texture", "texture": "blocks/fire_layer_0.png"},
-        {"id": 52, "data": 0, "type": "texture", "texture": "blocks/mob_spawner.png"},
+        {"id": 50, "data": 0, "type": "texture", "texture": "blocks/torch_on.png", "flags": "vt"},
+        {"id": 51, "data": 0, "type": "texture", "texture": "blocks/fire_layer_0.png", "flags": "vt"},
+        {"id": 52, "data": 0, "type": "texture", "texture": "blocks/mob_spawner.png", "flags": "t"},
         {"id": 53, "data": 0, "type": "texture", "texture": "blocks/planks_oak.png"},
         {"id": 54, "data": 0, "type": "texture", "texture": "entity/chest/normal.png", "voxels": 2744},
         {"id": 55, "data": 0, "type": "texture", "texture": "blocks/redstone_block.png", "voxels": 256},
         {"id": 56, "data": 0, "type": "texture", "texture": "blocks/diamond_ore.png"},
         {"id": 57, "data": 0, "type": "texture", "texture": "blocks/diamond_block.png"},
         {"id": 58, "data": 0, "type": "texture", "texture": "blocks/crafting_table_front.png"},
-        {"id": 59, "data": 0, "type": "texture", "texture": "blocks/wheat_stage_0.png", "voxels": 512},
-        {"id": 59, "data": 1, "type": "texture", "texture": "blocks/wheat_stage_1.png", "voxels": 1024},
-        {"id": 59, "data": 2, "type": "texture", "texture": "blocks/wheat_stage_2.png", "voxels": 1536},
-        {"id": 59, "data": 3, "type": "texture", "texture": "blocks/wheat_stage_3.png", "voxels": 2048},
-        {"id": 59, "data": 4, "type": "texture", "texture": "blocks/wheat_stage_4.png", "voxels": 2560},
-        {"id": 59, "data": 5, "type": "texture", "texture": "blocks/wheat_stage_5.png", "voxels": 3072},
-        {"id": 59, "data": 6, "type": "texture", "texture": "blocks/wheat_stage_6.png", "voxels": 3584},
-        {"id": 59, "data": 7, "type": "texture", "texture": "blocks/wheat_stage_7.png", "voxels": 4096},
+        {"id": 59, "data": 0, "type": "texture", "texture": "blocks/wheat_stage_0.png", "flags": "vt", "voxels": 512},
+        {"id": 59, "data": 1, "type": "texture", "texture": "blocks/wheat_stage_1.png", "flags": "vt", "voxels": 1024},
+        {"id": 59, "data": 2, "type": "texture", "texture": "blocks/wheat_stage_2.png", "flags": "vt", "voxels": 1536},
+        {"id": 59, "data": 3, "type": "texture", "texture": "blocks/wheat_stage_3.png", "flags": "vt", "voxels": 2048},
+        {"id": 59, "data": 4, "type": "texture", "texture": "blocks/wheat_stage_4.png", "flags": "vt", "voxels": 2560},
+        {"id": 59, "data": 5, "type": "texture", "texture": "blocks/wheat_stage_5.png", "flags": "vt", "voxels": 3072},
+        {"id": 59, "data": 6, "type": "texture", "texture": "blocks/wheat_stage_6.png", "flags": "vt", "voxels": 3584},
+        {"id": 59, "data": 7, "type": "texture", "texture": "blocks/wheat_stage_7.png", "flags": "vt", "voxels": 4096},
         {"id": 61, "data": 0, "type": "texture", "texture": "blocks/furnace_front_off.png"},
         {"id": 62, "data": 0, "type": "texture", "texture": "blocks/furnace_front_on.png"},
-        {"id": 63, "data": 0, "type": "texture", "texture": "entity/sign.png"},
+        {"id": 63, "data": 0, "type": "texture", "texture": "entity/sign.png", "flags": "v"},
         {"id": 64, "data": "0-7", "type": "texture", "texture": "blocks/door_wood_lower.png", "voxels": 1024},
         {"id": 64, "data": "8-15", "type": "texture", "texture": "blocks/door_wood_upper.png", "voxels": 1024},
-        {"id": 65, "data": 0, "type": "texture", "texture": "blocks/ladder.png"},
-        {"id": 66, "data": 0, "type": "texture", "texture": "blocks/rail_normal.png"},
+        {"id": 65, "data": 0, "type": "texture", "texture": "blocks/ladder.png", "flags": "vt"},
+        {"id": 66, "data": 0, "type": "texture", "texture": "blocks/rail_normal.png", "flags": "vt"},
         {"id": 67, "data": 0, "type": "texture", "texture": "blocks/cobblestone.png"},
-        {"id": 68, "data": 0, "type": "texture", "texture": "entity/sign.png"},
-        {"id": 69, "data": 0, "type": "texture", "texture": "blocks/lever.png"},
-        {"id": 70, "data": 0, "type": "texture", "texture": "blocks/stone.png"},
+        {"id": 68, "data": 0, "type": "texture", "texture": "entity/sign.png", "flags": "v"},
+        {"id": 69, "data": 0, "type": "texture", "texture": "blocks/lever.png", "flags": "v"},
+        {"id": 70, "data": 0, "type": "texture", "texture": "blocks/stone.png", "flags": "v"},
         {"id": 71, "data": "0-7", "type": "texture", "texture": "blocks/door_iron_lower.png", "voxels": 1024},
         {"id": 71, "data": "8-15", "type": "texture", "texture": "blocks/door_iron_upper.png", "voxels": 1024},
         {"id": 72, "data": 0, "type": "texture", "texture": "blocks/planks_oak.png"},
         {"id": 73, "data": 0, "type": "texture", "texture": "blocks/redstone_ore.png"},
-        {"id": 74, "data": 0, "type": "texture", "texture": "blocks/redstone_ore.png"},
-        {"id": 75, "data": 0, "type": "texture", "texture": "blocks/redstone_torch_off.png"},
-        {"id": 76, "data": 0, "type": "texture", "texture": "blocks/redstone_torch_on.png"},
+        {"id": 74, "data": 0, "type": "texture", "texture": "blocks/redstone_ore.png", "flags": "v"},
+        {"id": 75, "data": 0, "type": "texture", "texture": "blocks/redstone_torch_off.png", "flags": "v"},
+        {"id": 76, "data": 0, "type": "texture", "texture": "blocks/redstone_torch_on.png", "flags": "v"},
         {"id": 77, "data": 0, "type": "texture", "texture": "blocks/stone.png", "voxels": 48},
-        {"id": 78, "data": 0, "type": "texture", "texture": "blocks/snow.png", "voxels": 512},
-        {"id": 78, "data": 1, "type": "texture", "texture": "blocks/snow.png", "voxels": 1024},
-        {"id": 78, "data": 2, "type": "texture", "texture": "blocks/snow.png", "voxels": 1536},
-        {"id": 78, "data": 3, "type": "texture", "texture": "blocks/snow.png", "voxels": 2048},
-        {"id": 78, "data": 4, "type": "texture", "texture": "blocks/snow.png", "voxels": 2560},
-        {"id": 78, "data": 5, "type": "texture", "texture": "blocks/snow.png", "voxels": 3072},
-        {"id": 78, "data": 6, "type": "texture", "texture": "blocks/snow.png", "voxels": 3584},
-        {"id": 78, "data": 7, "type": "texture", "texture": "blocks/snow.png", "voxels": 4096},
-        {"id": 78, "data": 8, "type": "texture", "texture": "blocks/snow.png", "voxels": 512},
-        {"id": 78, "data": 9, "type": "texture", "texture": "blocks/snow.png", "voxels": 1024},
-        {"id": 78, "data": 10, "type": "texture", "texture": "blocks/snow.png", "voxels": 1536},
-        {"id": 78, "data": 11, "type": "texture", "texture": "blocks/snow.png", "voxels": 2048},
-        {"id": 78, "data": 12, "type": "texture", "texture": "blocks/snow.png", "voxels": 2560},
-        {"id": 78, "data": 13, "type": "texture", "texture": "blocks/snow.png", "voxels": 3072},
-        {"id": 78, "data": 14, "type": "texture", "texture": "blocks/snow.png", "voxels": 3584},
+        {"id": 78, "data": 0, "type": "texture", "texture": "blocks/snow.png", "flags": "v", "voxels": 512},
+        {"id": 78, "data": 1, "type": "texture", "texture": "blocks/snow.png", "flags": "v", "voxels": 1024},
+        {"id": 78, "data": 2, "type": "texture", "texture": "blocks/snow.png", "flags": "v", "voxels": 1536},
+        {"id": 78, "data": 3, "type": "texture", "texture": "blocks/snow.png", "flags": "v", "voxels": 2048},
+        {"id": 78, "data": 4, "type": "texture", "texture": "blocks/snow.png", "flags": "v", "voxels": 2560},
+        {"id": 78, "data": 5, "type": "texture", "texture": "blocks/snow.png", "flags": "v", "voxels": 3072},
+        {"id": 78, "data": 6, "type": "texture", "texture": "blocks/snow.png", "flags": "v", "voxels": 3584},
+        {"id": 78, "data": 7, "type": "texture", "texture": "blocks/snow.png", "flags": "v", "voxels": 4096},
+        {"id": 78, "data": 8, "type": "texture", "texture": "blocks/snow.png", "flags": "v", "voxels": 512},
+        {"id": 78, "data": 9, "type": "texture", "texture": "blocks/snow.png", "flags": "v", "voxels": 1024},
+        {"id": 78, "data": 10, "type": "texture", "texture": "blocks/snow.png", "flags": "v", "voxels": 1536},
+        {"id": 78, "data": 11, "type": "texture", "texture": "blocks/snow.png", "flags": "v", "voxels": 2048},
+        {"id": 78, "data": 12, "type": "texture", "texture": "blocks/snow.png", "flags": "v", "voxels": 2560},
+        {"id": 78, "data": 13, "type": "texture", "texture": "blocks/snow.png", "flags": "v", "voxels": 3072},
+        {"id": 78, "data": 14, "type": "texture", "texture": "blocks/snow.png", "flags": "v", "voxels": 3584},
         {"id": 78, "data": 15, "type": "texture", "texture": "blocks/snow.png", "voxels": 4096},
-
-        {"id": 79, "data": 0, "type": "texture", "texture": "blocks/ice.png"},
+        {"id": 79, "data": 0, "type": "texture", "texture": "blocks/ice.png", "flags": "vt"},
         {"id": 80, "data": 0, "type": "texture", "texture": "blocks/snow.png"},
-        {"id": 81, "data": 0, "type": "texture", "texture": "blocks/cactus_side.png"},
+        {"id": 81, "data": 0, "type": "texture", "texture": "blocks/cactus_side.png", "flags": "v"},
         {"id": 82, "data": 0, "type": "texture", "texture": "blocks/clay.png"},
-        {"id": 83, "data": 0, "type": "texture", "texture": "blocks/reeds.png"},
+        {"id": 83, "data": 0, "type": "texture", "texture": "blocks/reeds.png", "flags": "vt"},
         {"id": 84, "data": 0, "type": "texture", "texture": "blocks/jukebox_top.png"},
-        {"id": 85, "data": 0, "type": "texture", "texture": "blocks/planks_oak.png"},
+        {"id": 85, "data": 0, "type": "texture", "texture": "blocks/planks_oak.png", "voxels": 1024},
         {"id": 86, "data": 0, "type": "texture", "texture": "blocks/pumpkin_side.png"},
         {"id": 87, "data": 0, "type": "texture", "texture": "blocks/netherrack.png"},
         {"id": 88, "data": 0, "type": "texture", "texture": "blocks/soul_sand.png"},
         {"id": 89, "data": 0, "type": "texture", "texture": "blocks/glowstone.png"},
-        {"id": 90, "data": 0, "type": "texture", "texture": "blocks/portal.png"},
+        {"id": 90, "data": 0, "type": "texture", "texture": "blocks/portal.png", "flags": "vt"},
         {"id": 91, "data": 0, "type": "texture", "texture": "blocks/pumpkin_face_on.png"},
-        {"id": 92, "data": 0, "type": "texture", "texture": "blocks/cake_side.png"},
-        {"id": 93, "data": 0, "type": "texture", "texture": "blocks/repeater_off.png", "voxels": 512},
-        {"id": 94, "data": 0, "type": "texture", "texture": "blocks/repeater_on.png", "voxels": 512},
-        {"id": 95, "data": 0, "type": "texture", "texture": "blocks/glass_white.png"},
-        {"id": 95, "data": 1, "type": "texture", "texture": "blocks/glass_orange.png"},
-        {"id": 95, "data": 2, "type": "texture", "texture": "blocks/glass_magenta.png"},
-        {"id": 95, "data": 3, "type": "texture", "texture": "blocks/glass_light_blue.png"},
-        {"id": 95, "data": 4, "type": "texture", "texture": "blocks/glass_yellow.png"},
-        {"id": 95, "data": 5, "type": "texture", "texture": "blocks/glass_lime.png"},
-        {"id": 95, "data": 6, "type": "texture", "texture": "blocks/glass_pink.png"},
-        {"id": 95, "data": 7, "type": "texture", "texture": "blocks/glass_gray.png"},
-        {"id": 95, "data": 8, "type": "texture", "texture": "blocks/glass_silver.png"},
-        {"id": 95, "data": 9, "type": "texture", "texture": "blocks/glass_cyan.png"},
-        {"id": 95, "data": 10, "type": "texture", "texture": "blocks/glass_purple.png"},
-        {"id": 95, "data": 11, "type": "texture", "texture": "blocks/glass_blue.png"},
-        {"id": 95, "data": 12, "type": "texture", "texture": "blocks/glass_brown.png"},
-        {"id": 95, "data": 13, "type": "texture", "texture": "blocks/glass_green.png"},
-        {"id": 95, "data": 14, "type": "texture", "texture": "blocks/glass_red.png"},
-        {"id": 95, "data": 15, "type": "texture", "texture": "blocks/glass_black.png"},
-        {"id": 96, "data": 0, "type": "texture", "texture": "blocks/trapdoor.png", "voxels": 1024},
+        {"id": 92, "data": 0, "type": "texture", "texture": "blocks/cake_side.png", "flags": "v"},
+        {"id": 93, "data": 0, "type": "texture", "texture": "blocks/repeater_off.png", "flags": "v", "voxels": 512},
+        {"id": 94, "data": 0, "type": "texture", "texture": "blocks/repeater_on.png", "flags": "v", "voxels": 512},
+        {"id": 95, "data": 0, "type": "texture", "texture": "blocks/glass_white.png", "flags": "t"},
+        {"id": 95, "data": 1, "type": "texture", "texture": "blocks/glass_orange.png", "flags": "t"},
+        {"id": 95, "data": 2, "type": "texture", "texture": "blocks/glass_magenta.png", "flags": "t"},
+        {"id": 95, "data": 3, "type": "texture", "texture": "blocks/glass_light_blue.png", "flags": "t"},
+        {"id": 95, "data": 4, "type": "texture", "texture": "blocks/glass_yellow.png", "flags": "t"},
+        {"id": 95, "data": 5, "type": "texture", "texture": "blocks/glass_lime.png", "flags": "t"},
+        {"id": 95, "data": 6, "type": "texture", "texture": "blocks/glass_pink.png", "flags": "t"},
+        {"id": 95, "data": 7, "type": "texture", "texture": "blocks/glass_gray.png", "flags": "t"},
+        {"id": 95, "data": 8, "type": "texture", "texture": "blocks/glass_silver.png", "flags": "t"},
+        {"id": 95, "data": 9, "type": "texture", "texture": "blocks/glass_cyan.png", "flags": "t"},
+        {"id": 95, "data": 10, "type": "texture", "texture": "blocks/glass_purple.png", "flags": "t"},
+        {"id": 95, "data": 11, "type": "texture", "texture": "blocks/glass_blue.png", "flags": "t"},
+        {"id": 95, "data": 12, "type": "texture", "texture": "blocks/glass_brown.png", "flags": "t"},
+        {"id": 95, "data": 13, "type": "texture", "texture": "blocks/glass_green.png", "flags": "t"},
+        {"id": 95, "data": 14, "type": "texture", "texture": "blocks/glass_red.png", "flags": "t"},
+        {"id": 95, "data": 15, "type": "texture", "texture": "blocks/glass_black.png", "flags": "t"},
+        {"id": 96, "data": 0, "type": "texture", "texture": "blocks/trapdoor.png", "flags": "v", "voxels": 1024},
         {"id": 97, "data": 0, "type": "texture", "texture": "blocks/stone.png"},
         {"id": 97, "data": 1, "type": "texture", "texture": "blocks/cobblestone.png"},
         {"id": 97, "data": 2, "type": "texture", "texture": "blocks/stonebrick.png"},
@@ -289,102 +309,159 @@
         {"id": 100, "data": 13, "type": "texture", "texture": "blocks/mushroom_block_inside.png"},
         {"id": 100, "data": 14, "type": "texture", "texture": "blocks/mushroom_block_skin_red.png"},
         {"id": 100, "data": 15, "type": "texture", "texture": "blocks/mushroom_block_skin_stem.png"},
-        {"id": 101, "data": 0, "type": "texture", "texture": "blocks/iron_bars.png"},
-        {"id": 102, "data": 0, "type": "texture", "texture": "blocks/glass.png"},
+        {"id": 101, "data": 0, "type": "texture", "texture": "blocks/iron_bars.png", "flags": "t"},
+        {"id": 102, "data": 0, "type": "texture", "texture": "blocks/glass.png", "flags": "t"},
         {"id": 103, "data": 0, "type": "texture", "texture": "blocks/melon_side.png"},
         {"id": 103, "data": 0, "type": "texture", "texture": "blocks/melon_side.png"},
-        {"id": 104, "data": 0, "type": "texture", "texture": "blocks/pumpkin_stem_connected.png", "tint": "grass"},
-        {"id": 105, "data": 0, "type": "texture", "texture": "blocks/melon_stem_connected.png", "tint": "grass"},
-        {"id": 106, "data": 0, "type": "texture", "texture": "blocks/vine.png", "tint": "foliage"},
+        {
+            "id": 104, "data": 0, "type": "texture", "texture": "blocks/pumpkin_stem_connected.png", "flags": "vt",
+            "tint": "grass"
+        },
+        {
+            "id": 105, "data": 0, "type": "texture", "texture": "blocks/melon_stem_connected.png", "flags": "vt",
+            "tint": "grass"
+        },
+        {"id": 106, "data": 0, "type": "texture", "texture": "blocks/vine.png", "flags": "vt", "tint": "foliage"},
         {"id": 107, "data": 0, "type": "texture", "texture": "blocks/planks_oak.png"},
         {"id": 108, "data": 0, "type": "texture", "texture": "blocks/brick.png"},
         {"id": 109, "data": 0, "type": "texture", "texture": "blocks/stonebrick.png"},
         {"id": 110, "data": 0, "type": "texture", "texture": "blocks/mycelium_top.png"},
         {"id": 111, "data": 0, "type": "texture", "texture": "blocks/waterlily.png", "tint": "foliage"},
         {"id": 112, "data": 0, "type": "texture", "texture": "blocks/nether_brick.png"},
-        {"id": 113, "data": 0, "type": "texture", "texture": "blocks/nether_brick.png"},
+        {"id": 113, "data": 0, "type": "texture", "texture": "blocks/nether_brick.png", "voxels": 1024},
         {"id": 114, "data": 0, "type": "texture", "texture": "blocks/nether_brick.png"},
-        {"id": 115, "data": 0, "type": "texture", "texture": "blocks/nether_wart_stage_0.png"},
-        {"id": 115, "data": 1, "type": "texture", "texture": "blocks/nether_wart_stage_1.png"},
-        {"id": 115, "data": 2, "type": "texture", "texture": "blocks/nether_wart_stage_1.png"},
-        {"id": 115, "data": 3, "type": "texture", "texture": "blocks/nether_wart_stage_2.png"},
-        {"id": 116, "data": 0, "type": "texture", "texture": "blocks/enchanting_table_side.png"},
-        {"id": 117, "data": 0, "type": "texture", "texture": "blocks/brewing_stand.png"},
+        {"id": 115, "data": 0, "type": "texture", "texture": "blocks/nether_wart_stage_0.png", "flags": "vt"},
+        {"id": 115, "data": 1, "type": "texture", "texture": "blocks/nether_wart_stage_1.png", "flags": "vt"},
+        {"id": 115, "data": 2, "type": "texture", "texture": "blocks/nether_wart_stage_1.png", "flags": "vt"},
+        {"id": 115, "data": 3, "type": "texture", "texture": "blocks/nether_wart_stage_2.png", "flags": "vt"},
+        {"id": 116, "data": 0, "type": "texture", "texture": "blocks/enchanting_table_side.png", "voxels": 3072},
+        {"id": 117, "data": 0, "type": "texture", "texture": "blocks/brewing_stand.png", "voxels": 512},
         {"id": 118, "data": 0, "type": "texture", "texture": "blocks/cauldron_side.png"},
-        {"id": 119, "data": 0, "type": "texture", "texture": "entity/end_portal.png"},
+        {"id": 119, "data": 0, "type": "texture", "texture": "entity/end_portal.png", "flags": "v"},
         {"id": 120, "data": 0, "type": "texture", "texture": "blocks/endframe_side.png"},
         {"id": 121, "data": 0, "type": "texture", "texture": "blocks/end_stone.png"},
-        {"id": 122, "data": 0, "type": "texture", "texture": "blocks/dragon_egg.png"},
+        {"id": 122, "data": 0, "type": "texture", "texture": "blocks/dragon_egg.png", "flags": "vp", "voxels": 3600},
         {"id": 123, "data": 0, "type": "texture", "texture": "blocks/redstone_lamp_off.png"},
-        {"id": 124, "data": 0, "type": "texture", "texture": "blocks/redstone_lamp_on.png"},
+        {"id": 124, "data": 0, "type": "texture", "texture": "blocks/redstone_lamp_on.png", "flags": "v"},
         {"id": 125, "data": 0, "type": "texture", "texture": "blocks/planks_oak.png"},
         {"id": 125, "data": 1, "type": "texture", "texture": "blocks/planks_spruce.png"},
         {"id": 125, "data": 2, "type": "texture", "texture": "blocks/planks_birch.png"},
         {"id": 125, "data": 3, "type": "texture", "texture": "blocks/planks_jungle.png"},
         {"id": 125, "data": 4, "type": "texture", "texture": "blocks/planks_acacia.png"},
         {"id": 125, "data": 5, "type": "texture", "texture": "blocks/planks_big_oak.png"},
-        {"id": 126, "data": 0, "type": "texture", "texture": "blocks/planks_oak.png"},
-        {"id": 126, "data": 1, "type": "texture", "texture": "blocks/planks_spruce.png"},
-        {"id": 126, "data": 2, "type": "texture", "texture": "blocks/planks_birch.png"},
-        {"id": 126, "data": 3, "type": "texture", "texture": "blocks/planks_jungle.png"},
-        {"id": 126, "data": 4, "type": "texture", "texture": "blocks/planks_acacia.png"},
-        {"id": 126, "data": 5, "type": "texture", "texture": "blocks/planks_big_oak.png"},
-        {"id": 126, "data": 8, "type": "texture", "texture": "blocks/planks_oak.png"},
-        {"id": 126, "data": 9, "type": "texture", "texture": "blocks/planks_spruce.png"},
-        {"id": 126, "data": 10, "type": "texture", "texture": "blocks/planks_birch.png"},
-        {"id": 126, "data": 11, "type": "texture", "texture": "blocks/planks_jungle.png"},
-        {"id": 126, "data": 12, "type": "texture", "texture": "blocks/planks_acacia.png"},
-        {"id": 126, "data": 13, "type": "texture", "texture": "blocks/planks_big_oak.png"},
-        {"id": 127, "data": 0, "type": "texture", "texture": "blocks/cocoa_stage_0.png", "voxels": 64},
-        {"id": 127, "data": 1, "type": "texture", "texture": "blocks/cocoa_stage_0.png", "voxels": 64},
-        {"id": 127, "data": 2, "type": "texture", "texture": "blocks/cocoa_stage_0.png", "voxels": 64},
-        {"id": 127, "data": 3, "type": "texture", "texture": "blocks/cocoa_stage_0.png", "voxels": 64},
-        {"id": 127, "data": 4, "type": "texture", "texture": "blocks/cocoa_stage_1.png", "voxels": 216},
-        {"id": 127, "data": 5, "type": "texture", "texture": "blocks/cocoa_stage_1.png", "voxels": 216},
-        {"id": 127, "data": 6, "type": "texture", "texture": "blocks/cocoa_stage_1.png", "voxels": 216},
-        {"id": 127, "data": 7, "type": "texture", "texture": "blocks/cocoa_stage_1.png", "voxels": 216},
-        {"id": 127, "data": 8, "type": "texture", "texture": "blocks/cocoa_stage_2.png", "voxels": 512},
-        {"id": 127, "data": 9, "type": "texture", "texture": "blocks/cocoa_stage_2.png", "voxels": 512},
-        {"id": 127, "data": 10, "type": "texture", "texture": "blocks/cocoa_stage_2.png", "voxels": 512},
-        {"id": 127, "data": 11, "type": "texture", "texture": "blocks/cocoa_stage_2.png", "voxels": 512},
+        {"id": 126, "data": 0, "type": "texture", "texture": "blocks/planks_oak.png", "voxels": 2048},
+        {"id": 126, "data": 1, "type": "texture", "texture": "blocks/planks_spruce.png", "voxels": 2048},
+        {"id": 126, "data": 2, "type": "texture", "texture": "blocks/planks_birch.png", "voxels": 2048},
+        {"id": 126, "data": 3, "type": "texture", "texture": "blocks/planks_jungle.png", "voxels": 2048},
+        {"id": 126, "data": 4, "type": "texture", "texture": "blocks/planks_acacia.png", "voxels": 2048},
+        {"id": 126, "data": 5, "type": "texture", "texture": "blocks/planks_big_oak.png", "voxels": 2048},
+        {"id": 126, "data": 8, "type": "texture", "texture": "blocks/planks_oak.png", "voxels": 2048},
+        {"id": 126, "data": 9, "type": "texture", "texture": "blocks/planks_spruce.png", "voxels": 2048},
+        {"id": 126, "data": 10, "type": "texture", "texture": "blocks/planks_birch.png", "voxels": 2048},
+        {"id": 126, "data": 11, "type": "texture", "texture": "blocks/planks_jungle.png", "voxels": 2048},
+        {"id": 126, "data": 12, "type": "texture", "texture": "blocks/planks_acacia.png", "voxels": 2048},
+        {"id": 126, "data": 13, "type": "texture", "texture": "blocks/planks_big_oak.png", "voxels": 2048},
+        {"id": 127, "data": 0, "type": "texture", "texture": "blocks/cocoa_stage_0.png", "flags": "vt", "voxels": 64},
+        {"id": 127, "data": 1, "type": "texture", "texture": "blocks/cocoa_stage_0.png", "flags": "vt", "voxels": 64},
+        {"id": 127, "data": 2, "type": "texture", "texture": "blocks/cocoa_stage_0.png", "flags": "vt", "voxels": 64},
+        {"id": 127, "data": 3, "type": "texture", "texture": "blocks/cocoa_stage_0.png", "flags": "vt", "voxels": 64},
+        {"id": 127, "data": 4, "type": "texture", "texture": "blocks/cocoa_stage_1.png", "flags": "vt", "voxels": 216},
+        {"id": 127, "data": 5, "type": "texture", "texture": "blocks/cocoa_stage_1.png", "flags": "vt", "voxels": 216},
+        {"id": 127, "data": 6, "type": "texture", "texture": "blocks/cocoa_stage_1.png", "flags": "vt", "voxels": 216},
+        {"id": 127, "data": 7, "type": "texture", "texture": "blocks/cocoa_stage_1.png", "flags": "vt", "voxels": 216},
+        {"id": 127, "data": 8, "type": "texture", "texture": "blocks/cocoa_stage_2.png", "flags": "vt", "voxels": 512},
+        {"id": 127, "data": 9, "type": "texture", "texture": "blocks/cocoa_stage_2.png", "flags": "vt", "voxels": 512},
+        {"id": 127, "data": 10, "type": "texture", "texture": "blocks/cocoa_stage_2.png", "flags": "vt", "voxels": 512},
+        {"id": 127, "data": 11, "type": "texture", "texture": "blocks/cocoa_stage_2.png", "flags": "vt", "voxels": 512},
         {"id": 128, "data": 0, "type": "texture", "texture": "blocks/sandstone_normal.png", "voxels": 3072},
         {"id": 129, "data": 0, "type": "texture", "texture": "blocks/emerald_ore.png"},
         {"id": 130, "data": 0, "type": "texture", "texture": "entity/chest/ender.png", "voxels": 2744},
-        {"id": 131, "data": 0, "type": "texture", "texture": "blocks/trip_wire_source.png", "voxels": 360},
-        {"id": 132, "data": 0, "type": "texture", "texture": "blocks/trip_wire.png", "voxels": 256},
+        {
+            "id": 131, "data": 0, "type": "texture", "texture": "blocks/trip_wire_source.png", "flags": "vt",
+            "voxels": 360
+        },
+        {"id": 132, "data": 0, "type": "texture", "texture": "blocks/trip_wire.png", "flags": "vt", "voxels": 256},
         {"id": 133, "data": 0, "type": "texture", "texture": "blocks/emerald_block.png"},
         {"id": 134, "data": 0, "type": "texture", "texture": "blocks/planks_spruce.png", "voxels": 3072},
         {"id": 135, "data": 0, "type": "texture", "texture": "blocks/planks_birch.png", "voxels": 3072},
         {"id": 136, "data": 0, "type": "texture", "texture": "blocks/planks_jungle.png", "voxels": 3072},
         {"id": 137, "data": 0, "type": "texture", "texture": "blocks/command_block_front.png"},
-        {"id": 138, "data": 0, "type": "texture", "texture": "blocks/beacon.png"},
+        {"id": 138, "data": 0, "type": "texture", "texture": "blocks/beacon.png", "flags": "t"},
         {"id": 139, "data": 0, "type": "texture", "texture": "blocks/cobblestone.png", "voxels": 2048},
         {"id": 139, "data": 1, "type": "texture", "texture": "blocks/cobblestone_mossy.png", "voxels": 2048},
         {"id": 140, "data": 0, "type": "texture", "texture": "blocks/flower_pot.png", "voxels": 216},
-        {"id": 141, "data": 0, "type": "texture", "texture": "blocks/carrots_stage_0.png", "voxels": 512},
-        {"id": 141, "data": 1, "type": "texture", "texture": "blocks/carrots_stage_0.png", "voxels": 768},
-        {"id": 141, "data": 2, "type": "texture", "texture": "blocks/carrots_stage_1.png", "voxels": 1024},
-        {"id": 141, "data": 3, "type": "texture", "texture": "blocks/carrots_stage_1.png", "voxels": 1280},
-        {"id": 141, "data": 4, "type": "texture", "texture": "blocks/carrots_stage_2.png", "voxels": 1536},
-        {"id": 141, "data": 5, "type": "texture", "texture": "blocks/carrots_stage_2.png", "voxels": 1792},
-        {"id": 141, "data": 6, "type": "texture", "texture": "blocks/carrots_stage_3.png", "voxels": 2048},
-        {"id": 141, "data": 7, "type": "texture", "texture": "blocks/carrots_stage_3.png", "voxels": 2304},
-        {"id": 142, "data": 0, "type": "texture", "texture": "blocks/potatoes_stage_0.png", "voxels": 512},
-        {"id": 142, "data": 1, "type": "texture", "texture": "blocks/potatoes_stage_0.png", "voxels": 768},
-        {"id": 142, "data": 2, "type": "texture", "texture": "blocks/potatoes_stage_1.png", "voxels": 1024},
-        {"id": 142, "data": 3, "type": "texture", "texture": "blocks/potatoes_stage_1.png", "voxels": 1280},
-        {"id": 142, "data": 4, "type": "texture", "texture": "blocks/potatoes_stage_2.png", "voxels": 1536},
-        {"id": 142, "data": 5, "type": "texture", "texture": "blocks/potatoes_stage_2.png", "voxels": 1792},
-        {"id": 142, "data": 6, "type": "texture", "texture": "blocks/potatoes_stage_3.png", "voxels": 2048},
-        {"id": 142, "data": 7, "type": "texture", "texture": "blocks/potatoes_stage_3.png", "voxels": 2304},
-        {"id": 143, "data": 0, "type": "texture", "texture": "blocks/planks_oak.png", "voxels": 48},
+        {
+            "id": 141, "data": 0, "type": "texture", "texture": "blocks/carrots_stage_0.png", "flags": "vt",
+            "voxels": 512
+        },
+        {
+            "id": 141, "data": 1, "type": "texture", "texture": "blocks/carrots_stage_0.png", "flags": "vt",
+            "voxels": 768
+        },
+        {
+            "id": 141, "data": 2, "type": "texture", "texture": "blocks/carrots_stage_1.png", "flags": "vt",
+            "voxels": 1024
+        },
+        {
+            "id": 141, "data": 3, "type": "texture", "texture": "blocks/carrots_stage_1.png", "flags": "vt",
+            "voxels": 1280
+        },
+        {
+            "id": 141, "data": 4, "type": "texture", "texture": "blocks/carrots_stage_2.png", "flags": "vt",
+            "voxels": 1536
+        },
+        {
+            "id": 141, "data": 5, "type": "texture", "texture": "blocks/carrots_stage_2.png", "flags": "vt",
+            "voxels": 1792
+        },
+        {
+            "id": 141, "data": 6, "type": "texture", "texture": "blocks/carrots_stage_3.png", "flags": "vt",
+            "voxels": 2048
+        },
+        {
+            "id": 141, "data": 7, "type": "texture", "texture": "blocks/carrots_stage_3.png", "flags": "vt",
+            "voxels": 2304
+        },
+        {
+            "id": 142, "data": 0, "type": "texture", "texture": "blocks/potatoes_stage_0.png", "flags": "vt",
+            "voxels": 512
+        },
+        {
+            "id": 142, "data": 1, "type": "texture", "texture": "blocks/potatoes_stage_0.png", "flags": "vt",
+            "voxels": 768
+        },
+        {
+            "id": 142, "data": 2, "type": "texture", "texture": "blocks/potatoes_stage_1.png", "flags": "vt",
+            "voxels": 1024
+        },
+        {
+            "id": 142, "data": 3, "type": "texture", "texture": "blocks/potatoes_stage_1.png", "flags": "vt",
+            "voxels": 1280
+        },
+        {
+            "id": 142, "data": 4, "type": "texture", "texture": "blocks/potatoes_stage_2.png", "flags": "vt",
+            "voxels": 1536
+        },
+        {
+            "id": 142, "data": 5, "type": "texture", "texture": "blocks/potatoes_stage_2.png", "flags": "vt",
+            "voxels": 1792
+        },
+        {
+            "id": 142, "data": 6, "type": "texture", "texture": "blocks/potatoes_stage_3.png", "flags": "vt",
+            "voxels": 2048
+        },
+        {
+            "id": 142, "data": 7, "type": "texture", "texture": "blocks/potatoes_stage_3.png", "flags": "vt",
+            "voxels": 2304
+        },
+        {"id": 143, "data": 0, "type": "texture", "texture": "blocks/planks_oak.png", "flags": "v", "voxels": 48},
         {"id": 144, "data": 0, "type": "texture", "texture": "entity/skeleton/skeleton.png", "voxels": 512},
-        {"id": 145, "data": 0, "type": "texture", "texture": "blocks/anvil_base.png", "voxels": 2048},
+        {"id": 145, "data": 0, "type": "texture", "texture": "blocks/anvil_base.png", "flags": "p", "voxels": 2048},
         {"id": 146, "data": 0, "type": "texture", "texture": "entity/chest/trapped.png", "voxels": 2744},
-        {"id": 147, "data": 0, "type": "texture", "texture": "blocks/gold_block.png", "voxels": 256},
-        {"id": 148, "data": 0, "type": "texture", "texture": "blocks/iron_block.png", "voxels": 256},
-        {"id": 149, "data": 0, "type": "texture", "texture": "blocks/comparator_off.png", "voxels": 512},
-        {"id": 150, "data": 0, "type": "texture", "texture": "blocks/comparator_on.png", "voxels": 512},
+        {"id": 147, "data": 0, "type": "texture", "texture": "blocks/gold_block.png", "flags": "v", "voxels": 256},
+        {"id": 148, "data": 0, "type": "texture", "texture": "blocks/iron_block.png", "flags": "v", "voxels": 256},
+        {"id": 149, "data": 0, "type": "texture", "texture": "blocks/comparator_off.png", "flags": "v", "voxels": 512},
+        {"id": 150, "data": 0, "type": "texture", "texture": "blocks/comparator_on.png", "flags": "v", "voxels": 512},
         {"id": 151, "data": 0, "type": "texture", "texture": "blocks/daylight_detector_top.png", "voxels": 1536},
         {"id": 152, "data": 0, "type": "texture", "texture": "blocks/redstone_block.png"},
         {"id": 153, "data": 0, "type": "texture", "texture": "blocks/quartz_ore.png"},
@@ -395,8 +472,14 @@
         {"id": 155, "data": 3, "type": "texture", "texture": "blocks/quartz_block_lines.png"},
         {"id": 155, "data": 4, "type": "texture", "texture": "blocks/quartz_block_lines.png"},
         {"id": 156, "data": 0, "type": "texture", "texture": "blocks/quartz_block_side.png", "voxels": 3072},
-        {"id": 157, "data": "0-5", "type": "texture", "texture": "blocks/rail_activator.png", "voxels": 1024},
-        {"id": 157, "data": "8-13", "type": "texture", "texture": "blocks/rail_activator_powered.png", "voxels": 1024},
+        {
+            "id": 157, "data": "0-5", "type": "texture", "texture": "blocks/rail_activator.png", "flags": "vt",
+            "voxels": 1024
+        },
+        {
+            "id": 157, "data": "8-13", "type": "texture", "texture": "blocks/rail_activator_powered.png", "flags": "vt",
+            "voxels": 1024
+        },
         {"id": 158, "data": 0, "type": "texture", "texture": "blocks/dropper_front_horizontal.png"},
         {"id": 159, "data": 0, "type": "texture", "texture": "blocks/hardened_clay_stained_white.png"},
         {"id": 159, "data": 1, "type": "texture", "texture": "blocks/hardened_clay_stained_orange.png"},
@@ -414,30 +497,57 @@
         {"id": 159, "data": 13, "type": "texture", "texture": "blocks/hardened_clay_stained_green.png"},
         {"id": 159, "data": 14, "type": "texture", "texture": "blocks/hardened_clay_stained_red.png"},
         {"id": 159, "data": 15, "type": "texture", "texture": "blocks/hardened_clay_stained_black.png"},
-        {"id": 160, "data": 0, "type": "texture", "texture": "blocks/glass_white.png", "voxels": 512},
-        {"id": 160, "data": 1, "type": "texture", "texture": "blocks/glass_orange.png", "voxels": 512},
-        {"id": 160, "data": 2, "type": "texture", "texture": "blocks/glass_magenta.png", "voxels": 512},
-        {"id": 160, "data": 3, "type": "texture", "texture": "blocks/glass_light_blue.png", "voxels": 512},
-        {"id": 160, "data": 4, "type": "texture", "texture": "blocks/glass_yellow.png", "voxels": 512},
-        {"id": 160, "data": 5, "type": "texture", "texture": "blocks/glass_lime.png", "voxels": 512},
-        {"id": 160, "data": 6, "type": "texture", "texture": "blocks/glass_pink.png", "voxels": 512},
-        {"id": 160, "data": 7, "type": "texture", "texture": "blocks/glass_gray.png", "voxels": 512},
-        {"id": 160, "data": 8, "type": "texture", "texture": "blocks/glass_silver.png", "voxels": 512},
-        {"id": 160, "data": 9, "type": "texture", "texture": "blocks/glass_cyan.png", "voxels": 512},
-        {"id": 160, "data": 10, "type": "texture", "texture": "blocks/glass_purple.png", "voxels": 512},
-        {"id": 160, "data": 11, "type": "texture", "texture": "blocks/glass_blue.png", "voxels": 512},
-        {"id": 160, "data": 12, "type": "texture", "texture": "blocks/glass_brown.png", "voxels": 512},
-        {"id": 160, "data": 13, "type": "texture", "texture": "blocks/glass_green.png", "voxels": 512},
-        {"id": 160, "data": 14, "type": "texture", "texture": "blocks/glass_red.png", "voxels": 512},
-        {"id": 160, "data": 15, "type": "texture", "texture": "blocks/glass_black.png", "voxels": 512},
-        {"id": 161, "data": 0, "type": "texture", "texture": "blocks/leaves_acacia.png", "tint": "foliage"},
-        {"id": 161, "data": 1, "type": "texture", "texture": "blocks/leaves_big_oak.png", "tint": "foliage"},
-        {"id": 161, "data": 4, "type": "texture", "texture": "blocks/leaves_acacia.png", "tint": "foliage"},
-        {"id": 161, "data": 5, "type": "texture", "texture": "blocks/leaves_big_oak.png", "tint": "foliage"},
-        {"id": 161, "data": 8, "type": "texture", "texture": "blocks/leaves_acacia.png", "tint": "foliage"},
-        {"id": 161, "data": 9, "type": "texture", "texture": "blocks/leaves_big_oak.png", "tint": "foliage"},
-        {"id": 161, "data": 12, "type": "texture", "texture": "blocks/leaves_acacia.png", "tint": "foliage"},
-        {"id": 161, "data": 13, "type": "texture", "texture": "blocks/leaves_big_oak.png", "tint": "foliage"},
+        {"id": 160, "data": 0, "type": "texture", "texture": "blocks/glass_white.png", "flags": "t", "voxels": 512},
+        {"id": 160, "data": 1, "type": "texture", "texture": "blocks/glass_orange.png", "flags": "t", "voxels": 512},
+        {"id": 160, "data": 2, "type": "texture", "texture": "blocks/glass_magenta.png", "flags": "t", "voxels": 512},
+        {
+            "id": 160, "data": 3, "type": "texture", "texture": "blocks/glass_light_blue.png", "flags": "t",
+            "voxels": 512
+        },
+        {"id": 160, "data": 4, "type": "texture", "texture": "blocks/glass_yellow.png", "flags": "t", "voxels": 512},
+        {"id": 160, "data": 5, "type": "texture", "texture": "blocks/glass_lime.png", "flags": "t", "voxels": 512},
+        {"id": 160, "data": 6, "type": "texture", "texture": "blocks/glass_pink.png", "flags": "t", "voxels": 512},
+        {"id": 160, "data": 7, "type": "texture", "texture": "blocks/glass_gray.png", "flags": "t", "voxels": 512},
+        {"id": 160, "data": 8, "type": "texture", "texture": "blocks/glass_silver.png", "flags": "t", "voxels": 512},
+        {"id": 160, "data": 9, "type": "texture", "texture": "blocks/glass_cyan.png", "flags": "t", "voxels": 512},
+        {"id": 160, "data": 10, "type": "texture", "texture": "blocks/glass_purple.png", "flags": "t", "voxels": 512},
+        {"id": 160, "data": 11, "type": "texture", "texture": "blocks/glass_blue.png", "flags": "t", "voxels": 512},
+        {"id": 160, "data": 12, "type": "texture", "texture": "blocks/glass_brown.png", "flags": "t", "voxels": 512},
+        {"id": 160, "data": 13, "type": "texture", "texture": "blocks/glass_green.png", "flags": "t", "voxels": 512},
+        {"id": 160, "data": 14, "type": "texture", "texture": "blocks/glass_red.png", "flags": "t", "voxels": 512},
+        {"id": 160, "data": 15, "type": "texture", "texture": "blocks/glass_black.png", "flags": "t", "voxels": 512},
+        {
+            "id": 161, "data": 0, "type": "texture", "texture": "blocks/leaves_acacia.png", "flags": "vt",
+            "tint": "foliage"
+        },
+        {
+            "id": 161, "data": 1, "type": "texture", "texture": "blocks/leaves_big_oak.png", "flags": "vt",
+            "tint": "foliage"
+        },
+        {
+            "id": 161, "data": 4, "type": "texture", "texture": "blocks/leaves_acacia.png", "flags": "vt",
+            "tint": "foliage"
+        },
+        {
+            "id": 161, "data": 5, "type": "texture", "texture": "blocks/leaves_big_oak.png", "flags": "vt",
+            "tint": "foliage"
+        },
+        {
+            "id": 161, "data": 8, "type": "texture", "texture": "blocks/leaves_acacia.png", "flags": "vt",
+            "tint": "foliage"
+        },
+        {
+            "id": 161, "data": 9, "type": "texture", "texture": "blocks/leaves_big_oak.png", "flags": "vt",
+            "tint": "foliage"
+        },
+        {
+            "id": 161, "data": 12, "type": "texture", "texture": "blocks/leaves_acacia.png", "flags": "vt",
+            "tint": "foliage"
+        },
+        {
+            "id": 161, "data": 13, "type": "texture", "texture": "blocks/leaves_big_oak.png", "flags": "vt",
+            "tint": "foliage"
+        },
         {"id": 162, "data": 0, "type": "texture", "texture": "blocks/log_acacia.png"},
         {"id": 162, "data": 1, "type": "texture", "texture": "blocks/log_big_oak.png"},
         {"id": 162, "data": 2, "type": "texture", "texture": "blocks/log_acacia.png"},
@@ -454,62 +564,136 @@
         {"id": 162, "data": 13, "type": "texture", "texture": "blocks/log_big_oak.png"},
         {"id": 163, "data": 0, "type": "texture", "texture": "blocks/planks_acacia.png", "voxels": 3072},
         {"id": 164, "data": 0, "type": "texture", "texture": "blocks/planks_big_oak.png", "voxels": 3072},
-        {"id": 165, "data": 0, "type": "texture", "texture": "blocks/slime.png"},
-        {"id": 166, "data": 0, "type": "rgb", "rgb": "0x00FFFFFF"},
+        {"id": 165, "data": 0, "type": "texture", "texture": "blocks/slime.png", "flags": "t"},
+        {"id": 166, "data": 0, "type": "rgb", "rgb": "0x00FFFFFF", "flags": "t"},
         {"id": 167, "data": 0, "type": "texture", "texture": "blocks/iron_block.png", "voxels": 1024},
         {"id": 168, "data": 0, "type": "texture", "texture": "blocks/prismarine_rough.png"},
         {"id": 168, "data": 1, "type": "texture", "texture": "blocks/prismarine_bricks.png"},
         {"id": 168, "data": 2, "type": "texture", "texture": "blocks/prismarine_dark.png"},
         {"id": 169, "data": 0, "type": "texture", "texture": "blocks/sea_lantern.png"},
         {"id": 170, "data": 0, "type": "texture", "texture": "blocks/hay_block_side.png"},
-        {"id": 171, "data": 0, "type": "texture", "texture": "blocks/wool_colored_white.png", "voxels": 256},
-        {"id": 171, "data": 1, "type": "texture", "texture": "blocks/wool_colored_orange.png", "voxels": 256},
-        {"id": 171, "data": 2, "type": "texture", "texture": "blocks/wool_colored_magenta.png", "voxels": 256},
-        {"id": 171, "data": 3, "type": "texture", "texture": "blocks/wool_colored_light_blue.png", "voxels": 256},
-        {"id": 171, "data": 4, "type": "texture", "texture": "blocks/wool_colored_yellow.png", "voxels": 256},
-        {"id": 171, "data": 5, "type": "texture", "texture": "blocks/wool_colored_lime.png", "voxels": 256},
-        {"id": 171, "data": 6, "type": "texture", "texture": "blocks/wool_colored_pink.png", "voxels": 256},
-        {"id": 171, "data": 7, "type": "texture", "texture": "blocks/wool_colored_gray.png", "voxels": 256},
-        {"id": 171, "data": 8, "type": "texture", "texture": "blocks/wool_colored_silver.png", "voxels": 256},
-        {"id": 171, "data": 9, "type": "texture", "texture": "blocks/wool_colored_cyan.png", "voxels": 256},
-        {"id": 171, "data": 10, "type": "texture", "texture": "blocks/wool_colored_purple.png", "voxels": 256},
-        {"id": 171, "data": 11, "type": "texture", "texture": "blocks/wool_colored_blue.png", "voxels": 256},
-        {"id": 171, "data": 12, "type": "texture", "texture": "blocks/wool_colored_brown.png", "voxels": 256},
-        {"id": 171, "data": 13, "type": "texture", "texture": "blocks/wool_colored_green.png", "voxels": 256},
-        {"id": 171, "data": 14, "type": "texture", "texture": "blocks/wool_colored_red.png", "voxels": 256},
-        {"id": 171, "data": 15, "type": "texture", "texture": "blocks/wool_colored_black.png", "voxels": 256},
+        {
+            "id": 171, "data": 0, "type": "texture", "texture": "blocks/wool_colored_white.png", "flags": "v",
+            "voxels": 256
+        },
+        {
+            "id": 171, "data": 1, "type": "texture", "texture": "blocks/wool_colored_orange.png", "flags": "v",
+            "voxels": 256
+        },
+        {
+            "id": 171, "data": 2, "type": "texture", "texture": "blocks/wool_colored_magenta.png", "flags": "v",
+            "voxels": 256
+        },
+        {
+            "id": 171, "data": 3, "type": "texture", "texture": "blocks/wool_colored_light_blue.png", "flags": "v",
+            "voxels": 256
+        },
+        {
+            "id": 171, "data": 4, "type": "texture", "texture": "blocks/wool_colored_yellow.png", "flags": "v",
+            "voxels": 256
+        },
+        {
+            "id": 171, "data": 5, "type": "texture", "texture": "blocks/wool_colored_lime.png", "flags": "v",
+            "voxels": 256
+        },
+        {
+            "id": 171, "data": 6, "type": "texture", "texture": "blocks/wool_colored_pink.png", "flags": "v",
+            "voxels": 256
+        },
+        {
+            "id": 171, "data": 7, "type": "texture", "texture": "blocks/wool_colored_gray.png", "flags": "v",
+            "voxels": 256
+        },
+        {
+            "id": 171, "data": 8, "type": "texture", "texture": "blocks/wool_colored_silver.png", "flags": "v",
+            "voxels": 256
+        },
+        {
+            "id": 171, "data": 9, "type": "texture", "texture": "blocks/wool_colored_cyan.png", "flags": "v",
+            "voxels": 256
+        },
+        {
+            "id": 171, "data": 10, "type": "texture", "texture": "blocks/wool_colored_purple.png", "flags": "v",
+            "voxels": 256
+        },
+        {
+            "id": 171, "data": 11, "type": "texture", "texture": "blocks/wool_colored_blue.png", "flags": "v",
+            "voxels": 256
+        },
+        {
+            "id": 171, "data": 12, "type": "texture", "texture": "blocks/wool_colored_brown.png", "flags": "v",
+            "voxels": 256
+        },
+        {
+            "id": 171, "data": 13, "type": "texture", "texture": "blocks/wool_colored_green.png", "flags": "v",
+            "voxels": 256
+        },
+        {
+            "id": 171, "data": 14, "type": "texture", "texture": "blocks/wool_colored_red.png", "flags": "v",
+            "voxels": 256
+        },
+        {
+            "id": 171, "data": 15, "type": "texture", "texture": "blocks/wool_colored_black.png", "flags": "v",
+            "voxels": 256
+        },
         {"id": 172, "data": 15, "type": "texture", "texture": "blocks/hardened_clay.png"},
         {"id": 173, "data": 0, "type": "texture", "texture": "blocks/coal_block.png"},
         {"id": 174, "data": 0, "type": "texture", "texture": "blocks/ice_packed.png"},
         {
             "id": 175, "data": 0, "type": "texture", "texture": "blocks/double_plant_sunflower_bottom.png",
+            "flags": "vt",
             "voxels": 1024
         },
-        {"id": 175, "data": 1, "type": "texture", "texture": "blocks/double_plant_syringa_bottom.png", "voxels": 1024},
         {
-            "id": 175, "data": 2, "type": "texture", "texture": "blocks/double_plant_grass_bottom.png", "voxels": 1024,
+            "id": 175, "data": 1, "type": "texture", "texture": "blocks/double_plant_syringa_bottom.png", "flags": "vt",
+            "voxels": 1024
+        },
+        {
+            "id": 175, "data": 2, "type": "texture", "texture": "blocks/double_plant_grass_bottom.png", "flags": "vt",
+            "voxels": 1024,
             "tint": "grass"
         },
         {
-            "id": 175, "data": 3, "type": "texture", "texture": "blocks/double_plant_fern_bottom.png", "voxels": 1024,
-            "tint": "grass"
-        },
-        {"id": 175, "data": 4, "type": "texture", "texture": "blocks/double_plant_rose_bottom.png", "voxels": 1024},
-        {"id": 175, "data": 5, "type": "texture", "texture": "blocks/double_plant_paeonia_bottom.png", "voxels": 1024},
-        {"id": 175, "data": 8, "type": "texture", "texture": "blocks/double_plant_sunflower_top.png", "voxels": 1024},
-        {"id": 175, "data": 9, "type": "texture", "texture": "blocks/double_plant_syringa_top.png", "voxels": 1024},
-        {
-            "id": 175, "data": 10, "type": "texture", "texture": "blocks/double_plant_grass_top.png", "voxels": 1024,
+            "id": 175, "data": 3, "type": "texture", "texture": "blocks/double_plant_fern_bottom.png", "flags": "vt",
+            "voxels": 1024,
             "tint": "grass"
         },
         {
-            "id": 175, "data": 11, "type": "texture", "texture": "blocks/double_plant_fern_top.png", "voxels": 1024,
+            "id": 175, "data": 4, "type": "texture", "texture": "blocks/double_plant_rose_bottom.png", "flags": "vt",
+            "voxels": 1024
+        },
+        {
+            "id": 175, "data": 5, "type": "texture", "texture": "blocks/double_plant_paeonia_bottom.png", "flags": "vt",
+            "voxels": 1024
+        },
+        {
+            "id": 175, "data": 8, "type": "texture", "texture": "blocks/double_plant_sunflower_top.png", "flags": "vt",
+            "voxels": 1024
+        },
+        {
+            "id": 175, "data": 9, "type": "texture", "texture": "blocks/double_plant_syringa_top.png", "flags": "vt",
+            "voxels": 1024
+        },
+        {
+            "id": 175, "data": 10, "type": "texture", "texture": "blocks/double_plant_grass_top.png", "flags": "vt",
+            "voxels": 1024,
             "tint": "grass"
         },
-        {"id": 175, "data": 12, "type": "texture", "texture": "blocks/double_plant_rose_top.png", "voxels": 1024},
-        {"id": 175, "data": 13, "type": "texture", "texture": "blocks/double_plant_paeonia_top.png", "voxels": 1024},
-        {"id": 176, "data": 0, "type": "texture", "texture": "entity/banner_base.png", "voxels": 1024},
-        {"id": 177, "data": 0, "type": "texture", "texture": "entity/banner_base.png", "voxels": 1024},
+        {
+            "id": 175, "data": 11, "type": "texture", "texture": "blocks/double_plant_fern_top.png", "flags": "vt",
+            "voxels": 1024,
+            "tint": "grass"
+        },
+        {
+            "id": 175, "data": 12, "type": "texture", "texture": "blocks/double_plant_rose_top.png", "flags": "vt",
+            "voxels": 1024
+        },
+        {
+            "id": 175, "data": 13, "type": "texture", "texture": "blocks/double_plant_paeonia_top.png", "flags": "vt",
+            "voxels": 1024
+        },
+        {"id": 176, "data": 0, "type": "texture", "texture": "entity/banner_base.png", "flags": "vt", "voxels": 1024},
+        {"id": 177, "data": 0, "type": "texture", "texture": "entity/banner_base.png", "flags": "vt", "voxels": 1024},
         {
             "id": 178, "data": 0, "type": "texture", "texture": "blocks/daylight_detector_inverted_top.png",
             "voxels": 1536
@@ -530,31 +714,73 @@
         {"id": 190, "data": 0, "type": "texture", "texture": "blocks/planks_jungle.png", "voxels": 1024},
         {"id": 191, "data": 0, "type": "texture", "texture": "blocks/planks_big_oak.png", "voxels": 1024},
         {"id": 192, "data": 0, "type": "texture", "texture": "blocks/planks_acacia.png", "voxels": 1024},
-        {"id": 193, "data": "0-7", "type": "texture", "texture": "blocks/door_spruce_lower.png", "voxels": 1024},
-        {"id": 193, "data": "8-15", "type": "texture", "texture": "blocks/door_spruce_upper.png", "voxels": 1024},
-        {"id": 194, "data": "0-7", "type": "texture", "texture": "blocks/door_birch_lower.png", "voxels": 1024},
-        {"id": 194, "data": "8-15", "type": "texture", "texture": "blocks/door_birch_upper.png", "voxels": 1024},
-        {"id": 195, "data": "0-7", "type": "texture", "texture": "blocks/door_jungle_lower.png", "voxels": 1024},
-        {"id": 195, "data": "8-15", "type": "texture", "texture": "blocks/door_jungle_upper.png", "voxels": 1024},
-        {"id": 196, "data": "0-7", "type": "texture", "texture": "blocks/door_acacia_lower.png", "voxels": 1024},
-        {"id": 196, "data": "8-15", "type": "texture", "texture": "blocks/door_acacia_upper.png", "voxels": 1024},
-        {"id": 197, "data": "0-7", "type": "texture", "texture": "blocks/door_dark_oak_lower.png", "voxels": 1024},
-        {"id": 197, "data": "8-15", "type": "texture", "texture": "blocks/door_dark_oak_upper.png", "voxels": 1024},
-        {"id": 198, "data": 0, "type": "texture", "texture": "blocks/end_rod.png", "voxels": 256},
-        {"id": 199, "data": 0, "type": "texture", "texture": "blocks/chorus_plant.png", "voxels": 1600},
-        {"id": 200, "data": 0, "type": "texture", "texture": "blocks/chorus_flower.png"},
+        {
+            "id": 193, "data": "0-7", "type": "texture", "texture": "blocks/door_spruce_lower.png", "flags": "v",
+            "voxels": 1024
+        },
+        {
+            "id": 193, "data": "8-15", "type": "texture", "texture": "blocks/door_spruce_upper.png", "flags": "v",
+            "voxels": 1024
+        },
+        {
+            "id": 194, "data": "0-7", "type": "texture", "texture": "blocks/door_birch_lower.png", "flags": "v",
+            "voxels": 1024
+        },
+        {
+            "id": 194, "data": "8-15", "type": "texture", "texture": "blocks/door_birch_upper.png", "flags": "v",
+            "voxels": 1024
+        },
+        {
+            "id": 195, "data": "0-7", "type": "texture", "texture": "blocks/door_jungle_lower.png", "flags": "v",
+            "voxels": 1024
+        },
+        {
+            "id": 195, "data": "8-15", "type": "texture", "texture": "blocks/door_jungle_upper.png", "flags": "v",
+            "voxels": 1024
+        },
+        {
+            "id": 196, "data": "0-7", "type": "texture", "texture": "blocks/door_acacia_lower.png", "flags": "v",
+            "voxels": 1024
+        },
+        {
+            "id": 196, "data": "8-15", "type": "texture", "texture": "blocks/door_acacia_upper.png", "flags": "v",
+            "voxels": 1024
+        },
+        {
+            "id": 197, "data": "0-7", "type": "texture", "texture": "blocks/door_dark_oak_lower.png", "flags": "v",
+            "voxels": 1024
+        },
+        {
+            "id": 197, "data": "8-15", "type": "texture", "texture": "blocks/door_dark_oak_upper.png", "flags": "v",
+            "voxels": 1024
+        },
+        {"id": 198, "data": 0, "type": "texture", "texture": "blocks/end_rod.png", "flags": "v", "voxels": 256},
+        {"id": 199, "data": 0, "type": "texture", "texture": "blocks/chorus_plant.png", "flags": "v", "voxels": 1600},
+        {"id": 200, "data": 0, "type": "texture", "texture": "blocks/chorus_flower.png", "flags": "v"},
         {"id": 201, "data": 0, "type": "texture", "texture": "blocks/purpur_block.png"},
         {"id": 202, "data": 0, "type": "texture", "texture": "blocks/purpur_pillar.png"},
         {"id": 203, "data": 0, "type": "texture", "texture": "blocks/purpur_block.png", "voxels": 3072},
         {"id": 204, "data": 0, "type": "texture", "texture": "blocks/purpur_block.png"},
         {"id": 205, "data": 0, "type": "texture", "texture": "blocks/purpur_block.png", "voxels": 2048},
         {"id": 206, "data": 0, "type": "texture", "texture": "blocks/end_bricks.png", "voxels": 2048},
-        {"id": 207, "data": 0, "type": "texture", "texture": "blocks/beetroots_stage_0.png", "voxels": 512},
-        {"id": 207, "data": 1, "type": "texture", "texture": "blocks/beetroots_stage_1.png", "voxels": 1024},
-        {"id": 207, "data": 2, "type": "texture", "texture": "blocks/beetroots_stage_2.png", "voxels": 1536},
-        {"id": 207, "data": 3, "type": "texture", "texture": "blocks/beetroots_stage_3.png", "voxels": 2048},
+        {
+            "id": 207, "data": 0, "type": "texture", "texture": "blocks/beetroots_stage_0.png", "flags": "vt",
+            "voxels": 512
+        },
+        {
+            "id": 207, "data": 1, "type": "texture", "texture": "blocks/beetroots_stage_1.png", "flags": "vt",
+            "voxels": 1024
+        },
+        {
+            "id": 207, "data": 2, "type": "texture", "texture": "blocks/beetroots_stage_2.png", "flags": "vt",
+            "voxels": 1536
+        },
+        {
+            "id": 207, "data": 3, "type": "texture", "texture": "blocks/beetroots_stage_3.png", "flags": "vt",
+            "voxels": 2048
+        },
         {"id": 208, "data": 0, "type": "texture", "texture": "blocks/grass_path_top.png", "voxels": 3840},
-        {"id": 209, "data": 0, "type": "rgb", "rgb": "0xFF000000"},
+        {"id": 209, "data": 0, "type": "rgb", "rgb": "0xFF000000", "flags": "vt"},
         {"id": 210, "data": 0, "type": "texture", "texture": "blocks/repeating_command_block_front.png"},
         {"id": 211, "data": 0, "type": "texture", "texture": "blocks/chain_command_block_front.png"},
         {"id": 212, "data": 0, "type": "texture", "texture": "blocks/frosted_ice_0.png"},
@@ -569,47 +795,47 @@
         {"id": 218, "data": 0, "type": "texture", "texture": "blocks/observer_front_horizontal.png"},
         {
             "id": 219, "data": "0-15", "type": "texture_area", "texture": "entity/shulker/shulker_white.png",
-            "area": [16, 0, 31, 16]
+            "area": [16, 0, 31, 16], "flags": "v"
         },
         {
             "id": 220, "data": "0-15", "type": "texture_area", "texture": "entity/shulker/shulker_orange.png",
-            "area": [16, 0, 31, 16]
+            "area": [16, 0, 31, 16], "flags": "v"
         },
         {
             "id": 221, "data": "0-15", "type": "texture_area", "texture": "entity/shulker/shulker_magenta.png",
-            "area": [16, 0, 31, 16]
+            "area": [16, 0, 31, 16], "flags": "v"
         },
         {
             "id": 222, "data": "0-15", "type": "texture_area", "texture": "entity/shulker/shulker_light_blue.png",
-            "area": [16, 0, 31, 16]
+            "area": [16, 0, 31, 16], "flags": "v"
         },
         {
             "id": 223, "data": "0-15", "type": "texture_area", "texture": "entity/shulker/shulker_yellow.png",
-            "area": [16, 0, 31, 16]
+            "area": [16, 0, 31, 16], "flags": "v"
         },
         {
             "id": 224, "data": "0-15", "type": "texture_area", "texture": "entity/shulker/shulker_lime.png",
-            "area": [16, 0, 31, 16]
+            "area": [16, 0, 31, 16], "flags": "v"
         },
         {
             "id": 225, "data": "0-15", "type": "texture_area", "texture": "entity/shulker/shulker_pink.png",
-            "area": [16, 0, 31, 16]
+            "area": [16, 0, 31, 16], "flags": "v"
         },
         {
             "id": 226, "data": "0-15", "type": "texture_area", "texture": "entity/shulker/shulker_gray.png",
-            "area": [16, 0, 31, 16]
+            "area": [16, 0, 31, 16], "flags": "v"
         },
         {
             "id": 227, "data": "0-15", "type": "texture_area", "texture": "entity/shulker/shulker_silver.png",
-            "area": [16, 0, 31, 16]
+            "area": [16, 0, 31, 16], "flags": "v"
         },
         {
             "id": 228, "data": "0-15", "type": "texture_area", "texture": "entity/shulker/shulker_cyan.png",
-            "area": [16, 0, 31, 16]
+            "area": [16, 0, 31, 16], "flags": "v"
         },
         {
             "id": 229, "data": "0-15", "type": "texture_area", "texture": "entity/shulker/shulker_purple.png",
-            "area": [16, 0, 31, 16]
+            "area": [16, 0, 31, 16], "flags": "v"
         },
         {
             "id": 230, "data": "0-15", "type": "texture_area", "texture": "entity/shulker/shulker_blue.png",
@@ -617,19 +843,19 @@
         },
         {
             "id": 231, "data": "0-15", "type": "texture_area", "texture": "entity/shulker/shulker_brown.png",
-            "area": [16, 0, 31, 16]
+            "area": [16, 0, 31, 16], "flags": "v"
         },
         {
             "id": 232, "data": "0-15", "type": "texture_area", "texture": "entity/shulker/shulker_green.png",
-            "area": [16, 0, 31, 16]
+            "area": [16, 0, 31, 16], "flags": "v"
         },
         {
             "id": 233, "data": "0-15", "type": "texture_area", "texture": "entity/shulker/shulker_red.png",
-            "area": [16, 0, 31, 16]
+            "area": [16, 0, 31, 16], "flags": "v"
         },
         {
             "id": 234, "data": "0-15", "type": "texture_area", "texture": "entity/shulker/shulker_black.png",
-            "area": [16, 0, 31, 16]
+            "area": [16, 0, 31, 16], "flags": "v"
         },
         {"id": 235, "data": "0-15", "type": "texture", "texture": "blocks/glazed_terracotta_white.png"},
         {"id": 236, "data": "0-15", "type": "texture", "texture": "blocks/glazed_terracotta_orange.png"},
