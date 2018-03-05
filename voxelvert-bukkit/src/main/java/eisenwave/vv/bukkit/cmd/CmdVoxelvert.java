@@ -4,6 +4,7 @@ import eisenwave.inv.menu.Menu;
 import eisenwave.inv.menu.MenuManager;
 import eisenwave.vv.bukkit.gui.menu.ConvertMenu;
 import eisenwave.vv.bukkit.gui.menu.FileBrowserMenu;
+import eisenwave.vv.bukkit.http.FileTransferManager;
 import eisenwave.vv.ui.fmtvert.Format;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,6 +15,8 @@ import eisenwave.vv.ui.user.VVUser;
 import org.jetbrains.annotations.Nullable;
 
 public class CmdVoxelvert extends VoxelVertCommand {
+    
+    private final static long MAX_UPLOAD_SIZE = 4 * 1024 * 1024;
     
     /*
     @Override
@@ -33,7 +36,7 @@ public class CmdVoxelvert extends VoxelVertCommand {
     
     @Override
     public String getUsage() {
-        return "(convert|converter|files|reload|status|version)";
+        return "(convert|converter|files|reload|status|upload|version)";
     }
     
     @Override
@@ -107,6 +110,10 @@ public class CmdVoxelvert extends VoxelVertCommand {
                 format, "Converter-Status",
                 plugin.getConverterThread().getState().toString()
             )));
+            sender.sendMessage(CommandUtil.chatColors(String.format(
+                format, "HTTP-Init-Status",
+                plugin.getHttpThread().getState().toString()
+            )));
             return true;
         }
 
@@ -151,7 +158,20 @@ public class CmdVoxelvert extends VoxelVertCommand {
             }
             return true;
         }
-        
+
+        else if (args[0].equals("upload")) {
+            if (!plugin.isHttpServerStarted()) {
+                user.printLocalized("cmd.share.err.no_upload_server");
+                return true;
+            }
+    
+            FileTransferManager transferManager = plugin.getFileTransferManager();
+            String id = transferManager.makeUploadable(user, MAX_UPLOAD_SIZE, user.getInventory().getDirectory());
+            String url = transferManager.getUploadUrl(id);
+            user.printLocalized("upload.url", url);
+            return true;
+        }
+
         else return false;
     }
     

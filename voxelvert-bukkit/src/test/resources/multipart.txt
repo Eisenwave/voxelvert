@@ -1,0 +1,12 @@
+--BOUNDARY
+Content-Disposition: form-data; name="file"; filename="multipart.txt"
+Content-Type: text/plain
+
+abcdef
+akgaiwhgp
+--BOUND
+--BOUND
+--BOUNDAR
+Y
+
+--BOUNDARY--

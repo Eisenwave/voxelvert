@@ -43,10 +43,9 @@ public class CmdList extends VoxelVertCommand {
                 VVInventoryVariable var = inventory.getVariable(entry.getName());
                 return var != null && var.isSet();
             })
+            .sorted()
             .collect(Collectors.toList());
-        
-        entries.sort(null);
-        
+    
         for (FileBrowserEntry entry : entries) {
             if (first) first = false;
             else builder.append("\n");

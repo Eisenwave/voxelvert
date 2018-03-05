@@ -6,7 +6,6 @@ import eisenwave.torrens.img.SerializerPNG;
 import eisenwave.torrens.img.Texture;
 import eisenwave.torrens.img.scale.ScaleBox;
 import eisenwave.torrens.img.scale.ScaleNearestNeighbour;
-import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;

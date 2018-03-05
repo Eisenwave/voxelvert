@@ -143,6 +143,10 @@ public class VoxelVertPlugin extends JavaPlugin {
         return conversionThread;
     }
     
+    public Thread getHttpThread() {
+        return httpThread;
+    }
+    
     public boolean isHttpServerStarted() {
         return httpThread != null && httpThread.hasStartupSuccess();
     }

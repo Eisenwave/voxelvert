@@ -49,7 +49,7 @@ public final class CommandUtil {
     
     private CommandUtil() {}
     
-    private final static String[] UNITS = new String[] {"Bytes", "KB", "MB", "GB", "TB"};
+    private final static String[] UNITS = new String[] {"Bytes", "KiB", "MiB", "GiB", "TiB"};
     private final static DecimalFormat FILE_SIZE_FORMAT = new DecimalFormat("#,##0.#");
     
     @NotNull
@@ -91,7 +91,7 @@ public final class CommandUtil {
         int index = file.lastIndexOf('.');
         return index < 0?
             new String[] {file} :
-            new String[] {file.substring(0, index), file.substring(index+1)};
+            new String[] {file.substring(0, index), file.substring(index + 1)};
     }
     
 }

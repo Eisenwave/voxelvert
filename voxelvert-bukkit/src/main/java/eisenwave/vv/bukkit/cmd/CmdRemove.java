@@ -1,5 +1,6 @@
 package eisenwave.vv.bukkit.cmd;
 
+import eisenwave.spatium.util.Strings;
 import eisenwave.vv.bukkit.VoxelVertPlugin;
 import eisenwave.vv.ui.user.VVInventory;
 import eisenwave.vv.ui.user.VVUser;
@@ -29,8 +30,8 @@ public class CmdRemove extends VoxelVertCommand {
     @Override
     public boolean onCommand(CommandSender sender, VVUser user, String[] args) {
         if (args.length < 1) return false;
-        
-        String file = args[0];
+    
+        String file = Strings.join(" ", args);
         
         if (file.startsWith("/")) {
             user.errorLocalized("error.path_absolute");

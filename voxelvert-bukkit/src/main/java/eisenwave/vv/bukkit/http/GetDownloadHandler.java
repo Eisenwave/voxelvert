@@ -54,6 +54,7 @@ public class GetDownloadHandler implements HttpHandler {
         try (OutputStream bodyStream = exchange.getResponseBody()) {
             bodyStream.write(response);
         }
+        entry.getUser().printLocalized("download.done", entry.getFile().getName());
     }
     
 }

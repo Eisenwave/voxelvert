@@ -4,15 +4,29 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import eisenwave.torrens.io.DeserializerByteArray;
+import eisenwave.torrens.io.DeserializerString;
 import eisenwave.vv.bukkit.VoxelVertPlugin;
+import eisenwave.vv.bukkit.util.CommandUtil;
 import eisenwave.vv.bukkit.util.HttpUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOError;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 public class GetUploadHandler implements HttpHandler {
+    
+    private final static String TEMPLATE;
+    
+    static {
+        try {
+            TEMPLATE = new DeserializerString().fromResource(GetUploadHandler.class, "html/upload.html");
+        } catch (IOException ex) {
+            throw new IOError(ex);
+        }
+    }
     
     private final VoxelVertPlugin plugin;
     
@@ -39,8 +53,11 @@ public class GetUploadHandler implements HttpHandler {
             exchange.sendResponseHeaders(410, -1); // Gone
             return;
         }
-        
-        byte[] response = new DeserializerByteArray().fromResource(getClass(), "html/upload.html");
+    
+        byte[] response = TEMPLATE
+            .replace("$id", id)
+            .replace("$max", CommandUtil.printFileSize(entry.getMaxSize()))
+            .getBytes(Charset.forName("US-ASCII"));
         
         Headers responseHeaders = exchange.getResponseHeaders();
         responseHeaders.add("Content-Type", "text/html");

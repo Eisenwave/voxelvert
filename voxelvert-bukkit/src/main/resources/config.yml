@@ -21,11 +21,13 @@ http:
   port: 26000
 
   # http host with placeholders
-  # you can replace $localhost with the domain name of your server, if you have one
+  # you can replace $localhost with the domain name of your server if you have one
   # you can omit $port if you are hosting on port 80, as this is the default HTTP port
   # NOTE: you might need to run VoxelVert with administrator permissions to bind to port 1024 and below on Linux)
   # NOTE: you must replace $localhost with your domain to allow Minecraft clients to open links by clicking in-game
   #   EXAMPLE: "my-server.net:$port"
+  #   by default, VoxelVert uses http://checkip.amazonaws.com/ to check your server's IP so that you can download and
+  #   upload files without a domain
   #
   # $localhost = your public IP-address
   # $port = the port on which your HTTP-server runs
