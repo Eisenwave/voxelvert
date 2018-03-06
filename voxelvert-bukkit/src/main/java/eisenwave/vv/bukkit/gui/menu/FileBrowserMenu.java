@@ -61,8 +61,8 @@ public class FileBrowserMenu extends Menu {
         this.fileList.clearChildren();
         this.fileList.addAll(entriesOf(handle));
         this.fileList.setOffset(offset);
-        
-        setOptionsMode(FileOptionsMode.EMPTY);
+    
+        setOptionsMode(FileOptionsMode.DEFAULT);
     }
     
     private void initNavigator() {
@@ -116,6 +116,15 @@ public class FileBrowserMenu extends Menu {
     
     public void setOptionsMode(@NotNull FileOptionsMode mode) {
         this.fileOptions.setMode(mode);
+    }
+    
+    /**
+     * Lets the player upload a file.
+     *
+     * @param player the player who performs this action
+     */
+    public void performUpload(Player player) {
+        player.performCommand("vv upload");
     }
     
     /**
@@ -200,7 +209,7 @@ public class FileBrowserMenu extends Menu {
         MenuResponse response = super.performClick(player, x, y, click);
         if (response == MenuResponse.EMPTY) {
             fileList.select(-1);
-            setOptionsMode(FileOptionsMode.EMPTY);
+            setOptionsMode(FileOptionsMode.DEFAULT);
         }
         return response;
     }

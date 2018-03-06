@@ -2,6 +2,7 @@ package eisenwave.vv.bukkit.gui;
 
 public enum FileOptionsMode {
     EMPTY,
+    DEFAULT,
     VARIABLE,
     KNOWN_FILE,
     FILE,

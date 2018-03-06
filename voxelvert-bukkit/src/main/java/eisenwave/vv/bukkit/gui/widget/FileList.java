@@ -111,7 +111,7 @@ public class FileList extends SimpleList<FileButton> {
             getMenu().setOptionsMode(mode);
         }
         else {
-            getMenu().setOptionsMode(FileOptionsMode.EMPTY);
+            getMenu().setOptionsMode(FileOptionsMode.DEFAULT);
         }
         
         this.selected = index;

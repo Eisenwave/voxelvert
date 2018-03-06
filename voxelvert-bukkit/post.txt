@@ -11,7 +11,7 @@ CONTRIBUTORS: Grian Network, Arcaniax
 [B]External Dependencies:[/B] WorldEdit
 
 [IMG]https://i.imgur.com/AVmDFOC.png[/IMG]
-VoxelVert Reloaded is a complete revamp of plugin VoxelVert. Multiple months of work went into this project and I can proudly say that this is the most significant and finest plugin I have ever developed.
+VoxelVert Reloaded is a complete revamp of the plugin VoxelVert. Multiple months of work went into this project and I can proudly say that this is the most significant and finest plugin I have ever developed.
 
 This plugin was designed with builders, model creators and developers in mind and provides features for all these groups:
 [LIST]
@@ -71,8 +71,26 @@ In this example, the user is converting the file "something.schematic" in their 
 For a full documentation of all the options, take a look at the [B]/c[/B] command below, or run the jar without arguments. This will show you a help page.
 
 [IMG]https://i.imgur.com/t5iaNHe.png[/IMG]
+[B][SIZE=5]Completed Additonal Features[/SIZE][/B]
 [LIST]
+[*]direct conversions from schematics to images
+[*]direct conversion from wavefront to schematics
+[*]custom texture pack support for block conversions
+[*]ASCII-STL support
+[*]downloading files directly from your file browser
+[/LIST]
+[B][SIZE=5]Additional Features in Development[/SIZE][/B]
+[LIST]
+[*]sharing files with WorldEdit for easier schematic managment
 [*]sharing files with other players on the server
+[*]sharing files with a per-world shared directory
+[*]Discord plugin support server
+[*]folders for the file browser
+
+[*]working directory for the VoxelVert commands and the file browser
+[/LIST]
+[B][SIZE=5]Planned Features[/SIZE][/B]
+[LIST]
 [*]text file viewer for the file browser
 [*]automatic localization
 [*]German translation
@@ -81,7 +99,7 @@ For a full documentation of all the options, take a look at the [B]/c[/B] comman
 [*]smart protection against converting too complex files (such as billion-block schematics)
 [*][B]developer mode[/B] for the file browser which allows you to view any directory on the server and comes with more developer-oriented features
 [/LIST]
-At least one of features on this list will be added to VoxelVert each week. Prepare for a rapidly improving plugin. ;)
+At least one of features on this list will be added to VoxelVert each 2 weeks. Prepare for a rapidly improving plugin. ;)
 
 [IMG]https://i.imgur.com/Gpft7Cw.png[/IMG]
 [B][FONT=Courier New]/voxelvert-list[/FONT][/B]
@@ -202,8 +220,18 @@ verbosity:
 
 
 [IMG]https://i.imgur.com/79wcqhV.png[/IMG]
-[B]Q: How do I convert stuff with VoxelVert?[/B]
+[B]Q: How do I convert files with VoxelVert?[/B]
 [SPOILER="Answer"]Take a look at the Screenshots section. There you can see a detailed walkthrough on how to do it in the file browser. Alternatively, check out the documentation of /convert.
+[/SPOILER]
+
+[B]Q: How do I convert Minecraft blocks in my world?[/B]
+[SPOILER="Answer"]Almost exactly the same way you convert files with VoxelVert.
+
+You must first select an area to convert with WorldEdit. To do so, select an area to convert using the command [B]//pos1[/B] and [B]//pos2[/B]. Alternatively, left/right click blocks with a wooden axe in creative mode to make your selection.
+
+Once you selected an area, open your file browser with [B]/vv[/B]. Your selection will show up in your file browser as a file named [B]#selection[/B].
+
+From there on, follow the guide in the Screenshots section.
 [/SPOILER]
 
 [B]Q: If people convert really large files with VoxelVert, isn't my server going to lag?[/B]
@@ -225,3 +253,15 @@ Full example:[CODE]1. convert resource pack into block color table:
 2. convert world edit selection into QEF file using our block color table:
 /c #selection my_build.qef -c bdcraft.bct[/CODE]
 [/SPOILER]
+
+[B]Q: I found a bug or VoxelVert doesn't run on my server. Where do I get help? Can I request a refund?[/B]
+[SPOILER="Answer"]
+You can get help by sending my a private message or using the resource's discussion thread. I will usually answer in a few days at most. A support server on Discord will also be available soon.
+
+Whether you can request a refund depends on the problem you're having with VoxelVert. We distinguish between two different scenarios:
+
+1) If there is a bug or other technical issue with VoxelVert which exists due to the author's fault AND if the author doesn't resolve the issue despite it being reported multiple times because they either can't fix it or refuse to do so, [B]you will receive a refund[/B].
+
+2) If there is compatibility problems with other plugins or VoxelVert doesn't function properly because of your operating system, [B]you can not request a refund[/B]. It is not the plugin author's responsibility to ensure compatibility with non-standard servers (such as servers running custom Spigot versions etc.).
+[/SPOILER]
+[IMG]http://janschultke.de/get.png?topic=voxelvert&meta=post[/IMG]

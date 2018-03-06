@@ -40,6 +40,7 @@ public class FileOptionsWidget extends Widget {
             ChatColor.GREEN + "WorldEdit", "&7Share with WorldEdit\n&8(schematic only)")),
         ITEM_SHARE_DOWNLOAD = ItemUtil.create(Material.STORAGE_MINECART,
             ChatColor.GREEN + "Download", "&7Download file\n&8(over http)"),
+        ITEM_UPLOAD = ItemUtil.create(Material.LEASH, ChatColor.GREEN + "Upload", "&7Upload file\n&8(over http)"),
         ITEM_COPY = ItemUtil.create(Material.NAME_TAG, ChatColor.YELLOW + "Copy", "&7Copy this file"),
         ITEM_RENAME = ItemUtil.create(Material.NAME_TAG, ChatColor.YELLOW + "Rename", "&7Rename this file"),
         ITEM_DELETE = ItemUtil.create(Material.LAVA_BUCKET, ChatColor.RED + "Delete",
@@ -60,6 +61,7 @@ public class FileOptionsWidget extends Widget {
     private FileOptionsMode prevMode, mode;
     
     private Button
+        btnUpload,
         btnOpen, btnShare, btnCopy, btnDelete, btnRename,
         btnShareWithPlayer, btnShareWithWE, btnShareDownload, btnCancelShare,
         btnConfirmDelete, btnCancelDelete;
@@ -68,8 +70,9 @@ public class FileOptionsWidget extends Widget {
     
     public FileOptionsWidget(@NotNull FileBrowserMenu menu) {
         super(menu, new ViewSize(ViewSize.WRAP_CONTENT, ViewSize.WRAP_CONTENT), null);
-        this.mode = FileOptionsMode.EMPTY;
-        
+        this.mode = FileOptionsMode.DEFAULT;
+    
+        initDefault();
         initOpen();
         initShare();
         initShareMode();
@@ -77,6 +80,14 @@ public class FileOptionsWidget extends Widget {
         initRename();
         initDelete();
         initDeleteMode();
+    }
+    
+    private void initDefault() {
+        btnUpload = new Button(getMenu(), null);
+        btnUpload.setParent(this);
+        btnUpload.setItem(ITEM_UPLOAD);
+        
+        btnUpload.addClickListener(event -> getMenu().performUpload(event.getPlayer()));
     }
     
     private void initOpen() {
@@ -237,6 +248,11 @@ public class FileOptionsWidget extends Widget {
             case EMPTY:
                 buffer.fill(backgroundIcon);
                 break;
+            case DEFAULT: {
+                buffer.set(0, 0, btnUpload.draw());
+                buffer.fill(1, 0, 5, 1, backgroundIcon);
+                break;
+            }
             case KNOWN_FILE: {
                 buffer.set(0, 0, btnOpen.draw());
                 buffer.set(1, 0, btnShare.draw());
