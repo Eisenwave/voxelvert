@@ -77,6 +77,7 @@ public class CmdConvert extends VoxelVertCommand implements VVInitializer {
             call.parse(args);
         } catch (IllegalArgumentException ex) {
             user.errorLocalized("cmd.convert.err.parse", ex.getMessage());
+            ex.printStackTrace();
             return true;
         }
         

@@ -44,3 +44,40 @@ http:
   # default = /vv/up
   upload_path: "/vv/up"
 
+# limitation settings (upload file sizes, conversion file sizes etc.)
+# NOTE: values must be provided in the format:
+#
+#           { }<number>{ }<unit>
+#
+#       { } is optional whitespace
+#       <number> number is a decimal number
+#       <unit> is a unit such as KB, KiB, MB, MiB, etc. (case insensitive)
+file_limits:
+
+  # limits for default players
+  # default = 100KiB
+  default:
+    format:
+      image: "4 MiB"
+      model: 4 MiB
+      qef: 4 MiB
+      qb: 1 MiB
+      stl: 1 MiB
+      wavefront: 4 MiB
+      schematic: 1 MiB
+    download: 10 MiB
+    upload: 4 MiB
+
+  # limits for operators
+  # default = 1MiB
+  op:
+    format:
+      image: 40 MiB
+      model: 40 MiB
+      qef: 40 MiB
+      qb: 10 MiB
+      stl: 10 MiB
+      wavefront: 40 MiB
+      schematic: 10 MiB
+    download: 100 MiB
+    upload: 40 MiB

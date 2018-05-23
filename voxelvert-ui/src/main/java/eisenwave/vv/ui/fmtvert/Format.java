@@ -61,6 +61,16 @@ public class Format implements Comparable<Format> {
     }
     */
     
+    public static Set<Format> values() {
+        Set<Format> result = new HashSet<>();
+        for (WeakReference<Format> reference : instances) {
+            Format format = reference.get();
+            if (format != null)
+                result.add(format);
+        }
+        return result;
+    }
+    
     /**
      * Searches all existing instances of this class for a format which has the specified extension.
      *

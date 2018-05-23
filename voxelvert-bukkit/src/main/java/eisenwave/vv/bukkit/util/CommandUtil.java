@@ -49,7 +49,7 @@ public final class CommandUtil {
     
     private CommandUtil() {}
     
-    private final static String[] UNITS = new String[] {"Bytes", "KiB", "MiB", "GiB", "TiB"};
+    private final static String[] UNITS = new String[] {"Bytes", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB"};
     private final static DecimalFormat FILE_SIZE_FORMAT = new DecimalFormat("#,##0.#");
     
     @NotNull
@@ -65,6 +65,106 @@ public final class CommandUtil {
         
         double printSize = size / Math.pow(1024, u);
         return FILE_SIZE_FORMAT.format(printSize) + " " + UNITS[u];
+    }
+    
+    public static long parseFileSize(@NotNull String size) {
+        /*
+        0: first digit
+        1: digits
+        2: first unit
+        3: units
+         */
+        int state = 0;
+        StringBuilder numberBuilder = new StringBuilder();
+        StringBuilder unitBuilder = new StringBuilder();
+        
+        loop:
+        for (final char c : size.toCharArray()) {
+            switch (state) {
+                case 0: {
+                    if (Character.isWhitespace(c))
+                        continue loop;
+                    else if (Character.isDigit(c) || c == '.') {
+                        numberBuilder.append(c);
+                        state = 1;
+                    }
+                    else
+                        throw new IllegalArgumentException('"' + size + "\" error at '" + c + "'");
+                    break;
+                }
+                case 1: {
+                    if (Character.isWhitespace(c))
+                        state = 2;
+                    else if (Character.isDigit(c) || c == '.')
+                        numberBuilder.append(c);
+                    else {
+                        unitBuilder.append(c);
+                        state = 3;
+                    }
+                    break;
+                }
+                case 2: {
+                    if (Character.isWhitespace(c)) continue loop;
+                    else if (Character.isDigit(c) || c == '.')
+                        throw new IllegalArgumentException('"' + size + "\" error at '" + c + "'");
+                    else {
+                        unitBuilder.append(c);
+                        state = 3;
+                    }
+                    break;
+                }
+                case 3: {
+                    if (Character.isWhitespace(c) || Character.isDigit(c) || c == '.')
+                        throw new IllegalArgumentException('"' + size + "\" error at '" + c + "'");
+                    else unitBuilder.append(c);
+                    break;
+                }
+            }
+        }
+        
+        double number = Double.parseDouble(numberBuilder.toString());
+        long unit = bytesOfFileSizeUnit(unitBuilder.toString());
+        
+        return (long) (number * unit);
+    }
+    
+    public static long bytesOfFileSizeUnit(String unit) {
+        switch (unit.toLowerCase()) {
+            case "b":
+            case "byte":
+            case "bytes": return 1;
+            case "kb": return 1_000;
+            case "mb": return 1_000_000;
+            case "gb": return 1_000_000_000;
+            case "tb": return 1_000_000_000_000L;
+            case "pb": return 1_000_000_000_000_000L;
+            case "eb": return 1_000_000_000_000_000_000L;
+            case "kib": return 0x400;
+            case "mib": return 0x100_000;
+            case "gib": return 0x40_000_000;
+            case "tib": return 0x10_000_000_000L;
+            case "pib": return 0x4_000_000_000_000L;
+            case "eib": return 0x1_000_000_000_000_000L;
+            default: throw new IllegalArgumentException("unknown unit \"" + unit + "\"");
+        }
+        
+        /*
+        long result = 0;
+        
+        char[] chars = unit.toCharArray();
+        
+        int pow;
+        switch (Character.toLowerCase(chars[0])) {
+            case 'k': pow = 1;
+            case 'm': pow = 2;
+            case 'g': pow = 3;
+            case 't': pow = 4;
+            case 'p': pow = 5;
+            case 'e': pow = 6;
+            case 'z': pow = 7;
+            case 'y': pow = 8;
+        }
+        */
     }
     
     @NotNull

@@ -76,6 +76,7 @@ public final class FormatverterFactory {
         put(BLOCK_ARRAY, QB, () -> new CompoundFormatverter(new FV_BA_VA(), new FV_VA_QB()));
         put(BLOCK_ARRAY, QEF, () -> new CompoundFormatverter(new FV_BA_VA(), fv_va_qef.get()));
         put(BLOCK_ARRAY, SCHEMATIC, FV_BA_SCHEMATIC::new);
+        put(BLOCK_ARRAY, STL, () -> new CompoundFormatverter(new FV_BA_VA(), new FV_VA_STL()));
         put(BLOCK_ARRAY, WAVEFRONT, () -> new CompoundFormatverter(new FV_BA_VA(), new FV_VA_WAVEFRONT()));
     
         put(IMAGE, IMAGE, FV_IMAGE_IMAGE::new);

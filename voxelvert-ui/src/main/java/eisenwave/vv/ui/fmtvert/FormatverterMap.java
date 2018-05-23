@@ -26,25 +26,30 @@ public class FormatverterMap {
     }
     
     public Collection<Formatverter> getFormatverters() {
-        return converters.values().stream().map(Supplier::get).collect(Collectors.toSet());
+        /* converters.forEach((key, value) -> {
+            try {
+                System.out.println(key.from.getId() + "->" + key.to.getId() + ": " + (value.get() == null));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }); */
+        return converters.values().stream()
+            .map(Supplier::get)
+            .collect(Collectors.toSet());
     }
     
     public Format[] getOutputFormats(Format input) {
-        Collection<Format> result = converters.keySet().stream()
+        return converters.keySet().stream()
             .filter(key -> key.getSource().equals(input))
             .map(FmtversionKey::getTarget)
-            .collect(Collectors.toCollection(LinkedList::new));
-        
-        return result.toArray(new Format[result.size()]);
+            .toArray(Format[]::new);
     }
     
     public Format[] getInputFormats(Format output) {
-        Collection<Format> result = converters.keySet().stream()
+        return converters.keySet().stream()
             .filter(key -> key.getTarget().equals(output))
             .map(FmtversionKey::getSource)
-            .collect(Collectors.toCollection(LinkedList::new));
-        
-        return result.toArray(new Format[result.size()]);
+            .toArray(Format[]::new);
     }
     
     public Set<Format> sourceSet() {
@@ -90,7 +95,7 @@ public class FormatverterMap {
         
         @Override
         public int hashCode() {
-            return (from.getId()+to.getId()).hashCode();
+            return (from.getId() + to.getId()).hashCode();
         }
         
     }

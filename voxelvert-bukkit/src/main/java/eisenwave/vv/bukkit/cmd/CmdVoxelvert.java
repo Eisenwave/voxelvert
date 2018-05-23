@@ -90,8 +90,8 @@ public class CmdVoxelvert extends VoxelVertCommand {
                     return true;
                 }
             }
-            
-            Menu menu = new ConvertMenu(user, source, sourceFormat); //TODO create convert menu
+    
+            Menu menu = new ConvertMenu(user, source, sourceFormat);
             MenuManager.getInstance().startSession(player, menu);
             return true;
         }
@@ -160,6 +160,7 @@ public class CmdVoxelvert extends VoxelVertCommand {
         }
 
         else if (args[0].equals("upload")) {
+            if (!requirePermission(sender, user, "vv.upload")) return true;
             if (!plugin.isHttpServerStarted()) {
                 user.printLocalized("cmd.share.err.no_upload_server");
                 return true;

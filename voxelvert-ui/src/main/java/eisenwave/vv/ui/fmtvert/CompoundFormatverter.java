@@ -2,6 +2,7 @@ package eisenwave.vv.ui.fmtvert;
 
 import eisenwave.vv.ui.user.VVUser;
 import eisenwave.vv.ui.util.Sets;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -15,15 +16,25 @@ public class CompoundFormatverter extends Formatverter {
     private final Set<Option> mandatory, optional, all;
     private final int maxProgress;
     
-    public CompoundFormatverter(Formatverter... fv) {
+    @SuppressWarnings("ConstantConditions")
+    private CompoundFormatverter(@NotNull Formatverter... fv) {
+        for (int i = 0; i < fv.length; i++) {
+            if (fv[i] == null)
+                throw new IllegalArgumentException("index " + i + ": null formatverter in compound formatverter ");
+        }
         if (fv.length < 2)
             throw new IllegalArgumentException("compound Formatverter requires at least 2 Formatverters");
         this.fv = fv;
-    
+        
         mandatory = Sets.union(Arrays.stream(fv).map(Formatverter::getMandatoryOptions).collect(Collectors.toList()));
         optional = Sets.union(Arrays.stream(fv).map(Formatverter::getOptionalOptions).collect(Collectors.toList()));
         all = Sets.union(Arrays.stream(fv).map(Formatverter::getAllOptions).collect(Collectors.toList()));
         maxProgress = Arrays.stream(fv).mapToInt(Formatverter::getMaxProgress).sum();
+    }
+    
+    @NotNull
+    public CompoundFormatverter(@NotNull Formatverter a, @NotNull Formatverter b) {
+        this(new Formatverter[] {a, b});
     }
     
     @Override

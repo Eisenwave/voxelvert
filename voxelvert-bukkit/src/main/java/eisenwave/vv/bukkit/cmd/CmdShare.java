@@ -40,10 +40,13 @@ public class CmdShare extends VoxelVertCommand {
         switch (args[0]) {
             case "player":
                 if (args.length < 3) return false;
+                if (!requirePermission(sender, user, "vv.share.player")) return true;
+                
                 user.printLocalized("cmd.share.wip");
                 return true;
             
             case "download": {
+                if (!requirePermission(sender, user, "vv.download")) return true;
                 String path = Strings.join(" ", Arrays.copyOfRange(args, 1, args.length));
                 
                 if (!plugin.isHttpServerStarted()) {
@@ -66,6 +69,7 @@ public class CmdShare extends VoxelVertCommand {
             }
     
             case "worldedit": {
+                if (!requirePermission(sender, user, "vv.share.worldedit")) return true;
                 String path = Strings.join(" ", Arrays.copyOfRange(args, 1, args.length));
         
                 assert args[0].equals("worldedit");

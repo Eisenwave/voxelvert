@@ -1,5 +1,7 @@
 package eisenwave.vv.ui.user;
 
+import eisenwave.torrens.img.ARGBSerializerBMP;
+import eisenwave.torrens.img.ARGBSerializerWBMP;
 import eisenwave.torrens.voxel.*;
 import eisenwave.torrens.wavefront.*;
 import eisenwave.vv.io.DeserializerBCT;
@@ -20,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -278,7 +281,9 @@ public class VVInventoryImpl implements VVInventory {
                         for (MTLMaterial material : mtllib) {
                             String diffuseMap = material.getDiffuseMap();
                             if (diffuseMap != null) {
-                                writeImageByExtension(mtllib.getMap(diffuseMap), new File(objDir, diffuseMap));
+                                Texture diff = mtllib.getMap(diffuseMap);
+                                assert diff != null;
+                                writeImageByExtension(diff.getImageWrapper(), new File(objDir, diffuseMap));
                             }
                         }
                     }
@@ -291,12 +296,12 @@ public class VVInventoryImpl implements VVInventory {
             case "image": {
                 if (object instanceof Texture) {
                     File file = new File(dir, name);
-                    writeImageByExtension((Texture) object, file);
+                    writeImageByExtension(((Texture) object).getImageWrapper(), file);
                     return true;
                 }
                 else if (object instanceof BufferedImage) {
                     File file = new File(dir, name);
-                    writeImageByExtension(Texture.wrapOrCopy((BufferedImage) object), file);
+                    writeImageByExtension((BufferedImage) object, file);
                     return true;
                 }
                 else throw new IOException("object must be a " + Texture.class.getSimpleName());
@@ -386,13 +391,25 @@ public class VVInventoryImpl implements VVInventory {
     
     // UTIL
     
-    private static void writeImageByExtension(Texture image, File file) throws IOException {
+    private static void writeImageByExtension(BufferedImage image, File file) throws IOException {
         String ext = file.getName();
         int index = ext.lastIndexOf('.');
         if (index < 0) throw new IOException("can't recognize file extension of " + file);
-    
-        ext = ext.substring(index + 1);
-        ImageIO.write(image.getImageWrapper(), ext, file);
+        
+        ext = ext.substring(index + 1).toLowerCase();
+        switch (ext) {
+            case "bmp":
+                new ARGBSerializerBMP(image.getTransparency() != Transparency.OPAQUE).toFile(image, file);
+                break;
+            
+            case "wbmp":
+                new ARGBSerializerWBMP().toFile(image, file);
+                break;
+            
+            default:
+                if (!ImageIO.write(image, ext, file))
+                    throw new IOException("no writer could be found for \"" + ext + "\"");
+        }
     }
     
 }

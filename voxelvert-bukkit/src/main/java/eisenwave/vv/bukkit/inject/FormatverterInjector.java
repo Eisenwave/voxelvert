@@ -9,25 +9,26 @@ public class FormatverterInjector {
     
     public final static Format BLOCKS_FORMAT = new Format("blocks", true);
     
+    @SuppressWarnings("ConstantConditions")
     public static void inject(FormatverterFactory factory) {
         factory.put(BLOCKS_FORMAT, Format.IMAGE, () -> new CompoundFormatverter(
             new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY), factory.fromFormats(BLOCK_ARRAY, IMAGE)));
-    
+        
         factory.put(BLOCKS_FORMAT, Format.MODEL, () -> new CompoundFormatverter(
             new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY), factory.fromFormats(BLOCK_ARRAY, MODEL)));
-    
+        
         factory.put(BLOCKS_FORMAT, Format.QB, () -> new CompoundFormatverter(
             new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY), factory.fromFormats(BLOCK_ARRAY, QB)));
-    
+        
         factory.put(BLOCKS_FORMAT, Format.QEF, () -> new CompoundFormatverter(
             new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY), factory.fromFormats(BLOCK_ARRAY, QEF)));
         
         factory.put(BLOCKS_FORMAT, Format.SCHEMATIC,
             () -> new InventoryFormatverter(BLOCKS_FORMAT, SCHEMATIC));
-    
+        
         factory.put(BLOCKS_FORMAT, Format.STL, () -> new CompoundFormatverter(
             new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY), factory.fromFormats(BLOCK_ARRAY, STL)));
-    
+        
         factory.put(BLOCKS_FORMAT, Format.WAVEFRONT, () -> new CompoundFormatverter(
             new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_ARRAY), factory.fromFormats(BLOCK_ARRAY, WAVEFRONT)));
         /*

@@ -40,7 +40,9 @@ public class VoxelVertPlugin extends JavaPlugin {
     
     @Override
     public void onEnable() {
-        config = new VoxelVertConfig(getConfig());
+        FormatverterInjector.inject(FormatverterFactory.getInstance());
+    
+        config = new VoxelVertConfig(this, getConfig());
         boolean verbose = config.hasVerbosityOnEnable();
         String langName = config.getLanguage();
     
@@ -59,8 +61,6 @@ public class VoxelVertPlugin extends JavaPlugin {
         }
         
         this.saveDefaultConfig();
-    
-        FormatverterInjector.inject(FormatverterFactory.getInstance());
     }
     
     @Override

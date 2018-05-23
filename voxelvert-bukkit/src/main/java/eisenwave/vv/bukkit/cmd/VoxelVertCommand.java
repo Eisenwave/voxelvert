@@ -35,6 +35,15 @@ public abstract class VoxelVertCommand implements CommandExecutor {
         return onCommand(sender, CommandUtil.userOf(voxelVert, sender), args);
     }
     
+    /**
+     * Returns whether the sender has a given permission. If not, this method also notifies the given user about the
+     * missing permission node in a localized message.
+     *
+     * @param sender the sender
+     * @param user the user
+     * @param permission the permission
+     * @return whether the sender has the permission
+     */
     public boolean requirePermission(CommandSender sender, VVUser user, String permission) {
         if (!sender.hasPermission(permission)) {
             user.errorLocalized("error.permission", permission);
