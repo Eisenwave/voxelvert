@@ -873,6 +873,8 @@
         {"id": 248, "data": "0-15", "type": "texture", "texture": "blocks/glazed_terracotta_green.png"},
         {"id": 249, "data": "0-15", "type": "texture", "texture": "blocks/glazed_terracotta_red.png"},
         {"id": 250, "data": "0-15", "type": "texture", "texture": "blocks/glazed_terracotta_black.png"},
+        {"id": 251, "data": 0, "type": "texture", "texture": "blocks/concrete_white.png"},
+        {"id": 251, "data": 1, "type": "texture", "texture": "blocks/concrete_orange.png"},
         {"id": 251, "data": 2, "type": "texture", "texture": "blocks/concrete_magenta.png"},
         {"id": 251, "data": 3, "type": "texture", "texture": "blocks/concrete_light_blue.png"},
         {"id": 251, "data": 4, "type": "texture", "texture": "blocks/concrete_yellow.png"},

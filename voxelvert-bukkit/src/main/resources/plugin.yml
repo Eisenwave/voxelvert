@@ -1,6 +1,6 @@
 name: VoxelVert
 main: eisenwave.vv.bukkit.VoxelVertPlugin
-version: R1.4
+version: R1.4.7
 author: Eisenwave
 depend: [WorldEdit]
 
@@ -40,6 +40,12 @@ permissions:
     default: true
   vv.share.player:
     description: share files with another player
+    default: true
+  vv.download:
+    description: download files
+    default: true
+  vv.upload:
+    description: upload files
     default: true
 
 commands:
