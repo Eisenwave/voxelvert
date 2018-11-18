@@ -30,7 +30,7 @@ public abstract class VoxelVertCommand implements CommandExecutor {
     public abstract boolean onCommand(CommandSender sender, VVUser user, String[] args);
     
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public final boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         command.setUsage(usage);
         return onCommand(sender, CommandUtil.userOf(voxelVert, sender), args);
     }
@@ -44,6 +44,7 @@ public abstract class VoxelVertCommand implements CommandExecutor {
      * @param permission the permission
      * @return whether the sender has the permission
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean requirePermission(CommandSender sender, VVUser user, String permission) {
         if (!sender.hasPermission(permission)) {
             user.errorLocalized("error.permission", permission);

@@ -45,7 +45,7 @@ public final class FormatverterFactory {
     
     public final static String
         DEFAULT_BCE = "color_extractors/default.json",
-        DEFAULT_BCT = "colors/default.bct";
+        DEFAULT_BCT = "colors/ default.bct";
     
     private final static Logger VERBOSE_LOGGER;
     
