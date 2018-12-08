@@ -1,9 +1,9 @@
 package eisenwave.vv.bukkit.user;
 
 import com.sk89q.worldedit.bukkit.selections.Selection;
+import eisenwave.torrens.schematic.legacy.LegacyBlockStructure;
 import eisenwave.vv.object.Language;
 import eisenwave.torrens.object.BoundingBox6i;
-import eisenwave.torrens.schematic.BlockStructure;
 import org.bukkit.Location;
 import org.bukkit.World;
 import eisenwave.vv.bukkit.util.CommandUtil;
@@ -102,7 +102,7 @@ public class PlayerVVUser implements VVUser {
      * @see #getBlockSelection()
      */
     @Nullable
-    public BlockStructure getBlocks() {
+    public LegacyBlockStructure getBlocks() {
         World world = player.getWorld();
         BoundingBox6i box = getBlockSelection();
         if (box == null)

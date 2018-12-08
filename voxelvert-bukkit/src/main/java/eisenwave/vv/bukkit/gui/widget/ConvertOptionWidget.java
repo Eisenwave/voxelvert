@@ -11,7 +11,6 @@ import eisenwave.spatium.enums.Face;
 import eisenwave.vv.ui.user.VVUser;
 import eisenwave.vv.ui.util.Sets;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import eisenwave.inv.util.ItemUtil;
 import org.jetbrains.annotations.Contract;
@@ -26,12 +25,12 @@ public class ConvertOptionWidget extends ViewGroup<View> {
     private final static Set<String> KNOWN = Sets.ofArray("R", "d", "v", "C", "c");
     
     private final static ItemStack
-        ITEM_RESOLUTION = ItemUtil.create(Material.MOB_SPAWNER, ChatColor.RESET + "Resolution", "&8-R"),
-        ITEM_DIRECTION = ItemUtil.create(Material.COMPASS, ChatColor.RESET + "Direction", "&8-d"),
-        ITEM_VERBOSITY = ItemUtil.create(Material.JUKEBOX, ChatColor.RESET + "Verbosity", "&8-v"),
-        ITEM_CROP = ItemUtil.create(Material.SHEARS, ChatColor.RESET + "Crop", "&8-C"),
-        ITEM_COLORS = ItemUtil.create(Material.INK_SACK, 1, (short) 1, ChatColor.RESET + "Colors", "&8-c"),
-        ITEM_UNKNOWN = ItemUtil.create(Material.STRUCTURE_VOID, ChatColor.RESET + "???");
+        ITEM_RESOLUTION = ItemUtil.create("spawner", ChatColor.RESET + "Resolution", "&8-R"),
+        ITEM_DIRECTION = ItemUtil.create("compass", ChatColor.RESET + "Direction", "&8-d"),
+        ITEM_VERBOSITY = ItemUtil.create("jukebox", ChatColor.RESET + "Verbosity", "&8-v"),
+        ITEM_CROP = ItemUtil.create("shears", ChatColor.RESET + "Crop", "&8-C"),
+        ITEM_COLORS = ItemUtil.create("rose_red", 1, ChatColor.RESET + "Colors", "&8-c"),
+        ITEM_UNKNOWN = ItemUtil.create("structure_void", ChatColor.RESET + "???");
     
     @Contract(pure = true)
     public static boolean isKnownOption(String option) {

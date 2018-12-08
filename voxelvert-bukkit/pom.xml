@@ -35,10 +35,21 @@
         <dependency>
             <groupId>me.eisenwave.inv</groupId>
             <artifactId>eisen-inventories</artifactId>
-            <version>0.2</version>
+            <version>0.3</version>
             <scope>compile</scope>
         </dependency>
+        <!-- dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.12.2-R0.1-SNAPSHOT</version>
+        </dependency-->
 
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.13-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-core</artifactId>
@@ -67,12 +78,12 @@
 
     <repositories>
         <repository>
-            <id>sk89q</id>
-            <url>http://maven.sk89q.com/artifactory/repo/</url>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>oss-sonatype-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <id>sk89q</id>
+            <url>http://maven.sk89q.com/artifactory/repo/</url>
         </repository>
     </repositories>
 

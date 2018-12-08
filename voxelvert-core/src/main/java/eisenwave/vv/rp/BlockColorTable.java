@@ -1,11 +1,9 @@
 package eisenwave.vv.rp;
 
-import eisenwave.torrens.schematic.BlockKey;
+import eisenwave.torrens.schematic.legacy.BlockKey;
 import eisenwave.torrens.util.ColorMath;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.text.html.Option;
 import java.util.*;
 import java.util.stream.Stream;
 

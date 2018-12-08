@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * Every coordinate within each cuboid must also be contained in the array. Hence, the cuboids may be visualized
  * as an overlay of the array.
  */
-public class CvBitArrayMerger implements Classverter<BitArray3, BoundingBox6i[]> {
+public class CvBitArrayMerger_XYZ implements Classverter<BitArray3, BoundingBox6i[]> {
     
     @Override
     public Class<BitArray3> getFrom() {
@@ -30,11 +30,11 @@ public class CvBitArrayMerger implements Classverter<BitArray3, BoundingBox6i[]>
     @Nullable
     private final Logger logger;
     
-    public CvBitArrayMerger(@Nullable Logger logger) {
+    public CvBitArrayMerger_XYZ(@Nullable Logger logger) {
         this.logger = logger;
     }
     
-    public CvBitArrayMerger() {
+    public CvBitArrayMerger_XYZ() {
         logger = null;
     }
     
@@ -203,6 +203,7 @@ public class CvBitArrayMerger implements Classverter<BitArray3, BoundingBox6i[]>
      * @param lines a 2D array of voxel arrays representing a YxZ array of lines
      * @return a 1D array of voxel arrays representing a z-axis array of planes
      */
+    @SuppressWarnings("Duplicates")
     private static PlaneList[] mergeY(LineList[][] lines, int limY, int limZ) {
         PlaneList[] result = new PlaneList[limZ];
         
@@ -290,13 +291,13 @@ public class CvBitArrayMerger implements Classverter<BitArray3, BoundingBox6i[]>
         return result;
     }
     
-    private static class LineList extends LinkedList<LineList.Entry> {
+    static class LineList extends LinkedList<LineList.Entry> {
         
         static class Entry {
-            
-            private int min, max;
-            
-            private Entry(int min, int max) {
+    
+            int min, max;
+    
+            public Entry(int min, int max) {
                 this.min = min;
                 this.max = max;
             }
@@ -319,13 +320,13 @@ public class CvBitArrayMerger implements Classverter<BitArray3, BoundingBox6i[]>
         
     }
     
-    private static class PlaneList extends LinkedList<PlaneList.Entry> {
+    static class PlaneList extends LinkedList<PlaneList.Entry> {
         
         static class Entry {
-            
-            private int xmin, ymin, xmax, ymax;
-            
-            private Entry(int xmin, int ymin, int xmax, int ymax) {
+    
+            int xmin, ymin, xmax, ymax;
+    
+            public Entry(int xmin, int ymin, int xmax, int ymax) {
                 this.xmin = xmin;
                 this.ymin = ymin;
                 this.xmax = xmax;
@@ -338,9 +339,8 @@ public class CvBitArrayMerger implements Classverter<BitArray3, BoundingBox6i[]>
             }
             
             private boolean equals(Entry plane) {
-                return
-                    this.xmin == plane.xmin && this.ymin == plane.ymin &&
-                        this.xmax == plane.xmax && this.ymax == plane.ymax;
+                return this.xmin == plane.xmin && this.ymin == plane.ymin
+                    && this.xmax == plane.xmax && this.ymax == plane.ymax;
             }
             
         }
@@ -352,13 +352,13 @@ public class CvBitArrayMerger implements Classverter<BitArray3, BoundingBox6i[]>
         
     }
     
-    private static class BoxList extends LinkedList<BoxList.Entry> {
+    static class BoxList extends LinkedList<BoxList.Entry> {
         
         static class Entry {
-            
-            private int xmin, ymin, zmin, xmax, ymax, zmax;
-            
-            private Entry(int xmin, int ymin, int zmin, int xmax, int ymax, int zmax) {
+    
+            int xmin, ymin, zmin, xmax, ymax, zmax;
+    
+            public Entry(int xmin, int ymin, int zmin, int xmax, int ymax, int zmax) {
                 this.xmin = xmin;
                 this.ymin = ymin;
                 this.zmin = zmin;
@@ -373,9 +373,8 @@ public class CvBitArrayMerger implements Classverter<BitArray3, BoundingBox6i[]>
             }
             
             private boolean equals(Entry box) {
-                return
-                    this.xmin == box.xmin && this.ymin == box.ymin && this.zmin == box.zmin &&
-                        this.xmax == box.xmax && this.ymax == box.ymax && this.zmax == box.zmax;
+                return this.xmin == box.xmin && this.ymin == box.ymin && this.zmin == box.zmin
+                    && this.xmax == box.xmax && this.ymax == box.ymax && this.zmax == box.zmax;
             }
             
         }

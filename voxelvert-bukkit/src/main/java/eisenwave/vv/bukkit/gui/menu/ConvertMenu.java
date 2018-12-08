@@ -8,7 +8,6 @@ import eisenwave.inv.view.ViewGroup;
 import eisenwave.inv.view.ViewSize;
 import eisenwave.inv.widget.*;
 import eisenwave.vv.ui.fmtvert.*;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -34,13 +33,13 @@ import java.util.stream.Collectors;
 public class ConvertMenu extends Menu {
     
     private final static ItemStack
-        ITEM_CANCEL = ItemUtil.create(Material.WOOL, 1, (short) 14, ChatColor.RED + "Cancel", "&7Back to Inventory"),
-        ITEM_CONFIRM_OFF = ItemUtil.create(Material.WOOL, 1, (short) 7, ChatColor.DARK_GRAY + "Confirm", "&7Convert"),
-        ITEM_CONFIRM_ON = ItemUtil.create(Material.WOOL, 1, (short) 5, ChatColor.GREEN + "Confirm", "&7Convert"),
-        ITEM_PROGRESS_ON = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 5, " "),
-        ITEM_PROGRESS_OFF = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " "),
-        ITEM_PROGRESS_FAIL = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 14, ChatColor.RED + "ERROR"),
-        ITEM_PANE = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " ");
+        ITEM_CANCEL = ItemUtil.create("red_wool", ChatColor.RED + "Cancel", "&7Back to Inventory"),
+        ITEM_CONFIRM_OFF = ItemUtil.create("gray_wool", ChatColor.DARK_GRAY + "Confirm", "&7Convert"),
+        ITEM_CONFIRM_ON = ItemUtil.create("lime_wool", ChatColor.GREEN + "Confirm", "&7Convert"),
+        ITEM_PROGRESS_ON = ItemUtil.create("lime_stained_glass_pane", " "),
+        ITEM_PROGRESS_OFF = ItemUtil.create("black_stained_glass_pane", " "),
+        ITEM_PROGRESS_FAIL = ItemUtil.create("red_stained_glass_pane", ChatColor.RED + "ERROR"),
+        ITEM_PANE = ItemUtil.create("black_stained_glass_pane", " ");
     
     // INIT
     
@@ -89,11 +88,11 @@ public class ConvertMenu extends Menu {
             final ItemStack unchecked, checked;
             {
                 FileType type = FileType.fromFormat(format);
-                Material material = type == null? Material.WHITE_SHULKER_BOX : type.getIcon();
+                String icon = type == null? "white_shulker_box" : type.getIcon();
                 String prefix = type == null? ChatColor.RESET.toString() : type.getPrefix();
                 String name = lang.get("format." + format.getId());
                 String suffix = format.equals(sourceFormat)? " " + lang.get("format.copy") : "";
-                unchecked = ItemUtil.create(material, prefix + name + suffix);
+                unchecked = ItemUtil.create(icon, prefix + name + suffix);
             }
             checked = unchecked.clone();
             checked.setType(Material.END_CRYSTAL);
@@ -187,7 +186,7 @@ public class ConvertMenu extends Menu {
     private void setFailed(String error) {
         this.state = State.FAILED;
     
-        //user.error("Converting failed: " + error);
+        user.error("Converting failed: " + error);
         progressBar.setOnItem(ITEM_PROGRESS_FAIL);
         progressBar.setOffItem(ITEM_PROGRESS_FAIL);
     }
@@ -203,6 +202,7 @@ public class ConvertMenu extends Menu {
             return super.performClick(player, x, y, click);
     }
     
+    @SuppressWarnings("unused")
     public void performFormatPick(Player player, Format targetFormat) {
         optionsGroup.clearChildren();
         
@@ -255,6 +255,7 @@ public class ConvertMenu extends Menu {
         }
     }
     
+    @SuppressWarnings("unused")
     public void performConvert(Player player) {
         if (state != State.READY) return;
         
@@ -266,7 +267,7 @@ public class ConvertMenu extends Menu {
         Map<String, String> options = getOptions();
         
         initProgressBar();
-    
+        
         ProgressListener listener = (now, max, relative) -> progressBar.setProgress(relative);
         
         VoxelVertTask task = new VoxelVertTask(user, sourceFormat, sourcePath, targetFormat, targetPath) {

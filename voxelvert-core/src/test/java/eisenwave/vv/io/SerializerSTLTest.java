@@ -5,7 +5,7 @@ import eisenwave.torrens.stl.SerializerSTL;
 import eisenwave.torrens.stl.STLModel;
 import eisenwave.torrens.voxel.VoxelArray;
 import eisenwave.vv.VVTest;
-import eisenwave.vv.clsvert.CvVoxelArrayToSTL;
+import eisenwave.vv.clsvert.CvVoxelArrayToSTL_Naive;
 import org.junit.Test;
 
 import java.io.File;
@@ -21,7 +21,7 @@ public class SerializerSTLTest {
         logger.setLevel(Level.INFO);
         
         VoxelArray voxels = new DeserializerQEF(logger).fromResource(getClass(), "sword.qef");
-        STLModel model = new CvVoxelArrayToSTL().invoke(voxels);
+        STLModel model = new CvVoxelArrayToSTL_Naive(logger).invoke(voxels);
         logger.fine("converted "+voxels+" to "+model);
 
         File out = new File(VVTest.DIR_FILES, "SerializerSTLTest.stl");

@@ -10,30 +10,31 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+@Deprecated
 public class VVEventListener implements Listener {
-
+    
     @EventHandler
     public void onBlockClick(BlockBreakEvent e) {
         Player player = e.getPlayer();
         ItemStack item = player.getItemOnCursor();
-
+        
         if (item != null && item.getType().equals(Material.DIAMOND_AXE)) {
             Block block = e.getBlock();
             Vertex3i v = new Vertex3i(block.getX(), block.getY(), block.getZ());
             //UserManager.getInstance().setFirstPosition(player, vector);
         }
     }
-
+    
     @EventHandler
     public void onBlockPunch(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         ItemStack item = player.getItemOnCursor();
-
+        
         if (item != null && item.getType().equals(Material.DIAMOND_AXE)) {
             Block block = e.getClickedBlock();
             Vertex3i v = new Vertex3i(block.getX(), block.getY(), block.getZ());
             //UserManager.getInstance().setSecondPosition(player, vector);
         }
     }
-
+    
 }

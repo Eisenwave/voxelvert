@@ -9,7 +9,6 @@ import eisenwave.inv.widget.Button;
 import eisenwave.inv.widget.Widget;
 import eisenwave.vv.bukkit.gui.menu.FileBrowserMenu;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -31,25 +30,24 @@ public class FileOptionsWidget extends Widget {
     */
     
     private final static ItemStack
-        ITEM_BACKGROUND = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " "),
-        ITEM_OPEN = ItemUtil.create(Material.DIAMOND_PICKAXE, ChatColor.AQUA + "Open", "&7Open with VoxelVert"),
-        ITEM_SHARE = ItemUtil.create(Material.ENDER_PEARL, ChatColor.AQUA + "Share", "&7Share with friends"),
-        ITEM_SHARE_WITH_PLAYER = ItemUtil.create(Material.SKULL_ITEM, 1, (short) 3,
-            ChatColor.GREEN + "Player", "&7Share with\n&7a player"),
-        ITEM_SHARE_WITH_WE = ItemUtil.hideAttributes(ItemUtil.create(Material.WOOD_AXE,
+        ITEM_BACKGROUND = ItemUtil.create("black_stained_glass_pane", " "),
+        ITEM_OPEN = ItemUtil.create("diamond_pickaxe", ChatColor.AQUA + "Open", "&7Open with VoxelVert"),
+        ITEM_SHARE = ItemUtil.create("ender_pearl", ChatColor.AQUA + "Share", "&7Share with friends"),
+        ITEM_SHARE_WITH_PLAYER = ItemUtil.create("skull", ChatColor.GREEN + "Player", "&7Share with\n&7a player"),
+        ITEM_SHARE_WITH_WE = ItemUtil.hideAttributes(ItemUtil.create("wooden_axe",
             ChatColor.GREEN + "WorldEdit", "&7Share with WorldEdit\n&8(schematic only)")),
-        ITEM_SHARE_DOWNLOAD = ItemUtil.create(Material.STORAGE_MINECART,
+        ITEM_SHARE_DOWNLOAD = ItemUtil.create("storage_minecart",
             ChatColor.GREEN + "Download", "&7Download file\n&8(over http)"),
-        ITEM_UPLOAD = ItemUtil.create(Material.LEASH, ChatColor.GREEN + "Upload", "&7Upload file\n&8(over http)"),
-        ITEM_COPY = ItemUtil.create(Material.NAME_TAG, ChatColor.YELLOW + "Copy", "&7Copy this file"),
-        ITEM_RENAME = ItemUtil.create(Material.NAME_TAG, ChatColor.YELLOW + "Rename", "&7Rename this file"),
-        ITEM_DELETE = ItemUtil.create(Material.LAVA_BUCKET, ChatColor.RED + "Delete",
+        ITEM_UPLOAD = ItemUtil.create("leash", ChatColor.GREEN + "Upload", "&7Upload file\n&8(over http)"),
+        ITEM_COPY = ItemUtil.create("name_tag", ChatColor.YELLOW + "Copy", "&7Copy this file"),
+        ITEM_RENAME = ItemUtil.create("name_tag", ChatColor.YELLOW + "Rename", "&7Rename this file"),
+        ITEM_DELETE = ItemUtil.create("lava_bucket", ChatColor.RED + "Delete",
             "&7Delete this file\n\n&cWARNING:\n&7You may not be able\n&7to undo this action"),
-        ITEM_CONFIRM = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 5, ChatColor.GREEN + "Confirm",
+        ITEM_CONFIRM = ItemUtil.create("lime_stained_glass_pane", ChatColor.GREEN + "Confirm",
             "&7Delete this file"),
-        ITEM_CANCEL_DELETE = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 14, ChatColor.RED + "Cancel",
+        ITEM_CANCEL_DELETE = ItemUtil.create("red_stained_glass_pane", ChatColor.RED + "Cancel",
             "&7&nDo not\n&7delete this file"),
-        ITEM_CANCEL_SHARE = ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 14, ChatColor.RED + "Cancel",
+        ITEM_CANCEL_SHARE = ItemUtil.create("red_stained_glass_pane", ChatColor.RED + "Cancel",
             "&7&nDo not\n&7share this file");
     
     static {

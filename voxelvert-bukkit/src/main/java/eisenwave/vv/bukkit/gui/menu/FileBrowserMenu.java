@@ -67,7 +67,7 @@ public class FileBrowserMenu extends Menu {
     
     private void initNavigator() {
         Pane separatorPane = new Pane(this, null);
-        separatorPane.setItem(ItemUtil.create(Material.STAINED_GLASS_PANE, 1, (short) 15, " "));
+        separatorPane.setItem(ItemUtil.create("black_stained_glass_pane", " "));
         separatorPane.setPosition(5, ViewSize.MAX_POS);
         getContentPane().addChild(separatorPane);
         

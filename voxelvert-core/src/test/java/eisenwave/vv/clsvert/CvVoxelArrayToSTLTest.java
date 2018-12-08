@@ -21,8 +21,8 @@ public class CvVoxelArrayToSTLTest {
         voxels.setRGB(1, 0, 0, ColorMath.DEBUG1);
         voxels.setRGB(0, 2, 0, ColorMath.DEBUG1);
         voxels.setRGB(0, 0, 3, ColorMath.DEBUG1);
-        
-        STLModel model = new CvVoxelArrayToSTL().invoke(voxels);
+    
+        STLModel model = new CvVoxelArrayToSTL_Naive(null).invoke(voxels);
         assertNotNull(model);
         
         System.out.println(model);

@@ -7,8 +7,22 @@ import eisenwave.torrens.stl.STLTriangle;
 import eisenwave.torrens.voxel.VoxelArray;
 import eisenwave.vv.util.Util3D;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class CvVoxelArrayToSTL implements Classverter<VoxelArray, STLModel> {
+import java.util.logging.Logger;
+
+public class CvVoxelArrayToSTL_Naive implements Classverter<VoxelArray, STLModel> {
+    
+    private final Logger logger;
+    
+    public CvVoxelArrayToSTL_Naive(@Nullable Logger logger) {
+        this.logger = logger;
+    }
+    
+    private void debug(String msg) {
+        if (logger != null)
+            logger.fine(msg);
+    }
     
     @Override
     public Class<VoxelArray> getFrom() {

@@ -2,44 +2,40 @@ package eisenwave.vv.bukkit.gui;
 
 import eisenwave.vv.ui.fmtvert.Format;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import eisenwave.vv.bukkit.util.CommandUtil;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.bukkit.Material.*;
 import static org.bukkit.ChatColor.*;
 
 public enum FileType {
-    DIRECTORY(null, "media.directory", CHEST, BOLD),
+    DIRECTORY(null, "media.directory", "chest", BOLD),
     
-    VARIABLE(null, "media.inventory_variable", COMMAND, BOLD, ITALIC),
+    VARIABLE(null, "media.inventory_variable", "command_block", BOLD, ITALIC),
     
-    FILE(null, "media.file", SILVER_SHULKER_BOX, RESET),
+    FILE(null, "media.file", "light_gray_shulker_box", RESET),
     
-    BCT(null, "media.voxelvert-bct", GREEN_SHULKER_BOX, DARK_GREEN),
+    BCT(null, "media.voxelvert-bct", "green_shulker_box", DARK_GREEN),
     
-    IMAGE(Format.IMAGE, "media.image", YELLOW_SHULKER_BOX, YELLOW),
+    IMAGE(Format.IMAGE, "media.image", "yellow_shulker_box", YELLOW),
     
-    MTL(null, "media.wavefront-mtl", CYAN_SHULKER_BOX, DARK_AQUA),
+    MTL(null, "media.wavefront-mtl", "cyan_shulker_box", DARK_AQUA),
     
-    QB(Format.QB, "media.qubicle-binary", MAGENTA_SHULKER_BOX, DARK_PURPLE),
+    QB(Format.QB, "media.qubicle-binary", "magenta_shulker_box", DARK_PURPLE),
     
-    QEF(Format.QEF, "media.qubicle-exchange", PURPLE_SHULKER_BOX, LIGHT_PURPLE),
+    QEF(Format.QEF, "media.qubicle-exchange", "purple_shulker_box", LIGHT_PURPLE),
     
-    SCHEMATIC(Format.SCHEMATIC, "media.schematic", LIME_SHULKER_BOX, GREEN),
+    SCHEMATIC(Format.SCHEMATIC, "media.schematic", "lime_shulker_box", GREEN),
     
-    STL(Format.STL, "media.stl", BLUE_SHULKER_BOX, BLUE),
+    STL(Format.STL, "media.stl", "blue_shulker_box", BLUE),
     
-    WAVEFRONT(Format.WAVEFRONT, "media.wavefront", LIGHT_BLUE_SHULKER_BOX, AQUA),
+    WAVEFRONT(Format.WAVEFRONT, "media.wavefront", "light_blue_shulker_box", AQUA),
     
-    RESOURCE_PACK(Format.RESOURCE_PACK, "media.minecraft-resource_pack", BROWN_SHULKER_BOX, GOLD);
+    RESOURCE_PACK(Format.RESOURCE_PACK, "media.minecraft-resource_pack", "brown_shulker_box", GOLD);
     
     private final static Map<Format, FileType> formatMap = new HashMap<>();
     
@@ -84,13 +80,12 @@ public enum FileType {
     }
     
     private final Format format;
-    private final Material material;
-    private final String prefix, prefixNoColors, langName;
+    private final String icon, prefix, prefixNoColors, langName;
     
-    FileType(@Nullable Format format, String langName, Material material, ChatColor... colors) {
+    FileType(@Nullable Format format, String langName, String icon, ChatColor... colors) {
         this.format = format;
         this.langName = langName;
-        this.material = material;
+        this.icon = icon;
         this.prefix = Arrays.stream(colors)
             .map(ChatColor::toString)
             .collect(Collectors.joining());
@@ -127,8 +122,8 @@ public enum FileType {
     }
     
     @Contract(pure = true)
-    public Material getIcon() {
-        return material;
+    public String getIcon() {
+        return icon;
     }
     
     @Contract(pure = true)

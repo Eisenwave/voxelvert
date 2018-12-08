@@ -36,7 +36,7 @@ public class FileButton extends RadioButton {
             }
         }
     
-        ItemStack unchecked = ItemUtil.create(type.getIcon(), 1, (short) 0,
+        ItemStack unchecked = ItemUtil.create(type.getIcon(), 1,
             ChatColor.RESET + entry.getDisplayName(true),
             lore);
         this.setUncheckedItem(unchecked);

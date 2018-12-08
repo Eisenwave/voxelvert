@@ -59,7 +59,7 @@ public class CvVoxelArrayToVoxelMeshTest {
      * @throws Exception if the test fails
      */
     @Test
-    public void preserveVolume() throws Exception {
+    public void preserveVolume() {
         VoxelArray array = new VoxelArray(8, 8, 8);
         Random r = new Random();
         array.forEachPosition(pos -> {if (r.nextBoolean()) array.setRGB(pos, ColorMath.SOLID_RED);});
@@ -82,7 +82,8 @@ public class CvVoxelArrayToVoxelMeshTest {
 
         final int count = array.size();
         VoxelMesh mesh = ConvertUtil.convert(array, VoxelMesh.class);
-
+    
+        //assertEquals(1, mesh.size());
         assertEquals(count, mesh.voxelCount());
     }
 

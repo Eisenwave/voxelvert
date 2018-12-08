@@ -10,11 +10,13 @@ import eisenwave.torrens.img.Texture;
 import eisenwave.torrens.object.*;
 import eisenwave.torrens.voxel.VoxelArray;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
-public class CvVoxelArrayToOBJ implements Classverter<VoxelArray, OBJModel> {
+public class CvVoxelArrayToOBJ_Naive implements Classverter<VoxelArray, OBJModel> {
     
     /** Pseudo-3D array containing all vertices of a cube. */
     private final static Vertex3i[] CUBE_VERTICES = new Vertex3i[8];
@@ -137,6 +139,28 @@ public class CvVoxelArrayToOBJ implements Classverter<VoxelArray, OBJModel> {
         }
     }
     
+    private final Logger logger;
+    
+    public CvVoxelArrayToOBJ_Naive(@Nullable Logger logger) {
+        this.logger = logger;
+    }
+    
+    public CvVoxelArrayToOBJ_Naive() {
+        this(null);
+    }
+    
+    private void debug(String msg) {
+        if (logger != null)
+            logger.fine(msg);
+    }
+    
+    private void debugTiming(String format, long time) {
+        if (logger != null) {
+            time = System.currentTimeMillis() - time;
+            logger.fine(String.format(format, time, (double) time / 1000));
+        }
+    }
+    
     @Override
     public Class<VoxelArray> getFrom() {
         return VoxelArray.class;
@@ -151,18 +175,27 @@ public class CvVoxelArrayToOBJ implements Classverter<VoxelArray, OBJModel> {
     public OBJModel invoke(@NotNull VoxelArray array, @NotNull Object... args) {
         IntArray3 vertexGrid = new IntArray3(array.getSizeX() + 1, array.getSizeY() + 1, array.getSizeZ() + 1);
         //vertexGrid.forEachIndex(((x, y, z) -> vertexGrid.set(x, y, z, -1)));
-        
+    
+        long now = System.currentTimeMillis();
         OBJModel model = new OBJModel();
         addCubeNormals(model);
         
         TempVoxel[] voxels = prepareVoxels(array);
+    
+        debugTiming("Prepared visible voxels:    %d ms (%.2f s)", now);
+        now = System.currentTimeMillis();
+        
         addMaterials(voxels, model);
+    
+        debugTiming("Generated materials:        %d ms (%.2f s)", now);
+        now = System.currentTimeMillis();
         
         OBJGroup group = new OBJGroup(model, "Voxels");
         model.addGroup(group);
         
         for (TempVoxel voxel : voxels)
             addVoxel(voxel, model, group, vertexGrid);
+        debugTiming("Generated geometry:         %d ms (%.2f s)", now);
         
         return model;
     }
@@ -175,6 +208,12 @@ public class CvVoxelArrayToOBJ implements Classverter<VoxelArray, OBJModel> {
         }
     }
     
+    /**
+     * Returns an array of temporary voxels with the x, y, z, rgb and visibility data calculated.
+     *
+     * @param array the voxel array
+     * @return the temporary voxels
+     */
     private static TempVoxel[] prepareVoxels(VoxelArray array) {
         List<TempVoxel> voxels = new ArrayList<>();
         

@@ -1,7 +1,7 @@
 package eisenwave.vv.io;
 
 import eisenwave.torrens.io.Serializer;
-import eisenwave.torrens.schematic.BlockKey;
+import eisenwave.torrens.schematic.legacy.BlockKey;
 import eisenwave.vv.rp.BlockColor;
 import eisenwave.vv.rp.BlockColorTable;
 

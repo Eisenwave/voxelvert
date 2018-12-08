@@ -34,7 +34,7 @@ public class CvVoxelArrayToVoxelMesh implements Classverter<VoxelArray, VoxelMes
     @Override
     public VoxelMesh invoke(@NotNull VoxelArray array, @NotNull Object... args) {
         //System.out.println(args.length);
-        BoundingBox6i[] boxes = new CvBitArrayMerger(logger).invoke(array, args);
+        BoundingBox6i[] boxes = new CvBitArrayMerger_XYZ(logger).invoke(array, args);
         //System.out.println(Arrays.toString(boxes));
         //System.out.println(boxes.length+" bboxes");
         

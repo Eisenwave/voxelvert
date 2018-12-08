@@ -3,7 +3,7 @@ package eisenwave.vv.rp;
 import eisenwave.spatium.util.PrimMath;
 import eisenwave.torrens.img.Texture;
 import eisenwave.torrens.object.Rectangle4i;
-import eisenwave.torrens.schematic.BlockKey;
+import eisenwave.torrens.schematic.legacy.BlockKey;
 import eisenwave.torrens.util.ColorMath;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

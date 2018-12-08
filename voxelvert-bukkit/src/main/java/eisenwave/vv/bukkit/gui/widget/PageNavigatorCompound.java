@@ -7,7 +7,6 @@ import eisenwave.inv.widget.CompoundGroup;
 import eisenwave.inv.widget.Display;
 import eisenwave.inv.widget.SimpleList;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import eisenwave.inv.util.ItemUtil;
 import org.jetbrains.annotations.NotNull;
@@ -20,10 +19,10 @@ public class PageNavigatorCompound extends CompoundGroup {
         PREFIX_OFF = ChatColor.DARK_GRAY.toString() + ChatColor.BOLD;
     
     private static final ItemStack
-        PREV_ON = ItemUtil.create(Material.SPECTRAL_ARROW, PREFIX_ON + "<<<"),
-        PREV_OFF = ItemUtil.create(Material.ARROW, PREFIX_OFF + "<<<"),
-        NEXT_ON = ItemUtil.create(Material.SPECTRAL_ARROW, PREFIX_ON + ">>>"),
-        NEXT_OFF = ItemUtil.create(Material.ARROW, PREFIX_OFF + ">>>");
+        PREV_ON = ItemUtil.create("spectral_arrow", PREFIX_ON + "<<<"),
+        PREV_OFF = ItemUtil.create("arrow", PREFIX_OFF + "<<<"),
+        NEXT_ON = ItemUtil.create("spectral_arrow", PREFIX_ON + ">>>"),
+        NEXT_OFF = ItemUtil.create("arrow", PREFIX_OFF + ">>>");
     
     private final SimpleList handle;
     private final Button navLeft, navRight;
@@ -86,7 +85,7 @@ public class PageNavigatorCompound extends CompoundGroup {
         navRight.setItem(canNavRight()? NEXT_ON : NEXT_OFF);
         
         String pageName = ChatColor.GRAY + "Page " + (this.page + 1);
-        display.setItem(ItemUtil.create(Material.MAP, this.page + 1, (short) 0, pageName));
+        display.setItem(ItemUtil.create("map", this.page + 1, pageName));
     }
     
     private boolean canNavLeft() {

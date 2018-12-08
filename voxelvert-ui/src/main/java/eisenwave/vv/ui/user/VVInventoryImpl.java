@@ -2,12 +2,12 @@ package eisenwave.vv.ui.user;
 
 import eisenwave.torrens.img.ARGBSerializerBMP;
 import eisenwave.torrens.img.ARGBSerializerWBMP;
+import eisenwave.torrens.schematic.legacy.LegacyBlockStructure;
 import eisenwave.torrens.voxel.*;
 import eisenwave.torrens.wavefront.*;
 import eisenwave.vv.io.DeserializerBCT;
 import eisenwave.vv.io.SerializerBCT;
 import eisenwave.vv.ui.fmtvert.Format;
-import eisenwave.torrens.schematic.BlockStructure;
 import eisenwave.torrens.schematic.DeserializerSchematicBlocks;
 import eisenwave.torrens.schematic.SerializerSchematicBlocks;
 import eisenwave.torrens.stl.DeserializerSTL;
@@ -171,9 +171,9 @@ public class VVInventoryImpl implements VVInventory {
             case "block_array": {
                 if (!storage.containsKey(name)) return null;
                 Object obj = storage.get(name);
-                if (obj instanceof BlockStructure) return obj;
+                if (obj instanceof LegacyBlockStructure) return obj;
                 else
-                    throw new IOException("stored object \"" + name + "\" must be a " + BlockStructure.class.getSimpleName());
+                    throw new IOException("stored object \"" + name + "\" must be a " + LegacyBlockStructure.class.getSimpleName());
             }
     
             case "voxel_array": {
@@ -249,12 +249,12 @@ public class VVInventoryImpl implements VVInventory {
             }
     
             case "schematic": {
-                if (object instanceof BlockStructure) {
+                if (object instanceof LegacyBlockStructure) {
                     File file = new File(dir, name);
-                    new SerializerSchematicBlocks().toFile((BlockStructure) object, file);
+                    new SerializerSchematicBlocks().toFile((LegacyBlockStructure) object, file);
                     return true;
                 }
-                else throw new IOException("object must be a " + BlockStructure.class.getSimpleName());
+                else throw new IOException("object must be a " + LegacyBlockStructure.class.getSimpleName());
             }
             
             case "stl": {
@@ -308,11 +308,11 @@ public class VVInventoryImpl implements VVInventory {
             }
             
             case "block_array": {
-                if (object instanceof BlockStructure) {
+                if (object instanceof LegacyBlockStructure) {
                     storage.put(name, object);
                     return true;
                 }
-                else throw new IOException("object must be a " + BlockStructure.class.getSimpleName());
+                else throw new IOException("object must be a " + LegacyBlockStructure.class.getSimpleName());
             }
             
             case "voxel_array": {

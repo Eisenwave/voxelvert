@@ -1,14 +1,14 @@
 package eisenwave.vv.bukkit.async;
 
 import eisenwave.torrens.object.BoundingBox6i;
-import eisenwave.torrens.schematic.BlockKey;
-import eisenwave.torrens.schematic.BlockStructure;
+import eisenwave.torrens.schematic.legacy.BlockKey;
+import eisenwave.torrens.schematic.legacy.LegacyBlockStructure;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
-public class WorldBlockStructure implements BlockStructure {
+public class WorldBlockStructure implements LegacyBlockStructure {
     
     private final World world;
     private final int offX, offY, offZ;

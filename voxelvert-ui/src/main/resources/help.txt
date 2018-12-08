@@ -8,6 +8,9 @@ General Options:
 -r, --replace           Replace existing files with output
 -v, --verbose           Print various debug information
 
+Conversion (General):
+-a, --algorithm         Specifies the algorithm to be used for conversion
+
 Conversion Of Blocks/Schematics:
 -c, --colors <path>     The color file to be used (else default colors are used)
 -F, --full_blocks       Only turn full blocks into voxels

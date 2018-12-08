@@ -105,8 +105,9 @@ public class VoxelVertPlugin extends JavaPlugin {
     private boolean initVoxelVert(boolean verbose) {
         BlockScanner scanner = new CachedBlockScanner(this);
         //BlockScanner scanner = new SimpleBlockScanner();
-        
-        if (verbose) getLogger().info("Using block scanner: " + scanner.getClass().getSimpleName());
+    
+        if (verbose)
+            getLogger().info("Using block scanner: " + scanner.getClass().getSimpleName());
         
         this.voxelVert = new BukkitVoxelVert(this, worldEditPlugin, scanner);
         return true;

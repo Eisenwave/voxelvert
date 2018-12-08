@@ -1,16 +1,16 @@
 package eisenwave.vv.clsvert;
 
+import eisenwave.torrens.schematic.legacy.LegacyBlockStructure;
 import eisenwave.vv.rp.BlockColor;
-import eisenwave.torrens.schematic.BlockStructure;
 import eisenwave.torrens.util.ColorMath;
-import eisenwave.torrens.schematic.BlockKey;
+import eisenwave.torrens.schematic.legacy.BlockKey;
 import eisenwave.torrens.voxel.VoxelArray;
 import eisenwave.vv.util.Arguments;
 import eisenwave.vv.rp.BlockColorTable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CvBlocksToVoxelArray implements Classverter<BlockStructure, VoxelArray> {
+public class CvBlocksToVoxelArray implements Classverter<LegacyBlockStructure, VoxelArray> {
     
     public final static BlockColor DEFAULT_COLOR = new BlockColor(0xFFFFFFFF, 0);
     
@@ -27,8 +27,8 @@ public class CvBlocksToVoxelArray implements Classverter<BlockStructure, VoxelAr
     DEFAULT_TINT = 1 << 4;*/
     
     @Override
-    public Class<BlockStructure> getFrom() {
-        return BlockStructure.class;
+    public Class<LegacyBlockStructure> getFrom() {
+        return LegacyBlockStructure.class;
     }
     
     @Override
@@ -37,7 +37,7 @@ public class CvBlocksToVoxelArray implements Classverter<BlockStructure, VoxelAr
     }
     
     @Override
-    public VoxelArray invoke(@NotNull BlockStructure blocks, @NotNull Object... args) {
+    public VoxelArray invoke(@NotNull LegacyBlockStructure blocks, @NotNull Object... args) {
         Arguments.requireMin(args, 2);
         Arguments.requireType(args[0], BlockColorTable.class);
         Arguments.requireType(args[1], Integer.class);
@@ -45,7 +45,7 @@ public class CvBlocksToVoxelArray implements Classverter<BlockStructure, VoxelAr
         return invoke(blocks, (BlockColorTable) args[0], (int) args[1]);
     }
     
-    public VoxelArray invoke(BlockStructure blocks, @Nullable BlockColorTable colors, int flags) {
+    public VoxelArray invoke(LegacyBlockStructure blocks, @Nullable BlockColorTable colors, int flags) {
         final boolean
             full_blocks = (flags & FULL_BLOCKS) != 0,
             ignore_alpha = (flags & IGNORE_ALPHA) != 0,

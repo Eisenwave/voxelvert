@@ -5,7 +5,7 @@ import eisenwave.vv.rp.BlockColorTable;
 import eisenwave.torrens.error.FileFormatException;
 import eisenwave.torrens.error.FileVersionException;
 import eisenwave.torrens.io.Deserializer;
-import eisenwave.torrens.schematic.BlockKey;
+import eisenwave.torrens.schematic.legacy.BlockKey;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInputStream;

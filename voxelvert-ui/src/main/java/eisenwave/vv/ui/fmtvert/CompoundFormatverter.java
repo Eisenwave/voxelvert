@@ -67,7 +67,7 @@ public class CompoundFormatverter extends Formatverter {
         first.removeListener(listener1);
         
         int lastIndex = fv.length - 1;
-        for (int i = 1, offset = 0; i <= lastIndex; i++) {
+        for (int i = 1, offset = fv[0].getMaxProgress(); i <= lastIndex; i++) {
             final int offsetCopy = offset;
             ProgressListener l = (now, max, relative) -> this.set(offsetCopy + now);
             Formatverter intermediary = fv[i];

@@ -10,7 +10,7 @@ public final class ConvertUtil {
     private final static ConversionManager manager = new ConversionManager();
 
     static {
-        manager.add(new CvBitArrayMerger());
+        manager.add(new CvBitArrayMerger_XYZ());
         manager.add(new CvBlocksToVoxelArray());
         manager.add(new CvImageToTexture());
         manager.add(new CvVoxelMeshToVoxelArray());
@@ -21,9 +21,9 @@ public final class ConvertUtil {
         manager.add(new CvTextureToVoxelArray());
         manager.add(new CvVoxelArrayToVoxelMesh());
         manager.add(new CvVoxelMeshToMC());
-        manager.add(new CvVoxelArrayToOBJ());
+        manager.add(new CvVoxelArrayToOBJ_Naive());
         manager.add(new CvVoxelArrayToQB());
-        manager.add(new CvVoxelArrayToSTL());
+        manager.add(new CvVoxelArrayToSTL_Naive(null));
         manager.add(new CvVoxelArrayToTexture());
         //manager.add(new ClassverterWorldToBlockArray());
     }

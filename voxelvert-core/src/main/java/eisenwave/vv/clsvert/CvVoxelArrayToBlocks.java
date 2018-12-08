@@ -1,14 +1,14 @@
 package eisenwave.vv.clsvert;
 
-import eisenwave.torrens.schematic.ArrayBlockStructure;
-import eisenwave.torrens.schematic.BlockKey;
-import eisenwave.torrens.schematic.BlockStructure;
+import eisenwave.torrens.schematic.legacy.ArrayBlockStructure;
+import eisenwave.torrens.schematic.legacy.BlockKey;
+import eisenwave.torrens.schematic.legacy.LegacyBlockStructure;
 import eisenwave.torrens.voxel.VoxelArray;
 import eisenwave.vv.rp.BlockColorTable;
 import eisenwave.vv.util.Arguments;
 import org.jetbrains.annotations.NotNull;
 
-public class CvVoxelArrayToBlocks implements Classverter<VoxelArray, BlockStructure> {
+public class CvVoxelArrayToBlocks implements Classverter<VoxelArray, LegacyBlockStructure> {
     
     @Override
     public Class<VoxelArray> getFrom() {
@@ -16,19 +16,19 @@ public class CvVoxelArrayToBlocks implements Classverter<VoxelArray, BlockStruct
     }
     
     @Override
-    public Class<BlockStructure> getTo() {
-        return BlockStructure.class;
+    public Class<LegacyBlockStructure> getTo() {
+        return LegacyBlockStructure.class;
     }
     
     @Override
-    public BlockStructure invoke(@NotNull VoxelArray from, @NotNull Object... args) {
+    public LegacyBlockStructure invoke(@NotNull VoxelArray from, @NotNull Object... args) {
         Arguments.requireMin(args, 1);
         
         return invoke(from, Arguments.requireType(args[0], BlockColorTable.class));
     }
     
-    public BlockStructure invoke(VoxelArray from, BlockColorTable colorTable) {
-        BlockStructure result = new ArrayBlockStructure(from.getSizeX(), from.getSizeY(), from.getSizeZ());
+    public LegacyBlockStructure invoke(VoxelArray from, BlockColorTable colorTable) {
+        LegacyBlockStructure result = new ArrayBlockStructure(from.getSizeX(), from.getSizeY(), from.getSizeZ());
         
         int lastRGB = 0;
         BlockKey lastKey = null;

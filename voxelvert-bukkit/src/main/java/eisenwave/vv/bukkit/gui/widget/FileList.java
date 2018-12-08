@@ -67,6 +67,7 @@ public class FileList extends SimpleList<FileButton> {
     
     // SELECTION
     
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean hasSelection() {
         return selected >= 0;
     }

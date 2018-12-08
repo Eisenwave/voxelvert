@@ -2,7 +2,7 @@ package eisenwave.vv.bukkit.user;
 
 import eisenwave.vv.ui.fmtvert.Format;
 import eisenwave.vv.ui.user.VVInventoryImpl;
-import eisenwave.torrens.schematic.BlockStructure;
+import eisenwave.torrens.schematic.legacy.LegacyBlockStructure;
 import eisenwave.vv.ui.user.VVInventoryVariable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -52,7 +52,7 @@ public class PlayerVVInventory extends VVInventoryImpl {
     }
     */
     
-    private class SelectionVariable implements VVInventoryVariable<BlockStructure> {
+    private class SelectionVariable implements VVInventoryVariable<LegacyBlockStructure> {
     
         @Override
         public Format getFormat() {
@@ -61,7 +61,7 @@ public class PlayerVVInventory extends VVInventoryImpl {
     
         @Nullable
         @Override
-        public BlockStructure get() {
+        public LegacyBlockStructure get() {
             return getOwner().getBlocks();
         }
     

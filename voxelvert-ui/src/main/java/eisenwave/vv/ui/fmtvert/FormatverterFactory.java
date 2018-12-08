@@ -1,12 +1,16 @@
 package eisenwave.vv.ui.fmtvert;
 
+import eisenwave.torrens.img.ARGBSerializerBMP;
+import eisenwave.torrens.object.Rectangle4i;
+import eisenwave.torrens.schematic.legacy.LegacyBlockStructure;
+import eisenwave.torrens.util.ColorMath;
+import eisenwave.torrens.voxel.BitArray2;
 import eisenwave.vv.clsvert.*;
 import eisenwave.vv.object.Language;
 import eisenwave.spatium.enums.Direction;
 import eisenwave.spatium.enums.Face;
 import eisenwave.torrens.img.Texture;
 import eisenwave.torrens.object.Vertex3i;
-import eisenwave.torrens.schematic.BlockStructure;
 import eisenwave.torrens.voxel.VoxelArray;
 import eisenwave.torrens.wavefront.MTLLibrary;
 import eisenwave.torrens.wavefront.OBJModel;
@@ -23,8 +27,11 @@ import eisenwave.torrens.voxel.VoxelMesh;
 import eisenwave.vv.ui.util.Sets;
 import org.jetbrains.annotations.*;
 
+import javax.imageio.ImageIO;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,11 +48,12 @@ public final class FormatverterFactory {
         OPTION_DIRECTION = new Option("d", "direction"),
         OPTION_NO_ANTI_BLEED = new Option("b", "no_anti_bleed"),
         OPTION_RESOLUTION = new Option("R", "resolution"),
-        OPTION_VERBOSE = new Option("v", "verbose");
+        OPTION_VERBOSE = new Option("v", "verbose"),
+        OPTION_ALGORITHM = new Option("a", "algorithm");
     
     public final static String
         DEFAULT_BCE = "color_extractors/default.json",
-        DEFAULT_BCT = "colors/ default.bct";
+        DEFAULT_BCT = "colors/default.bct";
     
     private final static Logger VERBOSE_LOGGER;
     
@@ -83,7 +91,8 @@ public final class FormatverterFactory {
         put(IMAGE, QEF, () -> new CompoundFormatverter(new FV_IMAGE_VA(), fv_va_qef.get()));
         put(IMAGE, QB, () -> new CompoundFormatverter(new FV_IMAGE_VA(), new FV_VA_QB()));
         put(IMAGE, SCHEMATIC, () -> new CompoundFormatverter(new FV_IMAGE_VA(), new FV_VA_SCHEMATIC()));
-    
+        put(IMAGE, DEBUG_PIXEL_MERGE, FV_DEBUG_PIXEL_MERGE::new);
+        
         put(QB, IMAGE, () -> new CompoundFormatverter(new FV_QB_VA(), new FV_VA_IMAGE()));
         put(QB, MODEL, () -> new CompoundFormatverter(new FV_QB_VA(), new FV_VA_MODEL()));
         put(QB, QB, CopyFormatverter::new);
@@ -200,6 +209,89 @@ public final class FormatverterFactory {
         return map.put(input, output, supplier);
     }
     
+    // DEBUG FORMATVERTERS
+    
+    private static class FV_DEBUG_PIXEL_MERGE extends Formatverter {
+        
+        @Override
+        public int getMaxProgress() {
+            return 2;
+        }
+        
+        @Override
+        public Set<Option> getOptionalOptions() {
+            return Sets.ofArray(OPTION_VERBOSE, OPTION_ALGORITHM);
+        }
+        
+        @Override
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
+            final boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            
+            Texture texture = Texture.wrapOrCopy(ImageIO.read(new File(from)));
+            long now = System.currentTimeMillis();
+            BitArray2 array = new BitArray2() {
+                @Override
+                public int getSizeX() {
+                    return texture.getWidth();
+                }
+                
+                @Override
+                public int getSizeY() {
+                    return texture.getHeight();
+                }
+                
+                @Override
+                public boolean contains(int x, int y) {
+                    return (texture.get(x, y) & 0xFF_FF_FF) == 0xFF_FF_FF;
+                }
+            };
+            
+            final Classverter<BitArray2, Rectangle4i[]> mergingCV;
+            {
+                String algo = args.get(OPTION_ALGORITHM.getId());
+                if (algo == null)
+                    mergingCV = new CvBitImageMerger_XY();
+                else switch (args.get(OPTION_ALGORITHM.getId())) {
+                    case "xy":
+                        mergingCV = new CvBitImageMerger_XY();
+                        break;
+                    case "no_tjunctions":
+                        mergingCV = new CvBitImageMerger_NoTJunctions();
+                        break;
+                    default:
+                        throw new FormatverterArgumentException(OPTION_ALGORITHM, "Unknown algorithm: " + algo);
+                }
+            }
+            
+            Rectangle4i[] rectangles = mergingCV.invoke(array);
+            
+            if (verbose) {
+                long time = System.currentTimeMillis() - now;
+                long pixels = array.size();
+                user.print("Algorithm used:       " + mergingCV.getClass().getSimpleName());
+                user.print("Algorithm run time:   " + time + " ms");
+                user.print("Rectangles created:   " + rectangles.length);
+                user.print("Visible pixels:       " + pixels);
+                user.print("Vis.Pixels/rectangle: %.4f", ((double) pixels / rectangles.length));
+            }
+            
+            Random random = ThreadLocalRandom.current();
+            for (Rectangle4i r : rectangles) {
+                int color = ColorMath.fromHSB(random.nextFloat(), 0.75F, 0.75F);
+                texture.getGraphics().drawRectangle(color, r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY());
+            }
+            
+            int index = to.lastIndexOf('.');
+            String ext = index < 0? "bmp" : to.substring(index + 1).toLowerCase();
+            
+            if (ext.equals("bmp"))
+                new ARGBSerializerBMP().toFile(texture, to);
+            else
+                ImageIO.write(texture.toImage(false), ext, new File(to));
+        }
+        
+    }
+    
     // FIRST ORDER FORMATVERTERS
     
     private static class FV_BA_SCHEMATIC extends Formatverter {
@@ -221,7 +313,7 @@ public final class FormatverterFactory {
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
     
-            BlockStructure blocks = (BlockStructure) user.getInventory().load(BLOCK_ARRAY, from);
+            LegacyBlockStructure blocks = (LegacyBlockStructure) user.getInventory().load(BLOCK_ARRAY, from);
             assert blocks != null;
             if (verbose) user.print(lang.get("from_block_array.blocks"), blocks.getBlockCount());
             set(1);
@@ -265,7 +357,7 @@ public final class FormatverterFactory {
             if (verbose) user.print(lang.get("from_colors.colors"), bct.size());
             set(1);
     
-            BlockStructure blocks = (BlockStructure) user.getInventory().load(BLOCK_ARRAY, from);
+            LegacyBlockStructure blocks = (LegacyBlockStructure) user.getInventory().load(BLOCK_ARRAY, from);
             set(2);
             
             assert blocks != null;
@@ -653,8 +745,8 @@ public final class FormatverterFactory {
             
             BlockColorTable bct = defaultBCT();
             set(2);
-            
-            BlockStructure blocks = new CvVoxelArrayToBlocks().invoke(voxels, bct);
+    
+            LegacyBlockStructure blocks = new CvVoxelArrayToBlocks().invoke(voxels, bct);
             if (verbose) user.printLocalized("to_blocks.blocks", blocks.getBlockCount());
             set(3);
     
@@ -673,7 +765,7 @@ public final class FormatverterFactory {
         
         @Override
         public Set<Option> getOptionalOptions() {
-            return Sets.ofArray(OPTION_VERBOSE);
+            return Sets.ofArray(OPTION_VERBOSE, OPTION_ALGORITHM);
         }
         
         @Override
@@ -681,14 +773,35 @@ public final class FormatverterFactory {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
-            //Logger logger = verbose? user.getLogger() : null;
+            Logger logger = verbose? user.getLogger() : null;
     
+            final Classverter<VoxelArray, STLModel> algorithm;
+            {
+                String algoName = args.getOrDefault(OPTION_ALGORITHM.getId(), "");
+        
+                switch (args.get(OPTION_ALGORITHM.getId())) {
+                    case "":
+                    case "unoptimized":
+                    case "simple":
+                    case "fast":
+                    case "naive":
+                        algorithm = new CvVoxelArrayToSTL_Naive(logger);
+                        break;
+                    case "optimal":
+                    case "optimized":
+                        algorithm = new CvVoxelArrayToSTL_Optimized(logger);
+                        break;
+                    default:
+                        throw new FormatverterArgumentException(OPTION_ALGORITHM, "Unknown algorithm: " + algoName);
+                }
+            }
+            
             VoxelArray voxels = (VoxelArray) user.getInventory().load(VOXEL_ARRAY, from);
             assert voxels != null;
             if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
             set(1);
     
-            STLModel stl = new CvVoxelArrayToSTL().invoke(voxels);
+            STLModel stl = algorithm.invoke(voxels);
             if (verbose) user.print(lang.get("to_stl.triangles"), stl.size());
             set(2);
     
@@ -715,14 +828,14 @@ public final class FormatverterFactory {
             Language lang = user.getVoxelVert().getLanguage();
             
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
-            //Logger logger = verbose? user.getLogger() : null;
+            Logger logger = verbose? user.getLogger() : null;
     
             VoxelArray voxels = (VoxelArray) user.getInventory().load(VOXEL_ARRAY, from);
             assert voxels != null;
             if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
             set(1);
     
-            OBJModel obj = new CvVoxelArrayToOBJ().invoke(voxels);
+            OBJModel obj = new CvVoxelArrayToOBJ_Naive(logger).invoke(voxels);
             if (verbose) user.print(lang.get("to_wavefront.content"), obj.getVertexCount(), obj.getFaceCount());
             set(2);
     
@@ -759,6 +872,7 @@ public final class FormatverterFactory {
             set(1);
             
             STLModel stl = new CvOBJToSTL().invoke(obj);
+            set(2);
             
             user.getInventory().save(STL, stl, to);
             set(3);
