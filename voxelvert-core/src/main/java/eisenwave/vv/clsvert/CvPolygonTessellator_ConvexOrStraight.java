@@ -2,7 +2,7 @@ package eisenwave.vv.clsvert;
 
 import eisenwave.torrens.object.Vertex3f;
 import eisenwave.torrens.stl.STLTriangle;
-import eisenwave.vv.clsvert.CvVoxelArrayToSTL_Optimized.PolygonVertex;
+import eisenwave.vv.clsvert.CvVoxelArrayToSTL_Hybrid.PolygonVertex;
 
 import java.util.*;
 
@@ -11,7 +11,7 @@ public class CvPolygonTessellator_ConvexOrStraight
     
     @Override
     public Class<PolygonVertex[]> getFrom() {
-        return CvVoxelArrayToSTL_Optimized.PolygonVertex[].class;
+        return CvVoxelArrayToSTL_Hybrid.PolygonVertex[].class;
     }
     
     @Override

@@ -16,11 +16,11 @@ import java.util.logging.Logger;
 
 import static eisenwave.spatium.enums.Direction.*;
 
-public class CvVoxelArrayToSTL_Optimized implements Classverter<VoxelArray, STLModel> {
+public class CvVoxelArrayToSTL_Hybrid implements Classverter<VoxelArray, STLModel> {
     
     private final Logger logger;
     
-    public CvVoxelArrayToSTL_Optimized(@Nullable Logger logger) {
+    public CvVoxelArrayToSTL_Hybrid(@Nullable Logger logger) {
         this.logger = logger;
     }
     
@@ -150,22 +150,29 @@ public class CvVoxelArrayToSTL_Optimized implements Classverter<VoxelArray, STLM
         switch (axis) {
             case X:
                 //buffer = new int[from.getSizeY() * from.getSizeZ()];
-                slicer = CvVoxelArrayToSTL_Optimized::getPresenceYZ;
+                slicer = CvVoxelArrayToSTL_Hybrid::getPresenceYZ;
                 break;
             case Y:
                 //buffer = new int[from.getSizeZ() * from.getSizeX()];
-                slicer = CvVoxelArrayToSTL_Optimized::getPresenceZX;
+                slicer = CvVoxelArrayToSTL_Hybrid::getPresenceZX;
                 break;
             case Z:
                 //buffer = new int[from.getSizeX() * from.getSizeY()];
-                slicer = CvVoxelArrayToSTL_Optimized::getPresenceXY;
+                slicer = CvVoxelArrayToSTL_Hybrid::getPresenceXY;
                 break;
             default: throw new AssertionError();
         }
-        
+    
         Rectangle4i[][]
             positive = new Rectangle4i[lim][],
             negative = new Rectangle4i[lim][];
+    
+        if (lim == 1) {
+            BitArray2Adapter slice = slicer.getSlice(from, 0);
+            positive[0] = merger.invoke(slice);
+            negative[0] = positive[0].clone();
+            return new Rectangle4i[][][] {negative, positive};
+        }
         
         BitArray2Adapter prev, crnt, next;
         

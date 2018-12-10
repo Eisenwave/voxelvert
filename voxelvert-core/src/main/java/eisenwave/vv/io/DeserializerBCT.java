@@ -1,11 +1,13 @@
 package eisenwave.vv.io;
 
+import eisenwave.torrens.error.FileSyntaxException;
+import eisenwave.torrens.schematic.BlockKey;
+import eisenwave.torrens.schematic.legacy.MicroLegacyUtil;
 import eisenwave.vv.rp.BlockColor;
 import eisenwave.vv.rp.BlockColorTable;
-import eisenwave.torrens.error.FileFormatException;
-import eisenwave.torrens.error.FileVersionException;
+import eisenwave.torrens.error.*;
 import eisenwave.torrens.io.Deserializer;
-import eisenwave.torrens.schematic.legacy.BlockKey;
+import eisenwave.torrens.schematic.legacy.LegacyBlockKey;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInputStream;
@@ -21,21 +23,38 @@ public class DeserializerBCT implements Deserializer<BlockColorTable> {
         verifyHeader(dataStream);
     
         int version = dataStream.readInt();
-        if (version != 1 && version != 2)
+        if (version != 1 && version != 2 && version != 3)
             throw new FileVersionException("version " + version + " is not supported");
     
         final int count = dataStream.readInt();
-        final boolean hasFlags = version == 2;
+        final boolean
+            hasFlags = version >= 2,
+            legacyIds = version <= 2;
         
         BlockColorTable result = new BlockColorTable();
         for (int i = 0; i < count; i++) {
-            int id = dataStream.readUnsignedByte();
-            byte data = dataStream.readByte();
+            BlockKey key;
+            boolean legacy;
+            if (legacyIds) {
+                LegacyBlockKey legacyKey = new LegacyBlockKey(dataStream.readUnsignedByte(), dataStream.readByte());
+                key = MicroLegacyUtil.getByLegacyKey(legacyKey);
+                if (key == null)
+                    throw new FileSyntaxException("No translation for " + legacyKey);
+                legacy = true;
+            }
+            else {
+                String keyStr = dataStream.readUTF();
+                legacy = dataStream.readBoolean();
+        
+                key = BlockKey.parse(keyStr);
+            }
+            
             int argb = dataStream.readInt();
             short flags = hasFlags? dataStream.readShort() : 0;
             short volume = dataStream.readShort();
     
-            result.put(new BlockKey(id, data), new BlockColor(argb, flags, volume));
+            //noinspection ConstantConditions
+            result.put(key, new BlockColor(argb, flags, volume, legacy));
         }
         
         return result;

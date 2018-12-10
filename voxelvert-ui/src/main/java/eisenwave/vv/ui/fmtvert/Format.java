@@ -49,7 +49,13 @@ public class Format implements Comparable<Format> {
     VOXEL_MESH = new Format("voxel_mesh", true),
     
     /** Array of Blocks */
-    BLOCK_ARRAY = new Format("block_array", true);
+    BLOCK_ARRAY = new Format("block_array", true),
+    
+    /** Stream of Blocks */
+    BLOCK_STREAM = new Format("block_stream", true),
+    
+    /** DEBUG Pixel Merging Algorithm **/
+    DEBUG_PIXEL_MERGE = new Format("debug_pixel_merge", true);
     
     /*
     private final static Map<String, Format> byExt = new HashMap<>();

@@ -172,13 +172,13 @@ public final class CommandUtil {
         return ChatColor.translateAlternateColorCodes('&', str);
     }
     
-    @NotNull
+    /* @NotNull
     public static VVUser userOf(BukkitVoxelVert vv, CommandSender sender) {
         if (sender instanceof Player)
             return new PlayerVVUser(vv, (Player) sender);
         else
             return new ConsoleVVUser(vv, sender);
-    }
+    } */
     
     @Nullable
     public static String extensionOf(String file) {

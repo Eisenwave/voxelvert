@@ -1,7 +1,8 @@
 package eisenwave.vv.io;
 
 import eisenwave.torrens.io.Serializer;
-import eisenwave.torrens.schematic.legacy.BlockKey;
+import eisenwave.torrens.schematic.BlockKey;
+import eisenwave.torrens.schematic.legacy.LegacyBlockKey;
 import eisenwave.vv.rp.BlockColor;
 import eisenwave.vv.rp.BlockColorTable;
 
@@ -12,7 +13,7 @@ import java.util.Map;
 
 public class SerializerBCT implements Serializer<BlockColorTable> {
     
-    public final static int VERSION = 2;
+    public final static int VERSION = 3;
     
     @Override
     public void toStream(BlockColorTable map, OutputStream stream) throws IOException {
@@ -26,8 +27,8 @@ public class SerializerBCT implements Serializer<BlockColorTable> {
         for (Map.Entry<BlockKey, BlockColor> entry : map.entrySet()) {
             BlockKey block = entry.getKey();
             BlockColor color = entry.getValue();
-            dataStream.writeByte(block.getId());
-            dataStream.writeByte(block.getData());
+            dataStream.writeUTF(block.toString());
+            dataStream.writeBoolean(color.isLegacy());
             dataStream.writeInt(color.getRGB());
             dataStream.writeShort(color.getFlags());
             dataStream.writeShort(color.getVoxelVolume());

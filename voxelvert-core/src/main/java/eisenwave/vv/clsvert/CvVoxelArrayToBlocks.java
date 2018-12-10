@@ -1,8 +1,10 @@
 package eisenwave.vv.clsvert;
 
+import eisenwave.torrens.schematic.BlockKey;
 import eisenwave.torrens.schematic.legacy.ArrayBlockStructure;
-import eisenwave.torrens.schematic.legacy.BlockKey;
+import eisenwave.torrens.schematic.legacy.LegacyBlockKey;
 import eisenwave.torrens.schematic.legacy.LegacyBlockStructure;
+import eisenwave.torrens.schematic.legacy.MicroLegacyUtil;
 import eisenwave.torrens.voxel.VoxelArray;
 import eisenwave.vv.rp.BlockColorTable;
 import eisenwave.vv.util.Arguments;
@@ -41,7 +43,9 @@ public class CvVoxelArrayToBlocks implements Classverter<VoxelArray, LegacyBlock
             }
             //if (lastKey == null) lastKey = new BlockKey(152);
             if (lastKey == null) continue;
-            result.setBlock(voxel.getPosition(), lastKey);
+            LegacyBlockKey key = MicroLegacyUtil.getByMinecraftKey13(lastKey);
+            if (key != null)
+                result.setBlock(voxel.getPosition(), key);
         }
         
         return result;

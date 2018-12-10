@@ -2,6 +2,7 @@ package eisenwave.vv.ui.user;
 
 import eisenwave.torrens.img.ARGBSerializerBMP;
 import eisenwave.torrens.img.ARGBSerializerWBMP;
+import eisenwave.torrens.schematic.BlockStructureStream;
 import eisenwave.torrens.schematic.legacy.LegacyBlockStructure;
 import eisenwave.torrens.voxel.*;
 import eisenwave.torrens.wavefront.*;
@@ -176,6 +177,14 @@ public class VVInventoryImpl implements VVInventory {
                     throw new IOException("stored object \"" + name + "\" must be a " + LegacyBlockStructure.class.getSimpleName());
             }
     
+            case "block_stream": {
+                if (!storage.containsKey(name)) return null;
+                Object obj = storage.get(name);
+                if (obj instanceof BlockStructureStream) return obj;
+                else
+                    throw new IOException("stored object \"" + name + "\" must be a " + BlockStructureStream.class.getSimpleName());
+            }
+    
             case "voxel_array": {
                 if (!storage.containsKey(name)) return null;
                 Object obj = storage.get(name);
@@ -314,6 +323,14 @@ public class VVInventoryImpl implements VVInventory {
                 }
                 else throw new IOException("object must be a " + LegacyBlockStructure.class.getSimpleName());
             }
+    
+            case "block_stream": {
+                if (object instanceof BlockStructureStream) {
+                    storage.put(name, object);
+                    return true;
+                }
+                else throw new IOException("object must be a " + BlockStructureStream.class.getSimpleName());
+            }
             
             case "voxel_array": {
                 if (object instanceof VoxelArray) {
@@ -330,8 +347,8 @@ public class VVInventoryImpl implements VVInventory {
                 }
                 else throw new IOException("object must be a " + VoxelMesh.class.getSimpleName());
             }
-            
-            default: return false;
+    
+            default: throw new IOException("Can't store unknown format \"" + format + "\"");
         }
     }
     

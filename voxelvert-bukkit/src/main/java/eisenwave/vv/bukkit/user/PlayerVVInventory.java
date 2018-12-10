@@ -1,5 +1,7 @@
 package eisenwave.vv.bukkit.user;
 
+import eisenwave.torrens.schematic.BlockStructureStream;
+import eisenwave.vv.bukkit.inject.FormatverterInjector;
 import eisenwave.vv.ui.fmtvert.Format;
 import eisenwave.vv.ui.user.VVInventoryImpl;
 import eisenwave.torrens.schematic.legacy.LegacyBlockStructure;
@@ -52,16 +54,16 @@ public class PlayerVVInventory extends VVInventoryImpl {
     }
     */
     
-    private class SelectionVariable implements VVInventoryVariable<LegacyBlockStructure> {
+    private class SelectionVariable implements VVInventoryVariable<BlockStructureStream> {
     
         @Override
         public Format getFormat() {
-            return Format.BLOCK_ARRAY;
+            return FormatverterInjector.BLOCKS_FORMAT;
         }
     
         @Nullable
         @Override
-        public LegacyBlockStructure get() {
+        public BlockStructureStream get() {
             return getOwner().getBlocks();
         }
     

@@ -1,7 +1,7 @@
 package eisenwave.vv.bukkit.async;
 
 import eisenwave.torrens.object.BoundingBox6i;
-import eisenwave.torrens.schematic.legacy.BlockKey;
+import eisenwave.torrens.schematic.legacy.LegacyBlockKey;
 import eisenwave.torrens.schematic.legacy.LegacyBlockStructure;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -53,9 +53,9 @@ public class WorldBlockStructure implements LegacyBlockStructure {
     }
     
     @Override
-    public BlockKey getBlock(int x, int y, int z) {
+    public LegacyBlockKey getBlock(int x, int y, int z) {
         Block block = getBlockAt(x, y, z);
-        return new BlockKey(block.getTypeId(), block.getData());
+        return new LegacyBlockKey(block.getTypeId(), block.getData());
     }
     
     @Override

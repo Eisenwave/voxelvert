@@ -1,11 +1,13 @@
 package eisenwave.vv.bukkit;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import eisenwave.inv.EisenInventoriesPluginStartup;
 import eisenwave.vv.bukkit.async.*;
 import eisenwave.vv.bukkit.cmd.*;
 import eisenwave.vv.bukkit.http.FileTransferManager;
 import eisenwave.vv.bukkit.http.VVHttpThread;
-import org.bukkit.Bukkit;
+import eisenwave.vv.bukkit.user.WorldEditEmergencyListener;
+import org.bukkit.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import eisenwave.vv.bukkit.inject.FormatverterInjector;
 import eisenwave.vv.bukkit.user.BukkitVoxelVert;
@@ -22,6 +24,7 @@ public class VoxelVertPlugin extends JavaPlugin {
     
     private static VoxelVertPlugin instance;
     
+    private EisenInventoriesPluginStartup eisenInventoriesStarter = new EisenInventoriesPluginStartup(this);
     private WorldEditPlugin worldEditPlugin;
     private BukkitVoxelVert voxelVert;
     private VoxelVertConfig config;
@@ -30,6 +33,8 @@ public class VoxelVertPlugin extends JavaPlugin {
     
     private VVConverterThread conversionThread;
     private VVHttpThread httpThread;
+    
+    private boolean eventsRegistered = false;
     
     // ENABLE & DISABLE
     
@@ -40,31 +45,45 @@ public class VoxelVertPlugin extends JavaPlugin {
     
     @Override
     public void onEnable() {
-        FormatverterInjector.inject(FormatverterFactory.getInstance());
+        eisenInventoriesStarter.onEnable();
     
         config = new VoxelVertConfig(this, getConfig());
         boolean verbose = config.hasVerbosityOnEnable();
         String langName = config.getLanguage();
     
-        if (!initWorldEdit(verbose)
-            || !initLanguage(langName, verbose)
-            || !initVoxelVert(verbose)
-            || !initCommands()) {
+        initWorldEdit(verbose);
+    
+        if (!initLanguage(langName, verbose) ||
+            !initVoxelVert(verbose) ||
+            !initCommands()) {
             getLogger().severe("FAILED TO ENABLE PLUGIN");
             setEnabled(false);
             return;
         }
     
+        FormatverterInjector.inject(FormatverterFactory.getInstance());
+    
         startConverterThread();
         if (config.isHttpEnabled()) {
             startHttpServer();
         }
+    
+        if (!eventsRegistered) {
+            if (!voxelVert.isWorldEditAvailable()) {
+                WorldEditEmergencyListener listener = new WorldEditEmergencyListener(voxelVert);
+                getServer().getPluginManager().registerEvents(listener, this);
+                eventsRegistered = true;
+            }
+        }
+        
         
         this.saveDefaultConfig();
     }
     
     @Override
     public void onDisable() {
+        eisenInventoriesStarter.onDisable();
+        
         boolean verbose = config.hasVerbosityOnDisable();
         this.conversionThread.interrupt();
         if (httpThread != null)
@@ -92,18 +111,26 @@ public class VoxelVertPlugin extends JavaPlugin {
         }
     }
     
-    private boolean initWorldEdit(boolean verbose) {
+    private void initWorldEdit(boolean verbose) {
         this.worldEditPlugin = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
-        if (worldEditPlugin == null) {
-            getLogger().severe("Failed to load WorldEdit");
-            return false;
-        }
-        if (verbose) getLogger().info("Loaded WorldEdit " + worldEditPlugin.getDescription().getVersion());
-        return true;
+        if (worldEditPlugin == null)
+            getLogger().warning("Failed to load WorldEdit, using emergency replacements for WE functionality");
+        else if (verbose)
+            getLogger().info("Loaded WorldEdit " + worldEditPlugin.getDescription().getVersion());
     }
     
+    /* private void initEisenInventories(boolean verbose) {
+        this.eisenInventoriesPlugin = (EisenInventoriesPlugin) Bukkit.getPluginManager().getPlugin("EisenInventories");
+        if (eisenInventoriesPlugin == null) {
+            this.eisenInventoriesPlugin = new EisenInventoriesPlugin(this);
+            getLogger().warning("Failed to load EisenInventories, using shaded copy instead");
+        }
+        else if (verbose)
+            getLogger().info("Loaded EisenInventories " + eisenInventoriesPlugin.getDescription().getVersion());
+    } */
+    
     private boolean initVoxelVert(boolean verbose) {
-        BlockScanner scanner = new CachedBlockScanner(this);
+        BlockScanner scanner = new WorldBlockScanner();
         //BlockScanner scanner = new SimpleBlockScanner();
     
         if (verbose)
@@ -116,6 +143,7 @@ public class VoxelVertPlugin extends JavaPlugin {
     private boolean initCommands() {
         VoxelVertCommand[] commands = {
             new CmdConvert(this),
+            new CmdProbeBlock(this),
             new CmdVoxelvert(this),
             new CmdList(this),
             new CmdRemove(this),
@@ -148,6 +176,7 @@ public class VoxelVertPlugin extends JavaPlugin {
         return httpThread;
     }
     
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isHttpServerStarted() {
         return httpThread != null && httpThread.hasStartupSuccess();
     }

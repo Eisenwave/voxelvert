@@ -32,7 +32,7 @@ public abstract class VoxelVertCommand implements CommandExecutor {
     @Override
     public final boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         command.setUsage(usage);
-        return onCommand(sender, CommandUtil.userOf(voxelVert, sender), args);
+        return onCommand(sender, voxelVert.getUser(sender), args);
     }
     
     /**

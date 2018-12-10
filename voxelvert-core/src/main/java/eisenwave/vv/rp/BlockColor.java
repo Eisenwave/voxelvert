@@ -22,32 +22,40 @@ public class BlockColor implements RGBValue {
     private final int flags;
     private final short volume;
     private final float perVol;
+    private final boolean legacy;
     
-    private BlockColor(int rgb, int flags, float volume) {
+    private BlockColor(int rgb, int flags, float volume, boolean legacy) {
         if (volume < 0 || volume > 1)
             throw new IllegalArgumentException("volume must be in range(0,1) (" + volume + ")");
         this.rgb = rgb;
         this.flags = flags;
         this.volume = (short) (volume * 4096);
         this.perVol = (float) Math.cbrt(volume);
+        this.legacy = legacy;
     }
     
-    public BlockColor(int rgb, int flags, short volume) {
+    public BlockColor(int rgb, int flags, short volume, boolean legacy) {
         this.rgb = rgb;
         this.flags = flags;
         this.volume = volume;
         this.perVol = (float) Math.cbrt(volume / 4096F);
+        this.legacy = legacy;
     }
     
-    public BlockColor(int rgb, int flags) {
+    public BlockColor(int rgb, int flags, boolean legacy) {
         this.rgb = rgb;
         this.flags = flags;
         this.volume = 4096;
         this.perVol = 1F;
+        this.legacy = legacy;
     }
     
     public int getFlags() {
         return flags;
+    }
+    
+    public boolean isLegacy() {
+        return legacy;
     }
     
     /**

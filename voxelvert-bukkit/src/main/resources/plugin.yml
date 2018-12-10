@@ -1,12 +1,16 @@
 name: VoxelVert
 main: eisenwave.vv.bukkit.VoxelVertPlugin
-version: R1.4.7
+version: R1.5
+api-version: 1.13
 author: Eisenwave
-depend: [WorldEdit]
+softdepend: [WorldEdit]
 
 permissions:
   vv.command.convert:
     description: use command /convert
+    default: op
+  vv.command.probe-block:
+    description: use command /probe-block
     default: op
   vv.command.voxelvert:
     description: use command /voxelvert
@@ -53,6 +57,9 @@ commands:
     permission: vv.command.convert
     aliases: [c]
     description: convert files
+  probe-block:
+    permission: vv.command.proble-block
+    description: probe information about looked at block
   voxelvert:
     permission: vv.command.voxelvert
     aliases: [vv]
@@ -77,3 +84,10 @@ commands:
     permission: vv.command.voxelvert-share
     aliases: [vv-share]
     description: share a file
+
+  invtest:
+    usage: "\u00A7cUsage: /invtest"
+    permission: eisen.inv.invtest
+  cancelquery:
+    usage: "\u00A7cUsage: /cancelquery"
+    permission: eisen.inv.cancelquery

@@ -3,7 +3,9 @@ package eisenwave.vv.rp;
 import eisenwave.spatium.util.PrimMath;
 import eisenwave.torrens.img.Texture;
 import eisenwave.torrens.object.Rectangle4i;
-import eisenwave.torrens.schematic.legacy.BlockKey;
+import eisenwave.torrens.schematic.BlockKey;
+import eisenwave.torrens.schematic.legacy.LegacyBlockKey;
+import eisenwave.torrens.schematic.legacy.MicroLegacyUtil;
 import eisenwave.torrens.util.ColorMath;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,7 +36,7 @@ public class BlockColorExtractor {
     @Nullable
     private String grassMap, foliageMap;
     
-    private final Map<BlockKey, ExtractableColor> blockColors = new LinkedHashMap<>();
+    private final Map<LegacyBlockKey, ExtractableColor> blockColors = new LinkedHashMap<>();
     
     // GETTERS & OPERATIONS
     
@@ -59,9 +61,13 @@ public class BlockColorExtractor {
         /* System.err.println(Long.toHexString(Integer.toUnsignedLong(grassRGB))
             + " "
             + Long.toHexString(Integer.toUnsignedLong(foliageRGB))); */
-        
-        for (Map.Entry<BlockKey, ExtractableColor> entry : blockColors.entrySet()) {
-            BlockKey block = entry.getKey();
+    
+        for (Map.Entry<LegacyBlockKey, ExtractableColor> entry : blockColors.entrySet()) {
+            LegacyBlockKey legacyKey = entry.getKey();
+            BlockKey block = MicroLegacyUtil.getByLegacyKey(legacyKey);
+            if (block == null)
+                throw new IllegalStateException("No translation for " + legacyKey);
+            
             ExtractableColor color = entry.getValue();
             
             int rgb;
@@ -99,7 +105,7 @@ public class BlockColorExtractor {
                 System.out.print(block.getId()+":"+block.getData()+" "+tint);
                 System.out.println("  ->    "+new Color(rgb));
             } */
-            result.put(block, new BlockColor(rgb, meta.getFlags(), meta.getVoxels()));
+            result.put(block, new BlockColor(rgb, meta.getFlags(), meta.getVoxels(), true));
         }
         
         return result;
@@ -148,7 +154,7 @@ public class BlockColorExtractor {
      *
      * @param block the block
      */
-    public void put(@NotNull BlockKey block, @NotNull BlockColorMeta meta, int rgb) {
+    public void put(@NotNull LegacyBlockKey block, @NotNull BlockColorMeta meta, int rgb) {
         ExtractStrategy strategy = new ConstantExtractStrategy(rgb);
         blockColors.put(block, new ExtractableColor(strategy, meta));
     }
@@ -158,7 +164,7 @@ public class BlockColorExtractor {
      *
      * @param block the block
      */
-    public void put(@NotNull BlockKey block, @NotNull BlockColorMeta meta, String texturePath) {
+    public void put(@NotNull LegacyBlockKey block, @NotNull BlockColorMeta meta, String texturePath) {
         ExtractStrategy strategy = new TextureExtractStrategy(texturePath);
         blockColors.put(block, new ExtractableColor(strategy, meta));
     }
@@ -168,7 +174,7 @@ public class BlockColorExtractor {
      *
      * @param block the block
      */
-    public void put(@NotNull BlockKey block, @NotNull BlockColorMeta meta, String texturePath, Rectangle4i area) {
+    public void put(@NotNull LegacyBlockKey block, @NotNull BlockColorMeta meta, String texturePath, Rectangle4i area) {
         ExtractStrategy strategy = new TextureAreaExtractStrategy(texturePath, area);
         blockColors.put(block, new ExtractableColor(strategy, meta));
     }
@@ -179,7 +185,7 @@ public class BlockColorExtractor {
     
     // ITERATION
     
-    public void forEach(BiConsumer<BlockKey, ExtractableColor> action) {
+    public void forEach(BiConsumer<LegacyBlockKey, ExtractableColor> action) {
         blockColors.forEach(action);
     }
     

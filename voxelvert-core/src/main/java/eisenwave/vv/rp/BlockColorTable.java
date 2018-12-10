@@ -1,6 +1,6 @@
 package eisenwave.vv.rp;
 
-import eisenwave.torrens.schematic.legacy.BlockKey;
+import eisenwave.torrens.schematic.BlockKey;
 import eisenwave.torrens.util.ColorMath;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,10 +20,8 @@ public class BlockColorTable extends LinkedHashMap<BlockKey, BlockColor> {
     INSIST_ALPHA = 1 << 3;
     
     @Nullable
-    public BlockColor get(BlockKey key) {
-        BlockColor result = super.get(key);
-        return (result == null && key.getData() != 0)?
-            super.get(new BlockKey(key.getId(), 0)) : result;
+    public BlockColor get(String key) {
+        return get(BlockKey.minecraft(key));
     }
     
     @Nullable

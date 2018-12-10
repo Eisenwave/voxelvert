@@ -5,7 +5,7 @@ import eisenwave.vv.rp.*;
 import eisenwave.torrens.error.FileSyntaxException;
 import eisenwave.torrens.io.TextDeserializer;
 import eisenwave.torrens.object.Rectangle4i;
-import eisenwave.torrens.schematic.legacy.BlockKey;
+import eisenwave.torrens.schematic.legacy.LegacyBlockKey;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Reader;
@@ -54,8 +54,8 @@ public class DeserializerBCE implements TextDeserializer<BlockColorExtractor> {
             
             type = deserializeString(elementType.getAsJsonPrimitive(), "type");
         }
-        
-        BlockKey[] blocks;
+    
+        LegacyBlockKey[] blocks;
         blocks:
         {
             JsonPrimitive primitiveId = getPrimitive(json, "id");
@@ -64,7 +64,7 @@ public class DeserializerBCE implements TextDeserializer<BlockColorExtractor> {
             JsonPrimitive primitiveData = getPrimitive(json, "data");
             if (primitiveData.isNumber()) {
                 byte data = deserializeData(primitiveData);
-                blocks = new BlockKey[] {new BlockKey(id, data)};
+                blocks = new LegacyBlockKey[] {new LegacyBlockKey(id, data)};
             }
             
             else if (primitiveData.isString()) {
@@ -72,7 +72,7 @@ public class DeserializerBCE implements TextDeserializer<BlockColorExtractor> {
                 //noinspection EmptyCatchBlock
                 try {
                     byte data = Byte.parseByte(dataStr);
-                    blocks = new BlockKey[] {new BlockKey(id, data)};
+                    blocks = new LegacyBlockKey[] {new LegacyBlockKey(id, data)};
                     break blocks;
                 } catch (NumberFormatException ex) {}
                 
@@ -86,10 +86,10 @@ public class DeserializerBCE implements TextDeserializer<BlockColorExtractor> {
                     if (from > to) throw new NumberFormatException("'data' range out of order");
                     if (from < 0) throw new NumberFormatException("start of range must be in range(0,15)");
                     if (to > 15) throw new NumberFormatException("end of range must be in range(0,15)");
-                    
-                    blocks = new BlockKey[to - from + 1];
+    
+                    blocks = new LegacyBlockKey[to - from + 1];
                     for (byte i = 0, d = from; d <= to; d++, i++)
-                        blocks[i] = new BlockKey(id, d);
+                        blocks[i] = new LegacyBlockKey(id, d);
                     
                 } catch (NumberFormatException ex) {
                     throw new FileSyntaxException("failed to parse 'data' \"" + dataStr + "\"", ex);
@@ -106,8 +106,8 @@ public class DeserializerBCE implements TextDeserializer<BlockColorExtractor> {
             case "texture": {
                 JsonPrimitive primitiveTexture = getPrimitive(json, "texture");
                 String texture = deserializeString(primitiveTexture, "texture");
-                
-                for (BlockKey block : blocks)
+    
+                for (LegacyBlockKey block : blocks)
                     result.put(block, meta, texture);
                 break;
             }
@@ -118,8 +118,8 @@ public class DeserializerBCE implements TextDeserializer<BlockColorExtractor> {
                 
                 JsonArray arrayArea = getArray(json, "area");
                 Rectangle4i area = deserializeArea(arrayArea);
-                
-                for (BlockKey block : blocks)
+    
+                for (LegacyBlockKey block : blocks)
                     result.put(block, meta, texture, area);
                 break;
             }
@@ -127,8 +127,8 @@ public class DeserializerBCE implements TextDeserializer<BlockColorExtractor> {
             case "rgb": {
                 JsonPrimitive primitiveValue = getPrimitive(json, "rgb");
                 String value = deserializeString(primitiveValue, "rgb");
-                
-                for (BlockKey block : blocks)
+    
+                for (LegacyBlockKey block : blocks)
                     result.put(block, meta, parseHex(value));
                 break;
             }

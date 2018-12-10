@@ -2,22 +2,21 @@ package eisenwave.vv.ui.fmtvert;
 
 import eisenwave.torrens.img.ARGBSerializerBMP;
 import eisenwave.torrens.object.Rectangle4i;
-import eisenwave.torrens.schematic.legacy.LegacyBlockStructure;
+import eisenwave.torrens.schematic.legacy.*;
 import eisenwave.torrens.util.ColorMath;
 import eisenwave.torrens.voxel.BitArray2;
 import eisenwave.vv.clsvert.*;
+import eisenwave.torrens.schematic.BlockStructureStream;
 import eisenwave.vv.object.Language;
 import eisenwave.spatium.enums.Direction;
 import eisenwave.spatium.enums.Face;
 import eisenwave.torrens.img.Texture;
 import eisenwave.torrens.object.Vertex3i;
 import eisenwave.torrens.voxel.VoxelArray;
-import eisenwave.torrens.wavefront.MTLLibrary;
-import eisenwave.torrens.wavefront.OBJModel;
+import eisenwave.torrens.wavefront.*;
 import eisenwave.vv.object.MCModel;
 import eisenwave.vv.rp.BlockColorTable;
-import eisenwave.vv.io.DeserializerBCT;
-import eisenwave.vv.io.DeserializerBCE;
+import eisenwave.vv.io.*;
 import eisenwave.vv.rp.BlockColorExtractor;
 import eisenwave.vv.ui.error.FormatverterArgumentException;
 import eisenwave.vv.ui.user.VVUser;
@@ -77,7 +76,8 @@ public final class FormatverterFactory {
             fv_qef_va = () -> new InventoryFormatverter(QEF, VOXEL_ARRAY),
             fv_schematic_va = () -> new CompoundFormatverter(
                 new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY),
-                new FV_BA_VA());
+                new FV_BA_BS(),
+                new FV_BS_VA());
         
         put(BLOCK_ARRAY, IMAGE, () -> new CompoundFormatverter(new FV_BA_VA(), new FV_VA_IMAGE()));
         put(BLOCK_ARRAY, MODEL, () -> new CompoundFormatverter(new FV_BA_VA(), new FV_VA_MODEL()));
@@ -87,6 +87,14 @@ public final class FormatverterFactory {
         put(BLOCK_ARRAY, STL, () -> new CompoundFormatverter(new FV_BA_VA(), new FV_VA_STL()));
         put(BLOCK_ARRAY, WAVEFRONT, () -> new CompoundFormatverter(new FV_BA_VA(), new FV_VA_WAVEFRONT()));
     
+        put(BLOCK_STREAM, IMAGE, () -> new CompoundFormatverter(new FV_BS_VA(), new FV_VA_IMAGE()));
+        put(BLOCK_STREAM, MODEL, () -> new CompoundFormatverter(new FV_BS_VA(), new FV_VA_MODEL()));
+        put(BLOCK_STREAM, QB, () -> new CompoundFormatverter(new FV_BS_VA(), new FV_VA_QB()));
+        put(BLOCK_STREAM, QEF, () -> new CompoundFormatverter(new FV_BS_VA(), fv_va_qef.get()));
+        put(BLOCK_STREAM, SCHEMATIC, () -> new CompoundFormatverter(new FV_BS_BA(), new FV_BA_SCHEMATIC()));
+        put(BLOCK_STREAM, STL, () -> new CompoundFormatverter(new FV_BS_VA(), new FV_VA_STL()));
+        put(BLOCK_STREAM, WAVEFRONT, () -> new CompoundFormatverter(new FV_BS_VA(), new FV_VA_WAVEFRONT()));
+        
         put(IMAGE, IMAGE, FV_IMAGE_IMAGE::new);
         put(IMAGE, QEF, () -> new CompoundFormatverter(new FV_IMAGE_VA(), fv_va_qef.get()));
         put(IMAGE, QB, () -> new CompoundFormatverter(new FV_IMAGE_VA(), new FV_VA_QB()));
@@ -324,6 +332,35 @@ public final class FormatverterFactory {
         
     }
     
+    private static class FV_BA_BS extends Formatverter {
+        
+        @Override
+        public int getMaxProgress() {
+            return 1;
+        }
+        
+        @Override
+        public @NotNull Set<Option> getOptionalOptions() {
+            return Sets.ofArray(OPTION_VERBOSE);
+        }
+        
+        @Override
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
+            //boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            
+            LegacyBlockStructure blocks = (LegacyBlockStructure) user.getInventory().load(BLOCK_ARRAY, from);
+            assert blocks != null;
+            
+            BlockStructureStream stream = new LegacyBlockStructureStream(blocks);
+            user.getInventory().save(BLOCK_STREAM, stream, to);
+            
+            //if (verbose)
+            //    user.print(blocks + " converted to " + stream);
+            set(1);
+        }
+        
+    }
+    
     private static class FV_BA_VA extends Formatverter {
         
         @Override
@@ -363,10 +400,88 @@ public final class FormatverterFactory {
             assert blocks != null;
             if (verbose) user.print(lang.get("from_block_array.blocks"), blocks.getBlockCount());
     
-            VoxelArray voxels = new CvBlocksToVoxelArray().invoke(blocks, bct, 0);
+            VoxelArray voxels = new CvBlockStructureToVoxelArray().invoke(blocks, bct, 0);
             if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
             set(3);
     
+            user.getInventory().save(VOXEL_ARRAY, voxels, to);
+            set(4);
+        }
+    
+    }
+    
+    private static class FV_BS_BA extends Formatverter {
+        
+        @Override
+        public int getMaxProgress() {
+            return 3;
+        }
+        
+        @Override
+        public @NotNull Set<Option> getOptionalOptions() {
+            return Sets.ofArray(OPTION_VERBOSE);
+        }
+        
+        @Override
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
+            //boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            
+            BlockStructureStream stream = (BlockStructureStream) user.getInventory().load(BLOCK_STREAM, from);
+            assert stream != null;
+            set(1);
+            
+            LegacyBlockStructure structure = new CvBlockStreamToBlockArray().invoke(stream);
+            user.getInventory().save(BLOCK_ARRAY, structure, to);
+            
+            //if (verbose)
+            //    user.print(blocks + " converted to " + stream);
+            set(3);
+        }
+        
+    }
+    
+    private static class FV_BS_VA extends Formatverter {
+        
+        @Override
+        public int getMaxProgress() {
+            return 4;
+        }
+        
+        @Override
+        public Set<Option> getOptionalOptions() {
+            return Sets.ofArray(OPTION_COLORS, OPTION_VERBOSE);
+        }
+        
+        @Override
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
+            Language lang = user.getVoxelVert().getLanguage();
+            
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            BlockColorTable bct;
+            {
+                String optBctId = OPTION_COLORS.getId();
+                if (!args.containsKey(optBctId)) {
+                    bct = defaultBCT();
+                }
+                else {
+                    String bctPath = args.get(optBctId);
+                    bct = (BlockColorTable) user.getInventory().load(BLOCK_COLOR_TABLE, bctPath);
+                    if (bct == null)
+                        throw new FormatverterArgumentException(OPTION_COLORS, "no BCT found at " + bctPath);
+                }
+            }
+            if (verbose) user.print(lang.get("from_colors.colors"), bct.size());
+            set(1);
+            
+            BlockStructureStream stream = (BlockStructureStream) user.getInventory().load(BLOCK_STREAM, from);
+            set(2);
+            
+            assert stream != null;
+            
+            VoxelArray voxels = new CvBlockStreamToVoxelArray().invoke(stream, bct, 0);
+            if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
+            set(3);
+            
             user.getInventory().save(VOXEL_ARRAY, voxels, to);
             set(4);
         }
@@ -778,18 +893,17 @@ public final class FormatverterFactory {
             final Classverter<VoxelArray, STLModel> algorithm;
             {
                 String algoName = args.getOrDefault(OPTION_ALGORITHM.getId(), "");
-        
-                switch (args.get(OPTION_ALGORITHM.getId())) {
+    
+                switch (algoName) {
                     case "":
                     case "unoptimized":
                     case "simple":
-                    case "fast":
                     case "naive":
                         algorithm = new CvVoxelArrayToSTL_Naive(logger);
                         break;
-                    case "optimal":
-                    case "optimized":
-                        algorithm = new CvVoxelArrayToSTL_Optimized(logger);
+                    case "hybrid":
+                    case "fast":
+                        algorithm = new CvVoxelArrayToSTL_Hybrid(logger);
                         break;
                     default:
                         throw new FormatverterArgumentException(OPTION_ALGORITHM, "Unknown algorithm: " + algoName);

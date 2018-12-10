@@ -1,11 +1,11 @@
 package eisenwave.vv.io;
 
-import eisenwave.torrens.schematic.legacy.BlockKey;
+import eisenwave.torrens.schematic.legacy.LegacyBlockKey;
 
 public class DeserializerSchematicTest {
-
-    private final static BlockKey
-    COAL_BLOCK = new BlockKey(173, 0);
+    
+    private final static LegacyBlockKey
+        COAL_BLOCK = new LegacyBlockKey(173, 0);
     
     /* public void deserialize() throws Exception {
         BlockArray blocks = new DeserializerSchematicBlocks().fromResource(getClass(), "bunny.schematic");

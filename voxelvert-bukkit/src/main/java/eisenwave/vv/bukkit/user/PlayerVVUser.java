@@ -1,6 +1,8 @@
 package eisenwave.vv.bukkit.user;
 
 import com.sk89q.worldedit.bukkit.selections.Selection;
+import eisenwave.torrens.object.Vertex3i;
+import eisenwave.torrens.schematic.BlockStructureStream;
 import eisenwave.torrens.schematic.legacy.LegacyBlockStructure;
 import eisenwave.vv.object.Language;
 import eisenwave.torrens.object.BoundingBox6i;
@@ -25,6 +27,9 @@ public class PlayerVVUser implements VVUser {
     private final PlayerVVInventory inv;
     
     private final String msgFormat, errFormat;
+    
+    @Nullable
+    private Vertex3i pos1, pos2;
     
     public PlayerVVUser(@NotNull BukkitVoxelVert vv, @NotNull Player player) {
         this.vv = Objects.requireNonNull(vv);
@@ -64,12 +69,12 @@ public class PlayerVVUser implements VVUser {
     
     @Override
     public void print(String msg) {
-        player.sendMessage( CommandUtil.chatColors(String.format(msgFormat, msg)) );
+        player.sendMessage(CommandUtil.chatColors(String.format(msgFormat, msg)));
     }
     
     @Override
     public void error(String err) {
-        player.sendMessage( CommandUtil.chatColors(String.format(errFormat, err)) );
+        player.sendMessage(CommandUtil.chatColors(String.format(errFormat, err)));
     }
     
     @Override
@@ -95,20 +100,36 @@ public class PlayerVVUser implements VVUser {
     }
     
     /**
-     * Returns a block array containing all of the player's blocks or <code>null</code> if the player has no block
+     * Returns a block stream containing all of the player's blocks or <code>null</code> if the player has no block
      * selection.
      *
      * @return the blocks in the player selection
      * @see #getBlockSelection()
      */
     @Nullable
-    public LegacyBlockStructure getBlocks() {
+    public BlockStructureStream getBlocks() {
         World world = player.getWorld();
         BoundingBox6i box = getBlockSelection();
         if (box == null)
             return null;
         
         return vv.getBlockScanner().getBlocks(world, box);
+    }
+    
+    public boolean setPos1(@Nullable Vertex3i pos) {
+        boolean change = this.pos1 == null && pos != null
+            || this.pos1 != null && !this.pos1.equals(pos);
+        
+        this.pos1 = pos;
+        return change;
+    }
+    
+    public boolean setPos2(@Nullable Vertex3i pos) {
+        boolean change = this.pos2 == null && pos != null
+            || this.pos2 != null && !this.pos2.equals(pos);
+        
+        this.pos2 = pos;
+        return change;
     }
     
     /**
@@ -119,19 +140,24 @@ public class PlayerVVUser implements VVUser {
      */
     @Nullable
     public BoundingBox6i getBlockSelection() {
-        Selection selection = vv.getWorldEdit().getSelection(player);
-        if (selection == null)
-            return null;
+        if (vv.isWorldEditAvailable()) {
+            @SuppressWarnings("ConstantConditions")
+            Selection selection = vv.getWorldEdit().getSelection(player);
+            if (selection == null)
+                return null;
         
-        Location min = selection.getMinimumPoint(), max = selection.getMaximumPoint();
+            Location min = selection.getMinimumPoint(), max = selection.getMaximumPoint();
+        
+            return new BoundingBox6i(
+                min.getBlockX(),
+                min.getBlockY(),
+                min.getBlockZ(),
+                max.getBlockX(),
+                max.getBlockY(),
+                max.getBlockZ());
+        }
     
-        return new BoundingBox6i(
-            min.getBlockX(),
-            min.getBlockY(),
-            min.getBlockZ(),
-            max.getBlockX(),
-            max.getBlockY(),
-            max.getBlockZ());
+        else return pos1 != null && pos2 != null? new BoundingBox6i(pos1, pos2) : null;
     }
     
 }

@@ -16,6 +16,7 @@ import eisenwave.vv.ui.user.VVInventory;
 import eisenwave.vv.ui.user.VVUser;
 import org.jetbrains.annotations.*;
 
+//import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,12 +70,12 @@ public class CmdVoxelvert extends VoxelVertCommand implements TabCompleter {
                     return true;
                 }
                 Player player = (Player) sender;
-            
+    
                 FileBrowserMenu menu = new FileBrowserMenu(user.getInventory());
                 MenuManager.getInstance().startSession(player, menu);
                 return true;
             }
-        
+
             // vv convert <sourceFile> [format]
             case "convert": {
                 if (!(sender instanceof Player)) {
@@ -82,9 +83,9 @@ public class CmdVoxelvert extends VoxelVertCommand implements TabCompleter {
                     return true;
                 }
                 Player player = (Player) sender;
-            
+    
                 if (args.length < 2) return false;
-            
+    
                 final String source = args[1];
                 if (source.startsWith("/")) {
                     user.errorLocalized("error.path_absolute");
@@ -94,7 +95,7 @@ public class CmdVoxelvert extends VoxelVertCommand implements TabCompleter {
                     user.errorLocalized("error.path_hidden");
                     return true;
                 }
-            
+    
                 final Format sourceFormat;
                 if (args.length < 3) {
                     sourceFormat = formatOf(user.getInventory(), source);
@@ -110,25 +111,95 @@ public class CmdVoxelvert extends VoxelVertCommand implements TabCompleter {
                         return true;
                     }
                 }
-            
+    
                 Menu menu = new ConvertMenu(user, source, sourceFormat);
                 MenuManager.getInstance().startSession(player, menu);
                 return true;
             }
-        
-            case "dev": {
+            
+            /* case "dev": {
                 if (!sender.isOp()) {
                     user.error("You must be an operator to run this command.");
+                    return true;
                 }
+                if (args.length < 2) return false;
+                
+                switch (args[1]) {
+                    case "table": {
+                        if (args.length < 3) return false;
+                        File file = new File(args[2]);
+                        
+                        World world = ((Player) sender).getWorld();
+                        //WorldServer worldServer = ((CraftWorld) world).getHandle();
+                        Block block = world.getBlockAt(0, 1, 0);
+                        Chunk chunk = ((CraftChunk) block.getChunk()).getHandle();
+                        
+                        BufferedWriter writer;
+                        try {
+                            writer = new BufferedWriter(new FileWriter(file));
+                            final BufferedWriter finalWriter = writer;
+                            
+                            //final int offsetY = 240;
+                            for (int id = 0; id < 256; id++) {
+                                //int y = offsetY + id % 16;
+                                //int z = id / 16;
+                                
+                                for (byte data = 0; data < 16; data++) {
+                                    final int id2 = id;
+                                    final byte data2 = data;
+                                    
+                                    //noinspection deprecation
+                                    plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+                                        try {
+                                            finalWriter.write('"');
+                                            finalWriter.write(id2 + "\",\"" + data2 + "\",\"");
+                                            //noinspection deprecation
+                                            block.setTypeIdAndData(id2, data2, false);
+                                            finalWriter.write(block.getType().name());
+                                            finalWriter.write("\",\"");
+                                            finalWriter.write(chunk.a(0, 1, 0).toString());
+                                            finalWriter.write('"');
+                                            finalWriter.newLine();
+                                        } catch (IllegalArgumentException | NullPointerException ex) {
+                                            try {
+                                                finalWriter.write("null\",\"" + ex.getClass().getSimpleName() + "\"");
+                                                finalWriter.newLine();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        } finally {
+                                            if (id2 == 255 && data2 == 15) {
+                                                try {
+                                                    //noinspection ConstantConditions
+                                                    finalWriter.close();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }
+                                    }, id * 16 + data);
+                                    
+                                }
+                                
+                            }
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                        
+                        return true;
+                    }
+                    
+                    default: return false;
+                }
+            } */
             
-                return true;
-            }
-        
             case "status": {
                 if (!requirePermission(sender, user, "vv.admin.status")) return true;
-            
+    
                 String format = user.getLanguage().get("user.keyval");
-            
+    
                 user.printLocalized("cmd.voxelvert.status");
                 sender.sendMessage(CommandUtil.chatColors(String.format(
                     format, "Language",
@@ -203,6 +274,7 @@ public class CmdVoxelvert extends VoxelVertCommand implements TabCompleter {
         
             default: return false;
         }
+    
     }
     
     @Nullable
@@ -251,13 +323,16 @@ public class CmdVoxelvert extends VoxelVertCommand implements TabCompleter {
     
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length != 1)
-            return null;
+        if (args.length == 0)
+            return TAB_COMPLETE_OPTIONS;
     
-        return TAB_COMPLETE_OPTIONS
-            .stream()
-            .filter(option -> option.startsWith(args[0]))
-            .collect(Collectors.toList());
+        else if (args.length == 1)
+            return TAB_COMPLETE_OPTIONS
+                .stream()
+                .filter(option -> option.startsWith(args[0]))
+                .collect(Collectors.toList());
+    
+        else return null;
     }
     
 }

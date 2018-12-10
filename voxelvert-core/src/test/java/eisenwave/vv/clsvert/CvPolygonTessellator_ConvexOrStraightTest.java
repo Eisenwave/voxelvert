@@ -2,7 +2,7 @@ package eisenwave.vv.clsvert;
 
 import eisenwave.torrens.object.Vertex3f;
 import eisenwave.torrens.stl.STLTriangle;
-import eisenwave.vv.clsvert.CvVoxelArrayToSTL_Optimized.PolygonVertex;
+import eisenwave.vv.clsvert.CvVoxelArrayToSTL_Hybrid.PolygonVertex;
 
 import org.junit.Test;
 

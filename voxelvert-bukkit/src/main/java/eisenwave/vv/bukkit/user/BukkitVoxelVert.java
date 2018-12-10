@@ -7,9 +7,16 @@ import eisenwave.vv.object.Language;
 import eisenwave.vv.bukkit.async.VVConverterThread;
 import eisenwave.vv.bukkit.async.VoxelVertQueue;
 import eisenwave.vv.ui.VoxelVert;
+import eisenwave.vv.ui.user.VVUser;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class BukkitVoxelVert implements VoxelVert {
     
@@ -18,8 +25,10 @@ public class BukkitVoxelVert implements VoxelVert {
     private final WorldEditPlugin worldEdit;
     private final BlockScanner scanner;
     
+    private final Map<UUID, VVUser> users = new HashMap<>();
+    
     public BukkitVoxelVert(@NotNull VoxelVertPlugin plugin,
-                           @NotNull WorldEditPlugin worldEdit,
+                           @Nullable WorldEditPlugin worldEdit,
                            @NotNull BlockScanner scanner) {
         this.plugin = plugin;
         this.queue = new VoxelVertQueue();
@@ -37,12 +46,37 @@ public class BukkitVoxelVert implements VoxelVert {
     
     // GETTERS
     
+    /**
+     * Returns the {@link VVUser user} of the given {@link CommandSender}.
+     *
+     * @param sender the command sender
+     * @return the corresponding new or existing user
+     */
+    @NotNull
+    public VVUser getUser(@NotNull CommandSender sender) {
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            VVUser result = users.get(player.getUniqueId());
+            if (result == null) {
+                result = new PlayerVVUser(this, player);
+                users.put(player.getUniqueId(), result);
+            }
+            
+            return result;
+        }
+        else return new ConsoleVVUser(this, sender);
+    }
+    
+    public boolean isWorldEditAvailable() {
+        return worldEdit != null;
+    }
+    
     @NotNull
     public VoxelVertQueue getQueue() {
         return queue;
     }
     
-    @NotNull
+    @Nullable
     public WorldEditPlugin getWorldEdit() {
         return worldEdit;
     }

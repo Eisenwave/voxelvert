@@ -7,7 +7,7 @@
     <groupId>eisenwave.vv</groupId>
     <artifactId>voxelvert</artifactId>
     <packaging>pom</packaging>
-    <version>1.4.6</version>
+    <version>1.5</version>
     <name>VoxelVert</name>
     <description>Voxel format conversion tool</description>
 

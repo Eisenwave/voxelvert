@@ -16,12 +16,12 @@ public class CompoundFormatverter extends Formatverter {
     private final Set<Option> mandatory, optional, all;
     private final int maxProgress;
     
-    @SuppressWarnings("ConstantConditions")
-    private CompoundFormatverter(@NotNull Formatverter... fv) {
-        for (int i = 0; i < fv.length; i++) {
+    //@SuppressWarnings("ConstantConditions")
+    public CompoundFormatverter(@NotNull Formatverter... fv) {
+        /*for (int i = 0; i < fv.length; i++)
             if (fv[i] == null)
-                throw new IllegalArgumentException("index " + i + ": null formatverter in compound formatverter ");
-        }
+                throw new IllegalArgumentException("index " + i + ": null formatverter in compound formatverter "); */
+        
         if (fv.length < 2)
             throw new IllegalArgumentException("compound Formatverter requires at least 2 Formatverters");
         this.fv = fv;

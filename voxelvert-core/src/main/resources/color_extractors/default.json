@@ -456,7 +456,7 @@
         },
         {"id": 143, "data": 0, "type": "texture", "texture": "blocks/planks_oak.png", "flags": "v", "voxels": 48},
         {"id": 144, "data": 0, "type": "texture", "texture": "entity/skeleton/skeleton.png", "voxels": 512},
-        {"id": 145, "data": 0, "type": "texture", "texture": "blocks/anvil_base.png", "flags": "p", "voxels": 2048},
+        {"id": 145, "data": "0-3", "type": "texture", "texture": "blocks/anvil_base.png", "flags": "p", "voxels": 2048},
         {"id": 146, "data": 0, "type": "texture", "texture": "entity/chest/trapped.png", "voxels": 2744},
         {"id": 147, "data": 0, "type": "texture", "texture": "blocks/gold_block.png", "flags": "v", "voxels": 256},
         {"id": 148, "data": 0, "type": "texture", "texture": "blocks/iron_block.png", "flags": "v", "voxels": 256},

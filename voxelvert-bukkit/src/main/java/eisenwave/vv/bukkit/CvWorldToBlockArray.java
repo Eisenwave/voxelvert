@@ -1,7 +1,9 @@
 package eisenwave.vv.bukkit;
 
+import eisenwave.inv.util.LegacyUtil;
+import eisenwave.inv.util.MinecraftObject;
 import eisenwave.torrens.object.BoundingBox6i;
-import eisenwave.torrens.schematic.ArrayBlockStructure;
+import eisenwave.torrens.schematic.legacy.ArrayBlockStructure;
 import eisenwave.vv.clsvert.Classverter;
 import eisenwave.vv.object.BlockSet;
 import eisenwave.vv.util.Arguments;
@@ -40,7 +42,8 @@ public class CvWorldToBlockArray implements Classverter<World, ArrayBlockStructu
         
         bounds.forEach((x, y, z) -> {
             Block block = world.getBlockAt(x, y, z);
-            result.setBlock(x - offX, y - offY, z - offZ, (short) block.getTypeId(), block.getData());
+            MinecraftObject obj = LegacyUtil.getByMaterial(block.getType());
+            result.setBlock(x - offX, y - offY, z - offZ, obj.getId(), (byte) obj.getData());
         });
         
         return result;

@@ -7,7 +7,7 @@
     <parent>
         <artifactId>voxelvert</artifactId>
         <groupId>eisenwave.vv</groupId>
-        <version>1.4.6</version>
+        <version>1.5</version>
     </parent>
 
     <artifactId>voxelvert-bukkit</artifactId>

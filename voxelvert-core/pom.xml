@@ -5,7 +5,7 @@
     <parent>
         <artifactId>voxelvert</artifactId>
         <groupId>eisenwave.vv</groupId>
-        <version>1.4.6</version>
+        <version>1.5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -27,7 +27,7 @@
         <dependency>
             <groupId>eisenwave.torrens</groupId>
             <artifactId>torrens-schematic</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

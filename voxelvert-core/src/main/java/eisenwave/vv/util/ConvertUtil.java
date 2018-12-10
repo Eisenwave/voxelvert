@@ -11,7 +11,7 @@ public final class ConvertUtil {
 
     static {
         manager.add(new CvBitArrayMerger_XYZ());
-        manager.add(new CvBlocksToVoxelArray());
+        manager.add(new CvBlockStructureToVoxelArray());
         manager.add(new CvImageToTexture());
         manager.add(new CvVoxelMeshToVoxelArray());
         manager.add(new CvVoxelMeshToQB());
