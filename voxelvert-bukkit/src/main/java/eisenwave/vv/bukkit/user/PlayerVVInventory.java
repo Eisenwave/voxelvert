@@ -4,7 +4,6 @@ import eisenwave.torrens.schematic.BlockStructureStream;
 import eisenwave.vv.bukkit.inject.FormatverterInjector;
 import eisenwave.vv.ui.fmtvert.Format;
 import eisenwave.vv.ui.user.VVInventoryImpl;
-import eisenwave.torrens.schematic.legacy.LegacyBlockStructure;
 import eisenwave.vv.ui.user.VVInventoryVariable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

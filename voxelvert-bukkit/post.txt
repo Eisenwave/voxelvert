@@ -19,8 +19,7 @@ This plugin was designed with builders, model creators and developers in mind an
 [*][B]Model creators[/B] can collaborate on models by building them as Minecraft blocks in game. The wide range of supported 3D-formats allows quick integration into software such as Cubik Studio.
 [*][B]Developers[/B] can access the server's files using the in-game file browser. Many features for developers such as a text file viewer are planned.
 [/LIST]
-
-VoxelVert allows you to edit and browse files on your server ingame. It also allows you to convert between more than 13 different file formats:
+With VoxelVert, you can edit and browse files on your server ingame. It also allows you to convert between more than 13 different file formats:
 [LIST]
 [*]Minecraft Blocks
 [*]Minecraft Models (json)
@@ -31,6 +30,7 @@ VoxelVert allows you to edit and browse files on your server ingame. It also all
 [*]Standard Tessellation Language (stl)
 [*]Wavefront Model (obj)
 [/LIST]
+Since R1.4.4, VoxelVert can be used to [B]upload files to your server and download files without FTP[/B].
 
 [IMG]https://i.imgur.com/op4hfi3.png[/IMG]
 [B]#1: How to convert a file with the VoxelVert file browser[/B]
@@ -78,6 +78,7 @@ For a full documentation of all the options, take a look at the [B]/c[/B] comman
 [*]custom texture pack support for block conversions
 [*]ASCII-STL support
 [*]downloading files directly from your file browser
+[*]uploading files via web page
 [/LIST]
 [B][SIZE=5]Additional Features in Development[/SIZE][/B]
 [LIST]
@@ -167,6 +168,11 @@ Reloads the plugin.
 Displays some information about the status of the plugin, such as the language used by it and the status of the converter thread.
 [/SPOILER]
 
+[B][FONT=Courier New]/voxelvert upload[/FONT][/B]
+[SPOILER]
+Gives you a one-time use link with which you can upload a file to your file browser. (no FTP server required)
+[/SPOILER]
+
 [B][FONT=Courier New]/voxelvert version[/FONT][/B]
 [SPOILER]
 Displays the current VoxelVert version.
@@ -209,14 +215,50 @@ j[FONT=Courier New]ava -jar VoxelVertConsole.jar <program arguments>[/FONT]
 [IMG]https://i.imgur.com/nuWR57M.png[/IMG]
 Here you can see the default configuration file of the plugin
 [CODE=yaml]# the language file to be used
-# file paths are relative to ${plugin_dir}/lang
+# file paths are relative to ${plugin_dir}/bukkit_lang
 language: en_us.lang
 
 # verbosity settings for regulating when VoxelVert prints debug information
 verbosity:
   enable: true
   disable: true
-  runtime: true[/CODE]
+  runtime: true
+
+# settings for the HTTP-server which allows for downloading files from the inventory directly
+http:
+  # enables or disables the HTTP-server (true|false)
+  #
+  # default = true
+  enable: true
+
+  # specifies the port on which the HTTP-server runs
+  #
+  # default = 26000
+  port: 26000
+
+  # http host with placeholders
+  # you can replace $localhost with the domain name of your server if you have one
+  # you can omit $port if you are hosting on port 80, as this is the default HTTP port
+  # NOTE: you might need to run VoxelVert with administrator permissions to bind to port 1024 and below on Linux)
+  # NOTE: you must replace $localhost with your domain to allow Minecraft clients to open links by clicking in-game
+  #   EXAMPLE: "my-server.net:$port"
+  #   by default, VoxelVert uses http://checkip.amazonaws.com/ to check your server's IP so that you can download and
+  #   upload files without a domain
+  #
+  # $localhost = your public IP-address
+  # $port = the port on which your HTTP-server runs
+  # default = "$localhost:$port"
+  host: "$localhost:$port"
+
+  # download path for file downloads
+  #
+  # default = "/vv/dl"
+  download_path: "/vv/dl"
+
+  # upload path for file uploads
+  #
+  # default = /vv/up
+  upload_path: "/vv/up"[/CODE]
 
 
 [IMG]https://i.imgur.com/79wcqhV.png[/IMG]
@@ -232,6 +274,17 @@ You must first select an area to convert with WorldEdit. To do so, select an are
 Once you selected an area, open your file browser with [B]/vv[/B]. Your selection will show up in your file browser as a file named [B]#selection[/B].
 
 From there on, follow the guide in the Screenshots section.
+[/SPOILER]
+
+[B]Q: How can I upload and download files to and from VoxelVert?[/B]
+[SPOILER="Answer"]
+[U]Upload[/U]
+Use the command /vv upload. VoxelVert will give you a one-time use link. Open this link in your browser and upload your file of choice.
+[IMG]https://i.imgur.com/QRyjkZX.png[/IMG]
+Note that your file name will be changed in VoxelVert if it contains special characters and spaces.
+
+[U]Download[/U]
+Click on a file in your file browser. In the options menu at the bottom, click on share (Enderpearl icon) and then on Download (Minecart icon). Alternatively, you can use [B]/vv-share download <file>[/B]. VoxelVert gives you a one-time use link with which you can download your file. Open this link in your browser.
 [/SPOILER]
 
 [B]Q: If people convert really large files with VoxelVert, isn't my server going to lag?[/B]

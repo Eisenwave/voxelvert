@@ -1,5 +1,6 @@
 package eisenwave.vv.bukkit.gui.widget;
 
+import eisenwave.inv.util.LegacyUtil;
 import eisenwave.inv.widget.RadioButton;
 import eisenwave.vv.bukkit.gui.FileBrowserEntry;
 import eisenwave.vv.bukkit.gui.FileType;
@@ -16,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileButton extends RadioButton {
+    
+    private final static Material
+        END_CRYSTAL = LegacyUtil.getByMinecraftKey13("end_crystal").getMaterial();
     
     private final FileBrowserEntry entry;
     
@@ -35,15 +39,11 @@ public class FileButton extends RadioButton {
                 lore.add(ChatColor.DARK_GRAY + CommandUtil.printFileSize(attr.size()));
             }
         }
-    
-        ItemStack unchecked = ItemUtil.create(type.getIcon(), 1,
-            ChatColor.RESET + entry.getDisplayName(true),
-            lore);
-        this.setUncheckedItem(unchecked);
         
-        ItemStack checked = unchecked.clone();
-        checked.setType(Material.END_CRYSTAL);
-        this.setCheckedItem(checked);
+        String name = ChatColor.RESET + entry.getDisplayName(true);
+    
+        this.setUncheckedItem(ItemUtil.create(type.getIcon(), 1, name, lore));
+        this.setCheckedItem(ItemUtil.create(END_CRYSTAL, 1, name, lore));
     }
     
     public FileBrowserEntry getEntry() {

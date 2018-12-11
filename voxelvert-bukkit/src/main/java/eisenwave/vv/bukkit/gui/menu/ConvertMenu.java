@@ -4,6 +4,7 @@ import eisenwave.inv.event.ClickListener;
 import eisenwave.inv.menu.Menu;
 import eisenwave.inv.menu.MenuManager;
 import eisenwave.inv.menu.MenuResponse;
+import eisenwave.inv.util.LegacyUtil;
 import eisenwave.inv.view.ViewGroup;
 import eisenwave.inv.view.ViewSize;
 import eisenwave.inv.widget.*;
@@ -31,6 +32,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ConvertMenu extends Menu {
+    
+    private final static Material
+        END_CRYSTAL = LegacyUtil.getByMinecraftKey13("end_crystal").getMaterial();
     
     private final static ItemStack
         ITEM_CANCEL = ItemUtil.create("red_wool", ChatColor.RED + "Cancel", "&7Back to Inventory"),
@@ -92,10 +96,12 @@ public class ConvertMenu extends Menu {
                 String prefix = type == null? ChatColor.RESET.toString() : type.getPrefix();
                 String name = lang.get("format." + format.getId());
                 String suffix = format.equals(sourceFormat)? " " + lang.get("format.copy") : "";
-                unchecked = ItemUtil.create(icon, prefix + name + suffix);
+                String fullName = prefix + name + suffix;
+                unchecked = ItemUtil.create(icon, fullName);
+                checked = ItemUtil.create(END_CRYSTAL, fullName);
             }
-            checked = unchecked.clone();
-            checked.setType(Material.END_CRYSTAL);
+            //checked = unchecked.clone();
+            //unchecked.setType(LegacyUtil.getByMinecraftKey13("end_crystal").getMaterial());
             
             child.setCheckedItem(checked);
             child.setUncheckedItem(unchecked);
