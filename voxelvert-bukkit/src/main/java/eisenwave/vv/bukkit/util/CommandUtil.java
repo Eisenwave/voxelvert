@@ -3,6 +3,7 @@ package eisenwave.vv.bukkit.util;
 import eisenwave.vv.bukkit.user.BukkitVoxelVert;
 import eisenwave.vv.bukkit.user.ConsoleVVUser;
 import eisenwave.vv.bukkit.user.PlayerVVUser;
+import eisenwave.vv.object.Language;
 import eisenwave.vv.ui.user.VVUser;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -65,6 +66,22 @@ public final class CommandUtil {
         
         double printSize = size / Math.pow(1024, u);
         return FILE_SIZE_FORMAT.format(printSize) + " " + UNITS[u];
+    }
+    
+    @NotNull
+    public static String localizeTime(long age, Language lang) {
+        if (age < 1000)
+            return age + " " + lang.get(age == 1? "unit.time.milli" : "unit.time.millis");
+        if ((age /= 1000) < 60)
+            return age + " " + lang.get(age == 1? "unit.time.second" : "unit.time.seconds");
+        if ((age /= 60) < 60)
+            return age + " " + lang.get(age == 1? "unit.time.minute" : "unit.time.minutes");
+        if ((age /= 60) < 24)
+            return age + " " + lang.get(age == 1? "unit.time.hour" : "unit.time.hours");
+        if ((age /= 24) < 365)
+            return age + " " + lang.get(age == 1? "unit.time.day" : "unit.time.days");
+        
+        return (age /= 365) + " " + lang.get(age == 1? "unit.time.year" : "unit.time.years");
     }
     
     public static long parseFileSize(@NotNull String size) {

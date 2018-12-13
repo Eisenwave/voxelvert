@@ -29,14 +29,14 @@ cmd.convert.err.no_help = Failed to load plugin help (%s)
 cmd.convert.err.in_empty = Input must not be empty!
 cmd.convert.err.out_empty = Output must not be empty!
 cmd.convert.err.out_alphanumeric = Output must be alphanumeric + (. _ / #)
-
 #cmd.convert.queue.empty=The queue is empty, your task is being handled right away :)
 cmd.convert.queue.full = There is %d other tasks in the queue, please be patient ...
 
-cmd.remove.err.missing = Can't remove &6%s&r, no such file exists
-cmd.remove.err.var = Can't remove variables!
-cmd.remove.failure = Couldn't remove &6%s&r
-cmd.remove.success = Removed &6%s&r
+cmd.copy.err.missing = Can't copy &6%s&r, no such file exists
+cmd.copy.err.var = Can't copy variables!
+cmd.copy.exception = An error occurred when copying the file: &6%s
+cmd.copy.failure = Couldn't copy &6%s&r to &6%s&r
+cmd.copy.success = Copied &6%s&r to &6%s&r
 
 cmd.move.err.missing = Can't move &6%s&r, no such file exists
 cmd.move.err.var = Can't move variables!
@@ -44,11 +44,14 @@ cmd.move.exception = An error occurred when moving the file: &6%s
 cmd.move.failure = Couldn't move &6%s&r to &6%s&r
 cmd.move.success = Moved &6%s&r to &6%s&r
 
-cmd.copy.err.missing = Can't copy &6%s&r, no such file exists
-cmd.copy.err.var = Can't copy variables!
-cmd.copy.exception = An error occurred when copying the file: &6%s
-cmd.copy.failure = Couldn't copy &6%s&r to &6%s&r
-cmd.copy.success = Copied &6%s&r to &6%s&r
+cmd.probe_block.12 = &6%s&r
+cmd.probe_block.13 = %s = &6%s&r
+cmd.probe_block.err.unknown_key = Key &6%s&r could not be translated into a legacy key
+
+cmd.remove.err.missing = Can't remove &6%s&r, no such file exists
+cmd.remove.err.var = Can't remove variables!
+cmd.remove.failure = Couldn't remove &6%s&r
+cmd.remove.success = Removed &6%s&r
 
 cmd.share.err.missing = Can't share &6%s&r because it doesn't exist
 cmd.share.err.var = You can't share variables, only files
@@ -77,35 +80,72 @@ error.path_absolute = You are not allowed to use absolute paths.
 error.path_hidden = You are not allowed to use hidden file names.
 error.permission = You need the permission &c%s&r to do this.
 
+# translation of VoxelVert formats
+format.colors = Block Color Table
+format.debug_pixel_merge = Pixel Merging (Debug)
+format.image = Image
+format.qb = Qubicle Binary
+format.qef = Qubicle Exchange Format
+format.model = Minecraft Model
+format.resource_pack = Resource Pack
+format.schematic = Schematic
+format.stl = STL
+format.structure = Structure
+format.wavefront = Wavefront Object
+
+# translation of media types for the file browser
+media.application/x.minecraft-resource_pack = Resource Pack
+media.application/x.minecraft-schematic = Schematic
+media.application/x.minecraft-structure = Structure
+media.application/x.qubicle-binary = Qubicle Binary
+media.application/x.voxelvert-bct = Block Color Table
+media.application/x.voxelvert-inventory_variable = Inventory Variable
+media.application/x-directory = Folder
+media.application/x-binary = File
+media.image/bmp = Microsoft Bitmap Image
+media.image/gif = GIF Image
+media.image/jpeg = JPEG Image
+media.image/png = PNG Image
+media.model/stl = STL-File
+media.model/x.wavefront = Wavefront Object
+media.text/plain = Plaintext
+media.text/x.qubicle-exchange = Qubicle Exchange Format
+media.text/x.wavefront-mtl = Material Library
+
+# menu messages
+menu.convert.copy = (Copy)
+menu.convert.done = &lDone!&r (&6%d ms&r &7= %.2f s&r)
+menu.files.media_category.binary = Binary
+menu.files.media_category.compressed = Compressed
+menu.files.media_category.directory = Directory
+menu.files.media_category.nbt = NBT
+menu.files.media_category.temporary = Temporary
+menu.files.media_category.text = Text
+menu.files.attribute.age = %s old
+
+# unit names
+unit.time.milli = millisecond
+unit.time.millis = milliseconds
+unit.time.second = second
+unit.time.seconds = seconds
+unit.time.minute = minute
+unit.time.minutes = minutes
+unit.time.hour = hour
+unit.time.hours = hours
+unit.time.day = day
+unit.time.days = days
+unit.time.year = year
+unit.time.years = years
+
 # message formats for voxelvert users
 user.msg = &9[VoxelVert]&r %s
 user.err = &c[VoxelVert]&r %s
 user.use = &cUsage: /%s
 user.keyval = &9  %s: &r%s
 
-media.directory = Folder
-media.inventory_variable = Inventory Variable
-media.file = File
-media.voxelvert-bct = Block Color Table
-media.image = Image
-media.wavefront-mtl = Material Library
-media.qubicle-binary = Qubicle Binary
-media.qubicle-exchange = Qubicle Exchange Format
-media.schematic = Schematic
-media.stl = STL-File
-media.wavefront = Wavefront Object
-media.minecraft-resource_pack = Resource Pack
-
-format.image = Image
-format.qb = Qubicle Binary
-format.qef = Qubicle Exchange Format
-format.stl = STL
-format.wavefront = Wavefront Object
-format.resource_pack = Resource Pack
-format.model = Minecraft Model
-format.colors = Block Color Table
-format.schematic = Schematic
-format.copy = (Copy)
+# world edit emergency messages
+worldedit.pos1 = Set position &61&r to (&6%d&r, &6%d&r, &6%d&r)
+worldedit.pos2 = Set position &62&r to (&6%d&r, &6%d&r, &6%d&r)
 
 ##############################
 # IMPORTED FROM VOXELVERT-UI #
@@ -178,6 +218,13 @@ from_wavefront.content = Wavefront-model has %d vertices and %d faces
 from_wavefront.mtllib = Wavefront-model has mtllib "%s" with %d materials
 
 to_blocks.blocks = Converted to block structure with %d blocks
+
+to_debug_pixel_merge.algorithm = Algorithm used:       %s
+to_debug_pixel_merge.time = Algorithm run time:   %d ms
+to_debug_pixel_merge.rectangles = Rectangles created:   %d
+to_debug_pixel_merge.visible_pixels = Visible pixels:       %d
+to_debug_pixel_merge.pixels_per_rectangle = Vis.Pixels/rectangle: %.4f
+
 to_image.crop = Cropped image to %dx%d
 to_image.render = Rendering "%s" from the "%s" face (%s)
 

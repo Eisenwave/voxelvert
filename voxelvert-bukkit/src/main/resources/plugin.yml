@@ -1,6 +1,6 @@
 name: VoxelVert
 main: eisenwave.vv.bukkit.VoxelVertPlugin
-version: R1.5pre2
+version: R1.5pre4
 api-version: 1.13
 author: Eisenwave
 softdepend: [WorldEdit]

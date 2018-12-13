@@ -92,13 +92,25 @@ public class ConvertMenu extends Menu {
             final ItemStack unchecked, checked;
             {
                 FileType type = FileType.fromFormat(format);
-                String icon = type == null? "white_shulker_box" : type.getIcon();
-                String prefix = type == null? ChatColor.RESET.toString() : type.getPrefix();
-                String name = lang.get("format." + format.getId());
-                String suffix = format.equals(sourceFormat)? " " + lang.get("format.copy") : "";
-                String fullName = prefix + name + suffix;
-                unchecked = ItemUtil.create(icon, fullName);
-                checked = ItemUtil.create(END_CRYSTAL, fullName);
+                final String icon, prefix, formatName;
+                if (type == null) {
+                    icon = "white_shulker_box";
+                    prefix = ChatColor.RESET.toString();
+                    formatName = ChatColor.GRAY + lang.get("media.application/x-binary");
+                }
+                else {
+                    icon = type.getIcon();
+                    prefix = type.getPrefix();
+                    formatName = ChatColor.GRAY + lang.get(type.getLanguageName());
+                }
+                
+                String name = prefix + lang.get("format." + format.getId());
+                if (format.equals(sourceFormat))
+                    name += " " + lang.get("menu.convert.copy");
+                List<String> lore = Collections.singletonList(formatName);
+                
+                unchecked = ItemUtil.create(icon, 1, name, lore);
+                checked = ItemUtil.create(END_CRYSTAL, 1, name, lore);
             }
             //checked = unchecked.clone();
             //unchecked.setType(LegacyUtil.getByMinecraftKey13("end_crystal").getMaterial());
@@ -184,7 +196,7 @@ public class ConvertMenu extends Menu {
         this.state = State.DONE;
         
         long duration = System.currentTimeMillis() - startTime;
-        user.print(ChatColor.BOLD + "Done!" + ChatColor.RESET + " (" + duration + " ms)");
+        user.printLocalized("menu.convert.done", duration, duration / 1000f);
         
         initFinishButton();
     }
