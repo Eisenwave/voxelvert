@@ -65,6 +65,13 @@ from_wavefront.content = Wavefront-model has %d vertices and %d faces
 from_wavefront.mtllib = Wavefront-model has mtllib "%s" with %d materials
 
 to_blocks.blocks = Converted to block structure with %d blocks
+
+to_debug_pixel_merge.algorithm = Algorithm used:       %s
+to_debug_pixel_merge.time = Algorithm run time:   %d ms
+to_debug_pixel_merge.rectangles = Rectangles created:   %d
+to_debug_pixel_merge.visible_pixels = Visible pixels:       %d
+to_debug_pixel_merge.pixels_per_rectangle = Vis.Pixels/rectangle: %.4f
+
 to_image.crop = Cropped image to %dx%d
 to_image.render = Rendering "%s" from the "%s" face (%s)
 

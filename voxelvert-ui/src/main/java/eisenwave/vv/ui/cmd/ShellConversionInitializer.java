@@ -61,8 +61,8 @@ public class ShellConversionInitializer implements VVInitializer {
         final boolean verbose = args.hasKeyword(FormatverterInitializer.OPTION_VERBOSE.getId());
         
         if (verbose) {
-            user.print(lang.get("main.verbose"));
-            user.print(lang.get("main.wd"), inv.getDirectory());
+            user.printLocalized("main.verbose");
+            user.printLocalized("main.wd", inv.getDirectory());
             //user.print(lang.get("main.lang_info"), lang.getName(), lang.size());
         }
         

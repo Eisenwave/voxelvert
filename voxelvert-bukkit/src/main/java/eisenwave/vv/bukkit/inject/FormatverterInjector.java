@@ -7,7 +7,7 @@ import static eisenwave.vv.ui.fmtvert.Format.*;
 @SuppressWarnings("Duplicates")
 public class FormatverterInjector {
     
-    public final static Format BLOCKS_FORMAT = new Format("blocks", true);
+    public final static Format BLOCKS_FORMAT = new Format("blocks", true, false);
     
     @SuppressWarnings("ConstantConditions")
     public static void inject(FormatverterFactory factory) {
@@ -23,16 +23,19 @@ public class FormatverterInjector {
         factory.put(BLOCKS_FORMAT, Format.QEF, () -> new CompoundFormatverter(
             new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_STREAM), factory.fromFormats(BLOCK_STREAM, QEF)));
         
-        factory.put(BLOCKS_FORMAT, Format.SCHEMATIC,
-            () -> new InventoryFormatverter(BLOCK_STREAM, SCHEMATIC));
+        factory.put(BLOCKS_FORMAT, Format.SCHEMATIC, () -> new CompoundFormatverter(
+            new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_STREAM), factory.fromFormats(BLOCK_STREAM, SCHEMATIC)));
         
         factory.put(BLOCKS_FORMAT, Format.STL, () -> new CompoundFormatverter(
             new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_STREAM), factory.fromFormats(BLOCK_STREAM, STL)));
+    
+        factory.put(BLOCKS_FORMAT, Format.STRUCTURE, () -> new CompoundFormatverter(
+            new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_STREAM), factory.fromFormats(BLOCK_STREAM, STRUCTURE)));
         
         factory.put(BLOCKS_FORMAT, Format.WAVEFRONT, () -> new CompoundFormatverter(
             new InventoryFormatverter(BLOCKS_FORMAT, BLOCK_STREAM), factory.fromFormats(BLOCK_STREAM, WAVEFRONT)));
         /*
-        factory.put(BLOCKS_FORMAT, Format.IMAGE, new FV_BLOCKS_IMAGE());
+        factory.put(BLOCKS_FORMAT, Format.JPEG, new FV_BLOCKS_IMAGE());
         factory.put(BLOCKS_FORMAT, Format.MODEL, new FV_BLOCKS_MODEL());
         factory.put(BLOCKS_FORMAT, Format.QB, new FV_BLOCKS_QB());
         factory.put(BLOCKS_FORMAT, Format.QEF, new FV_BLOCKS_QEF());
@@ -98,7 +101,7 @@ public class FormatverterInjector {
             if (verbose) user.print(lang.get("to_image.crop"), image.getWidth(), image.getHeight());
             set(4);
             
-            user.getInventory().save(Format.IMAGE, image, to);
+            user.getInventory().save(Format.JPEG, image, to);
             set(5);
         }
         

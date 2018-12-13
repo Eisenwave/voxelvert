@@ -1,16 +1,18 @@
 package eisenwave.vv.ui.user;
 
+import eisenwave.torrens.error.FileFormatException;
 import eisenwave.torrens.img.ARGBSerializerBMP;
 import eisenwave.torrens.img.ARGBSerializerWBMP;
 import eisenwave.torrens.schematic.BlockStructureStream;
+import eisenwave.torrens.schematic.DeserializerStructureBlocks;
 import eisenwave.torrens.schematic.legacy.LegacyBlockStructure;
 import eisenwave.torrens.voxel.*;
 import eisenwave.torrens.wavefront.*;
 import eisenwave.vv.io.DeserializerBCT;
 import eisenwave.vv.io.SerializerBCT;
 import eisenwave.vv.ui.fmtvert.Format;
-import eisenwave.torrens.schematic.DeserializerSchematicBlocks;
-import eisenwave.torrens.schematic.SerializerSchematicBlocks;
+import eisenwave.torrens.schematic.legacy.DeserializerSchematicBlocks;
+import eisenwave.torrens.schematic.legacy.SerializerSchematicBlocks;
 import eisenwave.torrens.stl.DeserializerSTL;
 import eisenwave.vv.io.SerializerMCModelZip;
 import eisenwave.vv.rp.BlockColorTable;
@@ -26,6 +28,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,6 +39,26 @@ import java.util.zip.ZipFile;
 
 public class VVInventoryImpl implements VVInventory {
     
+    @Nullable
+    private static Class<?> getPreferredClass(Format format) {
+        switch (format.getId()) {
+            case "block_array":
+                return LegacyBlockStructure.class;
+        
+            case "block_stream":
+                return BlockStructureStream.class;
+        
+            case "voxel_array":
+                return VoxelArray.class;
+        
+            case "voxel_mesh":
+                return VoxelMesh.class;
+        
+            default:
+                return null;
+        }
+    }
+    
     protected final Map<String, Object> storage = new HashMap<>();
     protected final Map<String, VVInventoryVariable<?>> variables = new HashMap<>();
     
@@ -45,7 +68,7 @@ public class VVInventoryImpl implements VVInventory {
     public VVInventoryImpl(@NotNull VVUser owner, @NotNull File directory) {
         this.owner = owner;
         this.dir = directory;
-    
+        
         if (!directory.exists() && !directory.mkdirs())
             throw new IllegalArgumentException(directory + "doesn't exist and couldn't be created");
     }
@@ -118,95 +141,67 @@ public class VVInventoryImpl implements VVInventory {
     @Nullable
     @Override
     public Object load(@NotNull Format format, @NotNull String name) throws IOException {
+        //System.out.println("load: " + format + "<" + name + ">");
         if (hasVariable(name)) {
             VVInventoryVariable var = getVariable(name);
             assert var != null;
             return var.getFormat().equals(format)? var.get() : null;
         }
         
-        switch (format.getId()) {
-    
-            case "colors": {
-                File file = new File(dir, name);
-                return file.exists()? new DeserializerBCT().fromFile(file) : null;
-            }
+        if (format.isFile()) {
+            File file = new File(dir, name);
+            if (!file.exists())
+                return null;
             
-            case "qef": {
-                File file = new File(dir, name);
-                return file.exists()? new DeserializerQEF().fromFile(file) : null;
-            }
-            
-            case "qb": {
-                File file = new File(dir, name);
-                return file.exists()? new DeserializerQB().fromFile(file) : null;
-            }
-            
-            case "image": {
-                File file = new File(dir, name);
-                return file.exists()? Texture.wrapOrCopy(new DeserializerImage().fromFile(file)) : null;
-            }
-            
-            case "resource_pack": {
-                File file = new File(dir, name);
-                return file.exists()? new ZipFile(file) : null;
-            }
-            
-            case "schematic": {
-                File file = new File(dir, name);
-                return file.exists()? new DeserializerSchematicBlocks().fromFile(file) : null;
-            }
-    
-            case "stl": {
-                File file = new File(dir, name);
-                return file.exists()? new DeserializerSTL().fromFile(file) : null;
-            }
-    
-            case "wavefront": {
-                OBJModel model = new OBJModel();
-                File file = new File(dir, name);
-                File objDir = file.getParentFile();
+            switch (format.getId()) {
+                case "colors":
+                    return new DeserializerBCT().fromFile(file);
                 
-                return file.exists()? new DeserializerOBJ(model, objDir).fromFile(file) : null;
+                case "qef":
+                    return new DeserializerQEF().fromFile(file);
+                
+                case "qb":
+                    return new DeserializerQB().fromFile(file);
+                
+                case "image":
+                    return Texture.wrapOrCopy(new DeserializerImage().fromFile(file));
+                
+                case "resource_pack":
+                    return new ZipFile(file);
+                
+                case "schematic":
+                    return new DeserializerSchematicBlocks().fromFile(file);
+                
+                case "stl":
+                    return new DeserializerSTL().fromFile(file);
+                    
+                case "structure":
+                    return new DeserializerStructureBlocks().fromFile(file);
+                
+                case "wavefront":
+                    return new DeserializerOBJ(new OBJModel(), file.getParentFile()).fromFile(file);
             }
             
-            case "block_array": {
-                if (!storage.containsKey(name)) return null;
-                Object obj = storage.get(name);
-                if (obj instanceof LegacyBlockStructure) return obj;
-                else
-                    throw new IOException("stored object \"" + name + "\" must be a " + LegacyBlockStructure.class.getSimpleName());
-            }
-    
-            case "block_stream": {
-                if (!storage.containsKey(name)) return null;
-                Object obj = storage.get(name);
-                if (obj instanceof BlockStructureStream) return obj;
-                else
-                    throw new IOException("stored object \"" + name + "\" must be a " + BlockStructureStream.class.getSimpleName());
-            }
-    
-            case "voxel_array": {
-                if (!storage.containsKey(name)) return null;
-                Object obj = storage.get(name);
-                if (obj instanceof VoxelArray) return obj;
-                else
-                    throw new IOException("stored object \"" + name + "\" must be a " + VoxelArray.class.getSimpleName());
-            }
-    
-            case "voxel_mesh": {
-                if (!storage.containsKey(name)) return null;
-                Object obj = storage.get(name);
-                if (obj instanceof VoxelMesh) return obj;
-                else
-                    throw new IOException("stored object \"" + name + "\" must be a " + VoxelMesh.class.getSimpleName());
-            }
-            
-            default: return null;
+            throw new FileFormatException("Unknown file format \"" + format + '"');
         }
+        
+        if (!storage.containsKey(name)) return null;
+        
+        Object obj = storage.get(name);
+        
+        Class<?> clazz = getPreferredClass(format);
+        if (clazz == null)
+            throw new FileFormatException("Unknown format \"" + format + '"');
+        
+        if (clazz.isInstance(obj))
+            return obj;
+        else
+            throw new IOException("Stored object \"" + name + "\" must be a " + clazz.getSimpleName());
     }
     
     @Override
     public boolean save(@NotNull Format format, @NotNull Object object, @NotNull String name) throws IOException {
+        //System.out.println("save: " + format + "<" + name + ">");
         if (hasVariable(name)) {
             VVInventoryVariable var = getVariable(name);
             assert var != null;
@@ -219,137 +214,112 @@ public class VVInventoryImpl implements VVInventory {
             return false;
         }
         
-        switch (format.getId()) {
-    
-            case "colors": {
-                if (object instanceof BlockColorTable) {
-                    File file = new File(dir, name);
-                    new SerializerBCT().toFile((BlockColorTable) object, file);
-                    return true;
-                }
-                else throw new IOException("object must be a " + BlockColorTable.class.getSimpleName());
-            }
-    
-            case "model": {
-                if (object instanceof MCModel) {
-                    File file = new File(dir, name);
-                    new SerializerMCModelZip().toFile((MCModel) object, file);
-                    return true;
-                }
-                else throw new IOException("object must be a " + MCModel.class.getSimpleName());
-            }
+        if (format.isFile()) {
+            File file = new File(dir, name);
             
-            case "qef": {
-                if (object instanceof VoxelArray) {
-                    File file = new File(dir, name);
-                    new SerializerQEF().toFile((VoxelArray) object, file);
-                    return true;
+            switch (format.getId()) {
+                
+                case "colors": {
+                    if (object instanceof BlockColorTable) {
+                        new SerializerBCT().toFile((BlockColorTable) object, file);
+                        return true;
+                    }
+                    else throw new IOException("object must be a " + BlockColorTable.class.getSimpleName());
                 }
-                else throw new IOException("object must be a " + VoxelArray.class.getSimpleName());
-            }
-    
-            case "qb": {
-                if (object instanceof QBModel) {
-                    File file = new File(dir, name);
-                    new SerializerQB().toFile((QBModel) object, file);
-                    return true;
+                
+                case "model": {
+                    if (object instanceof MCModel) {
+                        new SerializerMCModelZip().toFile((MCModel) object, file);
+                        return true;
+                    }
+                    else throw new IOException("object must be a " + MCModel.class.getSimpleName());
                 }
-                else throw new IOException("object must be a " + VoxelArray.class.getSimpleName());
-            }
-    
-            case "schematic": {
-                if (object instanceof LegacyBlockStructure) {
-                    File file = new File(dir, name);
-                    new SerializerSchematicBlocks().toFile((LegacyBlockStructure) object, file);
-                    return true;
+                
+                case "qef": {
+                    if (object instanceof VoxelArray) {
+                        new SerializerQEF().toFile((VoxelArray) object, file);
+                        return true;
+                    }
+                    else throw new IOException("object must be a " + VoxelArray.class.getSimpleName());
                 }
-                else throw new IOException("object must be a " + LegacyBlockStructure.class.getSimpleName());
-            }
-            
-            case "stl": {
-                if (object instanceof STLModel) {
-                    File file = new File(dir, name);
-                    new SerializerSTL().toFile((STLModel) object, file);
-                    return true;
+                
+                case "qb": {
+                    if (object instanceof QBModel) {
+                        new SerializerQB().toFile((QBModel) object, file);
+                        return true;
+                    }
+                    else throw new IOException("object must be a " + VoxelArray.class.getSimpleName());
                 }
-                else throw new IOException("object must be a " + STLModel.class.getSimpleName());
-            }
-            
-            case "wavefront": {
-                if (object instanceof OBJModel) {
-                    File objFile = new File(dir, name);
-                    OBJModel obj = (OBJModel) object;
-                    new SerializerOBJ().toFile(obj, objFile);
-                    
-                    if (obj.hasMaterials()) {
-                        File objDir = objFile.getParentFile();
-                        MTLLibrary mtllib = obj.getMaterials();
-                        assert mtllib != null;
-                        new SerializerMTL().toFile(mtllib, new File(objDir, mtllib.getName()));
+                
+                case "schematic": {
+                    if (object instanceof LegacyBlockStructure) {
+                        new SerializerSchematicBlocks().toFile((LegacyBlockStructure) object, file);
+                        return true;
+                    }
+                    else throw new IOException("object must be a " + LegacyBlockStructure.class.getSimpleName());
+                }
+                
+                case "stl": {
+                    if (object instanceof STLModel) {
+                        new SerializerSTL().toFile((STLModel) object, file);
+                        return true;
+                    }
+                    else throw new IOException("object must be a " + STLModel.class.getSimpleName());
+                }
+                
+                case "wavefront": {
+                    if (object instanceof OBJModel) {
+                        File objFile = new File(dir, name);
+                        OBJModel obj = (OBJModel) object;
+                        new SerializerOBJ().toFile(obj, objFile);
                         
-                        for (MTLMaterial material : mtllib) {
-                            String diffuseMap = material.getDiffuseMap();
-                            if (diffuseMap != null) {
-                                Texture diff = mtllib.getMap(diffuseMap);
-                                assert diff != null;
-                                writeImageByExtension(diff.getImageWrapper(), new File(objDir, diffuseMap));
+                        if (obj.hasMaterials()) {
+                            File objDir = objFile.getParentFile();
+                            MTLLibrary mtllib = obj.getMaterials();
+                            assert mtllib != null;
+                            new SerializerMTL().toFile(mtllib, new File(objDir, mtllib.getName()));
+                            
+                            for (MTLMaterial material : mtllib) {
+                                String diffuseMap = material.getDiffuseMap();
+                                if (diffuseMap != null) {
+                                    Texture diff = mtllib.getMap(diffuseMap);
+                                    assert diff != null;
+                                    writeImageByExtension(diff.getImageWrapper(), new File(objDir, diffuseMap));
+                                }
                             }
                         }
+                        
+                        return true;
                     }
-                    
-                    return true;
+                    else throw new IOException("object must be a " + OBJModel.class.getSimpleName());
                 }
-                else throw new IOException("object must be a " + OBJModel.class.getSimpleName());
-            }
-    
-            case "image": {
-                if (object instanceof Texture) {
-                    File file = new File(dir, name);
-                    writeImageByExtension(((Texture) object).getImageWrapper(), file);
-                    return true;
+                
+                case "image": {
+                    if (object instanceof Texture) {
+                        writeImageByExtension(((Texture) object).getImageWrapper(), file);
+                        return true;
+                    }
+                    else if (object instanceof BufferedImage) {
+                        writeImageByExtension((BufferedImage) object, file);
+                        return true;
+                    }
+                    else throw new IOException("object must be a " + Texture.class.getSimpleName());
                 }
-                else if (object instanceof BufferedImage) {
-                    File file = new File(dir, name);
-                    writeImageByExtension((BufferedImage) object, file);
-                    return true;
-                }
-                else throw new IOException("object must be a " + Texture.class.getSimpleName());
+                
+                default: throw new IOException("Can't store unknown file format \"" + format + "\"");
             }
             
-            case "block_array": {
-                if (object instanceof LegacyBlockStructure) {
-                    storage.put(name, object);
-                    return true;
-                }
-                else throw new IOException("object must be a " + LegacyBlockStructure.class.getSimpleName());
-            }
-    
-            case "block_stream": {
-                if (object instanceof BlockStructureStream) {
-                    storage.put(name, object);
-                    return true;
-                }
-                else throw new IOException("object must be a " + BlockStructureStream.class.getSimpleName());
-            }
-            
-            case "voxel_array": {
-                if (object instanceof VoxelArray) {
-                    storage.put(name, object);
-                    return true;
-                }
-                else throw new IOException("object must be a " + VoxelArray.class.getSimpleName());
-            }
-    
-            case "voxel_mesh": {
-                if (object instanceof VoxelMesh) {
-                    storage.put(name, object);
-                    return true;
-                }
-                else throw new IOException("object must be a " + VoxelMesh.class.getSimpleName());
-            }
-    
-            default: throw new IOException("Can't store unknown format \"" + format + "\"");
         }
+    
+        Class<?> clazz = getPreferredClass(format);
+        if (clazz == null)
+            throw new IOException("Can't store unknown format \"" + format + '"');
+    
+        if (clazz.isInstance(object)) {
+            storage.put(name, object);
+            return true;
+        }
+        else throw new IOException("Stored object \"" + name + "\" must be a " + clazz.getSimpleName());
     }
     
     @Override

@@ -14,10 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class CmdProbeBlock extends VoxelVertCommand {
     
@@ -56,7 +53,7 @@ public class CmdProbeBlock extends VoxelVertCommand {
                 BlockKey key = BlockKey.parse(arg);
                 MinecraftObject obj = LegacyUtil.getByMinecraftKey13(key.getId());
                 if (obj == null) {
-                    user.error("Unknown id %s", key);
+                    user.errorLocalized("cmd.probe_block.err.unknown_key", key);
                     return true;
                 }
                 transparent.add(obj.getMaterial());
@@ -68,13 +65,13 @@ public class CmdProbeBlock extends VoxelVertCommand {
         Block block = player.getTargetBlock(transparent, 6);
         
         if (LegacyUtil.isApi13())
-            user.print(block.getBlockData().getAsString());
+            user.printLocalized("cmd.probe_block.12", block.getBlockData());
         else {
             int id = block.getType().getId();
             byte data = block.getData();
             LegacyBlockKey legacyKey = new LegacyBlockKey(id, data);
             BlockKey key = MicroLegacyUtil.getByLegacyKey(legacyKey);
-            user.print("%s = %s", legacyKey, key);
+            user.printLocalized("cmd.probe_block.13", legacyKey, key);
         }
         return true;
     }

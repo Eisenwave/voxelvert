@@ -45,7 +45,7 @@ public class WorldEditEmergencyListener implements Listener {
                 PlayerVVUser user = (PlayerVVUser) voxelVert.getUser(player);
                 Vertex3i pos = new Vertex3i(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
                 user.setPos1(pos);
-                user.print("Set position 1 to " + pos);
+                user.printLocalized("worldedit.pos1", pos.getX(), pos.getY(), pos.getZ());
                 event.setCancelled(true);
                 break;
             }
@@ -56,7 +56,7 @@ public class WorldEditEmergencyListener implements Listener {
                 PlayerVVUser user = (PlayerVVUser) voxelVert.getUser(player);
                 Vertex3i pos = new Vertex3i(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
                 user.setPos2(pos);
-                user.print("Set position 2 to " + pos);
+                user.printLocalized("worldedit.pos2", pos.getX(), pos.getY(), pos.getZ());
                 event.setCancelled(true);
                 break;
             }
@@ -73,7 +73,7 @@ public class WorldEditEmergencyListener implements Listener {
             PlayerVVUser user = (PlayerVVUser) voxelVert.getUser(player);
             Vertex3i pos = new Vertex3i(block.getX(), block.getY(), block.getZ());
             user.setPos1(pos);
-            user.print("Set position 1 to " + pos);
+            user.printLocalized("worldedit.pos1", pos);
             //UserManager.getInstance().setFirstPosition(player, vector);
         }
     }
@@ -94,11 +94,11 @@ public class WorldEditEmergencyListener implements Listener {
         
             if (action == Action.LEFT_CLICK_BLOCK) {
                 if (user.setPos2(pos))
-                    user.print("Set position 2 to " + pos);
+                    user.printLocalized("worldedit.pos2", pos.getX(), pos.getY(), pos.getZ());
             }
             else {
                 if (user.setPos1(pos))
-                    user.print("Set position 1 to " + pos);
+                    user.printLocalized("worldedit.pos1", pos.getX(), pos.getY(), pos.getZ());
             }
             e.setCancelled(true);
         }

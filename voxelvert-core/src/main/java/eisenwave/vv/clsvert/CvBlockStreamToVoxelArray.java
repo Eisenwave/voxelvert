@@ -3,7 +3,7 @@ package eisenwave.vv.clsvert;
 import eisenwave.torrens.util.ColorMath;
 import eisenwave.torrens.voxel.VoxelArray;
 import eisenwave.torrens.schematic.BlockStructureStream;
-import eisenwave.torrens.schematic.legacy.StructureBlock;
+import eisenwave.torrens.schematic.StructureBlock;
 import eisenwave.vv.rp.BlockColor;
 import eisenwave.vv.rp.BlockColorTable;
 import eisenwave.vv.util.Arguments;

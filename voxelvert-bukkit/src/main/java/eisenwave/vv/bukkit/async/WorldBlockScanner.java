@@ -5,6 +5,7 @@ import eisenwave.spatium.util.Incrementer3;
 import eisenwave.torrens.object.BoundingBox6i;
 import eisenwave.torrens.schematic.BlockKey;
 import eisenwave.torrens.schematic.BlockStructureStream;
+import eisenwave.torrens.schematic.StructureBlock;
 import eisenwave.torrens.schematic.legacy.*;
 import org.bukkit.World;
 import org.bukkit.block.Block;

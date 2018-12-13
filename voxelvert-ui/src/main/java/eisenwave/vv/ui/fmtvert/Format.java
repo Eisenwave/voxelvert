@@ -16,46 +16,49 @@ public class Format implements Comparable<Format> {
     
     /** Color database for assigning blocks to rgb values, derived from texture pack */
     public final static Format
-        BLOCK_COLOR_TABLE = new Format("colors", false, "bct"),
+        BLOCK_COLOR_TABLE = new Format("colors", false, false, "bct"),
     
     /** An image */
-    IMAGE = new Format("image", false, "bmp", "gif", "jpg", "jpeg", "png"),
+    IMAGE = new Format("image", false, false, "bmp", "gif", "jpg", "jpeg", "png"),
     
     /** Minecraft model */
-    MODEL = new Format("model", false),
+    MODEL = new Format("model", false, false),
     
     /** Qubicle Exchange Format */
-    QEF = new Format("qef", false, "qef"),
+    QEF = new Format("qef", false, false, "qef"),
     
     /** Qubicle Binary */
-    QB = new Format("qb", false, "qb"),
+    QB = new Format("qb", false, false, "qb"),
     
     /** Resource Pack */
-    RESOURCE_PACK = new Format("resource_pack", false, "zip"),
+    RESOURCE_PACK = new Format("resource_pack", false, false, "zip"),
     
     /** Minecraft Schematic */
-    SCHEMATIC = new Format("schematic", false, "schematic"),
+    SCHEMATIC = new Format("schematic", false, false, "schematic", "schem"),
+    
+    /** Minecraft Structure */
+    STRUCTURE = new Format("structure", false, false, "nbt"),
     
     /** Standard Tessellation Language */
-    STL = new Format("stl", false, "stl"),
+    STL = new Format("stl", false, false, "stl"),
     
     /** Wavefront OBJ */
-    WAVEFRONT = new Format("wavefront", false, "obj"),
+    WAVEFRONT = new Format("wavefront", false, false, "obj"),
     
     /** Array of Voxels */
-    VOXEL_ARRAY = new Format("voxel_array", true),
+    VOXEL_ARRAY = new Format("voxel_array", true, false),
     
     /** Mesh of Voxels */
-    VOXEL_MESH = new Format("voxel_mesh", true),
+    VOXEL_MESH = new Format("voxel_mesh", true, false),
     
     /** Array of Blocks */
-    BLOCK_ARRAY = new Format("block_array", true),
+    BLOCK_ARRAY = new Format("block_array", true, false),
     
     /** Stream of Blocks */
-    BLOCK_STREAM = new Format("block_stream", true),
+    BLOCK_STREAM = new Format("block_stream", true, false),
     
     /** DEBUG Pixel Merging Algorithm **/
-    DEBUG_PIXEL_MERGE = new Format("debug_pixel_merge", true);
+    DEBUG_PIXEL_MERGE = new Format("debug_pixel_merge", false, true);
     
     /*
     private final static Map<String, Format> byExt = new HashMap<>();
@@ -117,12 +120,14 @@ public class Format implements Comparable<Format> {
     }
     
     private final boolean internal;
+    private final boolean debug;
     private final String id;
     private final String[] ext;
     
-    public Format(@NotNull String id, boolean internal, @NotNull String... extensions) {
+    public Format(@NotNull String id, boolean internal, boolean debug, @NotNull String... extensions) {
         this.id = id;
         this.internal = internal;
+        this.debug = debug;
         this.ext = extensions;
         
         WeakReference<Format> ref = new WeakReference<>(this);
@@ -155,6 +160,15 @@ public class Format implements Comparable<Format> {
     }
     
     /**
+     * Returns whether the format is a debug format.
+     *
+     * @return whether the format is a debug format
+     */
+    public boolean isDebug() {
+        return debug;
+    }
+    
+    /**
      * Returns whether a format is a file format.
      *
      * @return whether a format is a file format
@@ -165,7 +179,6 @@ public class Format implements Comparable<Format> {
     }
     
     // MISC
-    
     
     @Override
     public int compareTo(@NotNull Format o) {
