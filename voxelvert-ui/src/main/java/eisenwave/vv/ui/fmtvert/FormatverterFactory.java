@@ -2,14 +2,14 @@ package eisenwave.vv.ui.fmtvert;
 
 import eisenwave.torrens.img.ARGBSerializerBMP;
 import eisenwave.torrens.object.Rectangle4i;
+import eisenwave.torrens.schematic.*;
 import eisenwave.torrens.schematic.legacy.*;
 import eisenwave.torrens.util.ColorMath;
 import eisenwave.torrens.voxel.BitArray2;
 import eisenwave.vv.clsvert.*;
 import eisenwave.torrens.schematic.BlockStructureStream;
 import eisenwave.vv.object.Language;
-import eisenwave.spatium.enums.Direction;
-import eisenwave.spatium.enums.Face;
+import eisenwave.spatium.enums.*;
 import eisenwave.torrens.img.Texture;
 import eisenwave.torrens.object.Vertex3i;
 import eisenwave.torrens.voxel.VoxelArray;
@@ -32,8 +32,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 import java.util.zip.ZipFile;
 
 import static eisenwave.vv.ui.fmtvert.Format.*;
@@ -77,6 +76,9 @@ public final class FormatverterFactory {
             fv_schematic_va = () -> new CompoundFormatverter(
                 new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY),
                 new FV_BA_BS(),
+                new FV_BS_VA()),
+            fv_structure_va = () -> new CompoundFormatverter(
+                new FV_STRUCT_BS(),
                 new FV_BS_VA());
         
         put(BLOCK_ARRAY, IMAGE, () -> new CompoundFormatverter(new FV_BA_VA(), new FV_VA_IMAGE()));
@@ -86,13 +88,14 @@ public final class FormatverterFactory {
         put(BLOCK_ARRAY, SCHEMATIC, FV_BA_SCHEMATIC::new);
         put(BLOCK_ARRAY, STL, () -> new CompoundFormatverter(new FV_BA_VA(), new FV_VA_STL()));
         put(BLOCK_ARRAY, WAVEFRONT, () -> new CompoundFormatverter(new FV_BA_VA(), new FV_VA_WAVEFRONT()));
-    
+        
         put(BLOCK_STREAM, IMAGE, () -> new CompoundFormatverter(new FV_BS_VA(), new FV_VA_IMAGE()));
         put(BLOCK_STREAM, MODEL, () -> new CompoundFormatverter(new FV_BS_VA(), new FV_VA_MODEL()));
         put(BLOCK_STREAM, QB, () -> new CompoundFormatverter(new FV_BS_VA(), new FV_VA_QB()));
         put(BLOCK_STREAM, QEF, () -> new CompoundFormatverter(new FV_BS_VA(), fv_va_qef.get()));
         put(BLOCK_STREAM, SCHEMATIC, () -> new CompoundFormatverter(new FV_BS_BA(), new FV_BA_SCHEMATIC()));
         put(BLOCK_STREAM, STL, () -> new CompoundFormatverter(new FV_BS_VA(), new FV_VA_STL()));
+        put(BLOCK_STREAM, STRUCTURE, FV_BS_STRUCT::new);
         put(BLOCK_STREAM, WAVEFRONT, () -> new CompoundFormatverter(new FV_BS_VA(), new FV_VA_WAVEFRONT()));
         
         put(IMAGE, IMAGE, FV_IMAGE_IMAGE::new);
@@ -108,7 +111,7 @@ public final class FormatverterFactory {
         put(QB, SCHEMATIC, () -> new CompoundFormatverter(new FV_QB_VA(), new FV_VA_SCHEMATIC()));
         put(QB, STL, () -> new CompoundFormatverter(new FV_QB_VA(), new FV_VA_STL()));
         put(QB, WAVEFRONT, () -> new CompoundFormatverter(new FV_QB_VA(), new FV_VA_WAVEFRONT()));
-    
+        
         put(QEF, IMAGE, () -> new CompoundFormatverter(fv_qef_va.get(), new FV_VA_IMAGE()));
         put(QEF, MODEL, () -> new CompoundFormatverter(fv_qef_va.get(), new FV_VA_MODEL()));
         put(QEF, QB, () -> new CompoundFormatverter(fv_qef_va.get(), new FV_VA_QB()));
@@ -116,30 +119,43 @@ public final class FormatverterFactory {
         put(QEF, SCHEMATIC, () -> new CompoundFormatverter(fv_qef_va.get(), new FV_VA_SCHEMATIC()));
         put(QEF, STL, () -> new CompoundFormatverter(fv_qef_va.get(), new FV_VA_STL()));
         put(QEF, WAVEFRONT, () -> new CompoundFormatverter(fv_qef_va.get(), new FV_VA_WAVEFRONT()));
-    
+        
         put(RESOURCE_PACK, BLOCK_COLOR_TABLE, FV_RP_COLORS::new);
         put(RESOURCE_PACK, RESOURCE_PACK, CopyFormatverter::new);
-    
+        
         put(SCHEMATIC, IMAGE, () -> new CompoundFormatverter(fv_schematic_va.get(), new FV_VA_IMAGE()));
         put(SCHEMATIC, MODEL, () -> new CompoundFormatverter(fv_schematic_va.get(), new FV_VA_MODEL()));
         put(SCHEMATIC, QB, () -> new CompoundFormatverter(fv_schematic_va.get(), new FV_VA_QB()));
         put(SCHEMATIC, QEF, () -> new CompoundFormatverter(fv_schematic_va.get(), fv_va_qef.get()));
         put(SCHEMATIC, SCHEMATIC, CopyFormatverter::new);
         put(SCHEMATIC, STL, () -> new CompoundFormatverter(fv_schematic_va.get(), new FV_VA_STL()));
+        put(SCHEMATIC, STRUCTURE, () -> new CompoundFormatverter(new InventoryFormatverter(SCHEMATIC, BLOCK_ARRAY),
+            new FV_BA_BS(), new FV_BS_STRUCT()));
         put(SCHEMATIC, WAVEFRONT, () -> new CompoundFormatverter(fv_schematic_va.get(), new FV_VA_WAVEFRONT()));
-    
+        
         put(STL, MODEL, () -> new CompoundFormatverter(new FV_STL_VA(), new FV_VA_MODEL()));
         put(STL, QEF, () -> new CompoundFormatverter(new FV_STL_VA(), fv_va_qef.get()));
         put(STL, QB, () -> new CompoundFormatverter(new FV_STL_VA(), new FV_VA_QB()));
         put(STL, SCHEMATIC, () -> new CompoundFormatverter(new FV_STL_VA(), new FV_VA_SCHEMATIC()));
         put(STL, STL, CopyFormatverter::new);
-    
+        
+        put(STRUCTURE, IMAGE, () -> new CompoundFormatverter(fv_structure_va.get(), new FV_VA_IMAGE()));
+        put(STRUCTURE, MODEL, () -> new CompoundFormatverter(fv_structure_va.get(), new FV_VA_MODEL()));
+        put(STRUCTURE, QB, () -> new CompoundFormatverter(fv_structure_va.get(), new FV_VA_QB()));
+        put(STRUCTURE, QEF, () -> new CompoundFormatverter(fv_structure_va.get(), fv_va_qef.get()));
+        put(STRUCTURE, SCHEMATIC, () -> new CompoundFormatverter(new FV_STRUCT_BS(), new FV_BS_BA(),
+            new FV_BA_SCHEMATIC()));
+        put(STRUCTURE, STL, () -> new CompoundFormatverter(fv_structure_va.get(), new FV_VA_STL()));
+        put(STRUCTURE, STRUCTURE, CopyFormatverter::new);
+        put(STRUCTURE, WAVEFRONT, () -> new CompoundFormatverter(fv_structure_va.get(), new FV_VA_WAVEFRONT()));
+        
         put(WAVEFRONT, IMAGE, () -> new CompoundFormatverter(new FV_WAVEFRONT_VA(), new FV_VA_IMAGE()));
         put(WAVEFRONT, MODEL, () -> new CompoundFormatverter(new FV_WAVEFRONT_VA(), new FV_VA_MODEL()));
         put(WAVEFRONT, QB, () -> new CompoundFormatverter(new FV_WAVEFRONT_VA(), new FV_VA_QB()));
         put(WAVEFRONT, QEF, () -> new CompoundFormatverter(new FV_WAVEFRONT_VA(), fv_va_qef.get()));
         put(WAVEFRONT, SCHEMATIC, () -> new CompoundFormatverter(new FV_WAVEFRONT_VA(), new FV_VA_SCHEMATIC()));
         put(WAVEFRONT, STL, FV_WAVEFRONT_STL::new);
+        //put(WAVEFRONT, STRUCTURE, () -> new CompoundFormatverter(new FV_WAVEFRONT_VA(), new FV_VA_()));
         put(WAVEFRONT, WAVEFRONT, CopyFormatverter::new);
     }
     
@@ -276,11 +292,11 @@ public final class FormatverterFactory {
             if (verbose) {
                 long time = System.currentTimeMillis() - now;
                 long pixels = array.size();
-                user.print("Algorithm used:       " + mergingCV.getClass().getSimpleName());
-                user.print("Algorithm run time:   " + time + " ms");
-                user.print("Rectangles created:   " + rectangles.length);
-                user.print("Visible pixels:       " + pixels);
-                user.print("Vis.Pixels/rectangle: %.4f", ((double) pixels / rectangles.length));
+                user.printLocalized("to_debug_pixel_merge.algorithm", mergingCV.getClass().getSimpleName());
+                user.printLocalized("to_debug_pixel_merge.time", time);
+                user.printLocalized("to_debug_pixel_merge.rectangles", rectangles.length);
+                user.printLocalized("to_debug_pixel_merge.visible_pixels", pixels);
+                user.printLocalized("to_debug_pixel_merge.pixels_per_rectangle", (double) pixels / rectangles.length);
             }
             
             Random random = ThreadLocalRandom.current();
@@ -316,16 +332,14 @@ public final class FormatverterFactory {
         
         @Override
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
-            Language lang = user.getVoxelVert().getLanguage();
-            
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
-    
+            
             LegacyBlockStructure blocks = (LegacyBlockStructure) user.getInventory().load(BLOCK_ARRAY, from);
             assert blocks != null;
-            if (verbose) user.print(lang.get("from_block_array.blocks"), blocks.getBlockCount());
+            if (verbose) user.printLocalized("from_block_array.blocks", blocks.getBlockCount());
             set(1);
-    
+            
             user.getInventory().save(SCHEMATIC, blocks, to);
             set(2);
         }
@@ -393,28 +407,28 @@ public final class FormatverterFactory {
             }
             if (verbose) user.print(lang.get("from_colors.colors"), bct.size());
             set(1);
-    
+            
             LegacyBlockStructure blocks = (LegacyBlockStructure) user.getInventory().load(BLOCK_ARRAY, from);
             set(2);
             
             assert blocks != null;
             if (verbose) user.print(lang.get("from_block_array.blocks"), blocks.getBlockCount());
-    
+            
             VoxelArray voxels = new CvBlockStructureToVoxelArray().invoke(blocks, bct, 0);
             if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
             set(3);
-    
+            
             user.getInventory().save(VOXEL_ARRAY, voxels, to);
             set(4);
         }
-    
+        
     }
     
     private static class FV_BS_BA extends Formatverter {
         
         @Override
         public int getMaxProgress() {
-            return 3;
+            return 2;
         }
         
         @Override
@@ -424,17 +438,49 @@ public final class FormatverterFactory {
         
         @Override
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
-            //boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             
             BlockStructureStream stream = (BlockStructureStream) user.getInventory().load(BLOCK_STREAM, from);
             assert stream != null;
             set(1);
             
             LegacyBlockStructure structure = new CvBlockStreamToBlockArray().invoke(stream);
-            user.getInventory().save(BLOCK_ARRAY, structure, to);
+            if (verbose) user.print("Collected stream blocks into " + structure.getBlockCount() + " blocks array");
             
-            //if (verbose)
-            //    user.print(blocks + " converted to " + stream);
+            user.getInventory().save(BLOCK_ARRAY, structure, to);
+            set(2);
+        }
+        
+    }
+    
+    private static class FV_BS_STRUCT extends Formatverter {
+        
+        @Override
+        public int getMaxProgress() {
+            return 3;
+        }
+    
+        @Override
+        public Set<Option> getOptionalOptions() {
+            return Collections.singleton(OPTION_VERBOSE);
+        }
+        
+        @Override
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
+            //System.err.println("abcdefghijklmnop?");
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            
+            BlockStructureStream stream = (BlockStructureStream) user.getInventory().load(BLOCK_STREAM, from);
+            assert stream != null;
+            set(1);
+            
+            BlockStructure structure = new BlockStructure(stream.getSizeX(), stream.getSizeY(), stream.getSizeZ(), 1343);
+            stream.forEach(structure::addBlock);
+            set(2);
+    
+            if (verbose) user.print("Collected %s blocks from stream into structure", structure.size());
+            
+            user.getInventory().save(BLOCK_ARRAY, structure, to);
             set(3);
         }
         
@@ -505,7 +551,7 @@ public final class FormatverterFactory {
             Texture img = (Texture) user.getInventory().load(IMAGE, from);
             assert img != null;
             set(1);
-    
+            
             user.getInventory().save(IMAGE, img, to);
             set(2);
         }
@@ -539,13 +585,13 @@ public final class FormatverterFactory {
             //Logger logger = verbose? user.getLogger() : null;
             
             if (verbose) user.print(lang.get("from_image.face"), from, d, dir);
-    
+            
             Texture img = (Texture) user.getInventory().load(IMAGE, from);
             set(1);
             
             VoxelArray va = new CvTextureToVoxelArray().invoke(img, dir);
             set(2);
-    
+            
             user.getInventory().save(VOXEL_ARRAY, va, to);
             set(3);
         }
@@ -568,17 +614,17 @@ public final class FormatverterFactory {
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             //Language lang = user.getVoxelVert().getLanguage();
             //Logger logger = verbose? user.getLogger() : null;
-    
+            
             QBModel model = (QBModel) user.getInventory().load(QB, from);
             set(1);
-    
+            
             assert model != null;
             VoxelMesh vm = new CvQBToVoxelMesh().invoke(model);
             set(2);
-    
+            
             VoxelArray va = new CvVoxelMeshToVoxelArray().invoke(vm);
             set(3);
-    
+            
             user.getInventory().save(VOXEL_ARRAY, va, to);
             set(4);
         }
@@ -603,26 +649,26 @@ public final class FormatverterFactory {
             
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
-    
+            
             BlockColorExtractor extractor = new DeserializerBCE().fromResource(getClass(), DEFAULT_BCE);
             set(1);
             if (verbose) {
                 String grass = extractor.getGrassMap();
                 if (grass != null) user.print(lang.get("from_rp.grass"), grass);
-                else user.print(lang.get("from_rp.no_grass"));
-        
+                else user.printLocalized("from_rp.no_grass");
+                
                 String foliage = extractor.getFoliageMap();
                 if (foliage != null) user.print(lang.get("from_rp.foliage"), foliage);
-                else user.print(lang.get("from_rp.no_foliage"));
+                else user.printLocalized("from_rp.no_foliage");
             }
-    
+            
             ZipFile zip = (ZipFile) user.getInventory().load(RESOURCE_PACK, from);
             if (verbose) user.print(lang.get("from_rp.colors"), extractor.size(), from);
             set(2);
-    
+            
             BlockColorTable colors = extractor.extract(zip);
             set(3);
-    
+            
             user.getInventory().save(BLOCK_COLOR_TABLE, colors, to);
             set(4);
         }
@@ -668,6 +714,42 @@ public final class FormatverterFactory {
             
             user.getInventory().save(VOXEL_ARRAY, voxels, to);
             set(3);
+        }
+        
+    }
+    
+    private static class FV_STRUCT_BS extends Formatverter {
+        
+        @Override
+        public int getMaxProgress() {
+            return 1;
+        }
+    
+        @Override
+        public Set<Option> getOptionalOptions() {
+            return Collections.singleton(OPTION_VERBOSE);
+        }
+        
+        @SuppressWarnings("Duplicates")
+        @Override
+        public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
+            boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
+            
+            BlockStructure structure = (BlockStructure) user.getInventory().load(Format.STRUCTURE, from);
+            assert structure != null;
+            
+            if (verbose) user.print("Opening stream to %dx%dx%d structure with %d blocks",
+                structure.getSizeX(),
+                structure.getSizeY(),
+                structure.getSizeZ(),
+                structure.size());
+            
+            //System.err.println(new SerializerStructureBlocks().toMSONString(structure));
+            // for (StructureBlock block : structure)
+            //     System.err.println(block.getPosition() + ": " + block.getKey());
+            
+            user.getInventory().save(BLOCK_STREAM, structure.openStream(), to);
+            set(1);
         }
         
     }
@@ -725,11 +807,11 @@ public final class FormatverterFactory {
                 user.print(lang.get("to_voxels.voxels"), voxels.size());
                 user.print(lang.get("to_image.render"), from, d, dir);
             }
-    
+            
             Texture image = new CvVoxelArrayToTexture(logger).invoke(voxels, dir, true, crop);
             if (verbose) user.print(lang.get("to_image.crop"), image.getWidth(), image.getHeight());
             set(4);
-    
+            
             user.getInventory().save(IMAGE, image, to);
             set(5);
         }
@@ -756,7 +838,7 @@ public final class FormatverterFactory {
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             boolean noAntiBleed = args.containsKey(OPTION_NO_ANTI_BLEED.getId());
             Logger logger = verbose? user.getLogger() : null;
-    
+            
             VoxelArray voxels = (VoxelArray) user.getInventory().load(VOXEL_ARRAY, from);
             assert voxels != null;
             if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
@@ -772,22 +854,22 @@ public final class FormatverterFactory {
                 user.print(lang.get("to_model.elements"), model.getElementCount());
                 switch (model.getTextureCount()) {
                     
-                    case 0: user.print(lang.get("to_model.textures.none")); break;
+                    case 0: user.printLocalized("to_model.textures.none"); break;
                     
                     case 1: {
                         Texture texture = model.getTexture(model.getTextures().iterator().next());
                         int w = texture.getWidth(), h = texture.getHeight();
-                        user.print(lang.get("to_model.textures.single"), w, h);
+                        user.printLocalized("to_model.textures.single", w, h);
                         break;
                     }
                     
-                    default: user.print(lang.get("to_model.textures.multiple"), model.getTextureCount()); break;
+                    default: user.printLocalized("to_model.textures.multiple", model.getTextureCount()); break;
                 }
             }
             model.setAntiBleed(!noAntiBleed);
-            if (noAntiBleed) user.print(lang.get("to_model.no_anti_bleed"));
+            if (noAntiBleed) user.printLocalized("to_model.no_anti_bleed");
             set(4);
-    
+            
             user.getInventory().save(MODEL, model, to);
             set(5);
         }
@@ -812,16 +894,16 @@ public final class FormatverterFactory {
             
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
-    
+            
             VoxelArray voxels = (VoxelArray) user.getInventory().load(VOXEL_ARRAY, from);
             assert voxels != null;
             if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
             set(1);
-    
+            
             QBModel qb = new CvVoxelArrayToQB().invoke(voxels);
             if (verbose) user.print(lang.get("to_qb.matrices"), qb.getMatrices().length);
             set(2);
-    
+            
             user.getInventory().save(QB, qb, to);
             set(3);
         }
@@ -829,11 +911,6 @@ public final class FormatverterFactory {
     }
     
     private static class FV_VA_SCHEMATIC extends Formatverter {
-        
-        @Override
-        public Set<Option> getMandatoryOptions() {
-            return Sets.ofArray(OPTION_RESOLUTION);
-        }
         
         @Override
         public Set<Option> getOptionalOptions() {
@@ -852,7 +929,7 @@ public final class FormatverterFactory {
             
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             //Logger logger = verbose? user.getLogger() : null;
-    
+            
             VoxelArray voxels = (VoxelArray) user.getInventory().load(VOXEL_ARRAY, from);
             assert voxels != null;
             if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
@@ -860,11 +937,11 @@ public final class FormatverterFactory {
             
             BlockColorTable bct = defaultBCT();
             set(2);
-    
+            
             LegacyBlockStructure blocks = new CvVoxelArrayToBlocks().invoke(voxels, bct);
             if (verbose) user.printLocalized("to_blocks.blocks", blocks.getBlockCount());
             set(3);
-    
+            
             user.getInventory().save(SCHEMATIC, blocks, to);
             set(4);
         }
@@ -889,11 +966,11 @@ public final class FormatverterFactory {
             
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             Logger logger = verbose? user.getLogger() : null;
-    
+            
             final Classverter<VoxelArray, STLModel> algorithm;
             {
                 String algoName = args.getOrDefault(OPTION_ALGORITHM.getId(), "");
-    
+                
                 switch (algoName) {
                     case "":
                     case "unoptimized":
@@ -914,11 +991,11 @@ public final class FormatverterFactory {
             assert voxels != null;
             if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
             set(1);
-    
+            
             STLModel stl = algorithm.invoke(voxels);
             if (verbose) user.print(lang.get("to_stl.triangles"), stl.size());
             set(2);
-    
+            
             user.getInventory().save(STL, stl, to);
             set(3);
         }
@@ -943,16 +1020,16 @@ public final class FormatverterFactory {
             
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             Logger logger = verbose? user.getLogger() : null;
-    
+            
             VoxelArray voxels = (VoxelArray) user.getInventory().load(VOXEL_ARRAY, from);
             assert voxels != null;
             if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
             set(1);
-    
+            
             OBJModel obj = new CvVoxelArrayToOBJ_Naive(logger).invoke(voxels);
             if (verbose) user.print(lang.get("to_wavefront.content"), obj.getVertexCount(), obj.getFaceCount());
             set(2);
-    
+            
             user.getInventory().save(WAVEFRONT, obj, to);
             set(3);
         }
@@ -1020,7 +1097,7 @@ public final class FormatverterFactory {
             int res = parseInt(OPTION_RESOLUTION, args.get(OPTION_RESOLUTION.getId()), IntegerType.NATURAL);
             
             if (verbose) user.print(lang.get("from_wavefront.canvas"), res, res, res);
-    
+            
             OBJModel obj = (OBJModel) user.getInventory().load(WAVEFRONT, from);
             assert obj != null;
             if (verbose) {
@@ -1036,7 +1113,7 @@ public final class FormatverterFactory {
             VoxelArray voxels = new CvOBJToVoxelArray(logger).invoke(obj, res);
             if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
             set(2);
-    
+            
             user.getInventory().save(VOXEL_ARRAY, voxels, to);
             set(3);
         }

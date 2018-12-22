@@ -8,7 +8,9 @@ CONTRIBUTORS: Grian Network, Arcaniax
 
 
 [IMG]https://i.imgur.com/KnImJll.png[/IMG]
-[B]External Dependencies:[/B] WorldEdit
+[B]External Dependencies:[/B] WorldEdit (soft dependency since R1.5pre)
+
+[B][COLOR=#336600][SIZE=5]13th of December marks VoxelVert's first anniversary. The plugin is 50% OFF for a limited time![/SIZE][/COLOR][/B]
 
 [IMG]https://i.imgur.com/AVmDFOC.png[/IMG]
 VoxelVert Reloaded is a complete revamp of the plugin VoxelVert. Multiple months of work went into this project and I can proudly say that this is the most significant and finest plugin I have ever developed.
@@ -23,14 +25,19 @@ With VoxelVert, you can edit and browse files on your server ingame. It also all
 [LIST]
 [*]Minecraft Blocks
 [*]Minecraft Models (json)
+[*]Minecraft Structures
 [*]Schematic Files (schematic)
 [*]Images (jpeg, png, bmp, gif, ico)
 [*]Qubicle Exchange Format (qef)
 [*]Qubicle Binary (qb)
-[*]Standard Tessellation Language (stl)
+[*]Standard Tessellation Language (stl) (binary and ASCII version)
 [*]Wavefront Model (obj)
+[*]Wavefront Material Library (mtl)
 [/LIST]
 Since R1.4.4, VoxelVert can be used to [B]upload files to your server and download files without FTP[/B].
+
+Do you have more questions? Do you want to report a bug quickly? Join my plugin support server at [B]https://discord.gg/ZXwn3eg[/B] or contact me directly on Discord at [B]Eisenwave#7675[/B].
+
 
 [IMG]https://i.imgur.com/op4hfi3.png[/IMG]
 [B]#1: How to convert a file with the VoxelVert file browser[/B]
@@ -75,17 +82,20 @@ For a full documentation of all the options, take a look at the [B]/c[/B] comman
 [LIST]
 [*]direct conversions from schematics to images
 [*]direct conversion from wavefront to schematics
+[*]advanced media type detection for the file browser, basic file attributes
+[*]1.13+ support
+[*]structure block file format support
 [*]custom texture pack support for block conversions
 [*]ASCII-STL support
 [*]downloading files directly from your file browser
 [*]uploading files via web page
+[*]Discord plugin support server
 [/LIST]
 [B][SIZE=5]Additional Features in Development[/SIZE][/B]
 [LIST]
 [*]sharing files with WorldEdit for easier schematic managment
 [*]sharing files with other players on the server
 [*]sharing files with a per-world shared directory
-[*]Discord plugin support server
 [*]folders for the file browser
 
 [*]working directory for the VoxelVert commands and the file browser
@@ -93,8 +103,8 @@ For a full documentation of all the options, take a look at the [B]/c[/B] comman
 [B][SIZE=5]Planned Features[/SIZE][/B]
 [LIST]
 [*]text file viewer for the file browser
-[*]automatic localization
-[*]German translation
+[*]automatic localization per player
+[*]German localization
 [*]more detailed permissions for each file format
 [*]file count and storage space limits for non-operator players
 [*]smart protection against converting too complex files (such as billion-block schematics)
@@ -103,6 +113,12 @@ For a full documentation of all the options, take a look at the [B]/c[/B] comman
 At least one of features on this list will be added to VoxelVert each 2 weeks. Prepare for a rapidly improving plugin. ;)
 
 [IMG]https://i.imgur.com/Gpft7Cw.png[/IMG]
+[FONT=Courier New][B]/probe-block[/B][/FONT]
+[SPOILER]
+[B][FONT=Arial]Permission:[/FONT][/B][FONT=Courier New]vv.command.probe-block[/FONT]
+Lists files in your file browser directory.
+[/SPOILER]
+
 [B][FONT=Courier New]/voxelvert-list[/FONT][/B]
 [SPOILER]
 [B]Alias: [/B][FONT=Courier New]/vv-ls[/FONT]
@@ -204,7 +220,7 @@ Converts the file named "house" with the format "schematic" into an bird eye's v
 [*]Drag the plugins EisenInventories.jar* and VoxelVert.jar into your plugins/ folder.
 [*]Start up your server. This will also generate the default configuration and language files which you can then edit.
 [/LIST]
-[SIZE=3]* EisenInventories is an API which VoxelVert uses for its chest menus. It's not released as seperate plugin yet but will be in the future.[/SIZE]
+[SIZE=3]* EisenInventories is an API which VoxelVert uses for its chest menus. It's not released as seperate plugin yet but will be in the future. Since 1.12.2 EisenInventories is compiled into VoxelVert instead of being a separate jar.[/SIZE]
 
 [SPOILER="Command Line Tool Installation"]
 To use the VoxelVert command line tool, open your system console in the directory in which you extracted your jar-files and run the command:
@@ -317,4 +333,3 @@ Whether you can request a refund depends on the problem you're having with Voxel
 
 2) If there is compatibility problems with other plugins or VoxelVert doesn't function properly because of your operating system, [B]you can not request a refund[/B]. It is not the plugin author's responsibility to ensure compatibility with non-standard servers (such as servers running custom Spigot versions etc.).
 [/SPOILER]
-[IMG]http://janschultke.de/get.png?topic=voxelvert&meta=post[/IMG]
