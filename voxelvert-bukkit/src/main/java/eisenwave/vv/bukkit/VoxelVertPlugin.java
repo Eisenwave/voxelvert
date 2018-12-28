@@ -1,6 +1,8 @@
 package eisenwave.vv.bukkit;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.extension.platform.Capability;
+import com.sk89q.worldedit.extension.platform.NoCapablePlatformException;
 import eisenwave.inv.EisenInventoriesPluginStartup;
 import eisenwave.vv.bukkit.async.*;
 import eisenwave.vv.bukkit.cmd.*;
@@ -46,13 +48,13 @@ public class VoxelVertPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         eisenInventoriesStarter.onEnable();
-    
+        
         config = new VoxelVertConfig(this, getConfig());
         boolean verbose = config.hasVerbosityOnEnable();
         String langName = config.getLanguage();
-    
+        
         initWorldEdit(verbose);
-    
+        
         if (!initLanguage(langName, verbose) ||
             !initVoxelVert(verbose) ||
             !initCommands()) {
@@ -60,14 +62,14 @@ public class VoxelVertPlugin extends JavaPlugin {
             setEnabled(false);
             return;
         }
-    
+        
         FormatverterInjector.inject(FormatverterFactory.getInstance());
-    
+        
         startConverterThread();
         if (config.isHttpEnabled()) {
             startHttpServer();
         }
-    
+        
         if (!eventsRegistered) {
             if (!voxelVert.isWorldEditAvailable()) {
                 WorldEditEmergencyListener listener = new WorldEditEmergencyListener(voxelVert);
@@ -75,7 +77,6 @@ public class VoxelVertPlugin extends JavaPlugin {
                 eventsRegistered = true;
             }
         }
-        
         
         this.saveDefaultConfig();
     }
@@ -101,7 +102,7 @@ public class VoxelVertPlugin extends JavaPlugin {
         } catch (IOException ex) {
             getLogger().warning(String.format("Failed to load language \"%s\", using default language", name));
         }
-    
+        
         try {
             this.lang = new DeserializerLanguage("default").fromResource(getClass(), "bukkit_lang/en_us.lang");
             return true;
@@ -112,11 +113,35 @@ public class VoxelVertPlugin extends JavaPlugin {
     }
     
     private void initWorldEdit(boolean verbose) {
-        this.worldEditPlugin = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
-        if (worldEditPlugin == null)
-            getLogger().warning("Failed to load WorldEdit, using emergency replacements for WE functionality");
-        else if (verbose)
-            getLogger().info("Loaded WorldEdit " + worldEditPlugin.getDescription().getVersion());
+        WorldEditPlugin we = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
+        String worldEditName = "WorldEdit";
+        
+        if (we == null)
+            getLogger().warning("Failed to load " + worldEditName +
+                ", using emergency replacements for WE functionality");
+        else {
+            worldEditName += " (" + we.getDescription().getVersion() + ")";
+            if (we.isEnabled()) {
+                try {
+                    if (we.getWorldEdit().getPlatformManager().queryCapability(Capability.WORLD_EDITING) == null)
+                        throw new NoCapablePlatformException();
+                    this.worldEditPlugin = we;
+                    if (verbose)
+                        getLogger().info("Loaded " + worldEditName);
+                } catch (NoCapablePlatformException ex) {
+                    getLogger().warning(worldEditName + " is not capable of world editing");
+                    getLogger().warning("Failed to load " + worldEditName +
+                        ", using emergency replacements for WE functionality");
+                }
+            }
+            else {
+                if (verbose)
+                    getLogger().warning(worldEditName + " was found but is not enabled");
+                getLogger().warning("Failed to load " + worldEditName +
+                    ", using emergency replacements for WE functionality");
+            }
+        }
+        
     }
     
     /* private void initEisenInventories(boolean verbose) {
@@ -132,7 +157,7 @@ public class VoxelVertPlugin extends JavaPlugin {
     private boolean initVoxelVert(boolean verbose) {
         BlockScanner scanner = new WorldBlockScanner();
         //BlockScanner scanner = new SimpleBlockScanner();
-    
+        
         if (verbose)
             getLogger().info("Using block scanner: " + scanner.getClass().getSimpleName());
         
@@ -151,7 +176,7 @@ public class VoxelVertPlugin extends JavaPlugin {
             new CmdCopy(this),
             new CmdShare(this)
         };
-    
+        
         Arrays.stream(commands).forEach(cmd -> getCommand(cmd.getName()).setExecutor(cmd));
         return true;
     }

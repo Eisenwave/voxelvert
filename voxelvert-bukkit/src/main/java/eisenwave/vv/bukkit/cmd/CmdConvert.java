@@ -16,21 +16,11 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class CmdConvert extends VoxelVertCommand implements VVInitializer {
     
-    /*
-    private final static String[] OPTIONS = {
-        "c",
-        "C", "crop",
-        "full_blocks",
-        "dir",
-        "v", "verbose"
-    };
-    */
-    
-    @RegExp
-    private final static String MOSTLY_ALPHANUMERIC = "[a-zA-Z0-9._/#]+";
+    private final static Pattern MOSTLY_ALPHANUMERIC = Pattern.compile("[a-zA-Z0-9._/#]+");
     
     private final FormatverterInitializer handle = new FormatverterInitializer();
     
@@ -112,7 +102,7 @@ public class CmdConvert extends VoxelVertCommand implements VVInitializer {
             throw new VVInitializerException(lang.get("cmd.convert.err.in_empty"));
         if (out.isEmpty())
             throw new VVInitializerException(lang.get("cmd.convert.err.out_empty"));
-        if (!out.matches(MOSTLY_ALPHANUMERIC))
+        if (!MOSTLY_ALPHANUMERIC.matcher(out).matches())
             throw new VVInitializerException(lang.get("cmd.convert.err.out_alphanumeric"));
         if (in.startsWith("/") || out.startsWith("/"))
             throw new VVInitializerException(lang.get("error.path_absolute"));
