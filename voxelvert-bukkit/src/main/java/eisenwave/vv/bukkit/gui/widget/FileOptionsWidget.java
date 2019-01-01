@@ -189,7 +189,6 @@ public class FileOptionsWidget extends Widget {
         btnCancelDelete = new Button(getMenu(), null);
         btnCancelDelete.setParent(this);
         btnCancelDelete.setItem(ITEM_CANCEL_DELETE);
-        
         btnCancelDelete.addClickListener(event -> this.setMode(prevMode));
     }
     
@@ -240,6 +239,7 @@ public class FileOptionsWidget extends Widget {
     
     // DRAW
     
+    @SuppressWarnings("Duplicates")
     @Override
     protected void drawContent(IconBuffer buffer) {
         Icon backgroundIcon = new Icon(this, ITEM_BACKGROUND);

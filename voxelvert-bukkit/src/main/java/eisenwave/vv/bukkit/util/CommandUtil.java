@@ -1,15 +1,8 @@
 package eisenwave.vv.bukkit.util;
 
-import eisenwave.vv.bukkit.user.BukkitVoxelVert;
-import eisenwave.vv.bukkit.user.ConsoleVVUser;
-import eisenwave.vv.bukkit.user.PlayerVVUser;
 import eisenwave.vv.object.Language;
-import eisenwave.vv.ui.user.VVUser;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
 
 import java.text.DecimalFormat;
 

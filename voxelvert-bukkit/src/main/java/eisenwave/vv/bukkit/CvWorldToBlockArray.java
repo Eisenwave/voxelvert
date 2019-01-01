@@ -1,7 +1,6 @@
 package eisenwave.vv.bukkit;
 
-import eisenwave.inv.util.LegacyUtil;
-import eisenwave.inv.util.MinecraftObject;
+import eisenwave.inv.util.*;
 import eisenwave.torrens.object.BoundingBox6i;
 import eisenwave.torrens.schematic.legacy.ArrayBlockStructure;
 import eisenwave.vv.clsvert.Classverter;
@@ -31,7 +30,6 @@ public class CvWorldToBlockArray implements Classverter<World, ArrayBlockStructu
         return invoke(world, (BlockSet) args[0]);
     }
     
-    @SuppressWarnings("deprecation")
     public ArrayBlockStructure invoke(World world, BlockSet blocks) {
         if (blocks.isEmpty())
             throw new IllegalArgumentException("cannot convert empty block set");

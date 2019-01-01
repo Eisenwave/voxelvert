@@ -3,7 +3,6 @@ package eisenwave.vv.bukkit.user;
 import com.sk89q.worldedit.bukkit.selections.Selection;
 import eisenwave.torrens.object.Vertex3i;
 import eisenwave.torrens.schematic.BlockStructureStream;
-import eisenwave.torrens.schematic.legacy.LegacyBlockStructure;
 import eisenwave.vv.object.Language;
 import eisenwave.torrens.object.BoundingBox6i;
 import org.bukkit.Location;
@@ -12,8 +11,7 @@ import eisenwave.vv.bukkit.util.CommandUtil;
 import eisenwave.vv.ui.VoxelVert;
 import eisenwave.vv.ui.user.VVUser;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
 
 import java.io.File;
 import java.util.Objects;

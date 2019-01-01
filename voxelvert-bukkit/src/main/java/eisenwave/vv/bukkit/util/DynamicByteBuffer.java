@@ -1,7 +1,6 @@
 package eisenwave.vv.bukkit.util;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DynamicByteBuffer {
     
@@ -33,7 +32,7 @@ public class DynamicByteBuffer {
     
     public void put(int index, byte b) {
         if (index >= limit)
-            throw new IndexOutOfBoundsException(Integer.toString(index) + " >= " + limit);
+            throw new IndexOutOfBoundsException(index + " >= " + limit);
         
         int block = index / blockSize;
         int blockIndex = index % blockSize;

@@ -1,13 +1,11 @@
 package eisenwave.vv.bukkit;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.extension.platform.Capability;
-import com.sk89q.worldedit.extension.platform.NoCapablePlatformException;
+import com.sk89q.worldedit.extension.platform.*;
 import eisenwave.inv.EisenInventoriesPluginStartup;
 import eisenwave.vv.bukkit.async.*;
 import eisenwave.vv.bukkit.cmd.*;
-import eisenwave.vv.bukkit.http.FileTransferManager;
-import eisenwave.vv.bukkit.http.VVHttpThread;
+import eisenwave.vv.bukkit.http.*;
 import eisenwave.vv.bukkit.user.WorldEditEmergencyListener;
 import org.bukkit.*;
 import org.bukkit.plugin.java.JavaPlugin;

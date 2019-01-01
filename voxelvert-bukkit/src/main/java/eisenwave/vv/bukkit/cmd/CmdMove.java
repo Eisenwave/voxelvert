@@ -24,6 +24,7 @@ public class CmdMove extends VoxelVertCommand {
         return "<source> <target>";
     }
     
+    @SuppressWarnings("Duplicates")
     @Override
     public boolean onCommand(CommandSender sender, VVUser user, String[] args) {
         if (args.length < 2) return false;

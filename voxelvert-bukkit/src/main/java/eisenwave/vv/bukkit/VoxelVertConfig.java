@@ -38,6 +38,7 @@ public class VoxelVertConfig {
     
     static {
         DEFAULT_CONFIG = new YamlConfiguration();
+        //noinspection ConstantConditions
         try (InputStream stream = VoxelVertConfig.class.getClassLoader().getResourceAsStream("config.yml");
              Reader reader = new InputStreamReader(stream)) {
             DEFAULT_CONFIG.load(reader);

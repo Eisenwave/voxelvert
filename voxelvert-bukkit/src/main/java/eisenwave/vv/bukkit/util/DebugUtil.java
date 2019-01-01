@@ -6,8 +6,8 @@ import java.io.IOException;
 
 public final class DebugUtil {
     
-    public static void delete(String file) {
-        new File(file).delete();
+    public static boolean delete(String file) {
+        return new File(file).delete();
     }
     
     public static void write(String file, String text) {

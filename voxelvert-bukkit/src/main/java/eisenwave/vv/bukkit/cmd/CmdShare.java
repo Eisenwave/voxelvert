@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.Arrays;
 
+@SuppressWarnings("UnstableApiUsage")
 public class CmdShare extends VoxelVertCommand {
     
     public CmdShare(@NotNull VoxelVertPlugin plugin) {

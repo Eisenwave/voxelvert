@@ -226,6 +226,7 @@ public class FileBrowserMenu extends Menu {
         }
         
         entries.sort(null);
+        //noinspection ToArrayCallWithZeroLengthArrayArgument
         return entries.toArray(new FileBrowserEntry[entries.size()]);
     }
     

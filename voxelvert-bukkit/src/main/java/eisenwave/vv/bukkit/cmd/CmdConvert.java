@@ -10,8 +10,7 @@ import eisenwave.vv.bukkit.util.CommandUtil;
 import eisenwave.vv.object.Language;
 import eisenwave.vv.ui.user.VVUser;
 import org.bukkit.command.CommandSender;
-import org.intellij.lang.annotations.RegExp;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.*;
 
 import java.io.File;
 import java.io.IOException;

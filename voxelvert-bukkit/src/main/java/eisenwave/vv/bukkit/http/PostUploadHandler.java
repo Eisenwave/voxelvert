@@ -94,7 +94,7 @@ public class PostUploadHandler implements HttpHandler {
              BufferedInputStream bufferStream = new BufferedInputStream(bodyStream)) {
             if (DEBUG_REQUEST) {
                 byte[] bytes = new DeserializerByteArray().fromStream(bufferStream);
-                System.out.println(ANSI.BG_BLUE + new String(bytes) + ANSI.RESET);
+                //System.out.println(ANSI.BG_BLUE + new String(bytes) + ANSI.RESET);
                 form = new DeserializerMultipartForm(boundary).fromBytes(bytes);
             }
             else

@@ -32,7 +32,8 @@ public class PageNavigatorCompound extends CompoundGroup {
     
     private int page = 0;
     
-    public PageNavigatorCompound(@NotNull Menu menu, @Nullable Stylesheet style, @NotNull SimpleList handle) {
+    public PageNavigatorCompound(@NotNull Menu menu, @SuppressWarnings("unused") @Nullable Stylesheet style,
+                                 @NotNull SimpleList handle) {
         super(menu);
         this.handle = handle;
         this.pageSize = handle.getArea();

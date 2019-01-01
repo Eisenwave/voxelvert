@@ -5,9 +5,7 @@ import com.google.gson.JsonObject;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 
 public final class ImgurUtil {
 

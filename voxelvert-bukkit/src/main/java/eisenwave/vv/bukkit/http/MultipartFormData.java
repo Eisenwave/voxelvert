@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.function.BiConsumer;
 
+@SuppressWarnings("UnstableApiUsage")
 public class MultipartFormData extends ArrayList<Pair<MediaType, byte[]>> {
     
     public MultipartFormData() {

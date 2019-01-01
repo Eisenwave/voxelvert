@@ -4,9 +4,7 @@ import eisenwave.vv.bukkit.VoxelVertPlugin;
 import eisenwave.vv.bukkit.user.BukkitVoxelVert;
 import eisenwave.vv.bukkit.util.CommandUtil;
 import eisenwave.vv.ui.user.VVUser;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.command.*;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class VoxelVertCommand implements CommandExecutor {

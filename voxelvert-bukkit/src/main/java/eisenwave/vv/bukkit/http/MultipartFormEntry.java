@@ -4,6 +4,7 @@ import com.google.common.net.MediaType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("UnstableApiUsage")
 public class MultipartFormEntry {
     
     private final byte[] data;

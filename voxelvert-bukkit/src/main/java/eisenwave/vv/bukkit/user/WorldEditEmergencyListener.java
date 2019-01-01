@@ -38,29 +38,29 @@ public class WorldEditEmergencyListener implements Listener {
     
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
-        switch (event.getMessage()) {
-            case "//pos1": {
-                Player player = event.getPlayer();
-                Location loc = player.getLocation();
-                PlayerVVUser user = (PlayerVVUser) voxelVert.getUser(player);
-                Vertex3i pos = new Vertex3i(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-                user.setPos1(pos);
-                user.printLocalized("worldedit.pos1", pos.getX(), pos.getY(), pos.getZ());
-                event.setCancelled(true);
-                break;
-            }
+        boolean pos1;
         
-            case "//pos2": {
-                Player player = event.getPlayer();
-                Location loc = player.getLocation();
-                PlayerVVUser user = (PlayerVVUser) voxelVert.getUser(player);
-                Vertex3i pos = new Vertex3i(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-                user.setPos2(pos);
-                user.printLocalized("worldedit.pos2", pos.getX(), pos.getY(), pos.getZ());
-                event.setCancelled(true);
-                break;
-            }
+        if (event.getMessage().equals("//pos1"))
+            pos1 = true;
+        else if (event.getMessage().equals("//pos2"))
+            pos1 = false;
+        else return;
+    
+        Player player = event.getPlayer();
+        Location loc = player.getLocation();
+        PlayerVVUser user = (PlayerVVUser) voxelVert.getUser(player);
+        Vertex3i pos = new Vertex3i(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+    
+        if (pos1) {
+            user.setPos1(pos);
+            user.printLocalized("worldedit.pos1", pos.getX(), pos.getY(), pos.getZ());
         }
+        else {
+            user.setPos2(pos);
+            user.printLocalized("worldedit.pos2", pos.getX(), pos.getY(), pos.getZ());
+        }
+    
+        event.setCancelled(true);
     }
     
     //@EventHandler

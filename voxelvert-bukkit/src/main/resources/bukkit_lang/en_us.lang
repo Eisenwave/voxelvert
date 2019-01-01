@@ -44,8 +44,8 @@ cmd.move.exception = An error occurred when moving the file: &6%s
 cmd.move.failure = Couldn't move &6%s&r to &6%s&r
 cmd.move.success = Moved &6%s&r to &6%s&r
 
-cmd.probe_block.12 = &6%s&r
-cmd.probe_block.13 = %s = &6%s&r
+cmd.probe_block.12 = &6%s&r -> %s
+cmd.probe_block.13 = %s = &6%s&r -> %s
 cmd.probe_block.err.unknown_key = Key &6%s&r could not be translated into a legacy key
 
 cmd.remove.err.missing = Can't remove &6%s&r, no such file exists
