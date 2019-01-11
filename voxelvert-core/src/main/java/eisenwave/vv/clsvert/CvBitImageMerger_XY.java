@@ -10,25 +10,20 @@ import java.util.*;
 
 public class CvBitImageMerger_XY implements Classverter<BitArray2, Rectangle4i[]> {
     
-    @Override
-    public Class<BitArray2> getFrom() {
-        return BitArray2.class;
-    }
-    
-    @Override
-    public Class<Rectangle4i[]> getTo() {
-        return Rectangle4i[].class;
-    }
-    
+    @Deprecated
     @Override
     public Rectangle4i[] invoke(@NotNull BitArray2 from, @NotNull Object... args) {
+        return invoke(from);
+    }
+    
+    public static Rectangle4i[] invoke(@NotNull BitArray2 from) {
         final int w = from.getSizeX(), h = from.getSizeY();
         
         LineList[] lines = mergeX(from, w, h);
         //return resultFromLines(lines, h);
         List<Rectangle4i> planes = mergeY(lines, h);
         
-        return planes.toArray(new Rectangle4i[planes.size()]);
+        return planes.toArray(new Rectangle4i[0]);
     }
     
     @NotNull
@@ -41,7 +36,7 @@ public class CvBitImageMerger_XY implements Classverter<BitArray2, Rectangle4i[]
                 result.add(new Rectangle4i(line.min, y, line.max, y));
         }
         
-        return result.toArray(new Rectangle4i[result.size()]);
+        return result.toArray(new Rectangle4i[0]);
     }
     
     /**

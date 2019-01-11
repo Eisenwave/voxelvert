@@ -4,6 +4,7 @@ import eisenwave.spatium.util.Flags;
 import eisenwave.vv.VVTest;
 import eisenwave.torrens.util.ColorMath;
 import eisenwave.torrens.voxel.*;
+import eisenwave.vv.clsvert.CvVoxelArrayToQB;
 import org.junit.Test;
 
 import java.io.File;
@@ -13,18 +14,22 @@ import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
 
+@Deprecated
 public class VoxelCanvasTest {
-
-    private static void saveAsQEF(VoxelArray voxels, String name) throws IOException {
-        File out = new File(VVTest.DIR_FILES, name+".qef");
-        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
-
+    
+    private static void saveAs(VoxelArray voxels, String name, boolean qef) throws IOException {
+        File out = new File(VVTest.directory(), name + (qef? ".qef" : ".qb"));
+        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create " + out);
+        
         Logger logger = VVTest.LOGGER;
         logger.setLevel(Level.INFO);
         
-        new SerializerQEF(logger).toFile(voxels, out);
+        if (qef)
+            new SerializerQEF(logger).toFile(voxels, out);
+        else
+            new SerializerQB(logger).toFile(CvVoxelArrayToQB.invoke(voxels), out);
     }
-
+    
     @Test
     public void drawVisibility() throws Exception {
         Logger logger = VVTest.LOGGER;
@@ -32,18 +37,18 @@ public class VoxelCanvasTest {
         
         VoxelArray voxels = new DeserializerQEF(logger).fromResource(getClass(), "debug.qef");
         VoxelCanvas canvas = new VoxelCanvas(voxels);
-
+        
         canvas.selectContent(false);
         canvas.drawRaw((x, y, z) -> {
             float brightness = Flags.bitSum(voxels.getVisibilityMask(x, y, z)) / 6F;
             return ColorMath.fromRGB(brightness, brightness, brightness);
         });
-
+        
         VoxelArray content = canvas.getContent();
-        logger.fine(voxels+" = "+content);
+        logger.fine(voxels + " = " + content);
         assertEquals(voxels.size(), content.size());
-
-        saveAsQEF(content, "VoxelCanvasTest_drawVisibility");
+        
+        saveAs(content, "VoxelCanvasTest_drawVisibility", true);
     }
     
     /*
@@ -66,13 +71,29 @@ public class VoxelCanvasTest {
         saveAsQEF(canvas.getContent(), "VoxelCanvasTest_Triangle");
     }
     */
-
+    
     @Test
     public void drawLine() throws Exception {
         VoxelCanvas canvas = new VoxelCanvas(64, 64, 64);
         canvas.drawLine(0, 7, 15, 63, 63, 63, ColorMath.DEBUG1);
-
-        saveAsQEF(canvas.getContent(), "VoxelCanvasTest_drawLine");
+        
+        saveAs(canvas.getContent(), "VoxelCanvasTest_drawLine", true);
+    }
+    
+    @Test
+    public void drawSphere() throws Exception {
+        VoxelCanvas canvas = new VoxelCanvas(20, 20, 20);
+        canvas.drawSphere(8, 8, 8, 8, ColorMath.DEBUG1);
+        
+        saveAs(canvas.getContent(), "draw_sphere", false);
+    }
+    
+    //@Test
+    public void drawSpherePerformance() {
+        VoxelCanvas canvas = new VoxelCanvas(512, 512, 512);
+        long now = System.currentTimeMillis();
+        canvas.drawSphere(255, 255, 255, 255, ColorMath.DEBUG1);
+        System.out.println(System.currentTimeMillis() - now);
     }
 
     /*
@@ -136,16 +157,16 @@ public class VoxelCanvasTest {
         VoxelArray voxels = new DeserializerQEF().fromResource(getClass(), "debug.qef");
         VoxelCanvas canvas = new VoxelCanvas(voxels);
         assertEquals(voxels.size(), canvas.contentSize());
-
+        
         canvas.selectContent(false);
         assertEquals(canvas.contentSize(), canvas.selectionSize());
     }
-
+    
     @Test
-    public void fullSelect() throws Exception {
+    public void fullSelect() {
         VoxelCanvas canvas = new VoxelCanvas(3, 3, 3);
         assertEquals(canvas.getVolume(), canvas.selectionSize());
-
+        
         canvas.forEachPosition(canvas::unselect);
         /*
         canvas.forEachPosition((x,y,z) -> {
@@ -157,7 +178,7 @@ public class VoxelCanvasTest {
         System.out.println(canvas);
         */
         assertEquals(0, canvas.selectionSize());
-
+        
         canvas.forEachPosition(canvas::select);
         assertEquals(canvas.getVolume(), canvas.selectionSize());
     }

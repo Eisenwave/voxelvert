@@ -25,7 +25,7 @@ public class TextureCanvasTest {
         Int2Predicate fillCondition = (x,y) -> canvas.getRGB(x,y) == ColorMath.SOLID_WHITE;
         canvas.floodFill(0, 0, fillCondition, ColorMath.SOLID_RED);
         
-        File out = new File(VVTest.DIR_FILES, "TextureCanvasTest_floodFill.png");
+        File out = new File(VVTest.directory(), "TextureCanvasTest_floodFill.png");
         if (!out.exists() && !out.createNewFile()) throw new IOException();
         
         new SerializerPNG().toFile(texture.getImageWrapper(), out);
@@ -44,14 +44,14 @@ public class TextureCanvasTest {
         long time = TestUtil.millisOf(() -> canvas.edgeFloodFill(fillCondition, ColorMath.SOLID_RED));
         logger.fine(time+" ms to paste a "+canvas.getWidth()+"x"+canvas.getHeight()+" image");
         
-        File out = new File(VVTest.DIR_FILES, "TextureCanvasTest.png");
+        File out = new File(VVTest.directory(), "TextureCanvasTest.png");
         if (!out.exists() && !out.createNewFile()) throw new IOException();
         
         new SerializerPNG().toFile(texture.getImageWrapper(), out);
     }
     
-    @Test
-    public void graphicsTest() throws Exception {
+    // @Test
+    public void graphicsPerformance() throws Exception {
         BufferedImage image = new BufferedImage(1024, 1024, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = image.createGraphics();
         graphics.setColor(new Color(32, 32, 32));
@@ -60,7 +60,7 @@ public class TextureCanvasTest {
         graphics.setColor(Color.ORANGE);
         graphics.drawLine(-512, -512, 512, 512);
     
-        File out = new File(VVTest.DIR_FILES, "GraphicsTest.png");
+        File out = new File(VVTest.directory(), "GraphicsTest.png");
         if (!out.exists() && !out.createNewFile()) throw new IOException();
     
         new SerializerPNG().toFile(image, out);

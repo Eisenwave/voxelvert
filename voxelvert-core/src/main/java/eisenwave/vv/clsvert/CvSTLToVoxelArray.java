@@ -15,16 +15,6 @@ import java.util.logging.Logger;
 
 public class CvSTLToVoxelArray implements Classverter<STLModel, VoxelArray> {
     
-    @Override
-    public Class<STLModel> getFrom() {
-        return STLModel.class;
-    }
-    
-    @Override
-    public Class<VoxelArray> getTo() {
-        return VoxelArray.class;
-    }
-    
     @Nullable
     private final Logger logger;
     
@@ -46,6 +36,7 @@ public class CvSTLToVoxelArray implements Classverter<STLModel, VoxelArray> {
             logger.fine(msg);
     }
     
+    @Deprecated
     @Override
     public VoxelArray invoke(@NotNull STLModel from, @NotNull Object... args) {
         Arguments.requireMin(args, 1);

@@ -2,7 +2,6 @@ package eisenwave.vv.clsvert;
 
 import eisenwave.spatium.util.PrimMath;
 import eisenwave.vv.VVTest;
-import eisenwave.vv.util.ConvertUtil;
 import eisenwave.torrens.util.ANSI;
 import eisenwave.torrens.util.ColorMath;
 import eisenwave.torrens.voxel.*;
@@ -21,16 +20,17 @@ public class CvVoxelArrayToVoxelMeshTest {
     @Test
     public void mergeQB() throws Exception {
         QBModel model = new DeserializerQB().fromResource(getClass(), "sniper.qb");
-        VoxelMesh mesh = ConvertUtil.convert(model, VoxelMesh.class);
-        VoxelArray array = ConvertUtil.convert(mesh, VoxelArray.class); //turn into flat voxels
-
-        mesh = ConvertUtil.convert(array, VoxelMesh.class); //merge back into mesh (only x-merge)
-        model = ConvertUtil.convert(mesh, QBModel.class);
+        VoxelMesh mesh = new CvQBToVoxelMesh().invoke(model);
+        VoxelArray array = new CvVoxelMeshToVoxelArray().invoke(mesh);
+    
+        //merge back into mesh (only x-merge)
+        mesh = new CvVoxelArrayToVoxelMesh().invoke(array);
+        model = new CvVoxelMeshToQB().invoke(mesh);
 
         for (VoxelMesh.Element element : mesh)
             element.getArray().fill(ColorMath.fromHSB(PrimMath.randomFloat(1), 0.5F, 0.75F));
 
-        File out = new File(VVTest.DIR_FILES, "ClassverterVoxelMergerTest.qb");
+        File out = new File(VVTest.directory(), "ClassverterVoxelMergerTest.qb");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
 
         new SerializerQB().toFile(model, out);
@@ -39,14 +39,14 @@ public class CvVoxelArrayToVoxelMeshTest {
     @Test
     public void mergeQEF() throws Exception {
         VoxelArray array = new DeserializerQEF().fromResource(getClass(), "sword.qef");
-        VoxelMesh mesh = ConvertUtil.convert(array, VoxelMesh.class);
+        VoxelMesh mesh = new CvVoxelArrayToVoxelMesh().invoke(array);
 
         for (VoxelMesh.Element element : mesh)
             element.getArray().fill(ColorMath.fromHSB(PrimMath.randomFloat(1), 0.5F, 0.75F));
 
-        QBModel model = ConvertUtil.convert(mesh, QBModel.class);
+        QBModel model = new CvVoxelMeshToQB().invoke(mesh);
 
-        File out = new File(VVTest.DIR_FILES, "ConverterVoxelMergerTest2.qb");
+        File out = new File(VVTest.directory(), "ConverterVoxelMergerTest2.qb");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
 
         new SerializerQB().toFile(model, out);
@@ -55,15 +55,13 @@ public class CvVoxelArrayToVoxelMeshTest {
     /**
      * Tests whether the total amount of voxels is being preserved when voxels in a {@link VoxelArray} are being merged
      * into a {@link VoxelMesh}.
-     *
-     * @throws Exception if the test fails
      */
     @Test
     public void preserveVolume() {
         VoxelArray array = new VoxelArray(8, 8, 8);
         Random r = new Random();
         array.forEachPosition(pos -> {if (r.nextBoolean()) array.setRGB(pos, ColorMath.SOLID_RED);});
-        VoxelMesh mesh = ConvertUtil.convert(array, VoxelMesh.class);
+        VoxelMesh mesh = new CvVoxelArrayToVoxelMesh().invoke(array);
 
         assertEquals(array.size(), mesh.getCombinedVolume());
     }
@@ -71,25 +69,23 @@ public class CvVoxelArrayToVoxelMeshTest {
     /**
      * Tests whether the total amount of voxels is being preserved when voxels in a {@link VoxelArray} are being merged
      * into a {@link VoxelMesh}.
-     *
-     * @throws Exception if the test fails
      */
     @Test
-    public void preserveVoxelCount() throws Exception {
+    public void preserveVoxelCount() {
         VoxelArray array = new VoxelArray(8, 8, 8);
         Random r = new Random();
         array.forEachPosition(pos -> {if (r.nextBoolean()) array.setRGB(pos, ColorMath.SOLID_RED);});
 
         final int count = array.size();
-        VoxelMesh mesh = ConvertUtil.convert(array, VoxelMesh.class);
+        VoxelMesh mesh = new CvVoxelArrayToVoxelMesh().invoke(array);
     
         //assertEquals(1, mesh.size());
         assertEquals(count, mesh.voxelCount());
     }
 
     
-    @Test
-    public void testWorstCaseMerging() throws Exception {
+    // @Test
+    public void testWorstCaseMergingPerformance() {
         Logger logger = VVTest.LOGGER;
         logger.setLevel(Level.INFO);
         

@@ -52,7 +52,6 @@ public class InventoryFormatverter extends Formatverter {
         return Collections.emptySet();
     }
     
-    @SuppressWarnings("Duplicates")
     @Override
     public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
         Object temp = user.getInventory().load(sourceFormat, from);

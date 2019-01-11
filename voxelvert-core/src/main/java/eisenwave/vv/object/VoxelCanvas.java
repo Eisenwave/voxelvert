@@ -1,9 +1,6 @@
 package eisenwave.vv.object;
 
-import eisenwave.spatium.function.Float3IntFunction;
-import eisenwave.spatium.function.Int3Consumer;
-import eisenwave.spatium.function.Int3IntFunction;
-import eisenwave.spatium.function.Int3Predicate;
+import eisenwave.spatium.function.*;
 import eisenwave.spatium.util.PrimMath;
 import eisenwave.spatium.util.Spatium;
 import eisenwave.spatium.array.BooleanArray3;
@@ -11,6 +8,7 @@ import eisenwave.torrens.object.Vertex3i;
 import eisenwave.torrens.util.ColorMath;
 import eisenwave.torrens.voxel.VoxelArray;
 
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
 @Deprecated
@@ -255,8 +253,9 @@ public class VoxelCanvas {
      * @param z1 the second voxel z
      * @param rgb the line color
      */
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     public void drawEllipse(int x0, int y0, int z0, int x1, int y1, int z1, int rgb) {
-        internalDrawEllipse(
+        naiveDrawEllipse(
             (x0 + x1) / 2,
             (y0 + y1) / 2,
             (z0 + z1) / 2,
@@ -266,7 +265,7 @@ public class VoxelCanvas {
             rgb);
     }
     
-    /**
+    /*
      * Draws a triangle into the canvas.
      *
      * @param triangle the triangle
@@ -278,7 +277,7 @@ public class VoxelCanvas {
     }
     */
     
-    /**
+    /*
      * <p>
      *     Draws a triangle with vertex colors into the canvas.
      * </p>
@@ -313,7 +312,7 @@ public class VoxelCanvas {
     }
     */
     
-    /**
+    /*
      * <p>
      *     Loops through all barycentric coordinates of the triangle and uses a given {@link Float3IntFunction} to draw
      *     an rgb value into the triangle.
@@ -388,15 +387,87 @@ public class VoxelCanvas {
      * @param x0 the first voxel x
      * @param y0 the first voxel y
      * @param z0 the first voxel z
-     * @param size the size of the size
+     * @param radius the size of the sphere
      * @param rgb the line color
      */
-    public void drawSphere(int x0, int y0, int z0, int size, int rgb) {
-        if (size < 0) return;
-        internalDrawSphere(x0, y0, z0, size, rgb);
+    public void drawSphere(int x0, int y0, int z0, int radius, int rgb) {
+        if (radius < 0) return;
+        fastDrawSphere(x0, y0, z0, radius, rgb);
     }
     
-    private void internalDrawSphere(float cenX, float cenY, float cenZ, float r, int rgb) {
+    @SuppressWarnings("Duplicates")
+    private void bresenhamDrawSphere(int cenX, int cenY, int cenZ, int r, int rgb) {
+        int x = 0, z = r;
+        //int decision = 3 - 2 * r;
+        int decision = 1 - r;
+        while (z >= x) {
+            //rgb = ThreadLocalRandom.current().nextInt() | 0xFF000000;
+            bresenhamDrawCircleXY(cenX, cenY, cenZ + z, x, rgb);
+            bresenhamDrawCircleXY(cenX, cenY, cenZ + x, z, rgb);
+            bresenhamDrawCircleXY(cenX, cenY, cenZ - x, z, rgb);
+            bresenhamDrawCircleXY(cenX, cenY, cenZ - z, x, rgb);
+            /* draw(cenX + x, cenY, cenZ + z, rgb);
+            draw(cenX + z, cenY, cenZ + x, rgb);
+            draw(cenX + z, cenY, cenZ - x, rgb);
+            draw(cenX + x, cenY, cenZ - z, rgb); */
+            
+            x++;
+            
+            //if (decision > 0) {
+            if (decision >= 0) {
+                decision += 2 * (x - z) + 5;
+                //decision += 2 * z + 3;
+                z--;
+            }
+            else
+                //decision += 4 * x + 6;
+                decision += 2 * x + 3;
+        }
+    }
+    
+    @SuppressWarnings("Duplicates")
+    private void bresenhamDrawCircleXY(int cenX, int cenY, int cenZ, int r, int rgb) {
+        int x = 0, y = r;
+        int decision = 1 - r;
+        while (y >= x) {
+            draw(cenX + x, cenY + y, cenZ, rgb);
+            draw(cenX + y, cenY + x, cenZ, rgb);
+            draw(cenX - y, cenY + x, cenZ, rgb);
+            draw(cenX - x, cenY + y, cenZ, rgb);
+            draw(cenX - x, cenY - y, cenZ, rgb);
+            draw(cenX - y, cenY - x, cenZ, rgb);
+            draw(cenX + y, cenY - x, cenZ, rgb);
+            draw(cenX + x, cenY - y, cenZ, rgb);
+            x++;
+            
+            if (decision >= 0) {
+                y--;
+                decision += 2 * (x - y) + 5;
+            }
+            else
+                decision += 2 * x + 3;
+        }
+    }
+    
+    @SuppressWarnings("Duplicates")
+    private void fastDrawSphere(int cenX, int cenY, int cenZ, int r, int rgb) {
+        final int lim = r * r;
+        
+        for (int x = 0, x0 = cenX, x1 = cenX, xSqr = 0; x < r; xSqr += x + x + 1, x++, x0--, x1++)
+            for (int y = 0, y0 = cenY, y1 = cenY, ySqr = 0; y < r; ySqr += y + y + 1, y++, y0--, y1++)
+                for (int z = 0, z0 = cenZ, z1 = cenZ, zSqr = 0; xSqr + ySqr + zSqr < lim; zSqr += z + z + 1, z++, z0--, z1++) {
+                    draw(x0, y0, z0, rgb);
+                    draw(x0, y0, z1, rgb);
+                    draw(x0, y1, z0, rgb);
+                    draw(x0, y1, z1, rgb);
+                    draw(x1, y0, z0, rgb);
+                    draw(x1, y0, z1, rgb);
+                    draw(x1, y1, z0, rgb);
+                    draw(x1, y1, z1, rgb);
+                }
+    }
+    
+    private void naiveDrawSphere(float cenX, float cenY, float cenZ, float r, int rgb) {
         final int
             minX = (int) (cenX - r), minY = (int) (cenY - r), minZ = (int) (cenZ - r),
             maxX = (int) (cenX + r), maxY = (int) (cenY + r), maxZ = (int) (cenZ + r);
@@ -410,7 +481,7 @@ public class VoxelCanvas {
                 }
     }
     
-    private void internalDrawEllipse(float cenX, float cenY, float cenZ, float rx, float ry, float rz, int rgb) {
+    private void naiveDrawEllipse(float cenX, float cenY, float cenZ, float rx, float ry, float rz, int rgb) {
         final int
             minX = (int) (cenX - rx), minY = (int) (cenY - ry), minZ = (int) (cenZ - rz),
             maxX = (int) (cenX + rx), maxY = (int) (cenY + ry), maxZ = (int) (cenZ + rz);
@@ -551,9 +622,7 @@ public class VoxelCanvas {
             });
         }
         else {
-            forEachPosition(((x, y, z) -> {
-                setSelected(x, y, z, predicate.test(x, y, z));
-            }));
+            forEachPosition((x, y, z) -> setSelected(x, y, z, predicate.test(x, y, z)));
         }
     }
     
@@ -576,6 +645,7 @@ public class VoxelCanvas {
         });
     }
     
+    @SuppressWarnings("Duplicates")
     public void forEachPosition(Int3Consumer action) {
         for (int x = 0; x < sizeX; x++)
             for (int y = 0; y < sizeY; y++)
@@ -584,7 +654,6 @@ public class VoxelCanvas {
     }
     
     // MISC
-    
     
     @Override
     public String toString() {

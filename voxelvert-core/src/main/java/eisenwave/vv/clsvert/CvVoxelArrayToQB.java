@@ -7,18 +7,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class CvVoxelArrayToQB implements Classverter<VoxelArray, QBModel> {
     
-    @Override
-    public Class<VoxelArray> getFrom() {
-        return VoxelArray.class;
-    }
-    
-    @Override
-    public Class<QBModel> getTo() {
-        return QBModel.class;
-    }
-    
+    @Deprecated
     @Override
     public QBModel invoke(@NotNull VoxelArray array, @NotNull Object... args) {
+        return invoke(array);
+    }
+    
+    public static QBModel invoke(@NotNull VoxelArray array) {
         QBModel model = new QBModel();
         model.add(new QBMatrix(VoxelArray.class.getName(), 0, 0, 0, array));
         

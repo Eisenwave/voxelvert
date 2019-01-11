@@ -29,7 +29,7 @@ public class DeserializerQBTest {
         
         QBModel model = new DeserializerQB(logger).fromResource(getClass(), "sniper.qb");
         {
-            File out = new File(VVTest.DIR_FILES, "DeserializerQBTest.qb");
+            File out = new File(VVTest.directory(), "DeserializerQBTest.qb");
             if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create " + out);
             new SerializerQB().toFile(model, out);
         }
@@ -40,7 +40,7 @@ public class DeserializerQBTest {
         VoxelArray array = new CvVoxelMeshToVoxelArray().invoke(mesh);
         Texture texture = new CvVoxelArrayToTexture().invoke(array, Direction.NEGATIVE_Z, true, true);
         {
-            File out = new File(VVTest.DIR_FILES, "DeserializerQBTest.png");
+            File out = new File(VVTest.directory(), "DeserializerQBTest.png");
             if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create " + out);
             ImageIO.write(texture.toImage(true), "png", out);
         }

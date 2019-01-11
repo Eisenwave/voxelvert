@@ -1,6 +1,5 @@
 package eisenwave.vv.clsvert;
 
-import eisenwave.vv.VVTest;
 import eisenwave.torrens.util.ColorMath;
 import eisenwave.torrens.stl.STLModel;
 import eisenwave.torrens.stl.SerializerSTL;
@@ -13,7 +12,7 @@ import static org.junit.Assert.*;
 
 public class CvVoxelArrayToSTLTest {
     
-    private final File DEBUG_FILE = new File(VVTest.DIRECTORY, "axes.stl");
+    private final File DEBUG_FILE = new File(new File("/tmp/vv"), "axes.stl");
     
     @Test
     public void invoke() throws Exception {

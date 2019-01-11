@@ -19,8 +19,13 @@ public class DeserializerHttpHeadersTest {
         HttpHeaders headers = new DeserializerHttpHeaders().fromString(testString);
         
         assertEquals("stuff", headers.getFirst("Key1"));
-        assertEquals(Arrays.asList("more stuff", "even more stuff"), headers.get("key_2"));
-        assertEquals(Arrays.asList("foo", "bar=1", "foobar=barfoo"), headers.get("key.3"));
+        assertEquals(
+            Arrays.asList("more stuff", "even more stuff"),
+            headers.get("key_2"));
+        
+        assertEquals(
+            Arrays.asList("foo", "bar=1, foobar=barfoo"),
+            headers.get("key.3"));
     }
     
 }

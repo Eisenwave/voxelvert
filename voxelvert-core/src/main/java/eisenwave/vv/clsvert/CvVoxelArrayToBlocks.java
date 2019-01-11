@@ -12,16 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CvVoxelArrayToBlocks implements Classverter<VoxelArray, LegacyBlockStructure> {
     
-    @Override
-    public Class<VoxelArray> getFrom() {
-        return VoxelArray.class;
-    }
-    
-    @Override
-    public Class<LegacyBlockStructure> getTo() {
-        return LegacyBlockStructure.class;
-    }
-    
+    @Deprecated
     @Override
     public LegacyBlockStructure invoke(@NotNull VoxelArray from, @NotNull Object... args) {
         Arguments.requireMin(args, 1);
@@ -29,7 +20,7 @@ public class CvVoxelArrayToBlocks implements Classverter<VoxelArray, LegacyBlock
         return invoke(from, Arguments.requireType(args[0], BlockColorTable.class));
     }
     
-    public LegacyBlockStructure invoke(VoxelArray from, BlockColorTable colorTable) {
+    public static LegacyBlockStructure invoke(VoxelArray from, BlockColorTable colorTable) {
         LegacyBlockStructure result = new ArrayBlockStructure(from.getSizeX(), from.getSizeY(), from.getSizeZ());
         
         int lastRGB = 0;

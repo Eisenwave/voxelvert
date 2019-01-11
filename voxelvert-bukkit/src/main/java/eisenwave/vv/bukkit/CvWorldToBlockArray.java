@@ -12,16 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CvWorldToBlockArray implements Classverter<World, ArrayBlockStructure> {
     
-    @Override
-    public Class<World> getFrom() {
-        return World.class;
-    }
-    
-    @Override
-    public Class<ArrayBlockStructure> getTo() {
-        return ArrayBlockStructure.class;
-    }
-    
+    @Deprecated
     @Override
     public ArrayBlockStructure invoke(@NotNull World world, @NotNull Object... args) {
         Arguments.requireMin(args, 1);

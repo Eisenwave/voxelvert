@@ -56,7 +56,6 @@ public class CmdVoxelvert extends VoxelVertCommand implements TabCompleter {
         return "(convert|converter|files|reload|status|upload|version)";
     }
     
-    @SuppressWarnings("Duplicates")
     @Override
     public boolean onCommand(CommandSender sender, VVUser user, String[] args) {
     

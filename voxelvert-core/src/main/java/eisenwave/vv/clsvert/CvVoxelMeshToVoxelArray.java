@@ -7,16 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CvVoxelMeshToVoxelArray implements Classverter<VoxelMesh, VoxelArray> {
     
-    @Override
-    public Class<VoxelMesh> getFrom() {
-        return VoxelMesh.class;
-    }
-    
-    @Override
-    public Class<VoxelArray> getTo() {
-        return VoxelArray.class;
-    }
-    
+    @Deprecated
     @Override
     public VoxelArray invoke(@NotNull VoxelMesh mesh, @NotNull Object... args) {
         return invoke(mesh);

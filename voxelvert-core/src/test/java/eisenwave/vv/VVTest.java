@@ -1,6 +1,7 @@
 package eisenwave.vv;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 public class VVTest {
@@ -17,9 +18,12 @@ public class VVTest {
         LOGGER.addHandler(new VVLoggingHandler());
     }
     
-    public final static File
-        DIRECTORY = new File("/home/user/Files/"),
-        DIR_FILES = new File("/home/user/Files/"),
-        DIR_IMAGE_SCALE = new File(DIRECTORY, "img_scale");
+    private final static File testDirectory = new File("/tmp/vv");
+    
+    public static File directory() throws IOException {
+        if (testDirectory.isFile() || !testDirectory.exists() && !testDirectory.mkdir())
+            throw new IOException("could not initialize temporary directory");
+        return testDirectory;
+    }
     
 }

@@ -1,13 +1,15 @@
 package eisenwave.vv.rp;
 
 import eisenwave.torrens.schematic.BlockKey;
+import eisenwave.torrens.schematic.BlockKeyMap;
 import eisenwave.torrens.util.ColorMath;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Stream;
 
-public class BlockColorTable extends LinkedHashMap<BlockKey, BlockColor> {
+public class BlockColorTable {
     
     /** Accept no blocks with a smaller space occupation */
     public final static int
@@ -19,14 +21,41 @@ public class BlockColorTable extends LinkedHashMap<BlockKey, BlockColor> {
     /** Accept no blocks with lower alpha */
     INSIST_ALPHA = 1 << 3;
     
+    private final Map<BlockKey, BlockColor> map = new BlockKeyMap<>();
+    
+    public BlockColorTable() {}
+    
+    public int size() {
+        return map.size();
+    }
+    
+    public boolean isEmpty() {
+        return map.isEmpty();
+    }
+    
     @Nullable
-    public BlockColor get(String key) {
+    public BlockColor get(@NotNull String key) {
         return get(BlockKey.minecraft(key));
     }
     
     @Nullable
+    public BlockColor get(@NotNull BlockKey key) {
+        return map.get(key);
+    }
+    
+    @Nullable
+    public BlockColor put(@NotNull BlockKey key, @NotNull BlockColor color) {
+        return map.put(key, color);
+    }
+    
+    @NotNull
+    public Set<Map.Entry<BlockKey, BlockColor>> entrySet() {
+        return map.entrySet();
+    }
+    
+    @Nullable
     public BlockKey get(int rgb, boolean safetyFilter) {
-        Stream<Map.Entry<BlockKey, BlockColor>> stream = entrySet().stream();
+        Stream<Map.Entry<BlockKey, BlockColor>> stream = map.entrySet().stream();
         
         // filters
         if (safetyFilter) stream = stream.filter(entry -> {
@@ -41,7 +70,6 @@ public class BlockColorTable extends LinkedHashMap<BlockKey, BlockColor> {
         if (ColorMath.isSolid(rgb))
             stream = stream.filter(entry -> entry.getValue().isSolid());
         
-        @SuppressWarnings("ConstantConditions")
         Map.Entry<BlockKey, BlockColor> entry = stream.min((entryA, entryB) -> {
             int diffA = ColorMath.visualDiff(rgb, entryA.getValue().getRGB());
             int diffB = ColorMath.visualDiff(rgb, entryB.getValue().getRGB());
@@ -77,7 +105,7 @@ public class BlockColorTable extends LinkedHashMap<BlockKey, BlockColor> {
     
     @Override
     public String toString() {
-        return BlockColorTable.class.getSimpleName() + "{size=" + size() + "}";
+        return BlockColorTable.class.getSimpleName() + "{size=" + map.size() + "}";
     }
     
 }

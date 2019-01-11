@@ -11,22 +11,25 @@ import static org.junit.Assert.*;
 public class ShellConversionInitializerTest {
     
     @SuppressWarnings({"InfiniteLoopStatement", "StatementWithEmptyBody"})
-    private final static Runnable INFINITE_RUNNABLE = () -> {while (true);};
+    private final static Runnable INFINITE_RUNNABLE = () -> {while (true) ;};
     
     @Test
     public void async() throws Exception {
+        final int timeout = 50;
+        
         Logger logger = Logger.getLogger("vv.test");
         logger.setLevel(Level.FINE);
         
         long before = System.currentTimeMillis();
         
         try {
-            ShellConversionInitializer.runWithTimeout(INFINITE_RUNNABLE, 1, 3000);
+            ShellConversionInitializer.runWithTimeout(INFINITE_RUNNABLE, 1, timeout);
             throw new AssertionError();
         } catch (TimeoutException ex) {
-            long time = System.currentTimeMillis() - before;
-            assertTrue(time - 3000 < 100);
-            System.out.println("timed out after "+time+"ms");
+            long millis = System.currentTimeMillis() - before;
+            // make sure that the timeout was in 10 ms range of timeout
+            assertTrue(Math.abs(millis - timeout) <= 10);
+            System.err.println("timed out after " + millis + "ms");
         }
     }
     

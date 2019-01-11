@@ -2,7 +2,6 @@ package eisenwave.vv.clsvert;
 
 import eisenwave.vv.VVTest;
 import eisenwave.vv.io.SerializerMCModelGeometry;
-import eisenwave.vv.util.ConvertUtil;
 import eisenwave.spatium.enums.Direction;
 import eisenwave.torrens.object.BoundingBox6i;
 import eisenwave.torrens.voxel.DeserializerQB;
@@ -82,15 +81,15 @@ public class CvVoxelMeshToMCTest {
         logger.setLevel(Level.FINE);
         
         VoxelArray voxels = new DeserializerQEF(logger).fromResource(getClass(), "debug.qef");
-        VoxelMesh mesh = ConvertUtil.convert(voxels, VoxelMesh.class);
+        VoxelMesh mesh = new CvVoxelArrayToVoxelMesh().invoke(voxels);
         MCModel model = new CvVoxelMeshToMC().invoke(mesh);
         BufferedImage image = model.getTexture("texture").getImageWrapper();
 
-        File jsonOut = new File(VVTest.DIR_FILES, "ClassverterVoxelsToMCTest.json");
+        File jsonOut = new File(VVTest.directory(), "ClassverterVoxelsToMCTest.json");
         if (!jsonOut.exists() && !jsonOut.createNewFile()) throw new IOException("failed to fromPoints json");
         new SerializerMCModelGeometry().toFile(model, jsonOut);
 
-        File imgOut = new File(VVTest.DIR_FILES, "ClassverterVoxelsToMCTest.png");
+        File imgOut = new File(VVTest.directory(), "ClassverterVoxelsToMCTest.png");
         if (!imgOut.exists() && !imgOut.createNewFile()) throw new IOException("failed to fromPoints texture");
         new SerializerPNG().toFile(image, imgOut);
     }
@@ -107,8 +106,8 @@ public class CvVoxelMeshToMCTest {
     @Test
     public void testElementsPreserve() throws Exception {
         QBModel model = new DeserializerQB().fromResource(getClass(), "sniper.qb");
-        VoxelMesh mesh = ConvertUtil.convert(model, VoxelMesh.class);
-        MCModel mc = ConvertUtil.convert(mesh, MCModel.class);
+        VoxelMesh mesh = new CvQBToVoxelMesh().invoke(model);
+        MCModel mc = new CvVoxelMeshToMC().invoke(mesh);
 
         assertEquals(mesh.size(), mc.size());
     }

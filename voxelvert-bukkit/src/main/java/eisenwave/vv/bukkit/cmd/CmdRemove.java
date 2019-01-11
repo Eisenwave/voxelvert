@@ -27,7 +27,6 @@ public class CmdRemove extends VoxelVertCommand {
         return "<file>";
     }
     
-    @SuppressWarnings("Duplicates")
     @Override
     public boolean onCommand(CommandSender sender, VVUser user, String[] args) {
         if (args.length < 1) return false;

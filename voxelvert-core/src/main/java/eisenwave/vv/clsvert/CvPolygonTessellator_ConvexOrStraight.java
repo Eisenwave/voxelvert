@@ -9,22 +9,13 @@ import java.util.*;
 public class CvPolygonTessellator_ConvexOrStraight
     implements Classverter<PolygonVertex[], STLTriangle[]> {
     
-    @Override
-    public Class<PolygonVertex[]> getFrom() {
-        return CvVoxelArrayToSTL_Hybrid.PolygonVertex[].class;
-    }
-    
-    @Override
-    public Class<STLTriangle[]> getTo() {
-        return STLTriangle[].class;
-    }
-    
+    @Deprecated
     @Override
     public STLTriangle[] invoke(PolygonVertex[] from, Object... args) {
         return invoke(from, (Vertex3f) args[0]);
     }
     
-    public STLTriangle[] invoke(PolygonVertex[] vertices, Vertex3f normal) {
+    public static STLTriangle[] invoke(PolygonVertex[] vertices, Vertex3f normal) {
         assert vertices.length >= 3;
         
         List<STLTriangle> result = new ArrayList<>(8);
@@ -38,6 +29,7 @@ public class CvPolygonTessellator_ConvexOrStraight
                 continue;
             
             if (v == 3) {
+                assert vertices[c] != null;
                 result.add(new STLTriangle(normal, vertices[c].to3f(), vertices[b].to3f(), vertices[a].to3f()));
                 break;
             }
@@ -82,7 +74,7 @@ public class CvPolygonTessellator_ConvexOrStraight
             }
         }
         
-        return result.toArray(new STLTriangle[result.size()]);
+        return result.toArray(new STLTriangle[0]);
     }
     
 }

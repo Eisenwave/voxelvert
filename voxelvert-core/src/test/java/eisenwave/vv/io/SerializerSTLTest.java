@@ -24,7 +24,7 @@ public class SerializerSTLTest {
         STLModel model = new CvVoxelArrayToSTL_Naive(logger).invoke(voxels);
         logger.fine("converted "+voxels+" to "+model);
 
-        File out = new File(VVTest.DIR_FILES, "SerializerSTLTest.stl");
+        File out = new File(VVTest.directory(), "SerializerSTLTest.stl");
         if (!out.exists() && !out.createNewFile()) throw new IOException("failed out fromPoints "+out);
         
         new SerializerSTL(logger).toFile(model, out);

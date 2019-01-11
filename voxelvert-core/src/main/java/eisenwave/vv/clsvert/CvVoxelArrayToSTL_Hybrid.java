@@ -36,16 +36,7 @@ public class CvVoxelArrayToSTL_Hybrid implements Classverter<VoxelArray, STLMode
         }
     }
     
-    @Override
-    public Class<VoxelArray> getFrom() {
-        return VoxelArray.class;
-    }
-    
-    @Override
-    public Class<STLModel> getTo() {
-        return STLModel.class;
-    }
-    
+    @Deprecated
     @Override
     public STLModel invoke(@NotNull VoxelArray from, @NotNull Object... args) {
         return invoke(from);
@@ -127,10 +118,10 @@ public class CvVoxelArrayToSTL_Hybrid implements Classverter<VoxelArray, STLMode
     
     private static STLTriangle[] tessellate(Rectangle4i rectangle, Direction dir, int index, int lim,
                                             BooleanArray3 meshVertices) {
-        Vertex3f normal = Util3D.normalOf(dir.opposite());
+        Vertex3f normal = Util3D.vectorOf(dir.opposite());
         
         List<PolygonVertex> face = faceOf(rectangle, dir, index, lim, meshVertices);
-        PolygonVertex[] vertices = face.toArray(new PolygonVertex[face.size()]);
+        PolygonVertex[] vertices = face.toArray(new PolygonVertex[0]);
         assert vertices.length >= 3;
         
         if (vertices.length == 4) return new STLTriangle[] {
@@ -211,6 +202,7 @@ public class CvVoxelArrayToSTL_Hybrid implements Classverter<VoxelArray, STLMode
         return new Rectangle4i[][][] {negative, positive};
     }
     
+    @SuppressWarnings("Duplicates")
     private static BitArray2Adapter getPresenceXY(VoxelArray voxels, int z) {
         final int limX = voxels.getSizeX(), limY = voxels.getSizeY();
         BitArray2Adapter result = new BitArray2Adapter(limX, limY);
@@ -223,7 +215,7 @@ public class CvVoxelArrayToSTL_Hybrid implements Classverter<VoxelArray, STLMode
         return result;
     }
     
-    @SuppressWarnings("SuspiciousNameCombination")
+    @SuppressWarnings({"SuspiciousNameCombination", "Duplicates"})
     private static BitArray2Adapter getPresenceYZ(VoxelArray voxels, int x) {
         final int limY = voxels.getSizeY(), limZ = voxels.getSizeZ();
         BitArray2Adapter result = new BitArray2Adapter(limY, limZ);
@@ -235,7 +227,7 @@ public class CvVoxelArrayToSTL_Hybrid implements Classverter<VoxelArray, STLMode
         return result;
     }
     
-    @SuppressWarnings("SuspiciousNameCombination")
+    @SuppressWarnings({"SuspiciousNameCombination", "Duplicates"})
     private static BitArray2Adapter getPresenceZX(VoxelArray voxels, int y) {
         final int limZ = voxels.getSizeZ(), limX = voxels.getSizeX();
         BitArray2Adapter result = new BitArray2Adapter(limZ, limX);

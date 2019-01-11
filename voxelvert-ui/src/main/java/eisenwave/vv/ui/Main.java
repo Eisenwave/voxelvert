@@ -16,7 +16,6 @@ public final class Main {
         ShellVVUser user = new ShellVVUser(vv);
     
         // make sure that all formats are loaded
-        // noinspection ResultOfMethodCallIgnored
         //FormatverterFactory.getInstance().getInputFormats();
         ShellConversionInitializer cmd = new ShellConversionInitializer();
         

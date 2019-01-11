@@ -28,16 +28,6 @@ public class CvVoxelMeshToMC implements Classverter<VoxelMesh, MCModel> {
     
     private final static String TEXTURE_NAME = "texture";
     
-    @Override
-    public Class<VoxelMesh> getFrom() {
-        return VoxelMesh.class;
-    }
-    
-    @Override
-    public Class<MCModel> getTo() {
-        return MCModel.class;
-    }
-    
     @Nullable
     private final Logger logger;
     
@@ -49,6 +39,7 @@ public class CvVoxelMeshToMC implements Classverter<VoxelMesh, MCModel> {
         this(null);
     }
     
+    @Deprecated
     @Override
     public MCModel invoke(@NotNull VoxelMesh from, @NotNull Object[] args) {
         return invoke(from);
@@ -96,7 +87,7 @@ public class CvVoxelMeshToMC implements Classverter<VoxelMesh, MCModel> {
         Arguments.requireAllNonnull(faces); //contains null from this point on
         
         //arrange all textures in a single rectangle
-        RectangleArrangement arrangement = arrangeTextures(faces);
+        RectangleArrangement<ArrangeableTexture> arrangement = arrangeTextures(faces);
         //System.out.println("arranged textures: "+arrangement);
         if (logger != null)
             logger.info(
@@ -316,7 +307,8 @@ public class CvVoxelMeshToMC implements Classverter<VoxelMesh, MCModel> {
      * @param arrange the arrangement of textures
      * @return a texture composed using the arrangement
      */
-    private static Texture renderTextureArrangement(RectangleArrangement arrange, final String txName) {
+    private static <T extends BaseRectangle> Texture renderTextureArrangement(RectangleArrangement<T> arrange,
+                                                                              final String txName) {
         Texture result = Texture.alloc(arrange.getWidth(), arrange.getHeight());
         
         arrange.forEach(entry -> {
@@ -353,9 +345,10 @@ public class CvVoxelMeshToMC implements Classverter<VoxelMesh, MCModel> {
      * @param rectangles a sorted rectangle list
      * @return a single texture
      */
-    private static RectangleArrangement arrangeTextures(Collection<? extends BaseRectangle> rectangles) {
+    private static <T extends BaseRectangle> RectangleArrangement<T> arrangeTextures(Collection<T> rectangles) {
         Arguments.requireAllNonnull(rectangles);
-        BaseRectangle[] array = rectangles.toArray(new BaseRectangle[rectangles.size()]);
+        BaseRectangle[] array = rectangles.toArray(new BaseRectangle[0]);
+        //noinspection unchecked
         return new CvRectangleArranger().invoke(array);
     }
     

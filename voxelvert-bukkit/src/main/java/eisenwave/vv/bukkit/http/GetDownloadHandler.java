@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.Map;
 
+@SuppressWarnings("UnstableApiUsage")
 public class GetDownloadHandler implements HttpHandler {
     
     private final VoxelVertPlugin plugin;

@@ -6,18 +6,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class CvBlockStreamToBlockArray implements Classverter<BlockStructureStream, ArrayBlockStructure> {
     
-    @Override
-    public Class<BlockStructureStream> getFrom() {
-        return null;
-    }
-    
-    @Override
-    public Class<ArrayBlockStructure> getTo() {
-        return null;
-    }
-    
+    @Deprecated
     @Override
     public ArrayBlockStructure invoke(@NotNull BlockStructureStream stream, @NotNull Object... args) {
+        return invoke(stream);
+    }
+    
+    public static ArrayBlockStructure invoke(@NotNull BlockStructureStream stream) {
         ArrayBlockStructure blocks = new ArrayBlockStructure(stream.getSizeX(), stream.getSizeY(), stream.getSizeZ());
         stream.forEach(block -> {
             LegacyBlockKey legacyKey = MicroLegacyUtil.getByMinecraftKey13(block.getKey());

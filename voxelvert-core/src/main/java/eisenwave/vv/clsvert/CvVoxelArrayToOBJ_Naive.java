@@ -161,18 +161,13 @@ public class CvVoxelArrayToOBJ_Naive implements Classverter<VoxelArray, OBJModel
         }
     }
     
-    @Override
-    public Class<VoxelArray> getFrom() {
-        return VoxelArray.class;
-    }
-    
-    @Override
-    public Class<OBJModel> getTo() {
-        return OBJModel.class;
-    }
-    
+    @Deprecated
     @Override
     public OBJModel invoke(@NotNull VoxelArray array, @NotNull Object... args) {
+        return invoke(array);
+    }
+    
+    public OBJModel invoke(@NotNull VoxelArray array) {
         IntArray3 vertexGrid = new IntArray3(array.getSizeX() + 1, array.getSizeY() + 1, array.getSizeZ() + 1);
         //vertexGrid.forEachIndex(((x, y, z) -> vertexGrid.set(x, y, z, -1)));
     
@@ -225,7 +220,7 @@ public class CvVoxelArrayToOBJ_Naive implements Classverter<VoxelArray, OBJModel
                 voxels.add(new TempVoxel(x, y, z, array.getRGB(x, y, z), mask));
         });
         
-        return voxels.toArray(new TempVoxel[voxels.size()]);
+        return voxels.toArray(new TempVoxel[0]);
     }
     
     private static void addMaterials(TempVoxel[] voxels, OBJModel model) {

@@ -239,7 +239,6 @@ public class FileOptionsWidget extends Widget {
     
     // DRAW
     
-    @SuppressWarnings("Duplicates")
     @Override
     protected void drawContent(IconBuffer buffer) {
         Icon backgroundIcon = new Icon(this, ITEM_BACKGROUND);

@@ -25,7 +25,7 @@ public class DynamicByteBufferTest {
         for (byte b : bytes) {
             assertEquals(b, buffer.get());
         }
-        assertEquals(bytes, buffer.getContent());
+        assertArrayEquals(bytes, buffer.getContent());
     }
     
 }

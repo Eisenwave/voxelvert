@@ -24,16 +24,7 @@ public class CvVoxelArrayToSTL_Naive implements Classverter<VoxelArray, STLModel
             logger.fine(msg);
     }
     
-    @Override
-    public Class<VoxelArray> getFrom() {
-        return VoxelArray.class;
-    }
-    
-    @Override
-    public Class<STLModel> getTo() {
-        return STLModel.class;
-    }
-    
+    @Deprecated
     @Override
     public STLModel invoke(@NotNull VoxelArray from, @NotNull Object... args) {
         return invoke(from);
@@ -56,7 +47,7 @@ public class CvVoxelArrayToSTL_Naive implements Classverter<VoxelArray, STLModel
     }
     
     private static STLTriangle[] toTriangles(VoxelArray.Voxel voxel, Direction side) {
-        Vertex3f normal = Util3D.normalOf(side);
+        Vertex3f normal = Util3D.vectorOf(side);
         Vertex3f[] face = faceOf(voxel, side);
         //PrimArrays.flip(face);
         

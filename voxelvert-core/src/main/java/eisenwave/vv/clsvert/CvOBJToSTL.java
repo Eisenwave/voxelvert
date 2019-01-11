@@ -11,22 +11,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class CvOBJToSTL implements Classverter<OBJModel, STLModel> {
     
-    @Override
-    public Class<OBJModel> getFrom() {
-        return OBJModel.class;
-    }
-    
-    @Override
-    public Class<STLModel> getTo() {
-        return STLModel.class;
-    }
-    
+    @Deprecated
     @Override
     public STLModel invoke(@NotNull OBJModel obj, @NotNull Object... args) {
         return invoke(obj);
     }
     
-    public STLModel invoke(OBJModel obj) {
+    public static STLModel invoke(OBJModel obj) {
         BoundingBox6f bounds = obj.getBoundaries();
         Vertex3f translation = bounds.getCenter().negative();
         //System.out.println(bounds+" -> "+bounds.translate(translation.getX(), translation.getY(), translation.getZ()));

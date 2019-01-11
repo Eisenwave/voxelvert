@@ -26,16 +26,7 @@ public class CvBlockStreamToVoxelArray implements Classverter<BlockStructureStre
     /* apply {@link ColorMath#DEFAULT_TINT} as tint (always true if block array has no biomes) *
     DEFAULT_TINT = 1 << 4;*/
     
-    @Override
-    public Class<BlockStructureStream> getFrom() {
-        return BlockStructureStream.class;
-    }
-    
-    @Override
-    public Class<VoxelArray> getTo() {
-        return VoxelArray.class;
-    }
-    
+    @Deprecated
     @Override
     public VoxelArray invoke(@NotNull BlockStructureStream blocks, @NotNull Object... args) {
         Arguments.requireMin(args, 2);
@@ -45,7 +36,7 @@ public class CvBlockStreamToVoxelArray implements Classverter<BlockStructureStre
         return invoke(blocks, (BlockColorTable) args[0], (int) args[1]);
     }
     
-    public VoxelArray invoke(BlockStructureStream blocks, @Nullable BlockColorTable colors, int flags) {
+    public static VoxelArray invoke(BlockStructureStream blocks, @Nullable BlockColorTable colors, int flags) {
         final boolean
             full_blocks = (flags & FULL_BLOCKS) != 0,
             ignore_alpha = (flags & IGNORE_ALPHA) != 0,

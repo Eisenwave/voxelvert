@@ -25,7 +25,7 @@ public class CvRectangleArrangerTest {
         logger.setLevel(Level.INFO);
         
         long now = System.currentTimeMillis();
-        BaseRectangle[] rectangles = new BaseRectangle[32];
+        TextureRectangle[] rectangles = new TextureRectangle[32];
         for (int i = 0; i < rectangles.length; i++) {
             Texture texture = Texture.alloc(i+1, i+1);
             float hue = PrimMath.randomFloat(1);
@@ -38,19 +38,20 @@ public class CvRectangleArrangerTest {
         logger.info("created "+rectangles.length+" rectangles "+ timeSinceStr(now));
 
         now = System.currentTimeMillis();
-        RectangleArrangement arrangement = new CvRectangleArranger().invoke(rectangles);
+        RectangleArrangement<TextureRectangle> arrangement = new CvRectangleArranger<TextureRectangle>()
+            .invoke(rectangles);
         logger.info("arranged "+rectangles.length+" rectangles "+ timeSinceStr(now));
     
         now = System.currentTimeMillis();
         Texture render = Texture.alloc(arrangement.getWidth(), arrangement.getHeight());
-        for (RectangleArrangement.Entry entry : arrangement) {
-            Texture t = ((TextureRectangle) entry.getRectangle()).getTexture();
+        for (RectangleArrangement.Entry<TextureRectangle> entry : arrangement) {
+            Texture t = entry.getRectangle().getTexture();
             render.paste(t, entry.getU(), entry.getV());
         }
         logger.info("rendered "+rectangles.length+" rectangles "+ timeSinceStr(now));
         
         {
-            File out = new File(VVTest.DIR_FILES, "ClassverterRectangleArrangerTest.png");
+            File out = new File(VVTest.directory(), "ClassverterRectangleArrangerTest.png");
             if (!out.canWrite()) return;
     
             now = System.currentTimeMillis();
@@ -64,15 +65,15 @@ public class CvRectangleArrangerTest {
     public void performance() {
         final boolean printEff = false;
         final int count = 300, times = 10;
-        
-        BaseRectangle[] rectangles = new BaseRectangle[count];
+    
+        EmptyRectangle[] rectangles = new EmptyRectangle[count];
         for (int i = 0; i < rectangles.length; i++) {
             int width = PrimMath.randomInt(1, count);
             int height = PrimMath.randomInt(1, count);
             rectangles[i] = new EmptyRectangle(width, height);
         }
     
-        CvRectangleArranger clsVerter = new CvRectangleArranger();
+        CvRectangleArranger<EmptyRectangle> clsVerter = new CvRectangleArranger<>();
         
         long time = TestUtil.millisOf(() -> clsVerter.invoke(rectangles), times);
         

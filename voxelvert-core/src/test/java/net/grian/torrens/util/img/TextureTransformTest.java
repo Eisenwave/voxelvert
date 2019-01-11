@@ -10,15 +10,13 @@ import eisenwave.torrens.img.scale.ScaleNearestNeighbour;
 import java.io.File;
 import java.io.IOException;
 
-import static eisenwave.vv.VVTest.DIR_IMAGE_SCALE;
-
 public class TextureTransformTest {
     
     public final static String NAME = "test";
     
     //@Test
     public void scale() throws Exception {
-        File file = new File(DIR_IMAGE_SCALE, NAME+".png");
+        File file = new File(new File(new File("/tmp/vv"), "img_scale"), NAME+".png");
         Texture texture = Texture.wrapOrCopy( new DeserializerImage().fromFile(file) );
         printPNG(texture, NAME+"_org");
         
@@ -34,7 +32,7 @@ public class TextureTransformTest {
     }
     
     public void scale_performance() throws Exception {
-        File file = new File(DIR_IMAGE_SCALE, NAME+".png");
+        File file = new File(new File(new File("/tmp/vv"), "img_scale"), NAME+".png");
         Texture texture = Texture.wrapOrCopy( new DeserializerImage().fromFile(file) );
         printPNG(texture, NAME+"_org");
         final int dims = 128;
@@ -56,7 +54,7 @@ public class TextureTransformTest {
     }
     
     private static void printPNG(Texture texture, String name) throws IOException {
-        File file = new File(DIR_IMAGE_SCALE, name+".png");
+        File file = new File(new File(new File("/tmp/vv"), "img_scale"), name+".png");
         new SerializerPNG().toFile(texture.toImage(true), file);
     }
     

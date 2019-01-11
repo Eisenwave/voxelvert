@@ -10,16 +10,6 @@ import java.util.logging.Logger;
 
 public class CvVoxelArrayToVoxelMesh implements Classverter<VoxelArray, VoxelMesh> {
     
-    @Override
-    public Class<VoxelArray> getFrom() {
-        return VoxelArray.class;
-    }
-    
-    @Override
-    public Class<VoxelMesh> getTo() {
-        return VoxelMesh.class;
-    }
-    
     @Nullable
     private final Logger logger;
     
@@ -31,10 +21,26 @@ public class CvVoxelArrayToVoxelMesh implements Classverter<VoxelArray, VoxelMes
         this(null);
     }
     
+    @Deprecated
     @Override
     public VoxelMesh invoke(@NotNull VoxelArray array, @NotNull Object... args) {
         //System.out.println(args.length);
         BoundingBox6i[] boxes = new CvBitArrayMerger_XYZ(logger).invoke(array, args);
+        //System.out.println(Arrays.toString(boxes));
+        //System.out.println(boxes.length+" bboxes");
+        
+        // cut arrays out of array using zones
+        //return null;
+        return cut(array, boxes);
+    }
+    
+    public VoxelMesh invoke(@NotNull VoxelArray array) {
+        return invoke(array, 3);
+    }
+    
+    public VoxelMesh invoke(@NotNull VoxelArray array, int cancel) {
+        //System.out.println(args.length);
+        BoundingBox6i[] boxes = new CvBitArrayMerger_XYZ(logger).invoke(array, cancel);
         //System.out.println(Arrays.toString(boxes));
         //System.out.println(boxes.length+" bboxes");
         

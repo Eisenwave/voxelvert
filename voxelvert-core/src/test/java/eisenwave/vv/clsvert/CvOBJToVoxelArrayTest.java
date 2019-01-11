@@ -17,8 +17,8 @@ public class CvOBJToVoxelArrayTest {
     //private final static File DIR =
     
     private static void saveAsQEF(VoxelArray voxels, String name) throws IOException {
-        File out = new File(VVTest.DIRECTORY, name+".qef");
-        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create "+out);
+        File out = new File(new File("/tmp/vv"), name + ".qef");
+        if (!out.exists() && !out.createNewFile()) throw new IOException("failed to create " + out);
         
         new SerializerQEF().toFile(voxels, out);
     }
@@ -30,14 +30,15 @@ public class CvOBJToVoxelArrayTest {
         
         OBJModel model = new OBJModel();
         
-        new DeserializerOBJ(model, VVTest.DIRECTORY, logger).fromResource(getClass(), "debug.obj");
-        
         long now = System.currentTimeMillis();
-        VoxelArray voxels = new CvOBJToVoxelArray(logger).invoke(model, 128, 128, 128);
+        new DeserializerOBJ(model, new File("/tmp/vv"), logger).fromResource(getClass(), "debug.obj");
         long time = System.currentTimeMillis() - now;
-        logger.fine("voxelized "+model.getFaceCount()+" faces -> "+voxels+" in "+time+" ms");
-    
-        //saveAsQEF(voxels, "ClassverterOBJVoxelizerTest");
+        logger.fine("loaded " + model + " in " + time + " ms");
+        
+        now = System.currentTimeMillis();
+        VoxelArray voxels = new CvOBJToVoxelArray(logger).invoke(model, 32);
+        time = System.currentTimeMillis() - now;
+        logger.fine("voxelized " + model.getFaceCount() + " faces -> " + voxels + " in " + time + " ms");
     }
     
 }

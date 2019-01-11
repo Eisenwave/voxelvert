@@ -14,6 +14,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("UnstableApiUsage")
 public class DeserializerMultipartForm implements Deserializer<MultipartFormEntry[]> {
     
     private final static byte[] SEPARATOR_PREFIX = new byte[] {'\r', '\n', '-', '-'};
@@ -56,7 +57,7 @@ public class DeserializerMultipartForm implements Deserializer<MultipartFormEntr
         String filename = null, name = null;
         MediaType type = null;
         
-        for (String line = readLine(stream); !line.equals(""); line = readLine(stream)) {
+        for (String line = readLine(stream); !line.isEmpty(); line = readLine(stream)) {
             List<String> parsed = DeserializerHttpHeaders.deserializeMultiSemicolon(line);
             switch (parsed.get(0).toLowerCase()) {
                 case "content-disposition": {

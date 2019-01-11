@@ -125,7 +125,7 @@ public class CommandCall {
      */
     @NotNull
     public String[] getArgs() {
-        return args.toArray(new String[args.size()]);
+        return args.toArray(new String[0]);
     }
     
     /**

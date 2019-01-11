@@ -4,7 +4,6 @@ import eisenwave.vv.ui.fmtvert.*;
 
 import static eisenwave.vv.ui.fmtvert.Format.*;
 
-@SuppressWarnings("Duplicates")
 public class FormatverterInjector {
     
     public final static Format BLOCKS_FORMAT = new Format("blocks", true, false);

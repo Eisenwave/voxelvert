@@ -10,18 +10,13 @@ import java.util.List;
 
 public class CvTextureStackToVoxelArray implements Classverter<Texture[], VoxelArray> {
     
-    @Override
-    public Class<Texture[]> getFrom() {
-        return Texture[].class;
-    }
-    
-    @Override
-    public Class<VoxelArray> getTo() {
-        return VoxelArray.class;
-    }
-    
+    @Deprecated
     @Override
     public VoxelArray invoke(@NotNull Texture[] from, @NotNull Object... args) {
+        return invoke(from);
+    }
+    
+    public static VoxelArray invoke(@NotNull Texture[] from) {
         Arguments.requireMin(from, 1);
         
         List<Texture> list = new ArrayList<>();
@@ -41,4 +36,5 @@ public class CvTextureStackToVoxelArray implements Classverter<Texture[], VoxelA
         
         return null;
     }
+    
 }

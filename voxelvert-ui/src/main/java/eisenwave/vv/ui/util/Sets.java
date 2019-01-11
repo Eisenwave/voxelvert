@@ -20,7 +20,6 @@ public final class Sets {
         return result;
     }
     
-    @SuppressWarnings("Duplicates")
     @SafeVarargs
     public static <E> Set<E> union(Collection<E>... collections) {
         int initSize = 0;
@@ -32,7 +31,6 @@ public final class Sets {
         return result;
     }
     
-    @SuppressWarnings("Duplicates")
     public static <E> Set<E> union(Iterable<Collection<E>> collections) {
         int initSize = 0;
         for (Collection<E> c : collections)

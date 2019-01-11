@@ -31,13 +31,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.logging.*;
 import java.util.zip.ZipFile;
 
 import static eisenwave.vv.ui.fmtvert.Format.*;
 
-@SuppressWarnings("Duplicates")
 public final class FormatverterFactory {
     
     private final static Option
@@ -270,24 +270,24 @@ public final class FormatverterFactory {
                 }
             };
             
-            final Classverter<BitArray2, Rectangle4i[]> mergingCV;
+            final Function<BitArray2, Rectangle4i[]> mergingCV;
             {
                 String algo = args.get(OPTION_ALGORITHM.getId());
                 if (algo == null)
-                    mergingCV = new CvBitImageMerger_XY();
+                    mergingCV = CvBitImageMerger_XY::invoke;
                 else switch (args.get(OPTION_ALGORITHM.getId())) {
                     case "xy":
-                        mergingCV = new CvBitImageMerger_XY();
+                        mergingCV = CvBitImageMerger_XY::invoke;
                         break;
                     case "no_tjunctions":
-                        mergingCV = new CvBitImageMerger_NoTJunctions();
+                        mergingCV = new CvBitImageMerger_NoTJunctions()::invoke;
                         break;
                     default:
                         throw new FormatverterArgumentException(OPTION_ALGORITHM, "Unknown algorithm: " + algo);
                 }
             }
             
-            Rectangle4i[] rectangles = mergingCV.invoke(array);
+            Rectangle4i[] rectangles = mergingCV.apply(array);
             
             if (verbose) {
                 long time = System.currentTimeMillis() - now;
@@ -467,7 +467,6 @@ public final class FormatverterFactory {
         
         @Override
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
-            //System.err.println("abcdefghijklmnop?");
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             
             BlockStructureStream stream = (BlockStructureStream) user.getInventory().load(BLOCK_STREAM, from);
@@ -692,7 +691,6 @@ public final class FormatverterFactory {
             return 3;
         }
         
-        @SuppressWarnings("Duplicates")
         @Override
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
@@ -730,7 +728,6 @@ public final class FormatverterFactory {
             return Collections.singleton(OPTION_VERBOSE);
         }
         
-        @SuppressWarnings("Duplicates")
         @Override
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
@@ -830,7 +827,6 @@ public final class FormatverterFactory {
             return Sets.ofArray(OPTION_VERBOSE, OPTION_NO_ANTI_BLEED);
         }
         
-        @SuppressWarnings("Duplicates")
         @Override
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
@@ -922,7 +918,6 @@ public final class FormatverterFactory {
             return 5;
         }
         
-        @SuppressWarnings("Duplicates")
         @Override
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
@@ -967,7 +962,7 @@ public final class FormatverterFactory {
             boolean verbose = args.containsKey(OPTION_VERBOSE.getId());
             Logger logger = verbose? user.getLogger() : null;
             
-            final Classverter<VoxelArray, STLModel> algorithm;
+            final Function<VoxelArray, STLModel> algorithm;
             {
                 String algoName = args.getOrDefault(OPTION_ALGORITHM.getId(), "");
                 
@@ -976,11 +971,11 @@ public final class FormatverterFactory {
                     case "unoptimized":
                     case "simple":
                     case "naive":
-                        algorithm = new CvVoxelArrayToSTL_Naive(logger);
+                        algorithm = new CvVoxelArrayToSTL_Naive(logger)::invoke;
                         break;
                     case "hybrid":
                     case "fast":
-                        algorithm = new CvVoxelArrayToSTL_Hybrid(logger);
+                        algorithm = new CvVoxelArrayToSTL_Hybrid(logger)::invoke;
                         break;
                     default:
                         throw new FormatverterArgumentException(OPTION_ALGORITHM, "Unknown algorithm: " + algoName);
@@ -992,7 +987,7 @@ public final class FormatverterFactory {
             if (verbose) user.print(lang.get("to_voxels.voxels"), voxels.size());
             set(1);
             
-            STLModel stl = algorithm.invoke(voxels);
+            STLModel stl = algorithm.apply(voxels);
             if (verbose) user.print(lang.get("to_stl.triangles"), stl.size());
             set(2);
             
@@ -1048,7 +1043,6 @@ public final class FormatverterFactory {
             return Sets.ofArray(OPTION_VERBOSE);
         }
         
-        @SuppressWarnings("Duplicates")
         @Override
         public void convert(VVUser user, String from, String to, Map<String, String> args) throws Exception {
             Language lang = user.getVoxelVert().getLanguage();
@@ -1125,7 +1119,7 @@ public final class FormatverterFactory {
     private static BlockColorTable defBCT = null;
     
     @NotNull
-    private static BlockColorTable defaultBCT() throws IOException {
+    public static BlockColorTable defaultBCT() throws IOException {
         return defBCT != null? defBCT :
             (defBCT = new DeserializerBCT().fromResource(FormatverterFactory.class, DEFAULT_BCT));
     }

@@ -23,7 +23,7 @@ public class SerializerQEFTest {
             if ((x + y + z) % 2 == 0) array.setRGB(x, y, z, ColorMath.DEBUG1);
         }));
         
-        File out = new File(VVTest.DIR_FILES, "big.qef");
+        File out = new File(VVTest.directory(), "big.qef");
         if (!out.exists() && !out.createNewFile()) throw new IOException();
         
         new SerializerQEF(logger).toFile(array, out);

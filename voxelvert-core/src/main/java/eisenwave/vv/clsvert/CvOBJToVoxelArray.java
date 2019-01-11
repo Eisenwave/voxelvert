@@ -14,16 +14,6 @@ import java.util.logging.Logger;
 
 public class CvOBJToVoxelArray implements Classverter<OBJModel, VoxelArray> {
     
-    @Override
-    public Class<OBJModel> getFrom() {
-        return OBJModel.class;
-    }
-    
-    @Override
-    public Class<VoxelArray> getTo() {
-        return VoxelArray.class;
-    }
-    
     @Nullable
     private final Logger logger;
     
@@ -45,6 +35,7 @@ public class CvOBJToVoxelArray implements Classverter<OBJModel, VoxelArray> {
             logger.fine(msg);
     }
     
+    @Deprecated
     @Override
     public VoxelArray invoke(@NotNull OBJModel from, @NotNull Object... args) {
         Arguments.requireMin(args, 1);

@@ -12,16 +12,6 @@ import java.util.logging.Logger;
 
 public class CvBitImageMerger_NoTJunctions implements Classverter<BitArray2, Rectangle4i[]> {
     
-    @Override
-    public Class<BitArray2> getFrom() {
-        return BitArray2.class;
-    }
-    
-    @Override
-    public Class<Rectangle4i[]> getTo() {
-        return Rectangle4i[].class;
-    }
-    
     @Nullable
     private final Logger logger;
     
@@ -33,8 +23,13 @@ public class CvBitImageMerger_NoTJunctions implements Classverter<BitArray2, Rec
         logger = null;
     }
     
+    @Deprecated
     @Override
     public Rectangle4i[] invoke(@NotNull BitArray2 from, @NotNull Object... args) {
+        return invoke(from);
+    }
+    
+    public Rectangle4i[] invoke(@NotNull BitArray2 from) {
         final int w = from.getSizeX(), h = from.getSizeY();
         
         BooleanArray2[] edges = drawEdges(from, w, h);

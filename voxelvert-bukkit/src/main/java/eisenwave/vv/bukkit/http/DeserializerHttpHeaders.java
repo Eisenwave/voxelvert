@@ -31,7 +31,7 @@ public class DeserializerHttpHeaders implements TextDeserializer<HttpHeaders> {
             List<String> values = new ArrayList<>();
             values.add(valueSplit[0].trim());
             if (valueSplit.length > 1)
-                for (String value : Arrays.asList(valueSplit[1].split(";")))
+                for (String value : valueSplit[1].split(";"))
                     values.add(value.trim());
             headers.put(keyVal[0].trim(), values);
         }

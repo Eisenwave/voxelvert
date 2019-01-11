@@ -9,9 +9,9 @@ import java.util.Iterator;
 /**
  * Represents an arrangement of rectangles within an outer, rectangular bounding box.
  */
-public class RectangleArrangement implements Iterable<RectangleArrangement.Entry>, BaseRectangle {
+public class RectangleArrangement<E extends BaseRectangle> implements Iterable<RectangleArrangement.Entry<E>> {
     
-    private final Collection<Entry> content = new ArrayList<>();
+    private final Collection<Entry<E>> content = new ArrayList<>();
     
     private final int width, height;
     
@@ -20,7 +20,7 @@ public class RectangleArrangement implements Iterable<RectangleArrangement.Entry
         this.height = height;
     }
     
-    public Collection<RectangleArrangement.Entry> getContent() {
+    public Collection<RectangleArrangement.Entry<E>> getContent() {
         return content;
     }
     
@@ -29,7 +29,6 @@ public class RectangleArrangement implements Iterable<RectangleArrangement.Entry
      *
      * @return the width of the arrangement bounds
      */
-    @Override
     public int getWidth() {
         return width;
     }
@@ -39,7 +38,6 @@ public class RectangleArrangement implements Iterable<RectangleArrangement.Entry
      *
      * @return the height of the arrangement bounds
      */
-    @Override
     public int getHeight() {
         return height;
     }
@@ -78,7 +76,7 @@ public class RectangleArrangement implements Iterable<RectangleArrangement.Entry
         content.clear();
     }
     
-    public void add(Entry entry) {
+    public void add(Entry<E> entry) {
         if (entry.getU() + entry.getRectangle().getWidth() > this.width)
             throw new IllegalArgumentException("entry exceeds boundaries (0-" + width + ")in width");
         if (entry.getV() + entry.getRectangle().getHeight() > this.height)
@@ -86,8 +84,8 @@ public class RectangleArrangement implements Iterable<RectangleArrangement.Entry
         content.add(entry);
     }
     
-    public void add(int u, int v, BaseRectangle rectangle) {
-        add(new Entry(u, v, rectangle));
+    public void add(int u, int v, E rectangle) {
+        add(new Entry<>(u, v, rectangle));
     }
     
     // MISC
@@ -101,16 +99,16 @@ public class RectangleArrangement implements Iterable<RectangleArrangement.Entry
     
     @NotNull
     @Override
-    public Iterator<Entry> iterator() {
+    public Iterator<Entry<E>> iterator() {
         return content.iterator();
     }
     
-    public static class Entry {
+    public static class Entry<T extends BaseRectangle> {
         
         private final int u, v;
-        private final BaseRectangle rectangle;
+        private final T rectangle;
         
-        public Entry(int u, int v, BaseRectangle rectangle) {
+        public Entry(int u, int v, T rectangle) {
             if (u < 0) throw new IllegalArgumentException("u must be positive");
             if (v < 0) throw new IllegalArgumentException("v must be positive");
             this.u = u;
@@ -126,14 +124,13 @@ public class RectangleArrangement implements Iterable<RectangleArrangement.Entry
             return v;
         }
         
-        public BaseRectangle getRectangle() {
+        public T getRectangle() {
             return rectangle;
         }
         
         public boolean contains(int x, int y) {
-            return
-                x >= u && x <= u + rectangle.getWidth() &&
-                    y >= v && y <= v + rectangle.getHeight();
+            return x >= u && x <= u + rectangle.getWidth()
+                && y >= v && y <= v + rectangle.getHeight();
         }
         
     }

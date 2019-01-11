@@ -110,7 +110,7 @@ public class RaysTest {
     }
     */
     
-    /**
+    /*
      * Applies a function to a texture canvas so that an image with given width and height is being filled.
      * The ray-tracer has following properties:
      * <ul>

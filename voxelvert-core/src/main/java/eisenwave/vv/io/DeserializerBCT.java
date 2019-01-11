@@ -53,7 +53,6 @@ public class DeserializerBCT implements Deserializer<BlockColorTable> {
             short flags = hasFlags? dataStream.readShort() : 0;
             short volume = dataStream.readShort();
     
-            //noinspection ConstantConditions
             result.put(key, new BlockColor(argb, flags, volume, legacy));
         }
         

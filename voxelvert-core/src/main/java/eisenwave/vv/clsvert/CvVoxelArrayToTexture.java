@@ -13,16 +13,6 @@ import java.util.logging.Logger;
 
 public class CvVoxelArrayToTexture implements Classverter<VoxelArray, Texture> {
     
-    @Override
-    public Class<VoxelArray> getFrom() {
-        return VoxelArray.class;
-    }
-    
-    @Override
-    public Class<Texture> getTo() {
-        return Texture.class;
-    }
-    
     @Nullable
     private final Logger logger;
     
@@ -34,6 +24,7 @@ public class CvVoxelArrayToTexture implements Classverter<VoxelArray, Texture> {
         logger = null;
     }
     
+    @Deprecated
     @Override
     public Texture invoke(@NotNull VoxelArray from, @NotNull Object... args) {
         Arguments.requireMin(args, 3);
@@ -59,7 +50,6 @@ public class CvVoxelArrayToTexture implements Classverter<VoxelArray, Texture> {
     
     @FunctionalInterface
     private static interface CoordinateRemapper {
-    
         int[] remap(int x, int y, int z);
     }
     
@@ -165,7 +155,6 @@ public class CvVoxelArrayToTexture implements Classverter<VoxelArray, Texture> {
      * @param array the voxel array
      * @return a section holding content inside the array
      */
-    @SuppressWarnings("ConstantConditions")
     public static VoxelArray cropToContent(VoxelArray array) {
         int
             xmax = 0, ymax = 0, zmax = 0,

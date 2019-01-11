@@ -7,18 +7,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class CvVoxelMeshToQB implements Classverter<VoxelMesh, QBModel> {
     
-    @Override
-    public Class<VoxelMesh> getFrom() {
-        return VoxelMesh.class;
-    }
-    
-    @Override
-    public Class<QBModel> getTo() {
-        return QBModel.class;
-    }
-    
+    @Deprecated
     @Override
     public QBModel invoke(@NotNull VoxelMesh from, @NotNull Object... args) {
+        return invoke(from);
+    }
+    
+    public QBModel invoke(@NotNull VoxelMesh from) {
         QBModel result = new QBModel();
         
         int i = 0;

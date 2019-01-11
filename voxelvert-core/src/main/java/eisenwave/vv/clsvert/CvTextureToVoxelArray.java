@@ -9,16 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CvTextureToVoxelArray implements Classverter<Texture, VoxelArray> {
     
-    @Override
-    public Class<Texture> getFrom() {
-        return Texture.class;
-    }
-    
-    @Override
-    public Class<VoxelArray> getTo() {
-        return VoxelArray.class;
-    }
-    
+    @Deprecated
     @Override
     public VoxelArray invoke(@NotNull Texture texture, @NotNull Object... args) {
         Arguments.requireMin(args, 1);
@@ -27,7 +18,7 @@ public class CvTextureToVoxelArray implements Classverter<Texture, VoxelArray> {
         return invoke(texture, (Direction) args[0]);
     }
     
-    public VoxelArray invoke(Texture texture, Direction direction) {
+    public static VoxelArray invoke(Texture texture, Direction direction) {
         int[] xyz = getDimensions(texture, direction.axis());
         VoxelArray array = new VoxelArray(xyz[0], xyz[1], xyz[2]);
         CoordinateRemapper remapper = getRemapper(direction, xyz[0], xyz[1], xyz[2]);

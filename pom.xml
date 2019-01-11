@@ -11,6 +11,10 @@
     <name>VoxelVert</name>
     <description>Voxel format conversion tool</description>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <developers>
         <developer>
             <name>Jan Schultke</name>
@@ -23,6 +27,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -32,27 +37,9 @@
     </build>
 
     <modules>
+        <module>voxelvert-core</module>
         <module>voxelvert-ui</module>
         <module>voxelvert-bukkit</module>
-        <module>voxelvert-core</module>
     </modules>
-
-    <distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <url>http://grian.net:8081/repository/grian/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus</id>
-            <url>http://grian.net:8081/repository/grian/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>nexus</id>
-            <url>http://grian.net:8081/repository/grian/</url>
-        </repository>
-    </repositories>
 
 </project>

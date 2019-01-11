@@ -40,7 +40,7 @@ public class CmdProbeBlock extends VoxelVertCommand {
         return "[transparent ids...]";
     }
     
-    @SuppressWarnings({"deprecation", "Duplicates"})
+    @SuppressWarnings({"deprecation"})
     @Override
     public boolean onCommand(CommandSender sender, VVUser user, String[] args) {
         if (!(sender instanceof Player)) {

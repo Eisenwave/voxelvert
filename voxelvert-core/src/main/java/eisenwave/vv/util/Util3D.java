@@ -17,7 +17,7 @@ public final class Util3D {
     }
     
     @Contract(pure = true)
-    public static Vertex3f normalOf(Direction dir) {
+    public static Vertex3f vectorOf(Direction dir) {
         return NORMALS[dir.ordinal()];
     }
     

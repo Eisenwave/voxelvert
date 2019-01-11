@@ -17,16 +17,6 @@ import java.util.logging.Logger;
  */
 public class CvBitArrayMerger_XYZ implements Classverter<BitArray3, BoundingBox6i[]> {
     
-    @Override
-    public Class<BitArray3> getFrom() {
-        return BitArray3.class;
-    }
-    
-    @Override
-    public Class<BoundingBox6i[]> getTo() {
-        return BoundingBox6i[].class;
-    }
-    
     @Nullable
     private final Logger logger;
     
@@ -38,12 +28,17 @@ public class CvBitArrayMerger_XYZ implements Classverter<BitArray3, BoundingBox6
         logger = null;
     }
     
+    @Deprecated
     @Override
     public BoundingBox6i[] invoke(@NotNull BitArray3 map, @NotNull Object... args) {
         int cancel = args.length > 0? (Integer) args[0] : 3;
         //System.out.println(args.length);
         
         return invoke(map, cancel);
+    }
+    
+    public BoundingBox6i[] invoke(@NotNull BitArray3 map) {
+        return invoke(map, 3);
     }
     
     public BoundingBox6i[] invoke(BitArray3 map, int cancel) {
@@ -125,7 +120,7 @@ public class CvBitArrayMerger_XYZ implements Classverter<BitArray3, BoundingBox6
                 result.add(new BoundingBox6i(plane.xmin, plane.ymin, z, plane.xmax, plane.ymax, z));
         }
         
-        return result.toArray(new BoundingBox6i[result.size()]);
+        return result.toArray(new BoundingBox6i[0]);
     }
     
     @NotNull
@@ -139,7 +134,7 @@ public class CvBitArrayMerger_XYZ implements Classverter<BitArray3, BoundingBox6
                     result.add(new BoundingBox6i(line.min, y, z, line.max, y, z));
             }
         
-        return result.toArray(new BoundingBox6i[result.size()]);
+        return result.toArray(new BoundingBox6i[0]);
     }
     
     @NotNull
@@ -155,7 +150,7 @@ public class CvBitArrayMerger_XYZ implements Classverter<BitArray3, BoundingBox6
                     }
                 }
         
-        return result.toArray(new BoundingBox6i[result.size()]);
+        return result.toArray(new BoundingBox6i[0]);
     }
     
     /**

@@ -12,26 +12,17 @@ import java.util.logging.Logger;
 /**
  * Converts from an array of arbitrarily sized rectangles into an arrangement of the provided rectangles.
  */
-public class CvRectangleArranger implements Classverter<BaseRectangle[], RectangleArrangement> {
-    
-    @Override
-    public Class<BaseRectangle[]> getFrom() {
-        return BaseRectangle[].class;
-    }
-    
-    @Override
-    public Class<RectangleArrangement> getTo() {
-        return RectangleArrangement.class;
-    }
+public class CvRectangleArranger<T extends BaseRectangle> implements Classverter<T[], RectangleArrangement> {
     
     private final Logger logger = Logger.getLogger("voxelvert.debug");
     
+    @Deprecated
     @Override
-    public RectangleArrangement invoke(@NotNull BaseRectangle[] from, @NotNull Object[] args) {
+    public RectangleArrangement<T> invoke(@NotNull T[] from, @NotNull Object[] args) {
         return invoke(from);
     }
     
-    public RectangleArrangement invoke(BaseRectangle[] rectangles) {
+    public RectangleArrangement<T> invoke(T[] rectangles) {
         if (rectangles.length == 0) throw new IllegalArgumentException("can not sort empty rectangle array");
         logger.fine("arranging " + rectangles.length + " rectangles");
         
@@ -40,20 +31,21 @@ public class CvRectangleArranger implements Classverter<BaseRectangle[], Rectang
             return result == 0? b.getWidth() - a.getWidth() : result;
         });
         
-        RectangleBucket[] buckets = sortInBuckets(rectangles);
+        RectangleBucket<T>[] buckets = sortInBuckets(rectangles);
         logger.fine("sorted into " + buckets.length + " buckets");
         
-        RectangleArrangement result = combine(buckets);
+        RectangleArrangement<T> result = combine(buckets);
         logger.fine("rendered as " + result);
         
         return result;
     }
     
-    private RectangleBucket[] sortInBuckets(BaseRectangle[] rectangles) {
+    @SuppressWarnings("unchecked")
+    private RectangleBucket<T>[] sortInBuckets(T[] rectangles) {
         if (rectangles.length == 1) {
             logger.fine("special case (single rectangle)");
-            BaseRectangle rectangle = rectangles[0];
-            RectangleBucket bucket = new RectangleBucket(rectangle.getWidth(), rectangle.getHeight());
+            T rectangle = rectangles[0];
+            RectangleBucket<T> bucket = new RectangleBucket<>(rectangle.getWidth(), rectangle.getHeight());
             bucket.add(rectangle);
             
             return new RectangleBucket[] {bucket};
@@ -172,14 +164,14 @@ public class CvRectangleArranger implements Classverter<BaseRectangle[], Rectang
         return width;
     }
     
-    private static RectangleArrangement combine(RectangleBucket[] buckets) {
+    private static <T extends BaseRectangle> RectangleArrangement<T> combine(RectangleBucket<T>[] buckets) {
         final int dims = buckets[0].getWidth();
-        RectangleArrangement result = new RectangleArrangement(dims, dims);
+        RectangleArrangement<T> result = new RectangleArrangement<>(dims, dims);
         
         int v = 0;
-        for (RectangleBucket bucket : buckets) {
+        for (RectangleBucket<T> bucket : buckets) {
             int u = 0;
-            for (BaseRectangle rectangle : bucket) {
+            for (T rectangle : bucket) {
                 result.add(u, v, rectangle);
                 u += rectangle.getWidth();
             }
@@ -200,7 +192,7 @@ public class CvRectangleArranger implements Classverter<BaseRectangle[], Rectang
         return new int[] {width, height};
     } */
     
-    private static class RectangleBucket extends ArrayList<BaseRectangle> implements BaseRectangle {
+    private static class RectangleBucket<X extends BaseRectangle> extends ArrayList<X> implements BaseRectangle {
         
         private final int width, height;
         private int avWidth;
@@ -232,7 +224,7 @@ public class CvRectangleArranger implements Classverter<BaseRectangle[], Rectang
         }
         
         @Override
-        public boolean add(BaseRectangle rectangle) {
+        public boolean add(X rectangle) {
             final int recWidth = rectangle.getWidth(), recHeight = rectangle.getHeight();
             if (recHeight > getAvailableHeight() || recWidth > getAvailableWidth())
                 return false;
@@ -257,7 +249,7 @@ public class CvRectangleArranger implements Classverter<BaseRectangle[], Rectang
         
     }
     
-    private static class IncrementDividendStrategy implements ArrangementFinderStrategy {
+    /* private static class IncrementDividendStrategy implements ArrangementFinderStrategy {
         
         private int dividend;
         private int dims;
@@ -274,7 +266,7 @@ public class CvRectangleArranger implements Classverter<BaseRectangle[], Rectang
             return dims / (++dividend);
         }
         
-    }
+    } */
     
     private static class DecreasingPowerOfTwoStrategy implements ArrangementFinderStrategy {
         

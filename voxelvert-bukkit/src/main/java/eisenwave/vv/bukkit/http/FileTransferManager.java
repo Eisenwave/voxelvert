@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
+@SuppressWarnings("UnstableApiUsage")
 public class FileTransferManager {
     
     private final VoxelVertConfig config;
