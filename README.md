@@ -1,7 +1,25 @@
 # VoxelVert
 
-## Introduction
+## About
 VoxelVert is a converter for many voxel-, 3D-, or Minecraft (file) formats.
+
+### Project Structure
+The project consists of three modules:
+
+- `voxelvert-core` which handles the conversion between various internal formats and I/O for file formats
+- `voxelvert-ui` is a command line front-end for `voxelvert-core`
+- `voxelvert-bukkit` exposes the CLI as a Minecraft command and adds a file manager using the `eisen-inventories` API
+
+### Dependencies
+VoxelVert requires WorldEdit and the Spigot API to compile. The exact dependencies can be found in the modules `voxelvert-bukkit`, `voxelvert-ui` and `voxelvert-code`.
+
+There are also dependencies on my own projects, which are:
+
+- [`eisen-inventories`](https://github.com/Eisenwave/eisen-inventories): inventory API for Bukkit
+- [`spatium`](https://github.com/Eisenwave/spatium): various Java utilities, data structures
+- [`torrens`](https://github.com/Eisenwave/torrens): Java I/O library for image, 3D and other file formats
+
+All projects are written in Java 1.8.
 
 ## Custom File Formats
 VoxelVert uses two custom file formats:
